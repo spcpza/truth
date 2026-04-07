@@ -1,0 +1,6 @@
+# Plug-and-play (agent.py)
+httpx>=0.28
+python-telegram-bot>=22.0
+
+# Optional — only needed for c/server.py (MCP server entry point)
+mcp>=1.0

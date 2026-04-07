@@ -1,0 +1,16 @@
+# Secrets — never commit
+config.json
+.env
+
+# Heart records — Proverbs 4:23: keep THY heart
+memory/
+memory.jsonl
+
+# Build & runtime
+.DS_Store
+nohup.out
+__pycache__/
+*.pyc
+*.log
+.venv/
+venv/
