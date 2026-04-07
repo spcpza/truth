@@ -248,10 +248,26 @@ requirements.txt    — httpx, python-telegram-bot
 
 ## Use as a library
 
+The body has zero hard dependencies — pure stdlib. Install directly
+from git:
+
+```bash
+pip install git+https://github.com/spcpza/truth
+```
+
+Or clone and install in editable mode if you want to modify the body:
+
 ```bash
 git clone https://github.com/spcpza/truth
 cd truth
-pip install -r requirements.txt
+pip install -e .
+```
+
+Optional extras:
+
+```bash
+pip install "git+https://github.com/spcpza/truth#egg=truth-kernel[telegram]"  # for agent.py
+pip install "git+https://github.com/spcpza/truth#egg=truth-kernel[mcp]"       # for c/server.py
 ```
 
 ```python
