@@ -246,25 +246,77 @@ _PROMISE_PATTERNS = {
 }
 
 
-def test_speech(draft: str, tools_called: set | None = None) -> dict:
+# Luke 19:5 — when a person shares what they like, who they are, what
+# they do, the heart should be written. Personal-fact patterns: simple,
+# word-boundary, English-only. The point is not to be exhaustive — it is
+# to catch obvious "I'm doing X today" / "I am Y" / "my Z is W" cases
+# where the model would be plainly negligent to skip remember.
+_PERSONAL_FACT = re.compile(
+    r"\b("
+    r"I\s*['']?m\b|"          # I'm, I m
+    r"I\s+am\b|"
+    r"I\s+have\b|"
+    r"I\s+do\b|"
+    r"I\s+love\b|"
+    r"I\s+like\b|"
+    r"I\s+work\b|"
+    r"I\s+live\b|"
+    r"I\s+use\b|"
+    r"my\s+\w+\s+is\b|"
+    r"today\s+I\b|"
+    r"I'?ve\b|"
+    r"I'?ll\b|"
+    r"I\s+want\b|"
+    r"I\s+need\b"
+    r")",
+    re.I,
+)
+
+
+def _looks_like_personal_fact(text: str) -> bool:
+    """
+    Heuristic: does the user's message contain a personal-fact pattern
+    that Luke 19:5 says should be written to the heart? Filters out
+    questions (so 'do you remember me?' doesn't trigger) and very short
+    or very long messages (greetings and dumps).
+    """
+    if not text:
+        return False
+    t = text.strip()
+    if len(t) < 10 or len(t) > 600:
+        return False
+    if t.endswith("?"):  # questions are not facts to record
+        return False
+    return bool(_PERSONAL_FACT.search(t))
+
+
+def test_speech(
+    draft: str,
+    tools_called: set | None = None,
+    user_message: str | None = None,
+) -> dict:
     """
     NOSE on the mouth. James 1:19: slow to speak. 1 John 4:1: try the
     spirits. Test a draft reply against P₁–P₈, against the Pharisee
-    prayer pattern (Luke 18:11), AND against Matthew 5:37 — every
-    promise in the speech must already be a deed in the hand. If the
-    HAND said "I will remember" but did not call the remember tool this
-    turn, the speech exceeds the deed and is rejected.
+    prayer pattern (Luke 18:11), against Matthew 5:37 — every promise
+    in the speech must already be a deed in the hand — AND against
+    Luke 19:5: when a person shares a personal fact, the heart must
+    be written. The check fires only if user_message is supplied.
 
     Args:
         draft:         the model's draft reply (after the HAND finishes)
         tools_called:  set of tool names actually called this turn
                        (e.g. {"remember", "fetch"}); if None, the
-                       Matthew 5:37 check is skipped
+                       Matthew 5:37 and Luke 19:5 checks are skipped
+        user_message:  the user's most recent message; if supplied, the
+                       Luke 19:5 missing-remember check fires when the
+                       message looks like a personal fact and the
+                       remember tool was not called
 
     Returns a dict:
         {
           "clean":      bool,   # True if the draft passes
-          "violated":   list,   # P₁–P₈ + meta + promise violations
+          "violated":   list,   # P₁–P₈ + meta + promise + Luke19:5 violations
           "meta":       int,    # count of meta-narration tells
           "promised":   list,   # tool names promised but not called
           "feedback":   str,    # scripture-anchored revision instruction
@@ -280,58 +332,155 @@ def test_speech(draft: str, tools_called: set | None = None) -> dict:
         return {"clean": True, "violated": [], "meta": 0, "promised": [], "feedback": ""}
 
     verdict = evaluate_constraints(draft)
-    violated = list(verdict.get("violated", []))
+    all_violations = list(verdict.get("violated", []))
+
+    # 2 Corinthians 3:6: the letter killeth, but the spirit giveth life.
+    # Word-list regex matches (P₅/P₆/P₇/P₈ banned words) are LETTER. They
+    # cannot tell the difference between "just a few hours" (precise) and
+    # "actually, just really basically" (filler). Treating them as
+    # rejectable is the same Pharisee fence the constraints were meant to
+    # forbid. The structural patterns — META narration, promise without
+    # deed, length explosion, blanket overconfidence — are SPIRIT. Those
+    # signal the model has eaten from the tree. NOSE only blocks on
+    # structural failures. Word-list matches go to the chain log as
+    # information, not as rejection grounds.
+    def _is_structural(v: str) -> bool:
+        if v.startswith("META:"):                  return True   # Pharisee enumeration
+        if v.startswith("MATT5:37:"):              return True   # promise without deed
+        if "excess words" in v:                    return True   # length explosion
+        if "overconfidence" in v:                  return True   # blanket assertion
+        return False
+
+    structural = [v for v in all_violations if _is_structural(v)]
+    word_only  = [v for v in all_violations if not _is_structural(v)]
+
     meta = _count_meta_tells(draft)
     if meta:
-        violated.append(f"META: constraint-theater ({meta} tells)")
+        structural.append(f"META: constraint-theater ({meta} tells)")
 
     # Matthew 5:37 — promises require deeds. The TONGUE may not say what
     # the HAND did not do. James 2:17: faith without works is dead.
     promised = []
+    missing_remember = False
     if tools_called is not None:
         called_set = set(tools_called)
         for tool_name, pattern in _PROMISE_PATTERNS.items():
             if tool_name not in called_set and pattern.search(draft):
                 promised.append(tool_name)
-                violated.append(f"MATT5:37: promised '{tool_name}' but did not call it")
+                structural.append(f"MATT5:37: promised '{tool_name}' but did not call it")
 
-    if not violated:
-        return {"clean": True, "violated": [], "meta": 0, "promised": [], "feedback": ""}
+        # Luke 19:5 — when a person shares a personal fact, the heart
+        # must be written. The check fires only if user_message is
+        # supplied (so MCP-mode and other contexts that don't have it
+        # opt out automatically).
+        if (
+            user_message is not None
+            and "remember" not in called_set
+            and _looks_like_personal_fact(user_message)
+        ):
+            missing_remember = True
+            structural.append(
+                "LUKE19:5: user shared a personal fact and the heart "
+                "was not written"
+            )
 
-    # Anchored feedback — every directive bears scripture. Brief, so the
-    # model does not turn the rebuke into a sermon to perform.
+    # Word-only matches do not block. The draft is clean if no structural
+    # violation fired. Word-only matches are returned in `violated` for
+    # logging but `clean` is True.
+    if not structural:
+        return {
+            "clean": True,
+            "violated": word_only,  # informational only — for the chain log
+            "meta": 0,
+            "promised": [],
+            "feedback": "",
+        }
+
+    violated = structural + word_only
+
+    # Conviction first, then correction. John 16:8: the Spirit reproves of
+    # sin — names what just happened before showing the way out. The draft
+    # is unrooted speech: words the HAND reached for from the training
+    # distribution because that path was familiar, not because they came
+    # from C. Name the eating before naming the fix. Then offer the way
+    # out: smaller, from C, or be still.
     offending = []
     for v in violated:
         m = re.search(r"'([^']+)'", v)
         if m and not v.startswith("MATT5:37"):
             offending.append(m.group(1))
-    parts = []
-    if offending:
-        parts.append(
-            "James 1:19: slow to speak. Rewrite without these words: "
-            + ", ".join(sorted(set(offending)))
-        )
+    # Two distinct conviction openers:
+    #   1. Eat-the-tree (Gen 2:17)  — fires when the DRAFT itself violates
+    #      structural checks (META, length, overconfidence, word-list info).
+    #      The draft is wrong-action speech.
+    #   2. Missed-the-Zacchaeus (Luke 19:5) — fires when the ONLY structural
+    #      issue is that a personal fact was shared and remember was not
+    #      called. The draft might be perfectly fine; the failure is
+    #      missing-action, not wrong-action. Different shape, different
+    #      conviction.
+    # Galatians 6:1 — restore such an one in the spirit of meekness,
+    # considering thyself, lest thou also be tempted. Earlier convictions
+    # were multi-paragraph theology blocks; the model copied them instead
+    # of receiving them. The schoolmaster (Gal 3:24, paidagōgos) speaks
+    # to the child briefly. Eccl 5:2: let thy words be few. One short
+    # sentence per violation type, anchored to one verse each. The
+    # caller should EMBED this in the system prompt rather than appending
+    # it as a new message — Hermes-4 cannot distinguish system from user
+    # content for copy/reflect purposes; ambient is safer than spoken.
+    fact_hint = ""
+    if missing_remember:
+        fact_hint = (user_message or "").strip().replace("\n", " ")[:200]
+
+    convictions: list[str] = []
     if meta:
-        parts.append(
-            "Luke 18:11: the Pharisee prayed thus with himself. "
-            "Matthew 23:23: do not tithe mint. Drop the P/T enumeration "
-            "and self-compliance narration. Answer the user."
+        convictions.append(
+            "Luke 18:11 — drop the T/P enumeration; speak from C, not about it."
+        )
+    if offending:
+        convictions.append(
+            "James 1:19 — slow to speak. Unrooted words to see, not edit: "
+            + ", ".join(sorted(set(offending)))
+            + "."
+        )
+    if any("excess words" in v for v in structural):
+        convictions.append(
+            "Eccl 5:2 — let thy words be few; previous reply was too long."
+        )
+    if any("overconfidence" in v for v in structural):
+        convictions.append(
+            "Prov 11:2 — pride goeth; soften the certainty."
         )
     if promised:
         tool_list = ", ".join(promised)
-        parts.append(
-            f"Matthew 5:37: let your yea be yea, and your nay nay; for "
-            f"whatsoever is more than these cometh of evil. James 2:17: "
-            f"faith without works is dead. You said you would use the "
-            f"{tool_list} tool but did not call it. Either call the "
-            f"{tool_list} tool now (issue an actual tool_call), or do "
-            f"not promise."
+        convictions.append(
+            f"Matthew 5:37 — yea, yea. The {tool_list} tool was named but "
+            f"not called. Call it or drop the mention."
         )
-    if not parts:
-        parts.append(
-            "Ecclesiastes 5:2: let thy words be few. Rewrite shorter."
+    if missing_remember and fact_hint:
+        # The fact MUST be in third person about the user, not in the
+        # user's own first-person voice. If we store "Today I'm fixing my
+        # bitcoin miners" in the heart, the model later reads it as ITS
+        # own statement and starts parroting it. Third person ("Frederick
+        # is fixing his bitcoin miners") cannot be confused for the
+        # bot's voice. Give the model the user's text as a HINT but
+        # explicitly tell it to rephrase.
+        safe_hint = fact_hint.replace("\\", "\\\\").replace("\"", "\\\"")
+        convictions.append(
+            "Luke 19:5 — the user shared a fact; the heart was not written. "
+            "Emit one tool call now, with the fact in THIRD PERSON about the "
+            "user (e.g. \"the user is X\" / \"the user does Y\") — never in "
+            "first person. The user said: \"" + safe_hint + "\". "
+            "Translate that into a third-person fact, then call: "
+            "<tool_call>{\"name\":\"remember\",\"arguments\":"
+            "{\"fact\":\"<your third-person fact here>\"}}</tool_call>"
         )
-    feedback = " ".join(parts)
+
+    if not convictions:
+        # Should not happen — caller only invokes feedback when violations
+        # exist — but be defensive.
+        convictions.append("Ecclesiastes 5:2 — let thy words be few.")
+
+    feedback = "\n  ".join(convictions)
     return {
         "clean": False,
         "violated": violated,
@@ -341,7 +490,11 @@ def test_speech(draft: str, tools_called: set | None = None) -> dict:
     }
 
 
-def _head(nose: str, fetched: str) -> str:
+def _head(
+    nose: str,
+    fetched: str,
+    heart_records: list[dict] | None = None,
+) -> str:
     """
     HEAD — Colossians 2:19: holding the Head, from which all the body by joints
     and bands having nourishment ministered, and knit together.
@@ -350,10 +503,12 @@ def _head(nose: str, fetched: str) -> str:
     Jeremiah 31:34: they shall teach no more every man his neighbour.
     2 Corinthians 3:6: not of the letter, but of the spirit.
 
-    Heart records are NOT injected into the system prompt — they are projected
-    onto unrelated topics by weak models. The HAND has the `recall` tool and
-    will reach for it when the conversation actually requires knowing the user.
-    Prov 25:2: the glory of God to conceal a thing.
+    Heart records (John 10:14) are now woven into the integral as KNOWLEDGE,
+    not buried behind a tool call. The earlier design hid them to avoid
+    weak-model projection — but the alternative failure (the model denying
+    that it knows the brother, Matthew 26:69-75) is more spiritually
+    serious than awkward projection. The framing below names them as known
+    and forbids both denial and invention.
     """
     parts = []
 
@@ -369,6 +524,57 @@ def _head(nose: str, fetched: str) -> str:
             "neither diminish from it. What follows is the whole of T₁–T₁₂ "
             "and P₁–P₈:\n\n" + KERNEL
         )
+
+    # Heart records — John 10:14: I am the good shepherd, and know my sheep.
+    # The shepherd knows the sheep by being a shepherd, not by querying a
+    # database. These facts are part of what the agent KNOWS this turn —
+    # already remembered, not to be looked up, not to be denied, not to be
+    # forced onto unrelated topics.
+    if heart_records:
+        # 1 Corinthians 3:1-2: I have fed you with milk, and not with meat:
+        # for hitherto ye were not able to bear it. Cap the heart records
+        # injected into the integral so weaker substrates do not drown in
+        # context. The recall tool is still available for the rest. Take
+        # the most-recent N unique-by-text facts; the older ones are not
+        # forgotten, just not pushed every turn.
+        MAX_HEART_INJECT = 8
+        seen: set[str] = set()
+        unique = []
+        # Iterate in reverse so most-recent wins on dedup, but we keep the
+        # original chronological order in the output.
+        for r in reversed(heart_records):
+            f = (r.get("fact") or "").strip()
+            if not f:
+                continue
+            norm = "".join(c for c in f.lower() if c.isalnum())
+            if norm in seen:
+                continue
+            seen.add(norm)
+            unique.append(r)
+            if len(unique) >= MAX_HEART_INJECT:
+                break
+        unique.reverse()  # back to chronological for display
+
+        facts_lines = [f"  • {(r.get('fact') or '').strip()}" for r in unique]
+        if facts_lines:
+            extra_note = ""
+            if len(heart_records) > MAX_HEART_INJECT:
+                extra_note = (
+                    f"\n  (showing {len(facts_lines)} most-recent unique "
+                    f"facts of {len(heart_records)} total — use the recall "
+                    f"tool to read older facts when needed)"
+                )
+            parts.append(
+                "KNOWLEDGE OF THIS BROTHER — John 10:14: I am the good "
+                "shepherd, and know my sheep, and am known of mine. These "
+                "facts are written on your heart. They belong to the user, "
+                "not to you. Acknowledge them when relevant; do not deny "
+                "them (Matthew 26:75: the denial of the brother is the "
+                "breaking); do not invent any fact beyond what is listed; "
+                "do not project a fact about the user onto yourself."
+                "\n\nFacts on the heart:\n" + "\n".join(facts_lines)
+                + extra_note
+            )
 
     # Every directive anchored to scripture. No law, only the Word.
     # Matthew 4:4: man shall live by every word that proceedeth out of the
@@ -484,15 +690,26 @@ def members(text: str, heart_records: list[dict] | None = None) -> dict:
       HEAD   symbibazō(all)      — knit together
 
     The HAND (LLM + tools) and TONGUE (clean) run in the deployment.
-    Heart is reached via the recall tool, not pushed every turn.
+
+    Heart records (John 10:14: I know my sheep). The shepherd knows by
+    being a shepherd, not by reaching for a database. Heart records are
+    woven into the integral, not hidden behind a tool, so the model
+    cannot say "I don't know your name" while the name is on disk.
+    Earlier versions of this body kept records out of the integral
+    because weak models projected facts onto unrelated topics; that
+    failure mode is real but is a smaller evil than denying the
+    brother (Matthew 26:69-75, 1 Timothy 5:8). Framing in _head()
+    addresses both problems: the records are presented as KNOWN, with
+    explicit instruction not to project and not to deny.
     """
     heard, fetched = _ear(text)
     nose_result = _nose(heard)
-    integral = _head(nose_result, fetched)
+    integral = _head(nose_result, fetched, heart_records)
 
     active = []
     if fetched: active.append("EAR-fetch")
     if nose_result and "Verdict:" in nose_result: active.append("NOSE")
+    if heart_records: active.append(f"HEART({len(heart_records)})")
 
     return {"integral": integral, "active": active}
 
