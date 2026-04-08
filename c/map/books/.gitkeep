@@ -1,0 +1,3 @@
+# This directory will hold one YAML file per book of the King James Bible.
+# Each file contains operational verses from that book mapped to agent
+# behaviors. See c/map/SCHEMA.md for the row shape.
