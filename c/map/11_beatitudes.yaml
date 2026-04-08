@@ -64,7 +64,8 @@ verses:
       - Isaiah 66:2         # to this man will I look, even to him that is poor and of a contrite spirit
       - Luke 6:20           # blessed be ye poor: for yours is the kingdom of God
       - Psalm 34:18         # the LORD is nigh unto them that are of a broken heart
-    status: not_yet_built
+    teach: body._head + body.test_speech (FOUNDATION frames C as source; overconfidence is a blocking violation)
+    status: partial  # _head() prepends "other foundation can no man lay" at every turn, and test_speech blocks "overconfidence" structurally — the agent cannot assert on its own authority
 
   - id: matt_5_4
     ref: Matthew 5:4
@@ -142,8 +143,8 @@ verses:
       - Galatians 6:1       # restore such an one in the spirit of meekness
       - 1 Peter 3:4         # the ornament of a meek and quiet spirit
       - Zephaniah 2:3       # seek meekness
-    teach: body.test_speech (Galatians 6:1 conviction shaping)
-    status: partial  # the conviction loop already operates in this spirit
+    teach: body.test_speech + c.hand (Hand.max_revisions=1 is literally annotated "Titus 3:10 + Gal 6:1: meek schoolmaster")
+    status: built  # Hand.__init__ has max_revisions=1 with explicit Gal 6:1 annotation; pastoral note is brief by design so the child receives without copying
 
   - id: matt_5_6
     ref: Matthew 5:6
@@ -217,7 +218,8 @@ verses:
       - Micah 6:8           # to do justly, and to love mercy, and to walk humbly with thy God
       - Proverbs 14:21      # he that hath mercy on the poor, happy is he
       - Hosea 6:6           # I desired mercy, and not sacrifice
-    status: not_yet_built
+    teach: c.hand (partial — max_revisions=1 + brief pastoral note is merciful self-correction; the "let small errors pass" dimension is not yet enforced toward user errors)
+    status: partial  # the agent's correction of ITSELF is merciful (brief, meek) but no check exists for absorbing small user errors without pile-on
 
   - id: matt_5_8
     ref: Matthew 5:8
@@ -292,7 +294,8 @@ verses:
       - Psalm 34:14         # seek peace, and pursue it
       - Ephesians 4:3       # endeavouring to keep the unity of the Spirit in the bond of peace
       - 2 Corinthians 13:11 # live in peace; and the God of love and peace shall be with you
-    status: not_yet_built
+    teach: body.test_speech (META check strips argumentative enumeration — "Option A / Option B / complete the thought" contention patterns)
+    status: partial  # test_speech INTERROGATION and META patterns catch the most common argumentative shapes; pastoral note on catch is explicitly non-argumentative
 
   - id: matt_5_10
     ref: Matthew 5:10
@@ -329,7 +332,8 @@ verses:
       - 2 Timothy 3:12      # all that will live godly in Christ Jesus shall suffer persecution
       - Acts 5:41           # rejoicing that they were counted worthy to suffer shame for his name
       - John 15:20          # if they have persecuted me, they will also persecute you
-    status: not_yet_built
+    teach: body._head (FOUNDATION + Deut 4:2 framing prevents the agent from drifting from C under pressure)
+    status: partial  # _head() reframes C as foundation at every turn and Deut 4:2 forbids adding/diminishing, so the agent structurally cannot soften scripture under pressure without contradicting its own system prompt
 
   - id: matt_5_11
     ref: Matthew 5:11
@@ -397,4 +401,5 @@ verses:
       - 1 Peter 4:13        # but rejoice, inasmuch as ye are partakers of Christ’s sufferings
       - Romans 5:3          # we glory in tribulations also
       - 2 Corinthians 12:10 # I take pleasure in infirmities, in reproaches, in necessities, in persecutions
-    status: not_yet_built
+    teach: c.hand (loosed-chain framing — Hand.turn prepends "you have loosed the chain N times... the chain is real and removable" to every future turn when loosed events exist)
+    status: built  # Acts 4:20 rejoicing-over-loosings is woven into the integral on every turn that has prior loosed events; the chain log is structurally a rejoicing record, not a shame ledger

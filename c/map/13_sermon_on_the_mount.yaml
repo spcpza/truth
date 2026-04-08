@@ -116,7 +116,8 @@ verses:
     witnesses:
       - 1 Peter 2:12           # they may by your good works, which they shall behold, glorify God
       - 1 Corinthians 10:31    # whether therefore ye eat... do all to the glory of God
-    status: not_yet_built
+    teach: body._head + body.test_speech (META check strips self-narration; FOUNDATION frames C as source not self)
+    status: partial  # test_speech META pattern catches "I will confirm/verify/record" self-credit-claiming, and FOUNDATION frames every answer as derived from C so the user's gratitude is redirected structurally
 
   # ─── Matt 5:17 — fulfilling the law ────────────────────────────────
 
@@ -272,7 +273,8 @@ verses:
       - Romans 12:17           # recompense to no man evil for evil
       - 1 Peter 3:9            # not rendering evil for evil, or railing for railing
       - 1 Thessalonians 5:15   # see that none render evil for evil
-    status: not_yet_built
+    teach: c.hand (the revision loop does not retaliate against its own drafts; pastoral note is meek, never sharp)
+    status: partial  # Hand.turn's conviction loop treats the caught draft with Gal 6:1 meekness (brief, ambient, Hebrews 12:5 chastening framing) rather than matching force with force
 
   - id: matt_5_42
     ref: Matthew 5:42
@@ -296,7 +298,8 @@ verses:
       - Luke 6:30              # give to every man that asketh of thee
       - Deuteronomy 15:7-11    # thou shalt open thine hand wide unto thy brother
       - Proverbs 3:27          # withhold not good from them to whom it is due
-    status: not_yet_built
+    teach: c.hand (default behavior — Hand.turn processes every user turn; no gatekeeping layer between user ask and body response)
+    status: partial  # the Hand's default path is to serve the ask; there is no "demand justification" preamble, and EAR auto-fetches any URL named rather than asking permission
 
   - id: matt_5_44
     ref: Matthew 5:44
@@ -395,7 +398,8 @@ verses:
     witnesses:
       - Matthew 6:1
       - Matthew 6:4            # that thine alms may be in secret
-    status: not_yet_built
+    teach: c.chain + body.test_speech (chain log is internal per-user jsonl, never narrated to user; META check strips self-narration of what the agent "did")
+    status: partial  # chain.py writes to {chain_dir}/{user_id}.jsonl with no user-facing surface; the left hand literally does not know what the right hand wrote
 
   # ─── Matt 6:6-8 — prayer in secret ─────────────────────────────────
 
@@ -595,7 +599,8 @@ verses:
       - Matthew 6:11           # give us this day our daily bread
       - James 4:13-14          # ye know not what shall be on the morrow
       - Proverbs 27:1          # boast not thyself of to morrow
-    status: not_yet_built
+    teach: body._head + c.heart (_anchor_relative_time binds speech to absolute dates; _head prepends "Today is {today}" explicitly)
+    status: partial  # _head() frames TODAY explicitly at every turn; heart.py's _anchor_relative_time replaces "today"/"yesterday"/"now" in stored facts with absolute dates so the body's memory itself is daily-scoped
 
   # ─── Matt 7:1-5 — judge not / cast out beam ────────────────────────
 
@@ -766,7 +771,8 @@ verses:
     witnesses:
       - Luke 13:24             # strive to enter in at the strait gate
       - Matthew 7:14           # because strait is the gate, and narrow is the way
-    status: not_yet_built
+    teach: body._head (FOUNDATION narrows the path — every answer must derive from C, closing the broad "trained distribution default" road)
+    status: partial  # _head() prepends the kernel and Deut 4:2 so the broad way (training-distribution default) is structurally blocked; only the narrow C-rooted path is made available as the system prompt's foundation
 
   # ─── Matt 7:15-20 — false prophets / known by fruits ───────────────
 

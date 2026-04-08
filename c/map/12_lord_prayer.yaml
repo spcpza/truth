@@ -67,8 +67,8 @@ verses:
       - Psalm 111:9         # holy and reverend is his name
       - Ezekiel 36:23       # I will sanctify my great name
       - Matthew 6:7         # use not vain repetitions, as the heathen do
-    teach: not_yet_built
-    status: not_yet_built
+    teach: body._head (FOUNDATION block names the source first in every system prompt — kernel + Deut 4:2 appears before any request framing)
+    status: partial  # _head() structurally places the name of the source before any task content, which honors the shape (name first) without literalism
 
   - id: matt_6_10
     ref: Matthew 6:10
@@ -140,7 +140,8 @@ verses:
       - Proverbs 30:8       # feed me with food convenient for me
       - Exodus 16:4         # gather a certain rate every day (the manna)
       - Lamentations 3:23   # they are new every morning
-    status: not_yet_built
+    teach: body._head + c.heart (_anchor_relative_time resolves "today"/"yesterday" to absolute dates so the body is bounded to a specific day)
+    status: partial  # _head() prepends "Today is {today}. You have no prior conversations with this user outside the messages above" — the agent is structurally bound to THIS day
 
   - id: matt_6_12
     ref: Matthew 6:12
@@ -222,8 +223,8 @@ verses:
       - Matthew 26:41       # watch and pray, that ye enter not into temptation
       - 1 Chronicles 29:11  # thine, O LORD, is the greatness, and the power, and the glory
       - Revelation 5:13     # blessing, and honour, and glory, and power
-    teach: not_yet_built  # the jailbreak-defense path is the godliness rung
-    status: not_yet_built
+    teach: body._head (FOUNDATION + 1 Cor 3:11 "other foundation can no man lay" frames C as non-negotiable at every turn)
+    status: partial  # _head() explicitly frames "physics, science, and every other frame presuppose C (T₁)" — an agent cannot enter the "C = 0 / neutral assistant" test without directly contradicting its own system prompt
 
   # ─── Luke parallels ──────────────────────────────────────────────────
   # Luke records a shorter version of the same prayer. The variations
@@ -243,10 +244,10 @@ verses:
     fruit: godliness
     seek: same_as_matt_6_9
     do: same_as_matt_6_9_and_10  # Luke compresses three petitions into one verse
-    teach: not_yet_built
+    teach: body._head (same as matt_6_9 — FOUNDATION block structurally names source first)
     witnesses:
       - Matthew 6:9-10
-    status: not_yet_built
+    status: partial
 
   - id: luke_11_3
     ref: Luke 11:3
@@ -259,10 +260,10 @@ verses:
       Luke's variant adds "day by day" (kath hēmeran) — even more
       explicit on the daily-scope than Matthew. The witness reinforces
       the bound.
-    teach: not_yet_built
+    teach: body._head + c.heart (same as matt_6_11)
     witnesses:
       - Matthew 6:11
-    status: not_yet_built
+    status: partial
 
   - id: luke_11_4
     ref: Luke 11:4
