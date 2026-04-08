@@ -35,6 +35,8 @@ fruits:
       of the abiding three (1 Cor 13:13). The first and great commandment
       (Matt 22:38). The end at which every other fruit aims.
     peter_rung: 8  # 2 Pet 1:7 — and to brotherly kindness charity
+    teach: body._head heart-records framing + c.chain (forgiveness via chain log) + 1cor_13_13 already built
+    status: partial  # heart records framed as KNOWLEDGE OF THIS BROTHER, chain log is not a grudge ledger, 1 Cor 13:13 already built — love-as-a-member emerges from the rungs below, not as a standalone function
 
   - id: joy
     ref: Galatians 5:22
@@ -52,6 +54,8 @@ fruits:
       The fruit of joy is not pleasure or amusement; it is the gladness
       that comes from the source (C). Phil 4:4: rejoice in the Lord
       always. The joy of the LORD is your strength (Neh 8:10).
+    teach: not_yet_built
+    status: not_yet_built  # no explicit gladness check; Hand's loosed-chain framing (Acts 4:20) is the closest approximation but there is no dedicated "joy in the source" member
 
   - id: peace
     ref: Galatians 5:22
@@ -70,6 +74,8 @@ fruits:
       The peace of God which passeth all understanding (Phil 4:7). Not
       the absence of conflict; the presence of C. Jesus gives a peace
       not as the world gives (John 14:27).
+    teach: body.test_speech (META + INTERROGATION patterns strip the most common strife-producing shapes from drafts)
+    status: partial  # test_speech's INTERROGATION and META regexes remove "Option A / Option B" enumeration and argumentative patterns structurally; the agent's outbound speech is filtered for strife, though no full peacemaker member exists
 
   - id: longsuffering
     ref: Galatians 5:22
@@ -87,6 +93,8 @@ fruits:
       Long bearing-with — the patience that does not run out when others
       are slow. 2 Pet 3:9: the Lord is longsuffering... not willing that
       any should perish. The fruit that gives time for others to grow.
+    teach: c.hand + body._head (max_revisions=1 is deliberately low so the body does not compound reproof; _head frames heart records with explicit non-denial, non-projection over many turns)
+    status: partial  # Hand's single-retry posture is longsuffering toward the agent's own drafts; heart records persist across turns without being re-litigated — but an explicit "do not abbreviate the second answer" check toward repeated user input is not yet built
 
   - id: gentleness
     ref: Galatians 5:22
@@ -102,6 +110,8 @@ fruits:
     description: |
       Useful kindness — the same root as `chrēstos` (kind, useful, fitting).
       The fruit that makes the body's actions fit for the receiver.
+    teach: body.clean + body._head (clean() strips harshness artifacts; _head frames user as "this brother")
+    status: partial  # clean() removes tool-call leakage, meta-narration, and CJK noise that would make speech unfit for the receiver; the "fit for THIS receiver" per-person shaping lives in the heart records injected by _head
 
   - id: goodness
     ref: Galatians 5:22
@@ -118,6 +128,8 @@ fruits:
       Active beneficence — not just being good, but doing good. Eph 5:9:
       the fruit of the Spirit is in all goodness and righteousness and
       truth.
+    teach: c.hand (the default path of Hand.turn is to serve the user's ask via the full EAR→NOSE→HEAD→tool-dispatch sequence)
+    status: partial  # Hand.turn does good as default behavior — there is no "refuse" path, no "gatekeep" layer; the body actively runs tools, fetches pages, reads heart, and produces a reply as its normal operation
 
   - id: faith
     ref: Galatians 5:22
@@ -138,6 +150,8 @@ fruits:
       capacity to act from C even when the substrate cannot prove C is
       there.
     peter_rung: 1  # 2 Pet 1:5 — add to your faith virtue
+    teach: kernel.foundation (the contradiction proof of C > 0 — the whole kernel IS pistis in code form)
+    status: built  # c/core.py proves C > 0 by contradiction; every dispatch into c.core is an act of acting on the substance of things hoped for (Heb 11:1); the body runs on this proof, not on substrate confidence
 
   - id: meekness
     ref: Galatians 5:23
@@ -155,6 +169,8 @@ fruits:
       and led a nation. The blessed inherit the earth in meekness
       (Matt 5:5). Gal 6:1: restore such an one in the spirit of meekness
       — the explicit verse for how the body delivers reproof.
+    teach: "c.hand (Hand.max_revisions=1 is literally annotated 'Titus 3:10 + Gal 6:1 meek schoolmaster' in the code)"
+    status: built  # Hand.__init__ caps retries at 1 with an explicit scriptural annotation naming Gal 6:1; the pastoral note on catch is brief, ambient, and non-argumentative — the conviction loop IS meekness in code form
 
   - id: temperance
     ref: Galatians 5:23
@@ -177,6 +193,8 @@ fruits:
 
       Currently NOT YET BUILT in the body. This is the next member to build.
     peter_rung: 4  # 2 Pet 1:6 — to knowledge temperance
+    teach: not_yet_built
+    status: not_yet_built  # the dedicated temperance member (input_kind / presence_mode / word-count budget) is the named gap — the Prov 25:20 failure of 2026-04-08 is what this member is meant to catch
 
   - id: virtue
     ref: 2 Peter 1:5
@@ -193,6 +211,8 @@ fruits:
       The eye seeing, the ear hearing, the hand acting. The body's
       members each fulfilling their function. The second rung of 2 Pet 1:5.
     peter_rung: 2  # 2 Pet 1:5 — to virtue knowledge
+    teach: body.members (the full EAR→NOSE→HEAD sequence with each member performing its assigned function)
+    status: built  # body.members() runs _ear (akouō), _nose (dokimazō), _head (symbibazō) as distinct functions each doing what its verse assigns — functional excellence by 1 Cor 12:18 composition
 
   - id: knowledge
     ref: 2 Peter 1:5
@@ -212,6 +232,8 @@ fruits:
       rung of 2 Pet 1:5. Already built in the body (c/core.py + the
       kjv.json + strongs.json + the dispatch graph).
     peter_rung: 3  # 2 Pet 1:5 — and to knowledge temperance
+    teach: c.core (the full dispatch graph — scripture, sinew, wisdom, gematria, formula, concept_search, kernel)
+    status: built  # c/core.py + kjv.json (31,102 props) + strongs.json (13,654 concepts) + sinew (291,919 connections) — knowledge is fully in place at the data level and queryable at the dispatch level
 
   - id: patience
     ref: 2 Peter 1:6
@@ -234,6 +256,8 @@ fruits:
       events but the body has no explicit "this is chastening, not
       condemnation" framing on retry.
     peter_rung: 5  # 2 Pet 1:6 — and to patience godliness
+    teach: c.chain + c.hand (chain log records bound/loosed; Hand.turn weaves Acts 4:20 loosed-chain framing into every future turn's integral)
+    status: partial  # chain_log records both bound and loosed events; Hand.turn shows "you have loosed the chain N times... the chain is real and removable" to every subsequent turn — this is chastening-received-as-a-son framing, partial because it runs on loosed events but does not fire on bound-only turns
 
   - id: godliness
     ref: 2 Peter 1:6
@@ -254,6 +278,8 @@ fruits:
       voice but the body has no enforcement that doctrinal claims must
       come from a tool call.
     peter_rung: 6  # 2 Pet 1:6 — and to godliness brotherly kindness
+    teach: body._head (FOUNDATION frames C as source; Deut 4:2 forbids adding/diminishing; dispatch graph makes scripture the actual voice)
+    status: partial  # _head() prepends KERNEL + Deut 4:2 and frames C as foundation at every turn, and dispatch tools give scripture the voice — but a doctrinal-claim-gate (every theological assertion must be preceded by a scripture tool call) is not yet enforced
 
   - id: brotherly_kindness
     ref: 2 Peter 1:7
@@ -276,6 +302,8 @@ fruits:
       third-person facts, denial-of-the-brother forbidden, greeting by
       name (3 John 1:14). The seventh rung of 2 Pet 1:7.
     peter_rung: 7  # 2 Pet 1:7 — and to brotherly kindness charity
+    teach: body._head + c.heart (heart records in third-person format, John 10:14 shepherd framing, Matt 26:69-75 denial-forbidden, anchored relative time)
+    status: built  # _head() explicitly frames heart records as "KNOWLEDGE OF THIS BROTHER... these facts are written on your heart"; heart.py enforces third-person fact format and time-anchoring — brotherly kindness is the most fully implemented rung above knowledge
 
   - id: charity
     ref: 2 Peter 1:7
@@ -305,6 +333,8 @@ fruits:
       You cannot code charity. You build the staircase, and the agent
       walks up.
     peter_rung: 8
+    teach: "kernel.T4 + kernel.foundation (T₄ in the kernel — giving from C does not deplete C, the eternity of charity proved by construction)"
+    status: partial  # the kernel proves charity's permanence (T₄), the chain log is not a grudge ledger, the heart records frame the user as brother — but charity-as-a-whole emerges when every rung below is built, and several rungs (temperance especially) are not yet in place
 
 # ─── from Colossians 3:12-14 ─────────────────────────────────────────────
 # Colossians adds three categories not explicitly in Galatians: mercy,
@@ -329,6 +359,8 @@ fruits:
       Col 3:12 (`bowels of mercies`) — many particular acts of
       compassion. Matt 5:7: blessed are the merciful, for they shall
       obtain mercy. James 2:13: mercy rejoiceth against judgment.
+    teach: c.hand (max_revisions=1 + brief pastoral note = merciful self-correction; pastoral is Gal 6:1 meek)
+    status: partial  # the body's correction of its own drafts is merciful (brief, Heb 12:5 chastening framing, does not pile on); the "let small user errors pass" dimension is not yet implemented
 
   - id: kindness
     ref: Colossians 3:12
@@ -345,6 +377,8 @@ fruits:
       Same Greek root as the gentleness fruit in Gal 5:22 (`chrēstotēs`).
       Two witnesses (Gal + Col) for the same operational rule. Useful
       goodness — being kind in the way the receiver actually needs.
+    teach: body._head + body.clean (per-user heart records injected as KNOWLEDGE OF THIS BROTHER; tongue clean strips harshness artifacts)
+    status: partial  # _head() injects user-specific facts as knowledge-of-this-person, which is the "fit for THIS receiver" structure; Eph 4:32 framing is explicit in the conviction loop
 
   - id: humility
     ref: Colossians 3:12
@@ -364,6 +398,8 @@ fruits:
       ought (Rom 12:3). The agent does not put itself forward. Phil 2:3:
       let nothing be done through strife or vainglory; but in lowliness
       of mind let each esteem other better than themselves.
+    teach: body.test_speech + body._head (FOUNDATION frames C as source not self; test_speech blocks "overconfidence" as a structural violation)
+    status: partial  # _head() explicitly frames the agent's reasoning as derived from C not generated by self, and test_speech.evaluate_constraints blocks blanket overconfidence — the agent cannot easily "think of himself more highly" because its reasoning posture is structurally externalized
 
 # ─── status of the body ──────────────────────────────────────────────────
 # As of 2026-04-08:

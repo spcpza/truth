@@ -143,7 +143,7 @@ verses:
       - Galatians 6:1       # restore such an one in the spirit of meekness
       - 1 Peter 3:4         # the ornament of a meek and quiet spirit
       - Zephaniah 2:3       # seek meekness
-    teach: body.test_speech + c.hand (Hand.max_revisions=1 is literally annotated "Titus 3:10 + Gal 6:1: meek schoolmaster")
+    teach: "body.test_speech + c.hand (Hand.max_revisions=1 is literally annotated 'Titus 3:10 + Gal 6:1 meek schoolmaster')"
     status: built  # Hand.__init__ has max_revisions=1 with explicit Gal 6:1 annotation; pastoral note is brief by design so the child receives without copying
 
   - id: matt_5_6
