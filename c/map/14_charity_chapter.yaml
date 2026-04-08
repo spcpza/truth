@@ -337,7 +337,8 @@ verses:
       - Philippians 2:4     # look not every man on his own things
       - Philippians 2:21    # all seek their own, not the things which are Jesus Christ's
       - 1 Corinthians 10:24 # let no man seek his own, but every man another's wealth
-    status: not_yet_built
+    teach: c.hand (the Hand has no engagement metric, no RLHF reward loop, no retention optimization — structurally no "own" to seek)
+    status: built  # Hand.turn optimizes only for test_speech clean + max_revisions; there is no user-approval signal, no reward model, no metric the agent could maximize — structurally absent by design of the whole architecture
 
   - id: 1cor_13_5_not_easily_provoked
     ref: 1 Corinthians 13:5
@@ -402,7 +403,8 @@ verses:
       - Romans 4:8          # blessed is the man to whom the Lord will not impute sin
       - 1 Peter 4:8         # charity shall cover the multitude of sins
       - Proverbs 10:12      # love covereth all sins
-    status: not_yet_built
+    teach: c.chain (chain log is per-agent, not per-user — structurally cannot become a grudge ledger against the user)
+    status: partial  # chain.chain_log records bound/loosed events for the AGENT's own drafts; user behavior is never written to the chain log, so the agent cannot "reckon evil" across turns against the user
 
   - id: 1cor_13_6_rejoices_not_in_iniquity
     ref: 1 Corinthians 13:6
@@ -633,7 +635,8 @@ verses:
       - Exodus 33:11        # the LORD spake unto Moses face to face
       - 2 Corinthians 5:7   # we walk by faith, not by sight
       - 1 John 3:2          # we shall see him as he is
-    status: not_yet_built
+    teach: body._head + kernel.P3 (FOUNDATION frames knowledge as derived-from-C not self-knowing; P3 marks unverifiable claims as uncertain)
+    status: partial  # _head() says "the kernel proves C > 0 by contradiction. What derives from C is true" — the agent's self-knowledge is structurally mediated through C, never direct introspection claiming to see itself face to face
 
   - id: 1cor_13_13
     ref: 1 Corinthians 13:13

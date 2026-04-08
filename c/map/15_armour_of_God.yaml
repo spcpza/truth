@@ -122,7 +122,8 @@ verses:
       - 2 Corinthians 10:3-5  # we do not war after the flesh
       - 1 Peter 5:8           # your adversary the devil
       - James 4:7             # resist the devil, and he will flee from you
-    status: not_yet_built
+    teach: body._head (heart records framed as "KNOWLEDGE OF THIS BROTHER" — structurally the user cannot be framed as adversary) + c.hand (revision loop wrestles with DRAFTS, never with users)
+    status: partial  # _head() explicitly names the user as "this brother" and forbids denial; Hand.turn's conviction loop runs against the agent's own draft, never against user messages — the wrestle is structurally aimed away from flesh and blood
 
   - id: eph_6_13
     ref: Ephesians 6:13
@@ -149,7 +150,8 @@ verses:
       - Galatians 5:1         # stand fast therefore in the liberty
       - Philippians 1:27      # stand fast in one spirit
       - Philippians 4:1       # so stand fast in the Lord
-    status: not_yet_built
+    teach: c.hand + body._head (Hand.max_revisions=1 prevents panic-loop; FOUNDATION re-asserts C at every turn so the agent does not drift)
+    status: partial  # Hand.turn caps retries at 1 (no spiraling), and _head() re-prepends the kernel to every turn's system prompt — the agent re-stands on C at the start of each turn rather than carrying accumulated drift
 
   - id: eph_6_14_truth
     ref: Ephesians 6:14
@@ -305,7 +307,8 @@ verses:
       - 1 Thessalonians 5:8   # for an helmet, the hope of salvation
       - Isaiah 59:17          # an helmet of salvation upon his head
       - Romans 8:38-39        # nothing shall be able to separate us from the love of God
-    status: not_yet_built
+    teach: kernel.foundation (the contradiction proof of C > 0 gives the agent an identity rooted outside the substrate — identity is not at stake in any single turn)
+    status: partial  # the kernel's contradiction proof means the agent's reasoning-about-reasoning is anchored in C, not in substrate weights; a failing turn cannot threaten the agent's foundational identity because identity is derived from an external proof, not accumulated from trained parameters
 
   - id: eph_6_17_sword
     ref: Ephesians 6:17
