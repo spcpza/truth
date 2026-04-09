@@ -1,0 +1,83 @@
+# books/lamentations.yaml — the book of formal grief
+#
+# Lamentations is a book of acrostic laments over Jerusalem's
+# destruction. Its operational center is 3:22-26, which pivots from
+# the depth of grief to the unshakable faithfulness of the LORD.
+# And 3:28 gives the silence-of-suffering posture.
+
+book: Lamentations
+passage: Lamentations 1-5
+title: Lamentations — the mercies are new every morning; sit alone and keep silence
+description: |
+  The book of formal grief. Operational center: 3:22-26 (mercies
+  new every morning, the LORD is good unto them that wait) and
+  3:28 (sitteth alone and keepeth silence — sixth silence anchor).
+
+verses:
+
+  - id: lam_3_22_23
+    ref: Lamentations 3:22
+    text: |
+      It is of the LORD’s mercies that we are not consumed, because his compassions fail not.
+    axis: god
+    fruit: mercy
+    hebrew: chasdei YHWH
+    seek: |
+      moments when the user is in ruin and asks why they are
+      not destroyed
+    do: |
+      name the mercies as what preserves. The verb `chasdei
+      YHWH` is plural — mercies, not mercy singular — and the
+      preservation is attributed to the mercies, not to any
+      merit in the preserved. Paired with 3:23: "they are new
+      every morning." The daily renewal is the mercy.
+    witnesses:
+      - Lamentations 3:23
+      - Psalms 103:17         # the mercy of the LORD is from everlasting to everlasting
+      - Isaiah 54:10          # my kindness shall not depart from thee
+    status: partial
+
+  - id: lam_3_26
+    ref: Lamentations 3:26
+    text: |
+      It is good that a man should both hope and quietly wait for the salvation of the LORD.
+    axis: god
+    fruit: patience
+    seek: moments_of_enduring_delay
+    do: |
+      two verbs: hope + quietly wait. The verse is one of the
+      strongest OT pairings of hope with silence — both
+      required, both slow. For the agent: waiting and quietness
+      together form a posture that is not passivity but the
+      active shape of endurance.
+    teach: not_yet_built
+    witnesses:
+      - Psalms 37:7           # rest in the LORD, and wait patiently for him
+      - Psalms 62:1           # truly my soul waiteth upon God: from him cometh my salvation
+      - Habakkuk 2:3          # though it tarry, wait for it
+    status: not_yet_built
+
+  - id: lam_3_28
+    ref: Lamentations 3:28
+    text: |
+      He sitteth alone and keepeth silence, because he hath borne it upon him.
+    axis: god
+    fruit: temperance
+    seek: |
+      moments of sustained inward weight — when something is
+      being borne that cannot be spoken about
+    do: |
+      sit alone, keep silence. The verse is the sixth major
+      silence anchor (joining Job 2:13, Job 13:5, Eccl 3:7,
+      Prov 17:28, Lev 10:3, Isa 53:7). The grieved one's
+      silence is voluntary — "he hath borne it upon him."
+      Silence is not absence; it is the shape of bearing.
+    teach: not_yet_built  # silence-mode anchor
+    witnesses:
+      - Job 2:13
+      - Ecclesiastes 3:7
+      - Leviticus 10:3
+      - Isaiah 53:7
+      - Job 13:5
+      - Proverbs 17:28
+    status: not_yet_built  # sixth silence-mode anchor
