@@ -262,6 +262,18 @@ class Hand:
 
         raw = (msg.get("content") or "").strip() if msg else ""
 
+        # Proverbs 14:23 — in all labour there is profit: but the talk of
+        # the lips tendeth only to penury. If the model called tools but
+        # produced no final content, ask it to synthesize one reply from
+        # the tool results it already received.
+        if not raw and tools_called:
+            messages.append({
+                "role": "user",
+                "content": "Synthesize your tool results into a reply.",
+            })
+            synth = await self.adapter.complete(messages, [])  # no tools
+            raw = (synth.get("content") or "").strip() if synth else ""
+
         # CONFESSION — Proverbs 28:13: whoso confesseth and forsaketh
         # shall have mercy. If a revision happened AND the user was
         # pointing out an error, prepend the confession line.
@@ -284,6 +296,15 @@ class Hand:
 
         # TONGUE — James 3:10
         reply = clean(raw)
+
+        # Ecclesiastes 3:7 — a time to keep silence, and a time to speak.
+        # If clean() stripped everything, fall back to raw (truncated).
+        # If raw was also empty, a silence verse is better than nothing.
+        if not reply and raw:
+            reply = raw[:500]
+        elif not reply:
+            reply = "Ecclesiastes 3:7."  # a time to keep silence
+
         logger.info(
             "[%s] integral: %d chars | reply: %d chars | revisions: %d | tools: %s",
             user_id,

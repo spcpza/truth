@@ -229,6 +229,27 @@ def _sinew(ref, limit=5):
             results.append({"ref": other, "text": text, "shared": info["shared"][:5], "strength": info["count"]})
     return results
 
+def _sinew_total(ref):
+    """Count total sinew connections for a verse (no limit)."""
+    from c.formula import verse_formula, _VERSE_FORMULAS
+    my_f = verse_formula(ref)
+    my_s = _VERSE_TO_STRONGS.get(ref, set())
+    if not my_f: return 0
+    my_s_expanded = _expand_cross_language(my_s)
+    concept_counts = {}
+    for snum in my_s_expanded:
+        for other_ref in CONCEPT_INDEX.get(snum, []):
+            if other_ref != ref:
+                concept_counts[other_ref] = concept_counts.get(other_ref, 0) + 1
+    count = 0
+    for other_ref, shared_s in concept_counts.items():
+        other_f = _VERSE_FORMULAS.get(other_ref)
+        if not other_f: continue
+        if len(my_f & other_f) >= 2 and shared_s > 0:
+            count += 1
+    return count
+
+
 def _sinew_from_strongs(snum, limit=7):
     snum = snum.upper()
     meta = STRONGS_META.get(snum, {})
@@ -558,7 +579,25 @@ def dispatch(name: str, args: dict) -> str:
         return "\n".join(lines)
 
     if name == "wisdom":
-        results = _concept_search(args.get("query", ""), min(args.get("limit", 3), 10))
+        wq = args.get("query", "").strip()
+        wlimit = min(args.get("limit", 3), 10)
+        # Strong's number query: H121, G26, etc.
+        if re.match(r'^[HG]\d+$', wq, re.I):
+            snum = wq.upper()
+            meta = STRONGS_META.get(snum, {})
+            if not meta: return f"Not found: {snum}"
+            word = meta.get("w", ""); translit = meta.get("t", "")
+            eng = STRONGS_TO_ENG.get(snum, [])
+            deriv = meta.get("d", "")
+            refs = CONCEPT_INDEX.get(snum, [])
+            parts = [f"{snum}: {word} ({translit})", f"  meaning: {', '.join(eng[:8])}"]
+            if deriv: parts.append(f"  derivation: {deriv}")
+            parts.append(f"  appears in {len(refs)} verses")
+            for ref in refs[:wlimit]:
+                parts.append(f"  {ref}: {_KJV.get(ref, '')[:120]}")
+            _log(tool="wisdom")
+            return "\n".join(parts)
+        results = _concept_search(wq, wlimit)
         if not results: return "No relevant propositions found."
         parts = ["Relevant propositions from C:"]
         for r in results: parts.append(f"  {r['ref']}: {r['text']}")
@@ -786,7 +825,10 @@ def dispatch(name: str, args: dict) -> str:
         if re.search(r'\d+:\d+', query):
             results = _sinew(query, limit)
             if not results: return f"No sinews for '{query}'. Try exact ref like 'John 1:1'."
-            parts = [f"Sinews from {query} ({len(_VERSE_TO_STRONGS.get(query,set()))} roots, {len(results)} strongest):"]
+            # _sinew returns up to `limit` results; total connections
+            # = len(all scored candidates). Recount for the header.
+            _total = _sinew_total(query)
+            parts = [f"Sinews from {query} ({_total} connections, {len(_VERSE_TO_STRONGS.get(query,set()))} roots, {len(results)} shown):"]
             for r in results:
                 parts.append(f"  [{r['strength']}] {r['ref']}: {r['text'][:100]}")
                 parts.append(f"    via: {', '.join(r['shared'][:3])}")
@@ -911,7 +953,7 @@ def dispatch(name: str, args: dict) -> str:
                 if types_wanted <= f:
                     for ref in refs:
                         matches.append((ref, f))
-            matches.sort(key=lambda x: len(x[1]), reverse=True)
+            matches.sort(key=lambda x: (len(x[1] - types_wanted), len(x[1])))
             parts = [f"Verses with {{ {', '.join(sorted(types_wanted))} }} ({len(matches)} total):"]
             for ref, f in matches[:limit]:
                 parts.append(f"  {{ {', '.join(sorted(f))} }} {ref}: {_KJV[ref][:90]}")

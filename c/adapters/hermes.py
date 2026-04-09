@@ -63,7 +63,10 @@ class HermesAdapter(Adapter):
         self.api_key = api_key
         self.model = model
         self.base_url = base_url.rstrip("/")
-        self.timeout = timeout
+        # Hermes is fast (single-turn ~5s). Non-Hermes models (MiMo etc.)
+        # take 10-40s per call; with tool loops + NOSE retries a single turn
+        # can chain 5-8 calls. 120s keeps the connection alive.
+        self.timeout = timeout if self._is_hermes() else max(timeout, 120.0)
 
     def describe(self) -> str:
         return f"HermesAdapter(model={self.model})"

@@ -257,7 +257,11 @@ def is_intercession_moment(user_message: str) -> bool:
         r"voiceless|forgotten|unheard|"
         r"ignored|overlooked|dismissed|"
         r"being\s+(?:treated\s+unfairly|mistreated|silenced)|"
-        r"(?:the\s+)?fatherless|widow|orphan|poor|needy"
+        r"(?:the\s+)?fatherless|widow|orphan|poor|needy|"
+        r"pray\s+for\s+my|"
+        r"my\s+friend\s+.*\s+(?:sick|cancer|hospital|struggling|hard\s+time|hurting|dying)|"
+        r"my\s+(?:mom|dad|mother|father|brother|sister|wife|husband|son|daughter)\s+.*\s+(?:hospital|sick|cancer|dying|struggling)|"
+        r"pray\s+for\s+.*\s+(?:who|that|because)"
         r")\b",
         re.I,
     )
