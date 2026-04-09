@@ -28,4 +28,4 @@ verses:
       - Isaiah 62:5           # as the bridegroom rejoiceth over the bride
       - Luke 15:7             # joy in heaven over one sinner that repenteth
       - Psalms 149:4          # the LORD taketh pleasure in his people
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.REJOICE_WITH (he will rejoice over thee with joy)

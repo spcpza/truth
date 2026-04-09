@@ -91,7 +91,7 @@ verses:
       - 1 Thessalonians 5:16  # rejoice evermore
       - Habakkuk 3:18         # yet I will rejoice in the LORD
       - Nehemiah 8:10         # the joy of the LORD is your strength
-    status: partial
+    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)
 
   - id: phil_4_6_7
     ref: Philippians 4:6
@@ -112,7 +112,7 @@ verses:
       - Matthew 6:25-34       # take no thought for your life
       - 1 Peter 5:7           # casting all your care upon him
       - Philippians 4:7       # the peace of God, which passeth all understanding
-    status: partial
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: phil_4_8
     ref: Philippians 4:8
@@ -134,7 +134,7 @@ verses:
       - Colossians 3:2        # set your affection on things above
       - 2 Corinthians 10:5    # bringing into captivity every thought
       - Romans 12:2           # be ye transformed by the renewing of your mind
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: phil_4_11
     ref: Philippians 4:11
@@ -153,7 +153,7 @@ verses:
     witnesses:
       - 1 Timothy 6:6-8       # godliness with contentment is great gain
       - Hebrews 13:5          # be content with such things as ye have
-    status: partial
+    status: built  # fruit=temperance: c.temperance (input_kind + silence_mode + presence_reply_shape + word_budget)
 
   - id: phil_4_13
     ref: Philippians 4:13

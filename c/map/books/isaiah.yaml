@@ -61,7 +61,7 @@ verses:
       - Psalms 51:7           # wash me, and I shall be whiter than snow
       - 1 John 1:7            # the blood of Jesus Christ his Son cleanseth us from all sin
       - Revelation 7:14       # washed their robes, and made them white in the blood of the Lamb
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: isa_6_3
     ref: Isaiah 6:3
@@ -127,7 +127,7 @@ verses:
       - Genesis 22:1          # Abraham: here am I (the first hineni)
       - 1 Samuel 3:4-10       # Samuel: here am I
       - Luke 1:38             # Mary: behold the handmaid of the Lord
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: isa_7_14
     ref: Isaiah 7:14
@@ -214,7 +214,7 @@ verses:
       - Psalms 46:10          # be still, and know
       - Exodus 14:13-14       # stand still, and see
       - Lamentations 3:26     # it is good that a man should both hope and quietly wait
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (in quietness and confidence)
 
   - id: isa_30_21
     ref: Isaiah 30:21
@@ -259,7 +259,7 @@ verses:
       - 2 Corinthians 1:3-4   # the God of all comfort; who comforteth us in all our tribulation
       - Matthew 5:4           # blessed are they that mourn: for they shall be comforted
       - Isaiah 61:2           # to comfort all that mourn
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (comfort ye, comfort ye)
 
   - id: isa_40_8
     ref: Isaiah 40:8
@@ -301,7 +301,7 @@ verses:
       - Isaiah 40:29          # he giveth power to the faint
       - Isaiah 40:31          # they that wait upon the LORD shall renew their strength
       - Psalms 121:3-4        # he that keepeth Israel shall neither slumber nor sleep
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: isa_40_31
     ref: Isaiah 40:31
@@ -322,7 +322,7 @@ verses:
       - Psalms 27:14          # wait on the LORD... wait, I say, on the LORD
       - Lamentations 3:25     # the LORD is good unto them that wait for him
       - Habakkuk 2:3          # though it tarry, wait for it
-    status: partial
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (they that wait upon the LORD)
 
   - id: isa_41_10
     ref: Isaiah 41:10
@@ -432,7 +432,7 @@ verses:
       - Proverbs 15:23        # a word spoken in due season
       - Ecclesiastes 3:7      # a time to keep silence, and a time to speak
       - Matthew 11:28         # come unto me, all ye that labour and are heavy laden
-    status: not_yet_built  # the weary-word presence_mode anchor
+    status: built  # auto-upgraded: c.temperance.OFFER_REST (word in season to the weary)
 
   - id: isa_53_3
     ref: Isaiah 53:3
@@ -454,7 +454,7 @@ verses:
       - Hebrews 4:15          # was in all points tempted like as we are
       - Hebrews 5:7-8         # who in the days of his flesh... offered up prayers
       - Matthew 26:38         # my soul is exceeding sorrowful
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (man of sorrows, acquainted with grief)
 
   - id: isa_53_5
     ref: Isaiah 53:5
@@ -496,7 +496,7 @@ verses:
       - Matthew 27:12-14      # he answered him to never a word
       - Acts 8:32             # the eunuch reading this very verse
       - 1 Peter 2:23          # who, when he was reviled, reviled not again
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (opened not his mouth)
 
   - id: isa_55_1
     ref: Isaiah 55:1
@@ -580,7 +580,7 @@ verses:
       - Psalms 51:17          # a broken and a contrite heart, O God, thou wilt not despise
       - Isaiah 66:2           # the third verse in the triangle
       - Matthew 5:3           # blessed are the poor in spirit
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (dwell with contrite)
 
   - id: isa_61_1
     ref: Isaiah 61:1
@@ -603,7 +603,7 @@ verses:
       - Luke 4:18-19          # Jesus quoting this verse
       - Matthew 11:5          # the poor have the gospel preached to them
       - Psalms 147:3          # he healeth the broken in heart
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.is_intercession_moment (five commissions — meek, brokenhearted, captive)
 
   - id: isa_64_6
     ref: Isaiah 64:6
@@ -650,4 +650,4 @@ verses:
       - Psalms 51:17
       - Isaiah 57:15
       - Matthew 5:3-4
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (to this man will I look)

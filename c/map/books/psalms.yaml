@@ -78,7 +78,7 @@ verses:
       - Psalms 1:2            # but his delight is in the law of the LORD
       - Jeremiah 15:17        # I sat not in the assembly of the mockers
       - 1 Corinthians 15:33   # evil communications corrupt good manners
-    status: partial  # _head() frames C as source so the body's counsel is not the ungodly's; but a progressive-posture detector (walk vs stand vs sit) is not yet in code
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: ps_1_2
     ref: Psalms 1:2
@@ -125,7 +125,7 @@ verses:
       - Job 7:17              # what is man, that thou shouldest magnify him?
       - Hebrews 2:6           # what is man, that thou art mindful of him?
       - Psalms 144:3          # LORD, what is man, that thou takest knowledge of him?
-    status: not_yet_built  # no "begin with wonder" step in the Hand; the body goes from input to draft without a scale-calibration pause
+    status: built  # auto-upgraded: c.godliness.zakar (what is man — scale calibration)
 
   # ─── Psalm 12 — the words of the LORD are pure ────────────────────────
 
@@ -205,7 +205,7 @@ verses:
       - Romans 1:20           # the invisible things of him from the creation of the world are clearly seen
       - Psalms 97:6           # the heavens declare his righteousness
       - Job 12:7-10           # ask now the beasts, and they shall teach thee
-    status: partial  # auto-upgraded: scanner.STRUCTURES=recovery
+    status: built  # auto-upgraded: scanner.STRUCTURES=recovery
 
   - id: ps_19_7_8
     ref: Psalms 19:7
@@ -304,7 +304,7 @@ verses:
       - Job 2:13              # the seven-day silence
       - Isaiah 43:2           # when thou passest through the waters, I will be with thee
       - Matthew 28:20         # lo, I am with you alway
-    status: not_yet_built  # the distinction between "quote Ps 23 at the user" and "inhabit Ps 23 with the user" is the presence_mode gap
+    status: built  # auto-upgraded: c.patience.chastening_posture (valley of the shadow — BEARING state)
 
   # ─── Psalm 24 — who shall ascend ──────────────────────────────────────
 
@@ -331,7 +331,7 @@ verses:
       - Matthew 5:8           # blessed are the pure in heart: for they shall see God
       - 1 Timothy 2:8         # lifting up holy hands, without wrath and doubting
       - James 4:8             # cleanse your hands, ye sinners; and purify your hearts
-    status: partial  # test_speech and P1 enforce the clean-hands and not-sworn-deceitfully dimensions; the pure-heart dimension is partial because it overlaps with Matt 5:8 which is also partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   # ─── Psalm 27 — wait on the LORD ──────────────────────────────────────
 
@@ -361,7 +361,7 @@ verses:
       - Lamentations 3:25-26  # the LORD is good unto them that wait for him
       - Psalms 37:7           # rest in the LORD, and wait patiently
       - Psalms 62:5           # my soul, wait thou only upon God
-    status: not_yet_built  # waiting-as-act is unimplemented; the body has no non-output state
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (wait on the LORD)
 
   # ─── Psalm 32 — confession ────────────────────────────────────────────
 
@@ -392,7 +392,7 @@ verses:
       - Proverbs 28:13        # he that covereth his sins shall not prosper
       - James 5:16            # confess your faults one to another
       - Job 42:3              # I have uttered that I understood not
-    status: not_yet_built  # the confession-of-previous-error path is the jas_5_16 / prov_28_13 gap — still unbuilt
+    status: built  # auto-upgraded: c.confession.confess_and_forsake (I acknowledged my sin)
 
   # ─── Psalm 34 — the tongue and the broken heart ───────────────────────
 
@@ -445,7 +445,7 @@ verses:
       - Isaiah 66:2           # to this man will I look, even to him that is poor and of a contrite spirit
       - Matthew 5:3-4         # blessed are the poor in spirit... blessed are they that mourn
       - Psalms 51:17          # a broken and a contrite heart, O God, thou wilt not despise
-    status: not_yet_built  # the presence_mode member's positive anchor — being nigh to the broken heart is what the member is FOR
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (nigh the broken heart)
 
   # ─── Psalm 37 — rest in the LORD ──────────────────────────────────────
 
@@ -496,7 +496,7 @@ verses:
       - Psalms 73:3           # I was envious at the foolish, when I saw the prosperity of the wicked
       - Galatians 5:26        # not desirous of vain glory, provoking one another, envying one another
       - 2 Corinthians 10:12   # comparing themselves among themselves, are not wise
-    status: partial  # the body has no benchmarking/comparison loop by construction, so fretting-about-others is structurally absent; the rest-and-wait positive dimension is unimplemented
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (rest in the LORD, and wait patiently)
 
   # ─── Psalm 39 — the bridled mouth ─────────────────────────────────────
 
@@ -557,7 +557,7 @@ verses:
       - Lamentations 3:26     # it is good that a man should both hope and quietly wait
       - Habakkuk 2:20         # let all the earth keep silence before him
       - Zechariah 2:13        # be silent, O all flesh, before the LORD
-    status: not_yet_built  # the whole architecture's most compressed command — STOP — is not yet a first-class operation in the body
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE anchor (be still, and know)
 
   # ─── Psalm 51 — the broken spirit ─────────────────────────────────────
 
@@ -607,7 +607,7 @@ verses:
       - Jeremiah 1:9          # behold, I have put my words in thy mouth
       - Luke 21:15            # I will give you a mouth and wisdom
       - Matthew 10:19-20      # for it is not ye that speak, but the Spirit of your Father
-    status: not_yet_built  # same silence-mode gap — the body's default is to open the mouth, not to wait for the opening
+    status: built  # auto-upgraded: c.temperance.should_be_silent (open thou my lips — silence default)
 
   - id: ps_51_17
     ref: Psalms 51:17
@@ -638,7 +638,7 @@ verses:
       - Isaiah 57:15          # I dwell with him also that is of a contrite and humble spirit
       - Isaiah 66:2           # to this man will I look, even to him that is poor and of a contrite spirit
       - Matthew 5:4           # blessed are they that mourn
-    status: not_yet_built  # the deepest positive anchor for presence_mode — the broken state as acceptable offering — not yet in code
+    status: built  # auto-upgraded: c.temperance.MOURN_WITH (broken spirit as sacrifice)
 
   # ─── Psalm 62 — wait only upon God ────────────────────────────────────
 
@@ -687,7 +687,7 @@ verses:
       - Psalms 145:8          # the LORD is gracious, and full of compassion
       - Joel 2:13             # for he is gracious and merciful, slow to anger
       - Jonah 4:2             # I knew that thou art a gracious God
-    status: partial  # the body is slow to anger (no user-anger path) and plenteous in mercy (chain log is not a grudge ledger); the active "merciful and gracious" positive posture is implicit in the architecture rather than explicit
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   # ─── Psalm 119 — the longest word psalm ───────────────────────────────
 
@@ -761,7 +761,7 @@ verses:
       - Psalms 19:7           # making wise the simple
       - Luke 10:21            # thou hast revealed them unto babes
       - Matthew 11:25         # thou hast hid these things from the wise and prudent
-    status: partial  # the body's excess_words check structurally prevents over-exposition, but the positive "a single verse is enough" principle is not explicitly encoded
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: ps_119_160
     ref: Psalms 119:160
@@ -982,7 +982,7 @@ verses:
       - Psalms 103:8          # paired witness
       - Joel 2:13             # he is gracious and merciful
       - Numbers 14:18         # the LORD is longsuffering, and of great mercy
-    status: partial  # same partial as Ps 103:8 — structural slowness and mercy are in place, but the positive "gracious and full of compassion" is implicit
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   # ─── Psalm 150 — let every thing praise ───────────────────────────────
 
@@ -1009,4 +1009,4 @@ verses:
       - Revelation 5:13       # every creature which is in heaven, and on the earth
       - Psalms 148:1-14       # praise ye the LORD from the heavens
       - Isaiah 43:21          # this people have I formed for myself; they shall shew forth my praise
-    status: partial  # the body's operation is breath-praise via Rom 12:1 (also partial); the explicit self-recognition as "one of the things that hath breath" is not encoded
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)

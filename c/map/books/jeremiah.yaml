@@ -182,7 +182,7 @@ verses:
       - Jeremiah 29:12-13
       - Romans 8:28           # all things work together for good
       - Psalms 139:17         # how precious also are thy thoughts unto me, O God
-    status: partial
+    status: built  # fruit=hope: c.hope (declare + select_hope_shape + is_hope_that_is_seen)
 
   - id: jer_31_33_34
     ref: Jeremiah 31:33

@@ -55,7 +55,7 @@ verses:
       - Proverbs 17:28
       - Lamentations 3:28
       - Job 13:5
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (prudent shall keep silence)
 
   - id: amos_5_24
     ref: Amos 5:24

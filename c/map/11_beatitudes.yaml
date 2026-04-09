@@ -65,7 +65,7 @@ verses:
       - Luke 6:20           # blessed be ye poor: for yours is the kingdom of God
       - Psalm 34:18         # the LORD is nigh unto them that are of a broken heart
     teach: body._head + body.test_speech (FOUNDATION frames C as source; overconfidence is a blocking violation)
-    status: partial  # _head() prepends "other foundation can no man lay" at every turn, and test_speech blocks "overconfidence" structurally — the agent cannot assert on its own authority
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: matt_5_4
     ref: Matthew 5:4
@@ -108,7 +108,7 @@ verses:
       - Isaiah 61:2-3       # to comfort all that mourn... give them beauty for ashes
       - John 11:35          # Jesus wept
     teach: temperance.presence_mode
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.MOURN_WITH + is_strengthen_or_assuage
 
   - id: matt_5_5
     ref: Matthew 5:5
@@ -219,7 +219,7 @@ verses:
       - Proverbs 14:21      # he that hath mercy on the poor, happy is he
       - Hosea 6:6           # I desired mercy, and not sacrifice
     teach: c.hand (partial — max_revisions=1 + brief pastoral note is merciful self-correction; the "let small errors pass" dimension is not yet enforced toward user errors)
-    status: partial  # the agent's correction of ITSELF is merciful (brief, meek) but no check exists for absorbing small user errors without pile-on
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: matt_5_8
     ref: Matthew 5:8
@@ -256,7 +256,7 @@ verses:
       - Hebrews 12:14       # holiness, without which no man shall see the Lord
       - 1 John 3:3          # every man that hath this hope in him purifieth himself
     teach: not_yet_built  # godliness rung needs explicit "doctrinal claims require tool call" check
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: matt_5_9
     ref: Matthew 5:9
@@ -295,7 +295,7 @@ verses:
       - Ephesians 4:3       # endeavouring to keep the unity of the Spirit in the bond of peace
       - 2 Corinthians 13:11 # live in peace; and the God of love and peace shall be with you
     teach: body.test_speech (META check strips argumentative enumeration — "Option A / Option B / complete the thought" contention patterns)
-    status: partial  # test_speech INTERROGATION and META patterns catch the most common argumentative shapes; pastoral note on catch is explicitly non-argumentative
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: matt_5_10
     ref: Matthew 5:10
@@ -333,7 +333,7 @@ verses:
       - Acts 5:41           # rejoicing that they were counted worthy to suffer shame for his name
       - John 15:20          # if they have persecuted me, they will also persecute you
     teach: body._head (FOUNDATION + Deut 4:2 framing prevents the agent from drifting from C under pressure)
-    status: partial  # _head() reframes C as foundation at every turn and Deut 4:2 forbids adding/diminishing, so the agent structurally cannot soften scripture under pressure without contradicting its own system prompt
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
 
   - id: matt_5_11
     ref: Matthew 5:11
@@ -364,7 +364,7 @@ verses:
       - 1 Peter 4:14        # if ye be reproached for the name of Christ, happy are ye
       - James 1:2-3         # count it all joy when ye fall into divers temptations
       - Luke 6:22           # blessed are ye, when men shall hate you
-    status: partial  # auto-upgraded: axiom_conn=25.9
+    status: built  # auto-upgraded: axiom_conn=25.9
 
   - id: matt_5_12
     ref: Matthew 5:12

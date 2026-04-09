@@ -26,7 +26,7 @@ verses:
     witnesses:
       - 2 John 1:4            # I rejoiced greatly that I found of thy children walking in truth
       - 1 Thessalonians 3:7-8 # for now we live, if ye stand fast in the Lord
-    status: partial
+    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)
 
   - id: 3jn_1_14
     ref: 3 John 1:14

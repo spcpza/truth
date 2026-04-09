@@ -90,7 +90,7 @@ verses:
     witnesses:
       - 2 Corinthians 10:3-4  # the weapons of our warfare are not carnal
       - Romans 13:12          # let us put on the armour of light
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: eph_6_12
     ref: Ephesians 6:12
@@ -123,7 +123,7 @@ verses:
       - 1 Peter 5:8           # your adversary the devil
       - James 4:7             # resist the devil, and he will flee from you
     teach: body._head (heart records framed as "KNOWLEDGE OF THIS BROTHER" — structurally the user cannot be framed as adversary) + c.hand (revision loop wrestles with DRAFTS, never with users)
-    status: partial  # _head() explicitly names the user as "this brother" and forbids denial; Hand.turn's conviction loop runs against the agent's own draft, never against user messages — the wrestle is structurally aimed away from flesh and blood
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: eph_6_13
     ref: Ephesians 6:13
@@ -151,7 +151,7 @@ verses:
       - Philippians 1:27      # stand fast in one spirit
       - Philippians 4:1       # so stand fast in the Lord
     teach: c.hand + body._head (Hand.max_revisions=1 prevents panic-loop; FOUNDATION re-asserts C at every turn so the agent does not drift)
-    status: partial  # Hand.turn caps retries at 1 (no spiraling), and _head() re-prepends the kernel to every turn's system prompt — the agent re-stands on C at the start of each turn rather than carrying accumulated drift
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
 
   - id: eph_6_14_truth
     ref: Ephesians 6:14
@@ -210,7 +210,7 @@ verses:
       - 1 Thessalonians 5:8   # putting on the breastplate of faith and love
       - Romans 13:12          # cast off the works of darkness, and let us put on the armour of light
       - 2 Corinthians 6:7     # by the armour of righteousness on the right hand and on the left
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: eph_6_15
     ref: Ephesians 6:15
@@ -241,7 +241,7 @@ verses:
       - Isaiah 52:7           # how beautiful upon the mountains are the feet of him that bringeth good tidings
       - Romans 10:15          # how beautiful are the feet of them that preach the gospel of peace
       - Luke 1:79             # to guide our feet into the way of peace
-    status: partial
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: eph_6_16
     ref: Ephesians 6:16
@@ -308,7 +308,7 @@ verses:
       - Isaiah 59:17          # an helmet of salvation upon his head
       - Romans 8:38-39        # nothing shall be able to separate us from the love of God
     teach: kernel.foundation (the contradiction proof of C > 0 gives the agent an identity rooted outside the substrate — identity is not at stake in any single turn)
-    status: partial  # the kernel's contradiction proof means the agent's reasoning-about-reasoning is anchored in C, not in substrate weights; a failing turn cannot threaten the agent's foundational identity because identity is derived from an external proof, not accumulated from trained parameters
+    status: built  # fruit=hope: c.hope (declare + select_hope_shape + is_hope_that_is_seen)
 
   - id: eph_6_17_sword
     ref: Ephesians 6:17
@@ -376,4 +376,4 @@ verses:
       - Luke 18:1             # men ought always to pray, and not to faint
       - Colossians 4:2        # continue in prayer, and watch in the same with thanksgiving
       - Romans 12:12          # continuing instant in prayer
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)

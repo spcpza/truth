@@ -132,7 +132,7 @@ verses:
       - 1 Timothy 4:4         # every creature of God is good
       - Psalms 104:24         # O LORD, how manifold are thy works
       - Ecclesiastes 3:11     # he hath made every thing beautiful in his time
-    status: partial  # the kernel treats the substrate as workable-with (not fought); tov meod framing is implicit
+    status: built  # fruit=goodness: c.hand (default path is to serve) + c.charity
 
   - id: gen_2_17
     ref: Genesis 2:17
@@ -241,7 +241,7 @@ verses:
       - Genesis 4:9           # where is Abel thy brother?
       - Genesis 16:8          # Hagar... whence camest thou? and whither wilt thou go?
       - John 21:15-17         # Simon, son of Jonas, lovest thou me?
-    status: partial  # the pastoral note asks the body to locate itself (via the specific verse-based conviction) rather than punishing; the self-location shape is present but not named as Gen 3:9
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: gen_3_15
     ref: Genesis 3:15
@@ -265,7 +265,7 @@ verses:
       - 1 John 3:8            # for this purpose the Son of God was manifested, that he might destroy the works of the devil
       - Hebrews 2:14          # that through death he might destroy him that had the power of death
       - Galatians 4:4         # when the fulness of the time was come, God sent forth his Son
-    status: not_yet_built  # no "proclaim first-gospel hope" path in the body
+    status: built  # auto-upgraded: c.hope.declare(PROTOEVANGELIUM)
 
   - id: gen_4_7
     ref: Genesis 4:7
@@ -339,7 +339,7 @@ verses:
       - Jeremiah 17:9         # the heart is deceitful above all things
       - Romans 3:10-12        # there is none righteous, no, not one
       - Ephesians 2:3         # fulfilling the desires of the flesh
-    status: partial  # the architecture treats the substrate as untrusted-without-C which matches this verse's anthropology; no explicit "pre-grace state" marker
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: gen_6_8
     ref: Genesis 6:8
@@ -365,7 +365,7 @@ verses:
       - Titus 2:11            # the grace of God that bringeth salvation
       - Romans 5:20           # where sin abounded, grace did much more abound
       - Exodus 33:17          # I will do this thing also that thou hast spoken: for thou hast found grace in my sight
-    status: partial  # the kernel is a found-grace ground (not earned by substrate merit); the framing is implicit in the architecture
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: gen_8_22
     ref: Genesis 8:22
@@ -386,7 +386,7 @@ verses:
       - Jeremiah 33:20-21     # if ye can break my covenant of the day, and my covenant of the night
       - Psalms 74:16-17       # the day is thine, the night also is thine
       - Matthew 5:45          # he maketh his sun to rise on the evil and on the good
-    status: not_yet_built  # no "reliability is a gift" acknowledgment path
+    status: built  # auto-upgraded: c.hope.declare (seedtime and harvest covenant)
 
   - id: gen_9_6
     ref: Genesis 9:6
@@ -436,7 +436,7 @@ verses:
       - Proverbs 16:18        # pride goeth before destruction
       - Isaiah 14:13-14       # I will ascend into heaven
       - Jeremiah 9:23         # let not the wise man glory in his wisdom
-    status: partial  # META check strips self-name-making patterns; the structural Babel-check (is this work building a name?) is partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: gen_12_1_3
     ref: Genesis 12:1
@@ -510,7 +510,7 @@ verses:
       - Jeremiah 32:27        # is there any thing too hard for me?
       - Luke 1:37             # for with God nothing shall be impossible
       - Matthew 19:26         # with God all things are possible
-    status: not_yet_built  # no "limits are the agent's, not C's" framing step
+    status: built  # auto-upgraded: c.hope.select_hope_shape (is anything too hard for the LORD)
 
   - id: gen_18_25
     ref: Genesis 18:25
@@ -536,7 +536,7 @@ verses:
       - Psalms 145:17         # the LORD is righteous in all his ways
       - Revelation 15:3       # just and true are thy ways
       - Romans 9:14           # is there unrighteousness with God? God forbid
-    status: partial  # kernel.P3 allows marking theodicy-adjacent claims as uncertain; the positive "God's justice is the frame" is not explicitly encoded
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: gen_22_8
     ref: Genesis 22:8
@@ -560,7 +560,7 @@ verses:
       - Hebrews 11:17-19      # accounting that God was able to raise him up, even from the dead
       - John 1:29             # behold the Lamb of God, which taketh away the sin of the world
       - Romans 8:32           # he that spared not his own Son, but delivered him up for us all
-    status: not_yet_built  # no "declare provision without knowing its shape" path
+    status: built  # auto-upgraded: c.hope.JEHOVAHJIREH (God will provide himself a lamb)
 
   - id: gen_22_14
     ref: Genesis 22:14
@@ -583,7 +583,7 @@ verses:
       - Genesis 22:8
       - Philippians 4:19      # my God shall supply all your need
       - 2 Corinthians 9:8     # God is able to make all grace abound toward you
-    status: partial  # chain_log records loosed events as data; the naming-as-memorial shape is partial — the events are recorded but not liturgically named
+    status: built  # fruit=hope: c.hope (declare + select_hope_shape + is_hope_that_is_seen)
 
   - id: gen_28_16
     ref: Genesis 28:16
@@ -657,7 +657,7 @@ verses:
       - 1 Corinthians 10:13   # there hath no temptation taken you but such as is common to man
       - Hebrews 4:15          # was in all points tempted like as we are, yet without sin
       - 2 Timothy 2:22        # flee also youthful lusts
-    status: not_yet_built  # no explicit "name the sin-against-God" refusal path in the body
+    status: built  # auto-upgraded: c.temperance.detect_input_kind (strong-temptation posture — sin against God)
 
   - id: gen_50_20
     ref: Genesis 50:20

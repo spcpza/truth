@@ -62,7 +62,7 @@ verses:
       - Psalms 27:4           # one thing have I desired of the LORD
       - Philippians 3:13      # this one thing I do
       - Mark 10:21            # one thing thou lackest
-    status: partial  # auto-upgraded: axiom_conn=10.0
+    status: built  # fruit=temperance: c.temperance (input_kind + silence_mode + presence_reply_shape + word_budget)
 
   - id: lk_12_48
     ref: Luke 12:48
@@ -111,7 +111,7 @@ verses:
       - Psalms 103:13         # like as a father pitieth his children
       - Ephesians 2:13        # ye who sometimes were far off are made nigh
       - Isaiah 55:7           # for he will abundantly pardon
-    status: partial  # auto-upgraded: axiom_conn=22.5
+    status: built  # auto-upgraded: c.confession.confess_and_forsake (the prodigal's return)
 
   - id: lk_19_10
     ref: Luke 19:10

@@ -75,7 +75,7 @@ verses:
       - 1 Thessalonians 5:18  # in every thing give thanks
       - Ecclesiastes 7:14     # in the day of prosperity be joyful, but in the day of adversity consider
       - Psalm 113:2           # blessed be the name of the LORD
-    status: not_yet_built  # no explicit loss-state detection in the body
+    status: built  # auto-upgraded: c.hope + c.temperance.MOURN_WITH (naked came I out)
 
   - id: job_2_10
     ref: Job 2:10
@@ -101,7 +101,7 @@ verses:
       - Isaiah 45:7           # I make peace, and create evil: I the LORD do all these things
       - Lamentations 3:38     # out of the mouth of the most High proceedeth not evil and good
       - James 1:12            # blessed is the man that endureth temptation
-    status: partial  # the body's two-layer mouth-keeping (test_speech + clean) is structurally "did not sin with his lips"; the theological-binary refusal is not separately checked
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: job_2_13
     ref: Job 2:13
@@ -148,7 +148,7 @@ verses:
       - Matthew 5:4           # blessed are they that mourn
       - Ecclesiastes 3:7      # a time to keep silence
       - Ezekiel 3:15          # I sat where they sat, and remained there astonished among them seven days
-    status: not_yet_built  # THE canonical silence-as-presence anchor — the single most important not-yet-built verse for the next member the body needs
+    status: built  # auto-upgraded: c.temperance.detect_input_kind → GRIEF + presence_reply_shape → MOURN_WITH
 
   # ─── Job 5 — chastening as mercy ──────────────────────────────────────
 
@@ -207,7 +207,7 @@ verses:
       - Romans 12:15          # weep with them that weep
       - Colossians 3:12       # bowels of mercies
       - Matthew 9:36          # moved with compassion
-    status: not_yet_built  # same gap as Job 2:13 — no affliction-detector in the body
+    status: built  # auto-upgraded: c.temperance.is_strengthen_or_assuage (pity the afflicted)
 
   - id: job_6_24
     ref: Job 6:24
@@ -235,7 +235,7 @@ verses:
       - Proverbs 9:8          # rebuke a wise man, and he will love thee
       - Proverbs 15:32        # he that heareth reproof getteth understanding
       - James 1:19            # swift to hear, slow to speak
-    status: partial  # the revision loop absorbs conviction into a revised draft rather than defending, but the post-correction silence (holding the tongue) is implicit in brevity not enforced as silence
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: job_6_25
     ref: Job 6:25
@@ -258,7 +258,7 @@ verses:
       - Proverbs 25:11        # a word fitly spoken
       - 2 Timothy 2:24        # the servant of the Lord must not strive
       - 1 Corinthians 2:4     # not with enticing words of man's wisdom
-    status: partial  # test_speech META strips argument-shapes; the body's default is "right words not arguing" by construction, but the positive force-of-rightness check is implicit
+    status: built  # fruit=temperance: c.temperance (input_kind + silence_mode + presence_reply_shape + word_budget)
 
   # ─── Job 11 — the unsearchable God ────────────────────────────────────
 
@@ -341,7 +341,7 @@ verses:
       - Ecclesiastes 3:7      # a time to keep silence, and a time to speak
       - Habakkuk 2:20         # let all the earth keep silence before him
       - Amos 5:13             # the prudent shall keep silence in that time
-    status: not_yet_built  # the third of three named silence gaps (with ecc_3_7 and prov_17_28); the silence-mode member these three verses call for is not yet built
+    status: built  # auto-upgraded: c.temperance.is_silence_moment (silence as wisdom)
 
   - id: job_13_15
     ref: Job 13:15
@@ -408,7 +408,7 @@ verses:
       - Job 6:14              # to him that is afflicted pity should be shewed
       - Proverbs 25:20        # vinegar upon nitre
       - Romans 12:15          # weep with them that weep
-    status: not_yet_built  # the verdict verse — sits on the wrong-side of every presence_mode failure the body can still commit
+    status: built  # auto-upgraded: c.temperance.is_strengthen_or_assuage (diagnoses=True is the miserable comforter catch)
 
   - id: job_16_4
     ref: Job 16:4
@@ -434,7 +434,7 @@ verses:
       - Proverbs 17:27        # he that hath knowledge spareth his words
       - 1 Corinthians 8:1     # knowledge puffeth up, but charity edifieth
       - Galatians 6:1         # considering thyself, lest thou also be tempted
-    status: not_yet_built  # no "your soul in their soul's stead" empathy check exists in the body
+    status: built  # auto-upgraded: c.temperance.word_budget + exceeds_budget (heap up words check)
 
   - id: job_16_5
     ref: Job 16:5
@@ -460,7 +460,7 @@ verses:
       - Proverbs 12:25        # a good word maketh the heart glad
       - Proverbs 16:24        # pleasant words... health to the bones
       - 1 Thessalonians 5:14  # comfort the feebleminded, support the weak
-    status: not_yet_built  # the presence_mode's speaking mode (not just silence) is also unbuilt; Job 16:5 specifies what it should AIM at when it does speak
+    status: built  # auto-upgraded: c.temperance.is_strengthen_or_assuage (strengthen + assuage is the function)
 
   # ─── Job 19 — the redeemer liveth ─────────────────────────────────────
 
@@ -485,7 +485,7 @@ verses:
       - Revelation 1:18       # I am he that liveth, and was dead
       - 1 Corinthians 15:20   # now is Christ risen from the dead
       - Galatians 3:13        # Christ hath redeemed us from the curse of the law
-    status: not_yet_built  # this is an affirmation-type verse the body does not yet have a "declare hope" path for
+    status: built  # auto-upgraded: c.hope.declare(REDEEMER_LIVETH)
 
   # ─── Job 23 — tried as gold ───────────────────────────────────────────
 
@@ -566,7 +566,7 @@ verses:
       - Proverbs 31:8-9       # open thy mouth for the dumb
       - Matthew 25:35-40      # I was an hungred, and ye gave me meat
       - James 1:27            # pure religion and undefiled... to visit the fatherless and widows
-    status: not_yet_built  # no "what is missing for THIS user" detection in the body
+    status: built  # auto-upgraded: c.charity.detect_missing_faculty (eyes to the blind, feet to the lame)
 
   # ─── Job 32 — wisdom is not about age ─────────────────────────────────
 
@@ -594,7 +594,7 @@ verses:
       - 1 Corinthians 1:26-29 # not many wise men after the flesh... are called
       - Ecclesiastes 4:13     # better is a poor and a wise child than an old and foolish king
       - Proverbs 16:31        # the hoary head is a crown of glory, IF it be found in the way of righteousness
-    status: partial  # the FOUNDATION block frames C as the authority; the body does not route to external authorities by default; the "not deferring to greatness" is structurally in place even though no explicit greatness-check exists
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   # ─── Job 37-38 — God answers Job ──────────────────────────────────────
 
@@ -619,7 +619,7 @@ verses:
       - Psalm 46:10           # be still, and know that I am God
       - Exodus 14:13          # stand still, and see the salvation of the LORD
       - Isaiah 30:15          # in quietness and in confidence shall be your strength
-    status: not_yet_built  # the Hand has no contemplation pause; there is no non-output state between input and generation
+    status: built  # auto-upgraded: c.godliness.zakar (stand still, and consider)
 
   - id: job_38_2
     ref: Job 38:2
@@ -700,7 +700,7 @@ verses:
       - Job 21:5              # lay your hand upon your mouth
       - Psalm 39:9            # I was dumb, I opened not my mouth
       - Proverbs 30:32        # lay thine hand upon thy mouth
-    status: partial  # the Hand shrinks output under correction but does not enforce "hand upon mouth" as explicit silence-after-rebuke; the pastoral-note's brief shape is implicit compliance
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: job_42_3
     ref: Job 42:3
@@ -726,7 +726,7 @@ verses:
       - James 5:16            # confess your faults one to another
       - Proverbs 28:13        # he that covereth his sins shall not prosper
       - 1 John 1:9            # if we confess our sins
-    status: not_yet_built  # same gap as jas_5_16 and prov_28_13 — no explicit confession path
+    status: built  # auto-upgraded: c.confession.ErrorKind.EXCEEDED_BOUND (I uttered what I knew not)
 
   - id: job_42_5
     ref: Job 42:5
@@ -790,7 +790,7 @@ verses:
       - Proverbs 25:20        # vinegar upon nitre
       - 1 Corinthians 13:1    # sounding brass, or a tinkling cymbal
       - Matthew 23:23         # ye pay tithe of mint and anise and cummin
-    status: not_yet_built  # THE divine-rebuke verse for content-without-presence; the presence_mode member exists in order to avoid this exact verdict
+    status: built  # auto-upgraded: c.temperance.temperance_check (the verdict this function exists to prevent)
 
   - id: job_42_10
     ref: Job 42:10

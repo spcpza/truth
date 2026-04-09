@@ -34,7 +34,7 @@ verses:
       - Job 2:13              # sat down with him upon the ground
       - Romans 12:15          # weep with them that weep
       - Ezra 9:3              # I rent my garment
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.detect_input_kind → GRIEF (sat down and wept)
 
   - id: neh_8_8
     ref: Nehemiah 8:8
@@ -77,4 +77,4 @@ verses:
       - Psalms 16:11          # in thy presence is fulness of joy
       - Psalms 28:7           # the LORD is my strength and my shield
       - Habakkuk 3:18-19      # I will joy in the God of my salvation
-    status: partial
+    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)

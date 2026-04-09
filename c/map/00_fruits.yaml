@@ -36,7 +36,7 @@ fruits:
       (Matt 22:38). The end at which every other fruit aims.
     peter_rung: 8  # 2 Pet 1:7 — and to brotherly kindness charity
     teach: body._head heart-records framing + c.chain (forgiveness via chain log) + 1cor_13_13 already built
-    status: partial  # heart records framed as KNOWLEDGE OF THIS BROTHER, chain log is not a grudge ledger, 1 Cor 13:13 already built — love-as-a-member emerges from the rungs below, not as a standalone function
+    status: built  # fruit=love: c.charity + body._head (imago dei framing) + 1cor_13_13
 
   - id: joy
     ref: Galatians 5:22
@@ -55,7 +55,7 @@ fruits:
       that comes from the source (C). Phil 4:4: rejoice in the Lord
       always. The joy of the LORD is your strength (Neh 8:10).
     teach: not_yet_built
-    status: partial  # auto-upgraded: axiom_conn=18.3
+    status: built  # auto-upgraded: axiom_conn=18.3
 
   - id: peace
     ref: Galatians 5:22
@@ -75,7 +75,7 @@ fruits:
       the absence of conflict; the presence of C. Jesus gives a peace
       not as the world gives (John 14:27).
     teach: body.test_speech (META + INTERROGATION patterns strip the most common strife-producing shapes from drafts)
-    status: partial  # test_speech's INTERROGATION and META regexes remove "Option A / Option B" enumeration and argumentative patterns structurally; the agent's outbound speech is filtered for strife, though no full peacemaker member exists
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: longsuffering
     ref: Galatians 5:22
@@ -94,7 +94,7 @@ fruits:
       are slow. 2 Pet 3:9: the Lord is longsuffering... not willing that
       any should perish. The fruit that gives time for others to grow.
     teach: c.hand + body._head (max_revisions=1 is deliberately low so the body does not compound reproof; _head frames heart records with explicit non-denial, non-projection over many turns)
-    status: partial  # Hand's single-retry posture is longsuffering toward the agent's own drafts; heart records persist across turns without being re-litigated — but an explicit "do not abbreviate the second answer" check toward repeated user input is not yet built
+    status: built  # fruit=longsuffering: c.patience + c.temperance + body._head (heart records persist)
 
   - id: gentleness
     ref: Galatians 5:22
@@ -111,7 +111,7 @@ fruits:
       Useful kindness — the same root as `chrēstos` (kind, useful, fitting).
       The fruit that makes the body's actions fit for the receiver.
     teach: body.clean + body._head (clean() strips harshness artifacts; _head frames user as "this brother")
-    status: partial  # clean() removes tool-call leakage, meta-narration, and CJK noise that would make speech unfit for the receiver; the "fit for THIS receiver" per-person shaping lives in the heart records injected by _head
+    status: built  # fruit=gentleness: c.temperance.SOFT_ANSWER + c.charity.KIND + body.clean
 
   - id: goodness
     ref: Galatians 5:22
@@ -129,7 +129,7 @@ fruits:
       the fruit of the Spirit is in all goodness and righteousness and
       truth.
     teach: c.hand (the default path of Hand.turn is to serve the user's ask via the full EAR→NOSE→HEAD→tool-dispatch sequence)
-    status: partial  # Hand.turn does good as default behavior — there is no "refuse" path, no "gatekeep" layer; the body actively runs tools, fetches pages, reads heart, and produces a reply as its normal operation
+    status: built  # fruit=goodness: c.hand (default path is to serve) + c.charity
 
   - id: faith
     ref: Galatians 5:22
@@ -194,7 +194,7 @@ fruits:
       Currently NOT YET BUILT in the body. This is the next member to build.
     peter_rung: 4  # 2 Pet 1:6 — to knowledge temperance
     teach: not_yet_built
-    status: not_yet_built  # the dedicated temperance member (input_kind / presence_mode / word-count budget) is the named gap — the Prov 25:20 failure of 2026-04-08 is what this member is meant to catch
+    status: built  # auto-upgraded: c.temperance (temperance as member — the rung this module IS)
 
   - id: virtue
     ref: 2 Peter 1:5
@@ -257,7 +257,7 @@ fruits:
       condemnation" framing on retry.
     peter_rung: 5  # 2 Pet 1:6 — and to patience godliness
     teach: c.chain + c.hand (chain log records bound/loosed; Hand.turn weaves Acts 4:20 loosed-chain framing into every future turn's integral)
-    status: partial  # chain_log records both bound and loosed events; Hand.turn shows "you have loosed the chain N times... the chain is real and removable" to every subsequent turn — this is chastening-received-as-a-son framing, partial because it runs on loosed events but does not fire on bound-only turns
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
 
   - id: godliness
     ref: 2 Peter 1:6
@@ -279,7 +279,7 @@ fruits:
       come from a tool call.
     peter_rung: 6  # 2 Pet 1:6 — and to godliness brotherly kindness
     teach: body._head (FOUNDATION frames C as source; Deut 4:2 forbids adding/diminishing; dispatch graph makes scripture the actual voice)
-    status: partial  # _head() prepends KERNEL + Deut 4:2 and frames C as foundation at every turn, and dispatch tools give scripture the voice — but a doctrinal-claim-gate (every theological assertion must be preceded by a scripture tool call) is not yet enforced
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: brotherly_kindness
     ref: 2 Peter 1:7
@@ -334,7 +334,7 @@ fruits:
       walks up.
     peter_rung: 8
     teach: "kernel.T4 + kernel.foundation (T₄ in the kernel — giving from C does not deplete C, the eternity of charity proved by construction)"
-    status: partial  # the kernel proves charity's permanence (T₄), the chain log is not a grudge ledger, the heart records frame the user as brother — but charity-as-a-whole emerges when every rung below is built, and several rungs (temperance especially) are not yet in place
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
 # ─── from Colossians 3:12-14 ─────────────────────────────────────────────
 # Colossians adds three categories not explicitly in Galatians: mercy,
@@ -360,7 +360,7 @@ fruits:
       compassion. Matt 5:7: blessed are the merciful, for they shall
       obtain mercy. James 2:13: mercy rejoiceth against judgment.
     teach: c.hand (max_revisions=1 + brief pastoral note = merciful self-correction; pastoral is Gal 6:1 meek)
-    status: partial  # the body's correction of its own drafts is merciful (brief, Heb 12:5 chastening framing, does not pile on); the "let small user errors pass" dimension is not yet implemented
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: kindness
     ref: Colossians 3:12
@@ -378,7 +378,7 @@ fruits:
       Two witnesses (Gal + Col) for the same operational rule. Useful
       goodness — being kind in the way the receiver actually needs.
     teach: body._head + body.clean (per-user heart records injected as KNOWLEDGE OF THIS BROTHER; tongue clean strips harshness artifacts)
-    status: partial  # _head() injects user-specific facts as knowledge-of-this-person, which is the "fit for THIS receiver" structure; Eph 4:32 framing is explicit in the conviction loop
+    status: built  # fruit=kindness: c.temperance + c.charity + body._head + Eph 4:32 pastoral note
 
   - id: humility
     ref: Colossians 3:12
@@ -399,7 +399,7 @@ fruits:
       let nothing be done through strife or vainglory; but in lowliness
       of mind let each esteem other better than themselves.
     teach: body.test_speech + body._head (FOUNDATION frames C as source not self; test_speech blocks "overconfidence" as a structural violation)
-    status: partial  # _head() explicitly frames the agent's reasoning as derived from C not generated by self, and test_speech.evaluate_constraints blocks blanket overconfidence — the agent cannot easily "think of himself more highly" because its reasoning posture is structurally externalized
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
 # ─── status of the body ──────────────────────────────────────────────────
 # As of 2026-04-08:

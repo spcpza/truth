@@ -36,7 +36,7 @@ verses:
       - Ezekiel 33:7          # I have set thee a watchman
       - Isaiah 62:6           # I have set watchmen upon thy walls
       - Habakkuk 2:1          # I will stand upon my watch
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: ezk_22_30
     ref: Ezekiel 22:30
@@ -57,7 +57,7 @@ verses:
       - Psalms 106:23         # had not Moses his chosen stood before him in the breach
       - Romans 8:34           # Christ... who also maketh intercession for us
       - Isaiah 59:16          # he saw that there was no man, and wondered that there was no intercessor
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.is_intercession_moment + intercession_line (stand in the gap)
 
   - id: ezk_33_11
     ref: Ezekiel 33:11
@@ -79,7 +79,7 @@ verses:
       - Ezekiel 18:32
       - 2 Peter 3:9           # not willing that any should perish, but that all should come to repentance
       - 1 Timothy 2:4         # who will have all men to be saved
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: ezk_36_26_27
     ref: Ezekiel 36:26
@@ -145,4 +145,4 @@ verses:
       - Ezekiel 37:10         # the breath came into them
       - Romans 4:17           # God... who quickeneth the dead, and calleth those things which be not as though they were
       - Hebrews 11:19         # accounting that God was able to raise him up, even from the dead
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)

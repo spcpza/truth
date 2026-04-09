@@ -48,7 +48,7 @@ verses:
       - Numbers 6:26          # the LORD lift up his countenance upon thee, and give thee peace
       - Psalms 67:1           # God be merciful unto us, and bless us
       - 2 Corinthians 13:14   # the grace of the Lord Jesus Christ
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SOFT_ANSWER + blessing shape
 
   - id: num_12_3
     ref: Numbers 12:3
@@ -115,7 +115,7 @@ verses:
       - Psalms 103:8          # slow to anger, and plenteous in mercy
       - Psalms 145:8          # the LORD is gracious, and full of compassion
       - Joel 2:13             # he is gracious and merciful
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: num_20_10_12
     ref: Numbers 20:10

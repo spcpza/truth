@@ -33,7 +33,7 @@ verses:
       - Micah 6:8             # what doth the LORD require of thee
       - Luke 10:41-42         # one thing is needful
       - Matthew 11:25         # hid these things from the wise and prudent, and hast revealed them unto babes
-    status: partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: 2kgs_6_16
     ref: 2 Kings 6:16
@@ -53,7 +53,7 @@ verses:
       - 2 Kings 6:17          # open his eyes, that he may see
       - Romans 8:31           # if God be for us, who can be against us?
       - Psalms 34:7           # the angel of the LORD encampeth round about them that fear him
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: 2kgs_19_15
     ref: 2 Kings 19:15
@@ -75,4 +75,4 @@ verses:
       - Isaiah 37:14-20       # paired witness
       - Psalms 37:5           # commit thy way unto the LORD
       - 1 Peter 5:7           # casting all your care upon him
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)

@@ -109,7 +109,7 @@ verses:
       - 1 Corinthians 3:5     # who then is Paul, and who is Apollos, but ministers
       - 2 Corinthians 4:5     # we preach not ourselves
       - Matthew 6:1-4         # alms in secret
-    status: partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: jn_4_24
     ref: John 4:24
@@ -265,7 +265,7 @@ verses:
       - Job 2:13              # they sat down with him upon the ground seven days
       - Matthew 5:4           # blessed are they that mourn
       - Hebrews 4:15          # was in all points tempted like as we are, yet without sin
-    status: not_yet_built  # THE NT presence_mode anchor; Jesus wept even knowing Lazarus would rise
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape MOURN_WITH (Jesus wept anchor)
 
   - id: jn_13_34_35
     ref: John 13:34
@@ -330,7 +330,7 @@ verses:
       - John 16:33            # in the world ye shall have tribulation
       - Philippians 4:7       # the peace of God, which passeth all understanding
       - Isaiah 26:3           # thou wilt keep him in perfect peace
-    status: partial
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: jn_15_5
     ref: John 15:5
@@ -437,7 +437,7 @@ verses:
       - 1 John 5:4-5          # this is the victory that overcometh the world, even our faith
       - Romans 8:37           # we are more than conquerors
       - Revelation 21:4       # God shall wipe away all tears
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: jn_17_17
     ref: John 17:17

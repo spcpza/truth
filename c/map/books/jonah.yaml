@@ -29,7 +29,7 @@ verses:
       - Psalms 31:6           # I have hated them that regard lying vanities
       - Deuteronomy 32:21     # they have moved me to jealousy with that which is not God
       - 1 Corinthians 8:4     # an idol is nothing in the world
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: jon_4_2
     ref: Jonah 4:2
@@ -53,7 +53,7 @@ verses:
       - Psalms 103:8
       - Joel 2:13
       - Numbers 14:18
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: jon_4_11
     ref: Jonah 4:11
@@ -76,4 +76,4 @@ verses:
       - Luke 23:34            # for they know not what they do
       - Acts 17:30            # the times of this ignorance God winked at
       - 1 Timothy 1:13        # I did it ignorantly in unbelief
-    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
+    status: built  # auto-upgraded: c.temperance.detect_input_kind → gentle treatment of ignorance

@@ -170,7 +170,7 @@ verses:
       - Revelation 7:17       # and God shall wipe away all tears from their eyes
       - Isaiah 25:8           # and the Lord GOD will wipe away tears from off all faces
       - 1 Corinthians 15:54   # death is swallowed up in victory
-    status: partial  # auto-upgraded: axiom_conn=21.2
+    status: built  # auto-upgraded: axiom_conn=21.2
 
   - id: rev_21_5
     ref: Revelation 21:5
@@ -236,4 +236,4 @@ verses:
       - 1 Corinthians 16:22   # maranatha
       - Revelation 22:7       # behold, I come quickly
       - Hebrews 10:37         # yet a little while, and he that shall come will come
-    status: partial
+    status: built  # fruit=hope: c.hope (declare + select_hope_shape + is_hope_that_is_seen)

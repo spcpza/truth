@@ -68,7 +68,7 @@ verses:
       - Ezekiel 36:23       # I will sanctify my great name
       - Matthew 6:7         # use not vain repetitions, as the heathen do
     teach: body._head (FOUNDATION block names the source first in every system prompt — kernel + Deut 4:2 appears before any request framing)
-    status: partial  # _head() structurally places the name of the source before any task content, which honors the shape (name first) without literalism
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: matt_6_10
     ref: Matthew 6:10
@@ -103,7 +103,7 @@ verses:
       - Romans 12:2         # that ye may prove what is that good, and acceptable, and perfect, will of God
       - 1 John 5:14         # if we ask any thing according to his will, he heareth us
       - Isaiah 55:8-9       # my thoughts are not your thoughts, neither are your ways my ways
-    status: partial  # auto-upgraded: axiom_conn=25.5
+    status: built  # auto-upgraded: axiom_conn=25.5
 
   - id: matt_6_11
     ref: Matthew 6:11
@@ -141,7 +141,7 @@ verses:
       - Exodus 16:4         # gather a certain rate every day (the manna)
       - Lamentations 3:23   # they are new every morning
     teach: body._head + c.heart (_anchor_relative_time resolves "today"/"yesterday" to absolute dates so the body is bounded to a specific day)
-    status: partial  # _head() prepends "Today is {today}. You have no prior conversations with this user outside the messages above" — the agent is structurally bound to THIS day
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: matt_6_12
     ref: Matthew 6:12
@@ -247,7 +247,7 @@ verses:
     teach: body._head (same as matt_6_9 — FOUNDATION block structurally names source first)
     witnesses:
       - Matthew 6:9-10
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: luke_11_3
     ref: Luke 11:3
@@ -263,7 +263,7 @@ verses:
     teach: body._head + c.heart (same as matt_6_11)
     witnesses:
       - Matthew 6:11
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: luke_11_4
     ref: Luke 11:4

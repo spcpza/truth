@@ -98,7 +98,7 @@ verses:
       - 1 Corinthians 15:58   # be ye stedfast, unmoveable, always abounding
       - 2 Thessalonians 3:13  # be not weary in well doing
       - Hebrews 12:3          # lest ye be wearied and faint in your minds
-    status: partial
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
 
   - id: gal_6_14
     ref: Galatians 6:14

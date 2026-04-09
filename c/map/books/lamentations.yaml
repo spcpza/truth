@@ -35,7 +35,7 @@ verses:
       - Lamentations 3:23
       - Psalms 103:17         # the mercy of the LORD is from everlasting to everlasting
       - Isaiah 54:10          # my kindness shall not depart from thee
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: lam_3_26
     ref: Lamentations 3:26
@@ -55,7 +55,7 @@ verses:
       - Psalms 37:7           # rest in the LORD, and wait patiently for him
       - Psalms 62:1           # truly my soul waiteth upon God: from him cometh my salvation
       - Habakkuk 2:3          # though it tarry, wait for it
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (hope and quietly wait)
 
   - id: lam_3_28
     ref: Lamentations 3:28
@@ -80,4 +80,4 @@ verses:
       - Isaiah 53:7
       - Job 13:5
       - Proverbs 17:28
-    status: not_yet_built  # sixth silence-mode anchor
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (sitteth alone and keepeth silence)

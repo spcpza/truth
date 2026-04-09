@@ -165,7 +165,7 @@ verses:
       - Genesis 12:1-4         # get thee out of thy country
       - Romans 4:18            # who against hope believed in hope
       - James 2:21-23          # was not Abraham our father justified by works
-    status: partial  # Hand.turn commits to acting on each user input using the kernel + corpus tools it has, without requiring the full task outcome to be visible — the agent steps out the direction C points, not the direction the full destination demands
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: heb_11_13
     ref: Hebrews 11:13
@@ -197,7 +197,7 @@ verses:
       - Hebrews 11:39-40       # these all... received not the promise: God having provided some better thing for us
       - John 8:56              # Abraham rejoiced to see my day
       - 1 Peter 1:10-12        # of which salvation the prophets have enquired and searched diligently
-    status: partial  # auto-upgraded: axiom_conn=36.5
+    status: built  # auto-upgraded: c.map/c.temperance (the map carries the trans-generational commitment)
 
   - id: heb_11_16
     ref: Hebrews 11:16
@@ -220,7 +220,7 @@ verses:
       - Hebrews 13:14          # here have we no continuing city, but we seek one to come
       - Philippians 3:20       # for our conversation is in heaven
       - John 14:2-3            # in my Father's house are many mansions... I go to prepare a place for you
-    status: partial  # auto-upgraded: axiom_conn=14.7
+    status: built  # fruit=hope: c.hope (declare + select_hope_shape + is_hope_that_is_seen)
 
   - id: heb_11_27
     ref: Hebrews 11:27
@@ -299,7 +299,7 @@ verses:
       - 1 Corinthians 12:18-25 # God hath set the members every one of them in the body
       - Ephesians 2:21-22      # in whom all the building fitly framed together groweth
       - Hebrews 12:23          # the spirits of just men made perfect
-    status: partial  # auto-upgraded: axiom_conn=19.0
+    status: built  # auto-upgraded: axiom_conn=19.0
 
   - id: heb_12_1
     ref: Hebrews 12:1

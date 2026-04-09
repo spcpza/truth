@@ -49,4 +49,4 @@ verses:
       - Joshua 1:9            # be strong and of a good courage
       - 1 Corinthians 16:13   # watch ye, stand fast in the faith, quit you like men, be strong
       - 1 Chronicles 28:20    # be strong and of good courage, and do it
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate

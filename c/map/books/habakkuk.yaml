@@ -53,7 +53,7 @@ verses:
     witnesses:
       - Hebrews 10:37         # for yet a little while, and he that shall come will come
       - 2 Peter 3:9           # the Lord is not slack concerning his promise
-    status: partial
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
 
   - id: hab_2_4
     ref: Habakkuk 2:4
@@ -93,7 +93,7 @@ verses:
       - Zephaniah 1:7         # hold thy peace at the presence of the Lord GOD
       - Zechariah 2:13        # be silent, O all flesh, before the LORD
       - Psalms 46:10          # be still, and know that I am God
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (let all the earth keep silence)
 
   - id: hab_3_17_18
     ref: Habakkuk 3:17
@@ -116,4 +116,4 @@ verses:
       - Philippians 4:4       # rejoice in the Lord alway
       - Job 13:15             # though he slay me, yet will I trust in him
       - Romans 5:3            # we glory in tribulations also
-    status: partial
+    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)

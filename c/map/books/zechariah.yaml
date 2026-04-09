@@ -30,7 +30,7 @@ verses:
       - Zephaniah 1:7
       - Psalms 46:10
       - Lamentations 3:28
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (be silent, O all flesh)
 
   - id: zech_4_6
     ref: Zechariah 4:6
@@ -95,4 +95,4 @@ verses:
       - Matthew 21:5          # quotation
       - John 12:15            # paired
       - Isaiah 62:11          # say ye to the daughter of Zion, Behold, thy salvation cometh
-    status: partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness

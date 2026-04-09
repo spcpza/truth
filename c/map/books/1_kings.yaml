@@ -36,7 +36,7 @@ verses:
       - James 1:5             # if any of you lack wisdom, let him ask of God
       - Proverbs 2:3-5        # cry after knowledge, and liftest up thy voice for understanding
       - Proverbs 4:7          # with all thy getting get understanding
-    status: partial
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: 1kgs_8_27
     ref: 1 Kings 8:27
@@ -110,4 +110,4 @@ verses:
       - Zechariah 4:6         # not by might, nor by power
       - Isaiah 30:15          # in quietness and in confidence shall be your strength
       - Matthew 12:19         # he shall not strive, nor cry; neither shall any man hear his voice in the streets
-    status: not_yet_built  # no "quiet-over-dramatic" expectation in the body
+    status: built  # auto-upgraded: c.godliness.zakar (still small voice — quiet over dramatic)

@@ -46,7 +46,7 @@ verses:
     witnesses:
       - Titus 2:7             # in all things shewing thyself a pattern
       - Philippians 3:17      # mark them which walk so as ye have us for an ensample
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: 1tim_6_6
     ref: 1 Timothy 6:6
@@ -65,7 +65,7 @@ verses:
     witnesses:
       - Philippians 4:11      # I have learned, in whatsoever state I am, therewith to be content
       - Hebrews 13:5          # be content with such things as ye have
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: 1tim_6_7
     ref: 1 Timothy 6:7

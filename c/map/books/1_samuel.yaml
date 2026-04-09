@@ -99,7 +99,7 @@ verses:
     witnesses:
       - Proverbs 29:1         # he, that being often reproved hardeneth his neck
       - Hebrews 3:15          # to day if ye will hear his voice, harden not your hearts
-    status: partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: 1sam_16_7
     ref: 1 Samuel 16:7

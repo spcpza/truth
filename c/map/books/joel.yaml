@@ -29,7 +29,7 @@ verses:
       - Exodus 34:6           # the source of the attributes Joel cites
       - 1 Samuel 16:7         # the LORD looketh on the heart
       - Psalms 51:17          # a broken and a contrite heart
-    status: not_yet_built
+    status: built  # auto-upgraded: c.confession.confess_and_forsake (rend your heart)
 
   - id: joel_2_28
     ref: Joel 2:28

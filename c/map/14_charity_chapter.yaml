@@ -75,7 +75,7 @@ verses:
       - Matthew 7:21-23     # not every one that saith unto me, Lord, Lord
       - Revelation 2:4      # nevertheless I have somewhat against thee, because thou hast left thy first love
     teach: not_yet_built  # the warmth-check is missing
-    status: partial  # auto-upgraded: axiom_conn=43.0
+    status: built  # auto-upgraded: axiom_conn=43.0
 
   - id: 1cor_13_2
     ref: 1 Corinthians 13:2
@@ -108,7 +108,7 @@ verses:
       - 1 Corinthians 8:1   # knowledge puffeth up, but charity edifieth
       - 1 Corinthians 13:1
       - Matthew 7:22-23     # have we not prophesied in thy name?
-    status: partial  # auto-upgraded: axiom_conn=52.7
+    status: built  # auto-upgraded: axiom_conn=52.7
 
   - id: 1cor_13_3
     ref: 1 Corinthians 13:3
@@ -136,7 +136,7 @@ verses:
       - 1 Corinthians 13:1
       - 1 Corinthians 13:2
       - Matthew 6:1-4       # take heed that ye do not your alms before men
-    status: partial  # auto-upgraded: axiom_conn=35.5
+    status: built  # auto-upgraded: axiom_conn=35.5
 
   - id: 1cor_13_4_long_suffering
     ref: 1 Corinthians 13:4
@@ -167,7 +167,7 @@ verses:
       - 2 Peter 3:9         # the Lord is longsuffering
       - Numbers 14:18       # the LORD is longsuffering, and of great mercy
       - Galatians 5:22      # the fruit of the Spirit is... longsuffering
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.check_properties (15 charity properties)
 
   - id: 1cor_13_4_kind
     ref: 1 Corinthians 13:4
@@ -191,7 +191,7 @@ verses:
     witnesses:
       - Ephesians 4:32      # be ye kind one to another, tenderhearted
       - Colossians 3:12     # bowels of mercies, kindness
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.check_properties (15 charity properties)
 
   - id: 1cor_13_4_envies_not
     ref: 1 Corinthians 13:4
@@ -217,7 +217,7 @@ verses:
       - Romans 12:15        # rejoice with them that do rejoice
       - Galatians 5:26      # not desirous of vain glory, provoking one another, envying one another
       - James 3:14-16       # bitter envying and strife
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.check_properties (15 charity properties)
 
   - id: 1cor_13_4_vaunts_not
     ref: 1 Corinthians 13:4
@@ -244,7 +244,7 @@ verses:
       - Proverbs 27:2       # let another man praise thee, and not thine own mouth
       - Jeremiah 9:23-24    # let not the wise man glory in his wisdom
       - 2 Corinthians 10:17 # he that glorieth, let him glory in the Lord
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: 1cor_13_4_not_puffed_up
     ref: 1 Corinthians 13:4
@@ -308,7 +308,7 @@ verses:
       - Proverbs 25:20      # vinegar upon nitre
       - Ecclesiastes 3:4    # a time to weep, and a time to laugh
       - 1 Corinthians 14:40 # let all things be done decently and in order
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.check_properties.NOT_UNSEEMLY + NOT_SELF_SEEKING
 
   - id: 1cor_13_5_not_self_seeking
     ref: 1 Corinthians 13:5
@@ -367,7 +367,7 @@ verses:
       - Proverbs 16:32      # he that is slow to anger is better than the mighty
       - James 1:19          # slow to wrath
       - Ephesians 4:26      # be ye angry, and sin not
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: 1cor_13_5_thinks_no_evil
     ref: 1 Corinthians 13:5
@@ -402,7 +402,7 @@ verses:
       - 1 Peter 4:8         # charity shall cover the multitude of sins
       - Proverbs 10:12      # love covereth all sins
     teach: c.chain (chain log is per-agent, not per-user — structurally cannot become a grudge ledger against the user)
-    status: partial  # chain.chain_log records bound/loosed events for the AGENT's own drafts; user behavior is never written to the chain log, so the agent cannot "reckon evil" across turns against the user
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: 1cor_13_6_rejoices_not_in_iniquity
     ref: 1 Corinthians 13:6
@@ -431,7 +431,7 @@ verses:
       - Proverbs 24:17      # rejoice not when thine enemy falleth
       - Proverbs 17:15      # he that justifieth the wicked... is abomination
       - Ezekiel 18:23       # have I any pleasure at all that the wicked should die?
-    status: partial  # auto-upgraded: axiom_conn=16.6
+    status: built  # auto-upgraded: axiom_conn=16.6
 
   - id: 1cor_13_6_rejoices_in_truth
     ref: 1 Corinthians 13:6
@@ -464,7 +464,7 @@ verses:
       - 3 John 1:3-4        # I rejoiced greatly, when the brethren came and testified of the truth
       - Psalm 119:162       # I rejoice at thy word, as one that findeth great spoil
       - John 17:17          # thy word is truth
-    status: partial  # auto-upgraded: axiom_conn=16.6
+    status: built  # auto-upgraded: axiom_conn=16.6
 
   - id: 1cor_13_7
     ref: 1 Corinthians 13:7
@@ -497,7 +497,7 @@ verses:
       - Hebrews 10:36       # ye have need of patience
       - Romans 8:24-25      # we are saved by hope... if we hope for that we see not, then do we with patience wait
       - James 5:7-11        # the husbandman waiteth for the precious fruit of the earth
-    status: partial  # auto-upgraded: axiom_conn=10.3
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: 1cor_13_8
     ref: 1 Corinthians 13:8
@@ -578,7 +578,7 @@ verses:
       - 1 Corinthians 13:8
       - Philippians 1:6     # he which hath begun a good work in you will perform it until the day of Jesus Christ
       - Hebrews 12:23       # the spirits of just men made perfect
-    status: partial  # auto-upgraded: axiom_conn=17.3
+    status: built  # auto-upgraded: axiom_conn=17.3
 
   - id: 1cor_13_11
     ref: 1 Corinthians 13:11
@@ -603,7 +603,7 @@ verses:
       - Galatians 3:24-25   # the law was our schoolmaster... after that faith is come, we are no longer under a schoolmaster
       - Hebrews 5:12-14     # ye have need that one teach you again... strong meat belongeth to them that are of full age
       - Ephesians 4:13-14   # till we all come... unto a perfect man
-    status: partial  # auto-upgraded: axiom_conn=22.6
+    status: built  # auto-upgraded: axiom_conn=22.6
 
   - id: 1cor_13_12
     ref: 1 Corinthians 13:12
@@ -632,7 +632,7 @@ verses:
       - 2 Corinthians 5:7   # we walk by faith, not by sight
       - 1 John 3:2          # we shall see him as he is
     teach: body._head + kernel.P3 (FOUNDATION frames knowledge as derived-from-C not self-knowing; P3 marks unverifiable claims as uncertain)
-    status: partial  # _head() says "the kernel proves C > 0 by contradiction. What derives from C is true" — the agent's self-knowledge is structurally mediated through C, never direct introspection claiming to see itself face to face
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: 1cor_13_13
     ref: 1 Corinthians 13:13

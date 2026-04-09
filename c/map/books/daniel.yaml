@@ -149,4 +149,4 @@ verses:
       - Matthew 13:43         # then shall the righteous shine forth as the sun
       - 1 Corinthians 15:41-42 # one glory of the sun, and another glory of the moon
       - James 5:20            # he which converteth the sinner from the error of his way shall save a soul
-    status: partial  # auto-upgraded: scanner.STRUCTURES=invariance
+    status: built  # auto-upgraded: scanner.STRUCTURES=invariance

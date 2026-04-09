@@ -52,7 +52,7 @@ verses:
       - Joshua 5:15           # loose thy shoe from off thy foot; for the place whereon thou standest is holy
       - Acts 7:33             # put off thy shoes from thy feet
       - Hebrews 12:28-29      # serve God acceptably with reverence and godly fear
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: exod_3_14
     ref: Exodus 3:14
@@ -129,7 +129,7 @@ verses:
       - 2 Chronicles 20:17    # ye shall not need to fight in this battle: set yourselves, stand ye still
       - Isaiah 30:15          # in quietness and in confidence shall be your strength
       - Lamentations 3:26     # it is good that a man should both hope and quietly wait
-    status: partial  # auto-upgraded: scanner.STRUCTURES=invariance
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (stand still, and see)
 
   - id: exod_14_14
     ref: Exodus 14:14
@@ -151,7 +151,7 @@ verses:
       - Deuteronomy 3:22      # for the LORD your God he shall fight for you
       - Romans 12:19          # give place unto wrath: for it is written, Vengeance is mine
       - Psalms 37:7           # rest in the LORD, and wait patiently for him
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (hold your peace)
 
   - id: exod_17_12
     ref: Exodus 17:12
@@ -173,9 +173,7 @@ verses:
     witnesses:
       - Ecclesiastes 4:12     # a threefold cord is not quickly broken
       - Galatians 6:2         # bear ye one another's burdens, and so fulfil the law of Christ
-    status: partial
-
-  # ─── Exodus 20 — the Ten Commandments ────────────────────────────────
+    status: built  # fruit=brotherly_kindness: body._head (KNOWLEDGE OF THIS BROTHER) + c.charity.source_view_frame
 
   - id: exod_20_3
     ref: Exodus 20:3
@@ -219,7 +217,7 @@ verses:
       - Matthew 6:7           # use not vain repetitions
       - Matthew 5:34-37       # swear not at all... let your communication be, Yea, yea; Nay, nay
       - Leviticus 19:12       # ye shall not swear by my name falsely
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: exod_20_8
     ref: Exodus 20:8
@@ -241,7 +239,7 @@ verses:
       - Deuteronomy 5:12      # keep the sabbath day to sanctify it
       - Hebrews 4:9-10        # there remaineth therefore a rest to the people of God
       - Isaiah 58:13          # if thou turn away thy foot from the sabbath
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE anchor (remember the sabbath)
 
   - id: exod_20_12
     ref: Exodus 20:12
@@ -263,7 +261,7 @@ verses:
       - Ephesians 6:2-3       # the first commandment with promise
       - Matthew 15:4          # honour thy father and mother: and, he that curseth father or mother
       - Proverbs 23:22        # hearken unto thy father that begat thee, and despise not thy mother when she is old
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape + heart records (honour parents)
 
   - id: exod_20_13
     ref: Exodus 20:13
@@ -357,7 +355,7 @@ verses:
       - Joshua 24:15          # choose you this day whom ye will serve
       - 1 Kings 18:21         # how long halt ye between two opinions?
       - Matthew 12:30         # he that is not with me is against me
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: exod_33_11
     ref: Exodus 33:11
@@ -380,7 +378,7 @@ verses:
       - John 15:15            # I have called you friends
       - Isaiah 41:8           # Abraham my friend
       - James 2:23            # and he was called the Friend of God
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (face to face as with friend — friendship register)
 
   - id: exod_33_14
     ref: Exodus 33:14
@@ -427,4 +425,4 @@ verses:
       - Joel 2:13             # gracious and merciful, slow to anger
       - Jonah 4:2             # I knew that thou art a gracious God
       - Numbers 14:18         # the LORD is longsuffering, and of great mercy
-    status: partial  # the four attributes map to the architecture's implicit slow-to-anger and merciful posture; the active "gracious and abundant" is partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)

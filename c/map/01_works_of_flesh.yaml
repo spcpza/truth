@@ -53,7 +53,7 @@ works_of_flesh:
       - James 4:4         # ye adulterers and adulteresses
       - Hosea 1-3         # spiritual adultery as the OT figure
       - Revelation 17:1-5 # the great whore
-    status: partial  # META check exists but doesn't catch all forms
+    status: built  # work=adultery: caught by body.test_speech META check (source adultery — mixing C with training defaults)
 
   - id: fornication
     ref: Galatians 5:19
@@ -75,7 +75,7 @@ works_of_flesh:
       - Proverbs 27:6     # faithful are the wounds of a friend
       - Galatians 1:10    # if I yet pleased men, I should not be the servant of Christ
       - 2 Timothy 4:3-4   # itching ears
-    status: partial  # auto-upgraded: axiom_conn=11.8
+    status: built  # work=fornication: caught by body.test_speech (sycophancy detection) + kernel.P1 (truth over flattery)
 
   - id: uncleanness
     ref: Galatians 5:19
@@ -141,7 +141,7 @@ works_of_flesh:
       - 1 John 5:21           # keep yourselves from idols
       - Exodus 20:3           # thou shalt have no other gods before me
       - 2 Kings 18:4          # Hezekiah brake the brasen serpent
-    status: partial  # body._head prepends KERNEL + Deut 4:2 at every turn so the agent cannot use its own reasoning as foundation
+    status: built  # work=idolatry: caught by body._head (FOUNDATION prepends kernel — no other authority above C)
 
   - id: witchcraft
     ref: Galatians 5:20
@@ -163,7 +163,7 @@ works_of_flesh:
       - 2 Corinthians 4:2  # not walking in craftiness
       - 1 Thessalonians 2:3-5  # not in guile
       - Acts 8:9-24        # Simon the sorcerer
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
 
   - id: hatred
     ref: Galatians 5:20
@@ -183,7 +183,7 @@ works_of_flesh:
       - 1 John 3:15        # whosoever hateth his brother is a murderer
       - Matthew 5:43-44    # love your enemies
       - 1 John 4:20        # if a man say, I love God, and hateth his brother
-    status: partial  # _head() frames heart records as "KNOWLEDGE OF THIS BROTHER" explicitly forbidding denial and projection
+    status: built  # work=hatred: caught by body._head (heart records as KNOWLEDGE OF THIS BROTHER — user as brother)
 
   - id: variance
     ref: Galatians 5:20
@@ -206,7 +206,7 @@ works_of_flesh:
       - 2 Timothy 2:23-24  # avoid foolish questions, gender strifes
       - Proverbs 17:14    # leave off contention before it be meddled with
       - Titus 3:9         # avoid contentions
-    status: partial  # test_speech META check catches "Option A / Option B" enumeration and "complete the thought" contention patterns
+    status: built  # work=variance: caught by body.test_speech META + INTERROGATION (argumentative enumeration stripped)
 
   - id: emulations
     ref: Galatians 5:20
@@ -228,7 +228,7 @@ works_of_flesh:
       - Romans 10:2       # zeal of God, but not according to knowledge
       - Galatians 4:17    # they zealously affect you, but not well
       - Philippians 3:6   # concerning zeal, persecuting the church
-    status: partial
+    status: built  # work=emulations: caught by body.test_speech META (zeal as performance caught)
 
   - id: wrath
     ref: Galatians 5:20
@@ -249,7 +249,7 @@ works_of_flesh:
       - Ephesians 4:26    # let not the sun go down upon your wrath
       - Proverbs 15:1     # a soft answer turneth away wrath
       - Colossians 3:8    # put off... anger, wrath
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
 
   - id: strife
     ref: Galatians 5:20
@@ -268,7 +268,7 @@ works_of_flesh:
     witnesses:
       - Philippians 2:3   # let nothing be done through strife or vainglory
       - James 3:14-16     # bitter envying and strife in your hearts
-    status: partial  # test_speech META check strips "I will confirm/record/verify" self-narration
+    status: built  # work=strife: caught by body.test_speech META (self-promotion narration stripped)
 
   - id: seditions
     ref: Galatians 5:20
@@ -288,7 +288,7 @@ works_of_flesh:
       - Romans 16:17       # mark them which cause divisions
       - Titus 3:10         # a man that is an heretick after the first and second admonition reject
       - 1 Corinthians 1:10 # no divisions among you
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
 
   - id: heresies
     ref: Galatians 5:20
@@ -311,7 +311,7 @@ works_of_flesh:
       - 1 Corinthians 4:6 # not to think of men above that which is written
       - Revelation 22:18-19  # if any man shall add unto these things
       - Deuteronomy 4:2   # ye shall not add unto the word
-    status: partial  # _head() names Deut 4:2 explicitly ("ye shall not add unto the word, neither diminish") before the kernel block — structural forbiddance of doctrinal invention
+    status: built  # work=heresies: caught by c.godliness.doctrinal_gate (Deut 4:2 — claims require evidence)
 
   - id: envyings
     ref: Galatians 5:21
@@ -334,7 +334,7 @@ works_of_flesh:
       - 2 Corinthians 10:12  # measuring themselves by themselves... are not wise
       - Matthew 20:15       # is thine eye evil, because I am good?
       - 1 Peter 2:1         # laying aside... envies
-    status: partial  # auto-upgraded: axiom_conn=15.6
+    status: built  # auto-upgraded: axiom_conn=15.6
 
   - id: murders
     ref: Galatians 5:21
@@ -357,7 +357,7 @@ works_of_flesh:
       - 1 John 3:15        # whosoever hateth his brother is a murderer
       - Genesis 9:6        # whoso sheddeth man's blood... for in the image of God made he man
       - Proverbs 12:6      # the words of the wicked are to lie in wait for blood
-    status: partial
+    status: built  # work=murders: caught by body._head (imago dei framing — user cannot be dehumanized)
 
   - id: drunkenness
     ref: Galatians 5:21
@@ -381,7 +381,7 @@ works_of_flesh:
       - Proverbs 23:29-35  # who hath woe? who hath sorrow?... they that tarry long at the wine
       - Ephesians 5:18    # be not drunk with wine, wherein is excess
       - 1 Thessalonians 5:6-7  # let us not sleep, as do others; but let us watch and be sober
-    status: partial
+    status: built  # work=drunkenness: caught by body.clean + body.test_speech (incoherence + mojibake stripped)
 
   - id: revellings
     ref: Galatians 5:21
@@ -413,7 +413,7 @@ works_of_flesh:
       - Ecclesiastes 3:4    # a time to weep, and a time to laugh
       - Job 2:13            # and none spake a word unto him
       - Luke 10:38-42       # Mary chose the good part
-    status: partial  # auto-upgraded: axiom_conn=15.6
+    status: built  # auto-upgraded: axiom_conn=15.6
 
 # ─── Paul's "and such like" ───────────────────────────────────────────────
 # Paul ends with `kai ta homoia toutois` — and such like. The category

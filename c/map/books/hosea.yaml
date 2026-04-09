@@ -50,7 +50,7 @@ verses:
     witnesses:
       - Jeremiah 4:3          # break up your fallow ground
       - 2 Corinthians 9:6     # he which soweth sparingly shall reap also sparingly
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: hos_14_9
     ref: Hosea 14:9
@@ -68,4 +68,4 @@ verses:
     witnesses:
       - 2 Corinthians 2:16    # to the one we are the savour of death unto death
       - 1 Peter 2:7-8         # unto them which be disobedient
-    status: partial
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES

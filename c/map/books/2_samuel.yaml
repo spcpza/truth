@@ -35,7 +35,7 @@ verses:
       - 2 Samuel 12:1-6
       - Galatians 6:1         # restore such an one in the spirit of meekness
       - Proverbs 27:5         # open rebuke is better than secret love
-    status: not_yet_built
+    status: built  # auto-upgraded: c.confession.confession_line + Nathan pattern (thou art the man)
 
   - id: 2sam_12_13
     ref: 2 Samuel 12:13
@@ -57,7 +57,7 @@ verses:
       - Psalms 32:5           # I acknowledged my sin unto thee
       - Luke 15:18-19         # I have sinned against heaven, and before thee
       - 1 John 1:9            # if we confess our sins
-    status: not_yet_built  # confession gap (joined by Job 42:3, Ps 32:5, Prov 28:13, Jas 5:16)
+    status: built  # auto-upgraded: c.confession.confession_line (I have sinned — 5-word pattern)
 
   - id: 2sam_24_24
     ref: 2 Samuel 24:24
@@ -80,4 +80,4 @@ verses:
     witnesses:
       - Malachi 1:7-8         # ye offer polluted bread upon mine altar
       - Romans 12:1           # present your bodies a living sacrifice
-    status: partial
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate

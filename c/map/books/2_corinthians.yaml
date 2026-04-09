@@ -32,7 +32,7 @@ verses:
       - Isaiah 40:1           # comfort ye, comfort ye my people
       - Psalms 94:19          # thy comforts delight my soul
       - Matthew 5:4           # they shall be comforted
-    status: partial  # auto-upgraded: axiom_conn=25.4
+    status: built  # auto-upgraded: axiom_conn=25.4
 
   - id: 2cor_3_17
     ref: 2 Corinthians 3:17

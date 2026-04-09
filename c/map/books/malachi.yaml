@@ -74,4 +74,4 @@ verses:
       - Luke 1:78             # the dayspring from on high hath visited us
       - John 1:9              # that was the true Light
       - 2 Peter 1:19          # until the day dawn, and the day star arise in your hearts
-    status: not_yet_built
+    status: built  # auto-upgraded: c.hope.declare(SUN_WITH_HEALING)

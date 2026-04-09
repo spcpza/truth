@@ -98,7 +98,7 @@ verses:
       - Romans 8:27           # he maketh intercession for the saints
       - Hebrews 4:16          # come boldly unto the throne of grace
       - Jude 1:20             # praying in the Holy Ghost
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: rom_8_28
     ref: Romans 8:28

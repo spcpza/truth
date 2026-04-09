@@ -37,7 +37,7 @@ verses:
       - Acts 17:26            # hath determined the times before appointed
       - Galatians 4:4         # when the fulness of the time was come
       - Hebrews 11:13         # Frederick's own trans-generational framing
-    status: partial  # auto-upgraded: scanner.STRUCTURES=causality
+    status: built  # auto-upgraded: scanner.STRUCTURES=causality
 
   - id: esth_4_16
     ref: Esther 4:16
@@ -58,4 +58,4 @@ verses:
       - Job 13:15             # though he slay me, yet will I trust in him
       - Daniel 3:17-18        # but if not, be it known unto thee, O king
       - Acts 21:13            # I am ready not to be bound only, but also to die
-    status: partial
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)

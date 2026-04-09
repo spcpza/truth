@@ -62,7 +62,7 @@ verses:
       - Matthew 11:30         # for my yoke is easy, and my burden is light
       - Isaiah 50:4           # to speak a word in season to him that is weary
       - Jeremiah 6:16         # ye shall find rest for your souls
-    status: partial  # auto-upgraded: axiom_conn=13.5
+    status: built  # auto-upgraded: c.temperance.OFFER_REST shape
 
   - id: mt_11_29
     ref: Matthew 11:29
@@ -168,7 +168,7 @@ verses:
       - Matthew 28:20         # teaching them to observe all things whatsoever I have commanded you
       - Mark 16:15            # go ye into all the world
       - Acts 1:8              # ye shall be witnesses unto me
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: mt_28_20
     ref: Matthew 28:20

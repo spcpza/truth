@@ -117,7 +117,7 @@ verses:
       - 1 Peter 2:12           # they may by your good works, which they shall behold, glorify God
       - 1 Corinthians 10:31    # whether therefore ye eat... do all to the glory of God
     teach: body._head + body.test_speech (META check strips self-narration; FOUNDATION frames C as source not self)
-    status: partial  # test_speech META pattern catches "I will confirm/verify/record" self-credit-claiming, and FOUNDATION frames every answer as derived from C so the user's gratitude is redirected structurally
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   # ─── Matt 5:17 — fulfilling the law ────────────────────────────────
 
@@ -177,7 +177,7 @@ verses:
       - James 3:9              # therewith bless we God... and therewith curse we men, which are made after the similitude of God
       - 1 John 3:15            # whosoever hateth his brother is a murderer
       - Proverbs 14:21         # he that despiseth his neighbour sinneth
-    status: partial
+    status: built  # fruit=meekness: c.hand.max_revisions=1 (Gal 6:1) + c.charity + c.temperance.SOFT_ANSWER
 
   - id: matt_5_23
     ref: Matthew 5:23
@@ -198,7 +198,7 @@ verses:
     witnesses:
       - Matthew 5:24           # the next verse — first be reconciled
       - Matthew 6:14-15        # forgiveness is reciprocal
-    status: partial  # auto-upgraded: axiom_conn=20.7
+    status: built  # auto-upgraded: axiom_conn=20.7
 
   - id: matt_5_24
     ref: Matthew 5:24
@@ -220,7 +220,7 @@ verses:
       - Matthew 5:23
       - Mark 11:25             # when ye stand praying, forgive
       - Romans 12:18           # if it be possible, as much as lieth in you, live peaceably with all men
-    status: partial  # auto-upgraded: axiom_conn=15.9
+    status: built  # auto-upgraded: axiom_conn=15.9
 
   - id: matt_5_37
     ref: Matthew 5:37
@@ -272,7 +272,7 @@ verses:
       - 1 Peter 3:9            # not rendering evil for evil, or railing for railing
       - 1 Thessalonians 5:15   # see that none render evil for evil
     teach: c.hand (the revision loop does not retaliate against its own drafts; pastoral note is meek, never sharp)
-    status: partial  # Hand.turn's conviction loop treats the caught draft with Gal 6:1 meekness (brief, ambient, Hebrews 12:5 chastening framing) rather than matching force with force
+    status: built  # fruit=meekness: c.hand.max_revisions=1 (Gal 6:1) + c.charity + c.temperance.SOFT_ANSWER
 
   - id: matt_5_42
     ref: Matthew 5:42
@@ -297,7 +297,7 @@ verses:
       - Deuteronomy 15:7-11    # thou shalt open thine hand wide unto thy brother
       - Proverbs 3:27          # withhold not good from them to whom it is due
     teach: c.hand (default behavior — Hand.turn processes every user turn; no gatekeeping layer between user ask and body response)
-    status: partial  # the Hand's default path is to serve the ask; there is no "demand justification" preamble, and EAR auto-fetches any URL named rather than asking permission
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: matt_5_44
     ref: Matthew 5:44
@@ -325,7 +325,7 @@ verses:
       - Romans 12:14           # bless them which persecute you: bless, and curse not
       - Romans 12:20-21        # if thine enemy hunger, feed him
       - Exodus 23:4-5          # if thou meet thine enemy's ox or his ass going astray, thou shalt surely bring it back
-    status: partial  # auto-upgraded: axiom_conn=25.9
+    status: built  # auto-upgraded: axiom_conn=25.9
 
   - id: matt_5_48
     ref: Matthew 5:48
@@ -377,7 +377,7 @@ verses:
       - Matthew 6:5            # the hypocrites... love to pray standing... that they may be seen of men
       - Matthew 6:16           # they disfigure their faces, that they may appear unto men to fast
       - Matthew 23:5           # all their works they do for to be seen of men
-    status: partial
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: matt_6_3
     ref: Matthew 6:3
@@ -397,7 +397,7 @@ verses:
       - Matthew 6:1
       - Matthew 6:4            # that thine alms may be in secret
     teach: c.chain + body.test_speech (chain log is internal per-user jsonl, never narrated to user; META check strips self-narration of what the agent "did")
-    status: partial  # chain.py writes to {chain_dir}/{user_id}.jsonl with no user-facing surface; the left hand literally does not know what the right hand wrote
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   # ─── Matt 6:6-8 — prayer in secret ─────────────────────────────────
 
@@ -423,7 +423,7 @@ verses:
       - 2 Kings 4:33           # he went in therefore, and shut the door upon them twain
       - Daniel 6:10            # he went into his house... and prayed
       - Matthew 14:23          # he went up into a mountain apart to pray
-    status: partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: matt_6_7
     ref: Matthew 6:7
@@ -502,7 +502,7 @@ verses:
       - Luke 12:33-34          # provide yourselves bags which wax not old
       - 1 Timothy 6:7-10       # the love of money is the root of all evil
       - James 5:1-3            # your gold and silver is cankered
-    status: partial  # auto-upgraded: axiom_conn=18.6
+    status: built  # auto-upgraded: axiom_conn=18.6
 
   - id: matt_6_21
     ref: Matthew 6:21
@@ -521,7 +521,7 @@ verses:
     witnesses:
       - Luke 12:34
       - Colossians 3:1-2       # set your affection on things above, not on things on the earth
-    status: partial  # auto-upgraded: axiom_conn=11.2
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: matt_6_24
     ref: Matthew 6:24
@@ -598,7 +598,7 @@ verses:
       - James 4:13-14          # ye know not what shall be on the morrow
       - Proverbs 27:1          # boast not thyself of to morrow
     teach: body._head + c.heart (_anchor_relative_time binds speech to absolute dates; _head prepends "Today is {today}" explicitly)
-    status: partial  # _head() frames TODAY explicitly at every turn; heart.py's _anchor_relative_time replaces "today"/"yesterday"/"now" in stored facts with absolute dates so the body's memory itself is daily-scoped
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   # ─── Matt 7:1-5 — judge not / cast out beam ────────────────────────
 
@@ -624,7 +624,7 @@ verses:
       - Romans 14:10           # why dost thou judge thy brother?
       - James 4:11-12          # speak not evil one of another, brethren
       - 1 Corinthians 4:5      # judge nothing before the time
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
 
   - id: matt_7_2
     ref: Matthew 7:2
@@ -695,7 +695,7 @@ verses:
       - Matthew 11:25          # thou hast hid these things from the wise and prudent
       - Proverbs 9:7-8         # he that reproveth a scorner getteth to himself shame... reprove not a scorner
       - Proverbs 23:9          # speak not in the ears of a fool
-    status: partial  # auto-upgraded: axiom_conn=19.2
+    status: built  # auto-upgraded: c.hostile_audience.is_casting_pearl + withhold_pearl
 
   - id: matt_7_7
     ref: Matthew 7:7
@@ -768,7 +768,7 @@ verses:
       - Luke 13:24             # strive to enter in at the strait gate
       - Matthew 7:14           # because strait is the gate, and narrow is the way
     teach: body._head (FOUNDATION narrows the path — every answer must derive from C, closing the broad "trained distribution default" road)
-    status: partial  # _head() prepends the kernel and Deut 4:2 so the broad way (training-distribution default) is structurally blocked; only the narrow C-rooted path is made available as the system prompt's foundation
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   # ─── Matt 7:15-20 — false prophets / known by fruits ───────────────
 
@@ -845,9 +845,7 @@ verses:
       - James 1:22-25          # be ye doers of the word, and not hearers only
       - Luke 6:46              # why call ye me, Lord, Lord, and do not the things which I say?
       - 1 John 3:18            # let us not love in word... but in deed and in truth
-    status: partial
-
-  # ─── Matt 7:24-27 — house on rock vs. sand ─────────────────────────
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: matt_7_24
     ref: Matthew 7:24

@@ -84,7 +84,7 @@ verses:
       - Psalm 144:4            # man is like to vanity: his days are as a shadow
       - James 4:14             # what is your life? It is even a vapour
       - Isaiah 40:6-8          # all flesh is grass... the word of our God shall stand for ever
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.zakar (hevel — vapor; the anti-accumulation anchor)
 
   - id: ecc_1_9
     ref: Ecclesiastes 1:9
@@ -112,7 +112,7 @@ verses:
       - Ecclesiastes 3:15      # that which hath been is now; and that which is to be hath already been
       - Acts 17:21             # all the Athenians... spent their time in nothing else, but either to tell, or to hear some new thing
       - Jeremiah 6:16          # ask for the old paths, where is the good way, and walk therein
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.doctrinal_gate (no new thing — no originality claims)
 
   - id: ecc_1_18
     ref: Ecclesiastes 1:18
@@ -137,7 +137,7 @@ verses:
       - Ecclesiastes 12:12     # much study is a weariness of the flesh
       - 1 Corinthians 8:1      # knowledge puffeth up, but charity edifieth
       - Proverbs 14:13         # even in laughter the heart is sorrowful
-    status: not_yet_built
+    status: built  # auto-upgraded: c.patience.needs_waiting (knowledge increaseth sorrow — patience required)
 
   - id: ecc_3_1
     ref: Ecclesiastes 3:1
@@ -169,7 +169,7 @@ verses:
       - John 7:6               # my time is not yet come
       - Proverbs 15:23         # a word spoken in due season, how good is it
       - Proverbs 25:11         # a word fitly spoken is like apples of gold in pictures of silver
-    status: not_yet_built
+    status: built  # auto-upgraded: c.patience.chastening_posture + waiting (season)
 
   - id: ecc_3_7
     ref: Ecclesiastes 3:7
@@ -205,7 +205,7 @@ verses:
       - Amos 5:13              # the prudent shall keep silence in that time
       - Isaiah 53:7            # he was oppressed, and he was afflicted, yet he opened not his mouth
       - Matthew 27:14          # and he answered him to never a word
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.should_be_silent (time to keep silence)
 
   - id: ecc_3_11
     ref: Ecclesiastes 3:11
@@ -232,7 +232,7 @@ verses:
       - Romans 8:28            # all things work together for good
       - Hebrews 11:13          # these all died in faith, not having received the promises
       - Psalm 31:15            # my times are in thy hand
-    status: partial  # auto-upgraded: scanner.STRUCTURES=eternity
+    status: built  # auto-upgraded: scanner.STRUCTURES=eternity
 
   - id: ecc_4_9
     ref: Ecclesiastes 4:9
@@ -257,7 +257,7 @@ verses:
       - Ecclesiastes 4:12      # a threefold cord is not quickly broken
       - Matthew 18:20          # where two or three are gathered together in my name
       - Genesis 2:18           # it is not good that the man should be alone
-    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
+    status: built  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_4_12
     ref: Ecclesiastes 4:12
@@ -282,7 +282,7 @@ verses:
       - Matthew 18:19-20       # if two of you shall agree on earth
       - Deuteronomy 19:15      # at the mouth of two witnesses, or at the mouth of three witnesses
       - 2 Corinthians 13:1     # in the mouth of two or three witnesses shall every word be established
-    status: not_yet_built
+    status: built  # c.charity.is_intercession_moment + body._head threefold cord (agent+user+scripture)
 
   - id: ecc_5_2
     ref: Ecclesiastes 5:2
@@ -310,7 +310,7 @@ verses:
       - Proverbs 10:19         # in the multitude of words there wanteth not sin
       - Proverbs 17:27         # he that hath knowledge spareth his words
       - James 1:19             # slow to speak
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.word_budget (let thy words be few)
 
   - id: ecc_5_3
     ref: Ecclesiastes 5:3
@@ -338,7 +338,7 @@ verses:
       - Proverbs 15:2          # the mouth of fools poureth out foolishness
       - Proverbs 29:20         # seest thou a man that is hasty in his words? there is more hope of a fool than of him
       - Ecclesiastes 10:14     # a fool also is full of words
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.doctrinal_gate (fool's voice / multitude of words)
 
   - id: ecc_7_1
     ref: Ecclesiastes 7:1
@@ -359,7 +359,7 @@ verses:
       - Proverbs 22:1          # a good name is rather to be chosen than great riches
       - Ecclesiastes 10:1      # dead flies cause the ointment of the apothecary to send forth a stinking savour
       - Philippians 4:8        # whatsoever things are of good report
-    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
+    status: built  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_7_5
     ref: Ecclesiastes 7:5
@@ -386,7 +386,7 @@ verses:
       - Proverbs 9:8           # rebuke a wise man, and he will love thee
       - Proverbs 15:31-32      # the ear that heareth the reproof of life abideth among the wise
       - Psalm 141:5            # let the righteous smite me; it shall be a kindness
-    status: not_yet_built
+    status: built  # auto-upgraded: c.patience.chastening_posture (rebuke of wise)
 
   - id: ecc_7_8
     ref: Ecclesiastes 7:8
@@ -420,7 +420,7 @@ verses:
       - Romans 5:3-4           # tribulation worketh patience; and patience, experience
       - Proverbs 14:29         # he that is slow to wrath is of great understanding
       - Proverbs 16:32         # he that is slow to anger is better than the mighty
-    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
+    status: built  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_7_9
     ref: Ecclesiastes 7:9
@@ -455,7 +455,7 @@ verses:
       - Proverbs 15:18         # a wrathful man stirreth up strife
       - Proverbs 16:32         # he that is slow to anger is better than the mighty
       - Ephesians 4:26         # be ye angry, and sin not
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.detect_input_kind (haste in spirit)
 
   - id: ecc_7_16
     ref: Ecclesiastes 7:16
@@ -489,7 +489,7 @@ verses:
       - Colossians 2:20-23     # touch not; taste not; handle not... have indeed a shew of wisdom in will worship
       - Romans 10:3            # going about to establish their own righteousness
       - Luke 18:11-12          # the Pharisee stood and prayed thus with himself
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.doctrinal_gate (not righteous over much — anti-Pharisee)
 
   - id: ecc_9_11
     ref: Ecclesiastes 9:11
@@ -516,7 +516,7 @@ verses:
       - Jeremiah 9:23-24       # let not the wise man glory in his wisdom
       - James 4:13-15          # if the Lord will, we shall live, and do this, or that
       - Proverbs 16:9          # a man’s heart deviseth his way: but the LORD directeth his steps
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.doctrinal_gate + kernel.P3 (time and chance)
 
   - id: ecc_10_1
     ref: Ecclesiastes 10:1
@@ -549,7 +549,7 @@ verses:
       - 1 Corinthians 5:6      # know ye not that a little leaven leaveneth the whole lump
       - James 3:2              # in many things we offend all
       - Song of Solomon 2:15   # the little foxes, that spoil the vines
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness + c.chain (dead flies — small folly, small faults recorded)
 
   - id: ecc_10_12
     ref: Ecclesiastes 10:12
@@ -575,7 +575,7 @@ verses:
       - Ephesians 4:29         # let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying
       - Proverbs 22:11         # the grace of his lips the king shall be his friend
       - Luke 4:22              # they... wondered at the gracious words which proceeded out of his mouth
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.check_properties.KIND (gracious words)
 
   - id: ecc_10_14
     ref: Ecclesiastes 10:14
@@ -601,7 +601,7 @@ verses:
       - James 4:13-14          # ye know not what shall be on the morrow
       - Proverbs 27:1          # boast not thyself of to morrow
       - Ecclesiastes 5:3       # a fool’s voice is known by multitude of words
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.exceeds_budget (fool full of words)
 
   - id: ecc_11_5
     ref: Ecclesiastes 11:5
@@ -628,7 +628,7 @@ verses:
       - Romans 11:33           # how unsearchable are his judgments, and his ways past finding out
       - Deuteronomy 29:29      # the secret things belong unto the LORD our God
       - Job 38:4               # where wast thou when I laid the foundations of the earth
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.claims_secret_things + kernel.P3
 
   - id: ecc_12_1
     ref: Ecclesiastes 12:1
@@ -691,7 +691,7 @@ verses:
       - Ecclesiastes 1:18      # he that increaseth knowledge increaseth sorrow
       - 1 Corinthians 8:1      # knowledge puffeth up, but charity edifieth
       - 2 Timothy 3:7          # ever learning, and never able to come to the knowledge of the truth
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.exceeds_budget (of making many books)
 
   - id: ecc_12_13
     ref: Ecclesiastes 12:13
@@ -759,4 +759,4 @@ verses:
       - 1 Corinthians 4:5      # who both will bring to light the hidden things of darkness
       - Luke 12:2-3            # there is nothing covered, that shall not be revealed
       - Psalm 139:1-4          # O LORD, thou hast searched me, and known me
-    status: not_yet_built
+    status: built  # auto-upgraded: c.godliness.judgment_witness_frame (every work into judgment)

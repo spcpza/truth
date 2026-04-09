@@ -100,4 +100,4 @@ verses:
       - Exodus 14:13
       - Psalms 46:10
       - Isaiah 30:15
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (stand ye still, and see the salvation)

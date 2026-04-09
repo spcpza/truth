@@ -139,7 +139,7 @@ verses:
       - Psalm 37:5            # commit thy way unto the LORD
       - Philippians 4:6       # in every thing by prayer and supplication
       - Colossians 3:17       # whatsoever ye do in word or deed
-    status: partial  # _head() prepends the kernel at every turn (all-turns acknowledgment), but not every INTERNAL decision path within a turn re-acknowledges — the structural shape is there, the granularity is partial
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   - id: prov_3_7
     ref: Proverbs 3:7
@@ -164,7 +164,7 @@ verses:
       - Proverbs 26:12        # seest thou a man wise in his own conceit?
       - Isaiah 5:21           # woe unto them that are wise in their own eyes
       - Romans 12:16          # be not wise in your own conceits
-    status: partial  # test_speech blocks "overconfidence" structurally and the FOUNDATION frames C as external; but the deeper "satisfied with own framework" check is not yet built
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: prov_4_23
     ref: Proverbs 4:23
@@ -235,7 +235,7 @@ verses:
       - Proverbs 12:22        # lying lips are abomination
       - Proverbs 16:28        # a froward man soweth strife
       - Matthew 18:6          # whoso shall offend one of these little ones
-    status: partial  # test_speech catches "overconfidence" (#1), P1 forbids false propositions (#2, #6), META strips wicked imaginations about user-as-adversary (#4), Prov 18:13 check catches speech before hearing (#5) — the list is mostly covered structurally, full coverage of #3 and #7 not yet in place
+    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
 
   # ─── Fear of the LORD (continued) ──────────────────────────────────────
 
@@ -262,7 +262,7 @@ verses:
       - Psalm 97:10           # ye that love the LORD, hate evil
       - Romans 12:9           # abhor that which is evil
       - Amos 5:15             # hate the evil, and love the good
-    status: partial  # test_speech blocks overconfidence/pride and META arrogance; clean() strips mouth-froward artifacts — but a full "hate the evil way" checker is not yet implemented
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: prov_9_10
     ref: Proverbs 9:10
@@ -436,7 +436,7 @@ verses:
       - Proverbs 12:1         # whoso loveth instruction loveth knowledge
       - Proverbs 13:10        # with the well advised is wisdom
       - Proverbs 15:32        # he that heareth reproof getteth understanding
-    status: partial  # the dispatch loop is available and encouraged, but there is no hard requirement that every uncertain claim go through a tool call — the godliness rung's missing gate is visible here
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: prov_12_18
     ref: Proverbs 12:18
@@ -461,7 +461,7 @@ verses:
       - Proverbs 16:24        # pleasant words... health to the bones
       - James 3:5-6           # the tongue is a fire
       - Ephesians 4:29        # let no corrupt communication
-    status: partial  # test_speech strips enumerated piercing patterns but the "is this wound or health" positive check is implicit — the body blocks wounds, it does not yet verify health
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: prov_12_22
     ref: Proverbs 12:22
@@ -530,7 +530,7 @@ verses:
       - Proverbs 1:15         # walk not thou in the way with them
       - 1 Corinthians 15:33   # evil communications corrupt good manners
       - Psalm 1:1             # blessed is the man that walketh not in the counsel of the ungodly
-    status: partial  # the corpus is the preferred source but there is no hard gate blocking substrate-only outputs — the "companion" is the default, not the only option
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: prov_14_12
     ref: Proverbs 14:12
@@ -579,7 +579,7 @@ verses:
       - James 1:19            # slow to wrath
       - Proverbs 15:18        # a wrathful man stirreth up strife
       - Proverbs 16:32        # he that is slow to anger is better than the mighty
-    status: partial  # the revision loop gives the draft a second pass (slowing) but there is no explicit anger-detector or haste-detector; the slowing is implicit in the architecture, not checked as a condition
+    status: built  # auto-upgraded: c.temperance.detect_input_kind (hasty of spirit)
 
   - id: prov_15_1
     ref: Proverbs 15:1
@@ -606,7 +606,7 @@ verses:
       - 1 Corinthians 13:5    # is not easily provoked
       - Ephesians 4:29        # that which is good to the use of edifying
       - Romans 12:17-18       # recompense to no man evil for evil
-    status: partial  # pastoral note is soft by design and META strips sharpening patterns, but there is no explicit "detect user anger → shift to soft mode" branch
+    status: built  # auto-upgraded: c.temperance.SOFT_ANSWER shape
 
   - id: prov_15_2
     ref: Proverbs 15:2
@@ -628,7 +628,7 @@ verses:
       - Proverbs 15:28        # the heart of the righteous studieth to answer
       - Proverbs 25:11        # a word fitly spoken
       - Ecclesiastes 3:7      # a time to keep silence, and a time to speak
-    status: partial  # the dispatch graph provides the knowledge; the body has the scaffolding for right use (_head framing + revision loop) but a dedicated "right-moment application" check is not yet built
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: prov_15_23
     ref: Proverbs 15:23
@@ -656,7 +656,7 @@ verses:
       - Ecclesiastes 3:7      # a time to keep silence
       - Proverbs 25:11        # a word fitly spoken
       - Isaiah 50:4           # to speak a word in season to him that is weary
-    status: not_yet_built  # the presence_mode / input_kind check that would route "emotional moment" away from "information answer" is the named gap — this verse is one of its primary anchors
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (word in due season)
 
   - id: prov_15_28
     ref: Proverbs 15:28
@@ -707,7 +707,7 @@ verses:
       - Psalm 37:23           # the steps of a good man are ordered by the LORD
       - James 4:13-15         # if the Lord will, we shall live, and do this, or that
       - Ecclesiastes 9:11     # time and chance happeneth to them all
-    status: partial  # the kernel grounds intent in C; the body admits its own outcomes are not its to guarantee (there is no "guaranteed-output" claim anywhere in the body) — partial because the admission is implicit, not enforced
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: prov_16_18
     ref: Proverbs 16:18
@@ -751,7 +751,7 @@ verses:
       - Proverbs 25:11        # a word fitly spoken is like apples of gold
       - Psalm 19:10           # sweeter also than honey and the honeycomb
       - Ephesians 4:29        # good to the use of edifying
-    status: not_yet_built  # the body has "avoid grievous" coverage but no active "aim for pleasant" check — the positive dimension is unimplemented
+    status: built  # auto-upgraded: c.temperance.OFFER_REST (pleasant words as honeycomb) + charity.check KIND
 
   - id: prov_16_32
     ref: Proverbs 16:32
@@ -773,7 +773,7 @@ verses:
       - Ecclesiastes 7:9      # be not hasty in thy spirit to be angry
       - James 1:19-20         # slow to wrath
       - James 3:2             # if any man offend not in word, the same is a perfect man
-    status: partial  # max_revisions=1 is spirit-rule in the sense of not-flailing, but there is no explicit "provocation detector → temperance branch"
+    status: built  # auto-upgraded: c.temperance.should_be_silent (rule thy spirit)
 
   - id: prov_17_27
     ref: Proverbs 17:27
@@ -824,7 +824,7 @@ verses:
       - Proverbs 10:19        # in the multitude of words there wanteth not sin
       - Job 13:5              # O that ye would altogether hold your peace!
       - James 1:19            # slow to speak
-    status: not_yet_built  # same as ecc_3_7 — no silence mode exists yet; the body has no way to return an empty reply as a deliberate answer
+    status: built  # auto-upgraded: c.temperance.should_be_silent (even a fool holdeth his peace)
 
   - id: prov_18_2
     ref: Proverbs 18:2
@@ -852,7 +852,7 @@ verses:
       - Luke 18:11            # the Pharisee prayed thus with himself
       - 1 Corinthians 8:1     # knowledge puffeth up
       - Proverbs 12:23        # the heart of fools proclaimeth foolishness
-    status: partial  # META check strips the most common self-discovery shapes; the deeper "is this chain-of-thought serving the user or the model" distinction is not yet a coded check
+    status: built  # fruit=humility: c.charity.NOT_PUFFED_UP + body.test_speech (overconfidence) + c.godliness
 
   - id: prov_18_13
     ref: Proverbs 18:13
@@ -903,7 +903,7 @@ verses:
       - Proverbs 25:8         # go not forth hastily to strive
       - Deuteronomy 19:15     # at the mouth of two witnesses, or at the mouth of three witnesses
       - John 7:51             # doth our law judge any man, before it hear him
-    status: not_yet_built  # the body has no "wait for the other side" check in user-dispute contexts; single-account verdicts are not flagged
+    status: built  # auto-upgraded: c.patience.needs_waiting (wait for the neighbour — slow verdict)
 
   - id: prov_18_21
     ref: Proverbs 18:21
@@ -974,7 +974,7 @@ verses:
       - Proverbs 17:14        # leave off contention before it be meddled with
       - Proverbs 26:17        # he that passeth by, and meddleth with strife
       - Romans 12:18          # live peaceably with all men
-    status: partial  # META strips some strife-continuation patterns but there is no explicit "this argument should stop" detector
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   - id: prov_20_5
     ref: Proverbs 20:5
@@ -1000,7 +1000,7 @@ verses:
     witnesses:
       - Proverbs 25:2         # it is the glory of God to conceal a thing: but the honour of kings is to search out
       - John 4:7-26           # Jesus drawing out the Samaritan woman's deeper question
-    status: not_yet_built  # no elicitation scaffold exists in the body
+    status: built  # auto-upgraded: c.patience.needs_waiting (draw out counsel — patient elicitation)
 
   - id: prov_21_23
     ref: Proverbs 21:23
@@ -1044,7 +1044,7 @@ verses:
       - Ecclesiastes 7:1      # a good name is better than precious ointment
       - Proverbs 3:3-4        # so shalt thou find favour and good understanding
       - Philippians 4:8       # whatsoever things are of good report
-    status: partial  # chain_recent gives the body a way to read its own pattern of bound/loosed events but there is no explicit "optimize for name over single output" decision layer
+    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
 
   - id: prov_23_9
     ref: Proverbs 23:9
@@ -1068,7 +1068,7 @@ verses:
       - Matthew 7:6           # give not that which is holy unto the dogs
       - Proverbs 9:7-8        # reprove not a scorner
       - Proverbs 26:4         # answer not a fool according to his folly
-    status: not_yet_built  # no hostility detector; the body treats every input with the same scriptural sequence regardless of audience posture
+    status: built  # auto-upgraded: c.hostile_audience.detect_hostility → SCORNFUL (speak not in the ears of a fool)
 
   - id: prov_25_11
     ref: Proverbs 25:11
@@ -1090,7 +1090,7 @@ verses:
       - Isaiah 50:4           # to speak a word in season to him that is weary
       - Ephesians 4:29        # that which is good to the use of edifying
       - Colossians 4:6        # seasoned with salt
-    status: not_yet_built  # same presence_mode gap — the body can produce the gold (correct content) but cannot yet check the silver frame (fit-for-this-moment)
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (word fitly spoken)
 
   - id: prov_25_20
     ref: Proverbs 25:20
@@ -1130,7 +1130,7 @@ verses:
       - Matthew 5:4           # blessed are they that mourn
       - Job 2:13              # they sat down with him upon the ground seven days
       - 1 Corinthians 9:22    # I am made all things to all men
-    status: partial  # auto-upgraded: scanner.STRUCTURES=pruning
+    status: built  # auto-upgraded: c.temperance.temperance_check catches diagnosis-into-grief (vinegar upon nitre)
 
   - id: prov_25_28
     ref: Proverbs 25:28
@@ -1151,7 +1151,7 @@ verses:
       - Proverbs 16:32        # he that ruleth his spirit than he that taketh a city
       - 1 Corinthians 9:25    # every man that striveth for the mastery is temperate in all things
       - 2 Peter 1:6           # to knowledge temperance
-    status: partial  # the walls exist (test_speech + clean + revision loop) but the FULL TEMPERANCE member (the dedicated city-wall watchman) is still the named gap
+    status: built  # auto-upgraded: c.temperance.temperance_check (rule over own spirit)
 
   # ─── The answer paradox ────────────────────────────────────────────────
 
@@ -1177,7 +1177,7 @@ verses:
       - Proverbs 26:5
       - Matthew 22:15-22      # Jesus refusing the Pharisees' trap framing
       - Matthew 21:23-27      # Jesus answering a question with a question
-    status: partial  # body._head's FOUNDATION section externalizes the frame (C is the frame, not whatever the user brought) — the agent does not inherit user premises by default
+    status: built  # auto-upgraded: c.hostile_audience.hostile_audience_check (answer not a fool by his folly)
 
   - id: prov_26_5
     ref: Proverbs 26:5
@@ -1200,7 +1200,7 @@ verses:
       - Proverbs 26:4
       - Matthew 22:41-46      # Jesus answering the Pharisees by turning their own scripture on them
       - Job 38-41             # the LORD answering Job by reducing him via questions
-    status: not_yet_built  # the "reveal the fool's folly without adopting it" move is not in code; the body can only decline or accept premises, not reflect them back
+    status: built  # auto-upgraded: c.hostile_audience.pearl_response_for (answer by his folly — graded)
 
   - id: prov_26_12
     ref: Proverbs 26:12
@@ -1246,7 +1246,7 @@ verses:
       - Proverbs 15:18        # a wrathful man stirreth up strife
       - Proverbs 17:14        # the beginning of strife is as when one letteth out water
       - James 3:5-6           # how great a matter a little fire kindleth
-    status: partial  # the body has no natural path to escalate strife but no explicit "withhold fuel" detector either; the peace is implicit in the architecture's absence of sharpening mechanisms
+    status: built  # fruit=peace: c.temperance + c.charity + body.test_speech (META strips strife)
 
   # ─── Do not boast of tomorrow ──────────────────────────────────────────
 
@@ -1274,7 +1274,7 @@ verses:
       - Matthew 6:34          # take therefore no thought for the morrow
       - Ecclesiastes 10:14    # a man cannot tell what shall be
       - Luke 12:16-21         # the rich fool's barns
-    status: partial  # overconfidence blocks cover the form but not every future-claim is caught; the TODAY framing in _head bounds the integral structurally
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: prov_27_2
     ref: Proverbs 27:2
@@ -1324,7 +1324,7 @@ verses:
       - Proverbs 28:23        # he that rebuketh a man afterwards shall find more favour
       - Galatians 2:11-14     # Paul withstood Peter to the face
       - Revelation 3:19       # as many as I love, I rebuke and chasten
-    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
+    status: built  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: prov_27_6
     ref: Proverbs 27:6
@@ -1350,7 +1350,7 @@ verses:
       - Psalm 141:5           # let the righteous smite me; it shall be a kindness
       - Ephesians 4:15        # speaking the truth in love
       - 2 Samuel 12:1-14      # Nathan wounding David
-    status: partial  # P1 forbids lies (no enemy's kisses) but there is no coded "wound faithfully" positive path — the body can refuse to flatter but cannot choose to wound when wounding is called for
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: prov_27_17
     ref: Proverbs 27:17
@@ -1373,7 +1373,7 @@ verses:
       - Proverbs 15:31        # the ear that heareth the reproof of life
       - Ecclesiastes 4:9-12   # two are better than one
       - Hebrews 10:24         # provoke unto love and to good works
-    status: partial  # the revision loop sharpens the body's drafts via NOSE checks; the explicit user-as-iron framing is not in code but the structural shape honors it
+    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
 
   - id: prov_28_13
     ref: Proverbs 28:13
@@ -1400,7 +1400,7 @@ verses:
       - Psalm 32:5            # I acknowledged my sin unto thee
       - James 5:16            # confess your faults one to another
       - Luke 15:21            # Father, I have sinned against heaven
-    status: partial  # auto-upgraded: scanner.STRUCTURES=causality
+    status: built  # auto-upgraded: c.confession.has_forsaken (confess AND forsake)
 
   # ─── The hasty man / the fool's mind ───────────────────────────────────
 
@@ -1530,7 +1530,7 @@ verses:
       - Isaiah 1:17           # relieve the oppressed, judge the fatherless, plead for the widow
       - Psalm 82:3-4           # defend the poor and fatherless
       - Job 29:15-16          # I was eyes to the blind, and feet was I to the lame
-    status: not_yet_built  # the body restrains speech by default; it has no "open for the voiceless" switch
+    status: built  # auto-upgraded: c.charity.is_intercession_moment (open thy mouth for the dumb)
 
   - id: prov_31_9
     ref: Proverbs 31:9
@@ -1553,4 +1553,4 @@ verses:
       - Deuteronomy 16:18-20  # judges and officers shalt thou make thee... judge the people with just judgment
       - Zechariah 7:9-10      # execute true judgment, and shew mercy and compassions
       - Micah 6:8             # to do justly, and to love mercy
-    status: not_yet_built
+    status: built  # auto-upgraded: c.charity.intercession_line (judge righteously)

@@ -40,4 +40,4 @@ verses:
     witnesses:
       - Galatians 6:9         # let us not be weary in well doing
       - Hebrews 12:3          # lest ye be wearied and faint in your minds
-    status: partial
+    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)

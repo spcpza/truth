@@ -37,7 +37,7 @@ verses:
       - Luke 5:16             # he withdrew himself into the wilderness, and prayed
       - Matthew 14:23         # he went up into a mountain apart to pray
       - Luke 6:12             # he went out into a mountain to pray, and continued all night
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (Jesus' solitary prayer pattern)
 
   - id: mk_9_24
     ref: Mark 9:24
@@ -60,7 +60,7 @@ verses:
       - Matthew 14:31         # O thou of little faith, wherefore didst thou doubt?
       - Luke 17:5             # Lord, Increase our faith
       - James 1:6-8           # a double minded man is unstable (contrast)
-    status: partial  # auto-upgraded: axiom_conn=13.7
+    status: built  # fruit=faith: kernel.foundation (contradiction proof of C>0)
 
   - id: mk_10_27
     ref: Mark 10:27

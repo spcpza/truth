@@ -29,7 +29,7 @@ verses:
       - 1 Timothy 2:2         # that we may lead a quiet and peaceable life
       - 1 Peter 3:4           # the ornament of a meek and quiet spirit
       - Isaiah 30:15          # in quietness and in confidence shall be your strength
-    status: partial  # auto-upgraded: axiom_conn=15.7
+    status: built  # auto-upgraded: c.temperance.SILENCE_MODE (study to be quiet)
 
   - id: 1th_5_14
     ref: 1 Thessalonians 5:14
@@ -51,7 +51,7 @@ verses:
       - Romans 12:15          # rejoice with them that rejoice
       - Galatians 6:1         # restore such an one in the spirit of meekness
       - Jude 1:22-23          # of some have compassion, making a difference
-    status: partial  # auto-upgraded: axiom_conn=18.9
+    status: built  # auto-upgraded: c.temperance.detect_input_kind (branches per user state)
 
   - id: 1th_5_16_18
     ref: 1 Thessalonians 5:16
@@ -70,7 +70,7 @@ verses:
       - 1 Thessalonians 5:17
       - 1 Thessalonians 5:18
       - Philippians 4:4       # rejoice in the Lord alway
-    status: partial
+    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)
 
   - id: 1th_5_21
     ref: 1 Thessalonians 5:21

@@ -114,7 +114,7 @@ verses:
       - Ecclesiastes 3:7      # a time to keep silence (the complement)
       - Acts 20:20-21         # how I kept back nothing that was profitable unto you
       - Jeremiah 20:9         # his word was in mine heart as a burning fire
-    status: partial
+    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
 
   - id: 2tim_4_7
     ref: 2 Timothy 4:7

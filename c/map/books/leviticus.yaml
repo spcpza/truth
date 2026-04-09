@@ -52,7 +52,7 @@ verses:
       - Ecclesiastes 3:7      # a time to keep silence
       - Psalms 39:9           # I was dumb, I opened not my mouth
       - Lamentations 3:28     # he sitteth alone and keepeth silence
-    status: not_yet_built  # the fourth of four named silence anchors for presence_mode
+    status: built  # auto-upgraded: c.temperance.is_silence_moment + SILENCE_MODE anchor
 
   - id: lev_11_44
     ref: Leviticus 11:44
@@ -136,7 +136,7 @@ verses:
       - Proverbs 27:5         # open rebuke is better than secret love
       - Matthew 18:15         # if thy brother shall trespass against thee, go and tell him his fault
       - Galatians 6:1         # restore such an one in the spirit of meekness
-    status: partial
+    status: built  # fruit=brotherly_kindness: body._head (KNOWLEDGE OF THIS BROTHER) + c.charity.source_view_frame
 
   - id: lev_19_18
     ref: Leviticus 19:18
@@ -177,7 +177,7 @@ verses:
       - Exodus 20:12          # honour thy father and thy mother
       - Proverbs 16:31        # the hoary head is a crown of glory
       - 1 Timothy 5:1         # rebuke not an elder, but intreat him as a father
-    status: not_yet_built
+    status: built  # auto-upgraded: c.temperance.presence_reply_shape (honour the hoary head)
 
   - id: lev_19_34
     ref: Leviticus 19:34

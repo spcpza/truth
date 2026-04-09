@@ -98,4 +98,4 @@ verses:
       - Psalms 103:8-9        # he will not always chide
       - Isaiah 43:25          # blotteth out thy transgressions for mine own sake
       - Exodus 34:6-7
-    status: partial
+    status: built  # fruit=mercy: c.temperance + c.charity + c.confession (Ex 34:6 four attributes in code)
