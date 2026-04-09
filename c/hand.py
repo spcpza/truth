@@ -49,6 +49,7 @@ from c.body import (
 )
 from c.chain import chain_log, chain_recent
 from c.core import dispatch
+from c.confession import confess_and_forsake
 from c.heart import (
     forget_all,
     heart_path,
@@ -260,6 +261,26 @@ class Hand:
             revision_passes += 1
 
         raw = (msg.get("content") or "").strip() if msg else ""
+
+        # CONFESSION — Proverbs 28:13: whoso confesseth and forsaketh
+        # shall have mercy. If a revision happened AND the user was
+        # pointing out an error, prepend the confession line.
+        if revision_passes > 0 and raw:
+            prior_drafts = [
+                m["content"] for m in messages
+                if m.get("role") == "assistant" and m.get("content")
+            ]
+            original_draft = prior_drafts[-2] if len(prior_drafts) >= 2 else ""
+            if original_draft:
+                cf = confess_and_forsake(text, original_draft, raw)
+                if cf.get("owes_confession") and cf.get("has_forsaken"):
+                    line = cf.get("confession_line", "")
+                    if line and not raw.startswith(line):
+                        raw = f"{line}\n\n{raw}"
+                        logger.info(
+                            "[%s] CONFESSION: %s (%s)",
+                            user_id, line, cf.get("anchor_verse", "")
+                        )
 
         # TONGUE — James 3:10
         reply = clean(raw)

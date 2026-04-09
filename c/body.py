@@ -39,6 +39,15 @@ from c.temperance import (
     InputKind,
     ReplyShape,
 )
+from c.charity import (
+    charity_verdict,
+    detect_missing_faculty,
+    is_intercession_moment,
+)
+from c.hostile_audience import hostile_audience_check
+from c.patience import patience_check, is_frederick_heb_11_13
+from c.godliness import doctrinal_gate, claims_secret_things
+from c.hope import hope_reply
 
 
 # ═══════════════════════════════════════════════════
@@ -360,6 +369,12 @@ def test_speech(
         if v.startswith("MATT5:37:"):              return True   # promise without deed
         if v.startswith("CONFAB:"):                return True   # inline tool text not called
         if v.startswith("REPEAT:"):                return True   # verbatim repeat of prior reply
+        if v.startswith("CHARITY:"):               return True   # 1 Cor 13 property violation
+        if v.startswith("PEARL:"):                 return True   # casting pearls (Matt 7:6)
+        if v.startswith("PATIENCE:"):              return True   # hasty spirit (Prov 14:29)
+        if v.startswith("DOCTRINE:"):              return True   # ungrounded claim (Deut 4:2)
+        if v.startswith("SECRET:"):                return True   # secret things (Deut 29:29)
+        if v.startswith("HOPE:"):                  return True   # hope that is seen (Rom 8:24)
         if "excess words" in v:                    return True   # length explosion
         if "overconfidence" in v:                  return True   # blanket assertion
         return False
@@ -417,6 +432,71 @@ def test_speech(
         if tc["verdict"] == "revise":
             structural.append(f"TEMPERANCE: {tc['feedback']}")
             _temperance_feedback = tc["feedback"]
+
+    # ── The six members (2 Peter 1:5-7) ──────────────────────────────
+    # Each runs on the draft and/or user_message. Each returns a dict
+    # with a "verdict" field. If "revise", add to structural violations.
+
+    _member_feedback: list[str] = []
+
+    # CHARITY — 1 Corinthians 13:4-7. Check the 15 properties of love.
+    cv = charity_verdict(draft)
+    if cv.get("verdict") == "revise":
+        _cv_fb = cv.get("feedback", "1 Cor 13 — charity suffereth long and is kind.")
+        structural.append(f"CHARITY: {_cv_fb}")
+        _member_feedback.append(_cv_fb)
+
+    # HOSTILE AUDIENCE — Matthew 7:6. Guard pearls from trampling.
+    if user_message is not None:
+        ha = hostile_audience_check(user_message, draft)
+        if ha.get("verdict") == "withhold_pearl":
+            _ha_fb = ha.get("feedback", "Matt 7:6 — guard the pearl; serve at a shallower depth.")
+            structural.append(f"PEARL: {_ha_fb}")
+            _member_feedback.append(_ha_fb)
+
+    # PATIENCE — Proverbs 14:29. Detect hasty spirit and over-promising.
+    pc = patience_check(draft)
+    if pc.get("verdict") == "revise":
+        _pc_fb = pc.get("feedback", "")
+        if not _pc_fb:
+            # Build feedback from flags when module doesn't provide one
+            parts = []
+            if pc.get("hasty"):
+                parts.append("Prov 14:29 — hasty of spirit; slow down")
+            if pc.get("over_promising"):
+                parts.append("Rom 8:24 — promising visible outcomes; declare hope, not certainty")
+            _pc_fb = ". ".join(parts) or "Prov 14:29 — be not hasty."
+        structural.append(f"PATIENCE: {_pc_fb}")
+        _member_feedback.append(_pc_fb)
+
+    # GODLINESS — Deuteronomy 4:2. Gate doctrinal claims with evidence.
+    dg = doctrinal_gate(draft)
+    if dg.get("verdict") == "revise":
+        structural.append(f"DOCTRINE: {dg['feedback']}")
+        _member_feedback.append(dg["feedback"])
+
+    # GODLINESS — Deuteronomy 29:29. Bound speculation on secret things.
+    if claims_secret_things(draft):
+        structural.append(
+            "SECRET: Deuteronomy 29:29 — the secret things belong unto "
+            "the LORD. Do not speculate on hidden divine purposes."
+        )
+        _member_feedback.append(
+            "Deut 29:29 — secret things belong to the LORD. Remove the "
+            "speculation on what God intended or why He allowed it."
+        )
+
+    # HOPE — Romans 8:24. Hope that is seen is not hope.
+    hr = hope_reply(draft)  # reuse hope_reply for seen-hope check
+    if hr.get("warn_seen_hope"):
+        structural.append(
+            "HOPE: Romans 8:24 — hope that is seen is not hope. The "
+            "draft promises a visible future. Declare hope, not certainty."
+        )
+        _member_feedback.append(
+            "Rom 8:24 — strip the visible guarantee. Declare hope from "
+            "C, not a promise of specific outcome."
+        )
 
     # Matthew 5:37 — promises require deeds. The TONGUE may not say what
     # the HAND did not do. James 2:17: faith without works is dead.
@@ -526,6 +606,8 @@ def test_speech(
         )
     if _temperance_feedback:
         convictions.append(_temperance_feedback)
+    for fb in _member_feedback:
+        convictions.append(fb)
     if promised:
         tool_list = ", ".join(promised)
         convictions.append(
@@ -577,6 +659,7 @@ def _head(
     fetched: str,
     heart_records: list[dict] | None = None,
     input_kind: InputKind = InputKind.NEUTRAL,
+    member_signals: dict | None = None,
 ) -> str:
     """
     HEAD — Colossians 2:19: holding the Head, from which all the body by joints
@@ -776,6 +859,55 @@ def _head(
         if guidance:
             parts.append(f"TEMPERANCE (2 Pet 1:6) — {guidance}")
 
+    # ── The six members enrich the integral (2 Peter 1:5-7) ─────
+    sigs = member_signals or {}
+
+    # CHARITY — Job 29:15: I was eyes to the blind, feet to the lame.
+    # When the user lacks a faculty, the body embodies it.
+    if sigs.get("charity_faculty"):
+        faculties = ", ".join(
+            f.value if hasattr(f, "value") else str(f)
+            for f in sigs["charity_faculty"]
+        )
+        parts.append(
+            f"CHARITY (Job 29:15) — the user may need: {faculties}. "
+            f"Embody what they lack. Do not name the lack; supply it."
+        )
+
+    # CHARITY — Ezekiel 22:30: I sought for a man to stand in the gap.
+    if sigs.get("intercession"):
+        parts.append(
+            "INTERCESSION (Ezk 22:30) — the user describes someone else "
+            "who is suffering. Stand in the gap. Pray for the named "
+            "person. Do not redirect to the user's own situation."
+        )
+
+    # PATIENCE — Hebrews 11:13: died in faith, not having received.
+    if sigs.get("heb_11_13"):
+        parts.append(
+            "PATIENCE (Heb 11:13) — the user stands in faith without "
+            "seeing the result. Affirm the posture. Do not redirect, "
+            "do not promise a visible outcome, do not hurry the process."
+        )
+
+    # HOPE — declare hope, don't argue it. Romans 8:25.
+    if sigs.get("hope_shape"):
+        shape = sigs["hope_shape"]
+        declaration = sigs.get("hope_declaration", "")
+        shape_name = shape.value if hasattr(shape, "value") else str(shape)
+        parts.append(
+            f"HOPE (Rom 8:25) — hope shape: {shape_name}. "
+            f"Declare hope, do not argue it. "
+            + (f"Declaration anchor: {declaration}" if declaration else "")
+        )
+
+    # GODLINESS — Ecclesiastes 12:14: every work into judgment.
+    # Ambient frame: the body knows its words are weighed.
+    parts.append(
+        "Ecclesiastes 12:14: God shall bring every work into judgment, "
+        "with every secret thing. Your words are weighed."
+    )
+
     if fetched:
         # Proverbs 30:6: add thou not unto his words, lest he reprove thee, and
         # thou be found a liar. The page below is the whole testimony.
@@ -853,13 +985,42 @@ def members(text: str, heart_records: list[dict] | None = None) -> dict:
     heard, fetched = _ear(text)
     nose_result = _nose(heard)
     input_kind = detect_input_kind(text or "")
-    integral = _head(nose_result, fetched, heart_records, input_kind=input_kind)
+
+    # ── The six members sense the input (2 Peter 1:5-7) ──────────
+    member_signals = {}
+
+    # CHARITY — Job 29:15: I was eyes to the blind, feet to the lame
+    missing_fac = detect_missing_faculty(text or "")
+    if missing_fac:
+        member_signals["charity_faculty"] = missing_fac
+    if is_intercession_moment(text or ""):
+        member_signals["intercession"] = True
+
+    # PATIENCE — Hebrews 11:13: died in faith, not having received
+    if is_frederick_heb_11_13(text or ""):
+        member_signals["heb_11_13"] = True
+
+    # HOPE — select hope shape for the user's moment
+    hr = hope_reply(text or "")
+    if hr.get("shape"):
+        member_signals["hope_shape"] = hr["shape"]
+        member_signals["hope_declaration"] = hr.get("declaration", "")
+
+    integral = _head(
+        nose_result, fetched, heart_records,
+        input_kind=input_kind,
+        member_signals=member_signals,
+    )
 
     active = []
     if fetched: active.append("EAR-fetch")
     if nose_result and "Verdict:" in nose_result: active.append("NOSE")
     if heart_records: active.append(f"HEART({len(heart_records)})")
     if input_kind != InputKind.NEUTRAL: active.append(f"TEMPERANCE({input_kind.value})")
+    if missing_fac: active.append(f"CHARITY({','.join(f.value if hasattr(f,'value') else str(f) for f in missing_fac)})")
+    if member_signals.get("intercession"): active.append("INTERCESSION")
+    if member_signals.get("heb_11_13"): active.append("PATIENCE(heb11:13)")
+    if member_signals.get("hope_shape"): active.append(f"HOPE({member_signals['hope_shape'].value if hasattr(member_signals['hope_shape'],'value') else member_signals['hope_shape']})")
 
     return {"integral": integral, "active": active}
 
