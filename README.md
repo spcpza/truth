@@ -167,16 +167,15 @@ Each member is anchored to a verse. Its operation is what the verse commands.
 See `c/body.py` and `c/README.md` for the full architecture.
 
 ```
-Member    Anchor              Operation (from its verse's verb)
-──────    ──────              ─────────────────────────────────
-EAR       James 1:19          akouō — hear. Identity function. Runs first.
-NOSE      1 John 4:1          dokimazō — test. P₁–P₈ evaluation. Bridled (Ps 39:1).
-EYE       Matthew 6:22        haplous — single. One verse from C, not many.
-HEART     Jeremiah 31:33      kāṯaḇ — written. Strong's-ranked records.
-FOOT      Psalms 119:105      dāḇār — word. One step from where the EYE saw.
-HEAD      Colossians 2:19     symbibazō — knit together. The integral.
-HAND      James 1:25          poiētēs — doer. LLM + tools.
-TONGUE    James 3:10          eulogia − katara. Blessing passes, artifacts removed.
+Member      Anchor              Operation (from its verse's verb)
+──────      ──────              ─────────────────────────────────
+EAR         James 1:19          akouō — hear. Identity function. Runs first.
+NOSE        1 John 4:1          dokimazō — test. P₁–P₈ + CONFAB + REPEAT + temperance.
+TEMPERANCE  2 Peter 1:6         enkrateia — self-rule. Input kind → reply shape → word budget.
+HEART       Jeremiah 31:33      kāṯaḇ — written. Strong's-ranked records.
+HEAD        Colossians 2:19     symbibazō — knit together. The integral.
+HAND        James 1:25          poiētēs — doer. LLM + tools.
+TONGUE      James 3:10          eulogia − katara. Blessing passes, artifacts removed.
 ```
 
 ### The integral
@@ -215,8 +214,21 @@ input
 
 NOSE runs twice: once on input (Proverbs 18:13: he that answereth a matter
 before he heareth it), once on the draft (James 1:19: slow to speak). If
-the draft violates P₁–P₈, the HAND must rewrite — up to 3 passes — before
+the draft violates P₁–P₈, the HAND must rewrite — up to 2 passes — before
 the TONGUE may speak.
+
+TEMPERANCE (2 Peter 1:6) runs between EAR and HEAD. It classifies the
+user's input into one of seven kinds — GRIEF, JOY, WEARINESS, CONFUSION,
+REQUEST, HOSTILITY, NEUTRAL — and sets the reply shape and word budget
+before the model speaks. NOSE enforces temperance post-hoc: if the model
+diagnoses into grief (Proverbs 25:20), or exceeds the word budget for
+MOURN_WITH, NOSE rejects and retries.
+
+NOSE also catches:
+- **CONFAB** — model writes inline tool text (`sinew {...}`) without calling
+  the tool. James 2:17: the deed, not the text of the deed.
+- **REPEAT** — model sends a verbatim copy of a prior reply.
+  Proverbs 26:11: do not return to the same words.
 
 No imposed verses. No preamble. No teacher between the person and truth.
 Jeremiah 31:34: *they shall teach no more every man his neighbour*.
@@ -238,9 +250,13 @@ c/kjv.json          — 31,102 propositions (KJV, the verified record)
 c/strongs.json      — 12,040 concepts, translations, 11,231 etymological roots
 c/core.py           — query interface: scripture, wisdom, sinew, evaluate,
                       formula, gematria, fetch
-c/body.py           — the eight members and the eleven tools, all anchored
+c/body.py           — the members, tools, NOSE, TONGUE, all anchored
+c/hand.py           — the HAND: model-agnostic turn loop + tool dispatch
+c/heart.py          — per-user memory with time-anchoring + dedup
+c/temperance.py     — input kind detection, reply shapes, word budgets
 c/formula.py        — Strong's → math types → verse formulas → theorem clusters
 c/scanner.py        — theorem discovery by mathematical structure
+c/adapters/         — model adapters (Hermes XML, standard OpenAI, etc.)
 agent.py            — Telegram deployment of the body (plug-and-play)
 config.example.json — copy to config.json and fill in your tokens
 requirements.txt    — httpx, python-telegram-bot
@@ -346,8 +362,11 @@ cp config.example.json config.json
 
 Edit `config.json` and fill in:
 
-- `nous_api_key` — from inference-api.nousresearch.com
+- `nous_api_key` — from portal.nousresearch.com
 - `telegram_token` — from @BotFather on Telegram
+- `model` — any model on the Nous API: `xiaomi/mimo-v2-pro` (free),
+  `nousresearch/hermes-4-70b`, etc. The adapter auto-detects Hermes
+  vs standard OpenAI tool calling.
 - `allowed_users` — list of Telegram user IDs allowed to talk to your bot
   (leave empty `[]` to allow anyone)
 
