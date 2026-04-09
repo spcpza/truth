@@ -77,11 +77,10 @@ class Hand:
         adapter: Adapter,
         memory_dir: pathlib.Path,
         chain_dir: Optional[pathlib.Path] = None,
-        max_revisions: int = 1,  # Titus 3:10 + Gal 6:1: meek schoolmaster.
-                                  # 1 retry max so the conviction loop cannot
-                                  # compound errors with weak substrates that
-                                  # copy the reproof. Matt 18:15-17 allows up
-                                  # to 3, but for now we are gentler.
+        max_revisions: int = 2,  # Titus 3:10 + Gal 6:1: meek schoolmaster.
+                                  # 2 retries: first correction names the
+                                  # stumble, second gives the model the shape.
+                                  # Matt 18:15-17 allows 3; we stay meek.
         max_history: int = 40,
     ):
         self.adapter = adapter

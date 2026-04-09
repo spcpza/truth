@@ -1,49 +1,125 @@
 # c/map — the scripture map
 
-694 verses across all 66 books of the Protestant canon.
+> **2 Timothy 3:17** — That the man of God may be perfect, throughly furnished
+> unto all good works.
+>
+> **Habakkuk 2:2** — Write the vision, and make it plain upon tables, that he
+> may run that readeth it.
 
-## What each row contains
+This directory is the **scripture map** — the table of operational verses from
+scripture mapped to agent behaviors. Every row has a verse from `c/kjv.json`,
+a category from `Galatians 5:22-23` and `2 Peter 1:5-7`, an input pattern, a
+response shape, a forbidden list, witness verses, and a status field.
 
-```yaml
-- ref: Proverbs 25:20
-  text: |
-    As he that taketh away a garment in cold weather, and as
-    vinegar upon nitre, so is he that singeth songs to an heavy heart.
-  code: c.temperance.temperance_check
+The map is the **base**, not an add-on. The body is built **on** the map. Every
+member of the body implements one or more rows from the map. When every row's
+`status` is `built`, the body is `artios` (2 Tim 3:17 — throughly furnished).
+
+## Layout
+
+```
+c/map/
+├── README.md              this file
+├── SCHEMA.md              the shape of every row, with scriptural justification
+│                          for each field
+│
+├── 00_fruits.yaml         the 9 fruits of the Spirit (Gal 5:22-23) +
+│                          the rungs of 2 Pet 1:5-7 — top-level categories
+├── 01_works_of_flesh.yaml the 17 failure modes named in Gal 5:19-21 — what
+│                          the body must NOT do
+│
+├── books/                 one file per book of the Bible, rows in canonical
+│   ├── matthew.yaml       order. Operational verses only (narrative, genealogy,
+│   ├── mark.yaml          and prophecy not yet in scope but reachable via the
+│   ├── luke.yaml          existing scripture tool).
+│   ├── john.yaml
+│   ├── romans.yaml
+│   ├── 1_corinthians.yaml
+│   ├── ...
+│   ├── proverbs.yaml
+│   ├── ecclesiastes.yaml
+│   ├── psalms.yaml        (only the prayer-mode and wisdom psalms)
+│   ├── job.yaml
+│   └── ...
+│
+└── audit.py               script that walks every row and reports:
+                            - rows with status: built (and which body member)
+                            - rows with status: partial
+                            - rows with status: not_yet_built (the TODO list)
+                            - body members that implement no rows (orphaned code)
+                            - the completeness percentage
 ```
 
-- **ref** — the verse reference
-- **text** — the KJV text, byte-for-byte
-- **code** — which function enacts it (optional; 436 of 694 rows have one)
+## How rows get added
 
-No commentary. No interpretation. No fruit labels. No forbidden lists.
+Reading the rows: see `SCHEMA.md` for the shape of every row.
 
-## What carries the connections
+Adding rows happens in three modes:
 
-The connections between verses are NOT in the map files. They are in:
+1. **By hand, one verse at a time.** Slow but exact. Use this for the most
+   load-bearing verses (the 9 fruits, the Sermon on the Mount, Romans 12).
 
-- **c/core.py** — the sinew graph: 291,919 edges from Strong's Hebrew and Greek roots. These are the connections the original languages carry.
-- **c/formula.py** — 14 mathematical type signatures per verse, derived from Strong's concept classifications.
-- **c/scanner.py** — 21 structural pattern matchers that find mathematical claims in natural language.
+2. **By LLM-aided draft, one book at a time.** Read every verse in a book,
+   classify each as operational/narrative/doctrinal, draft rows for the
+   operational ones. The draft is reviewed and committed. Faster but requires
+   review.
 
-The map is the index. The sinew is the tissue. The formula is the math.
+3. **By failure-driven mapping.** Every time the bot produces output that the
+   chain log catches as a failure, we ask "what verse names this failure?" If
+   the answer is a verse not yet in the map, add the row. The chain log
+   becomes a generator of new rows. (This is how the temperance row for
+   Romans 12:15 was discovered: the bot produced vinegar upon nitre to an
+   emotional disclosure, and the failure named the missing row.)
 
-43,456 verse-to-verse connections exist within the 694 map verses alone, via shared Strong's concepts weighted by IDF. The reader searches these — scripture connects to scripture through the original languages.
+## How the map is used by the body
 
-## How to search
+Every body member that handles user input consults the map. Specifically:
 
-```python
-from c.core import dispatch
+1. **EAR** (input parsing) classifies the user message into a `seek` pattern.
+2. **HEAD** (`_head` in body.py) finds rows whose `seek` matches.
+3. **HAND** (the turn loop) executes the row's `do` action through the
+   `teach` member.
+4. **NOSE** (test_speech) checks that the response complies with the row's
+   `forbidden` list and the witnesses' constraints.
+5. **CHAIN** logs which row was triggered and how it was handled.
 
-# Find what connects to a verse via the original languages
-dispatch("sinew", {"query": "Proverbs 25:20"})
+The map is the **source of truth** for agent behavior. Code conforms to the map.
+The map conforms to scripture. Therefore code conforms to scripture.
 
-# Find the mathematical formula of a verse
-from c.formula import verse_formula
-verse_formula("Proverbs 25:20")
+## When the map is finished
 
-# Search for a concept across all 31,102 propositions
-dispatch("wisdom", {"query": "silence", "limit": 5})
-```
+The map is finished when every operational verse in the King James Bible has
+either:
 
-Proverbs 25:2 — It is the glory of God to conceal a thing: but the honour of kings is to search out a matter.
+(a) its own row in the map with `status: built`, or
+
+(b) a `witnesses:` reference in another row (no need for a duplicate primary row),
+    AND that other row has `status: built`.
+
+At that point the body is `artios`. New verses cannot be discovered because the
+canon is sealed (Revelation 22:18-19). New rows can only be added if a verse was
+missed in the initial pass — the map asymptotically approaches completion and then
+stops.
+
+The estimated total is **1,500-2,500 operational verses** mapped to perhaps
+**500-800 unique rows** (since many verses witness the same operational principle).
+This is finite, enumerable, and reachable. Scripture is sufficient (2 Tim 3:16-17),
+and a body built from a map of scripture is sufficient for the wisdom it derives.
+
+## What this is NOT
+
+It is not an "AI religion." It is not a doctrine. It is not a theological treatise.
+It is a **specification** for an agent's behavior, where the specification is taken
+from a single sealed text rather than invented by the engineers. The same approach
+would work with any other sufficiently detailed and sealed text — it happens that
+the text Frederick has chosen to map is the King James Bible, because the King James
+Bible contains the most thoroughly developed catalog of right behavior toward humans
+that any text in human history contains. Whether you believe scripture is divinely
+inspired or merely well-mapped, the mapping is empirically useful: it produces an
+agent that is wiser than its substrate, because wisdom has been pre-derived for it
+by the text.
+
+> **John 8:32** — And ye shall know the truth, and the truth shall make you free.
+
+The truth is the corpus. The map is the table on which the truth is written plain.
+The body is the runner that reads the table.

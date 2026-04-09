@@ -32,6 +32,13 @@ Public API for any deployment (Telegram, web, CLI, MCP, etc.):
 
 import re
 from c.core import dispatch, KERNEL, evaluate_constraints
+from c.temperance import (
+    detect_input_kind,
+    presence_reply_shape,
+    word_budget,
+    InputKind,
+    ReplyShape,
+)
 
 
 # ═══════════════════════════════════════════════════
@@ -267,7 +274,10 @@ _PERSONAL_FACT = re.compile(
     r"I'?ve\b|"
     r"I'?ll\b|"
     r"I\s+want\b|"
-    r"I\s+need\b"
+    r"I\s+need\b|"
+    r"I\s+had\b|"          # significant events: "I had a hard conversation..."
+    r"we\s+(?:just\s+)?got\b|"  # joy events: "we just got engaged"
+    r"my\s+\w+\s+(?:just\s+)?(?:passed|died|left|got)\b"  # life events: "my dog just passed"
     r")",
     re.I,
 )
@@ -347,6 +357,7 @@ def test_speech(
     def _is_structural(v: str) -> bool:
         if v.startswith("META:"):                  return True   # Pharisee enumeration
         if v.startswith("MATT5:37:"):              return True   # promise without deed
+        if v.startswith("CONFAB:"):                return True   # inline tool text not called
         if "excess words" in v:                    return True   # length explosion
         if "overconfidence" in v:                  return True   # blanket assertion
         return False
@@ -357,6 +368,38 @@ def test_speech(
     meta = _count_meta_tells(draft)
     if meta:
         structural.append(f"META: constraint-theater ({meta} tells)")
+
+    # James 2:17 — faith without works is dead. If the model wrote an
+    # inline tool-call text (e.g. `  sinew {"query": "..."}`) but did
+    # not actually call the tool, it is a promise without a deed.
+    # Proverbs 30:6: add thou not unto his words — fabricated results
+    # are adding words. This fires if tools_called is known.
+    _INLINE_TOOL_NAME_PAT = re.compile(
+        r'^\s*(?P<tool>scripture|sinew|wisdom|kernel|formula|evaluate|'
+        r'gematria|fetch|remember|recall|forget)\s+\{',
+        re.MULTILINE | re.I,
+    )
+    if tools_called is not None:
+        for m in _INLINE_TOOL_NAME_PAT.finditer(draft):
+            tool_name = m.group("tool").lower()
+            if tool_name not in tools_called:
+                structural.append(
+                    f"CONFAB: '{tool_name}' written as inline text but not called. "
+                    f"James 2:17 — the deed, not the text of the deed. Call the "
+                    f"tool or remove the reference entirely."
+                )
+                break  # one conviction is enough
+
+    # TEMPERANCE — 2 Peter 1:6. If user_message is supplied, run the
+    # full temperance_check and fold any "revise" verdict into structural
+    # violations. Romans 12:15 + Proverbs 25:20.
+    _temperance_feedback = ""
+    if user_message is not None:
+        from c.temperance import temperance_check
+        tc = temperance_check(user_message, draft)
+        if tc["verdict"] == "revise":
+            structural.append(f"TEMPERANCE: {tc['feedback']}")
+            _temperance_feedback = tc["feedback"]
 
     # Matthew 5:37 — promises require deeds. The TONGUE may not say what
     # the HAND did not do. James 2:17: faith without works is dead.
@@ -450,6 +493,16 @@ def test_speech(
         convictions.append(
             "Prov 11:2 — pride goeth; soften the certainty."
         )
+    if any(v.startswith("CONFAB:") for v in structural):
+        convictions.append(
+            "James 2:17 — faith without works is dead. You wrote a tool "
+            "name inline (e.g. `sinew {...}`) but did not call the tool. "
+            "Remove the inline text AND call the actual tool, or give "
+            "your answer from what you already know without pretending "
+            "to run a query."
+        )
+    if _temperance_feedback:
+        convictions.append(_temperance_feedback)
     if promised:
         tool_list = ", ".join(promised)
         convictions.append(
@@ -457,22 +510,28 @@ def test_speech(
             f"not called. Call it or drop the mention."
         )
     if missing_remember and fact_hint:
-        # The fact MUST be in third person about the user, not in the
-        # user's own first-person voice. If we store "Today I'm fixing my
-        # bitcoin miners" in the heart, the model later reads it as ITS
-        # own statement and starts parroting it. Third person ("Frederick
-        # is fixing his bitcoin miners") cannot be confused for the
-        # bot's voice. Give the model the user's text as a HINT but
-        # explicitly tell it to rephrase.
+        # The fact MUST be in third person AND scope-anchored:
+        #   - Third person ("Frederick is...") not first ("I am...")
+        #     so the model later reads it as a fact about the user, not
+        #     as its own utterance to parrot.
+        #   - Stable phrasing where possible ("uses bitcoin miners for
+        #     water heating") rather than momentary phrasing ("is fixing
+        #     today"). Hebrews 13:8: the eternal needs no date; the
+        #     temporal must be dated. heart.py auto-anchors any leftover
+        #     "today"/"yesterday"/"now" to absolute dates as a backstop,
+        #     but stable phrasing is the preferred form.
         safe_hint = fact_hint.replace("\\", "\\\\").replace("\"", "\\\"")
         convictions.append(
             "Luke 19:5 — the user shared a fact; the heart was not written. "
-            "Emit one tool call now, with the fact in THIRD PERSON about the "
-            "user (e.g. \"the user is X\" / \"the user does Y\") — never in "
-            "first person. The user said: \"" + safe_hint + "\". "
-            "Translate that into a third-person fact, then call: "
+            "Emit one tool call now. The fact must be (a) in THIRD PERSON "
+            "about the user, never first person; and (b) phrased as a "
+            "stable trait or ongoing project, not as a momentary action "
+            "tied to today. Prefer \"the user uses X\" or \"the user is "
+            "interested in Y\" over \"today the user is doing X\". The "
+            "user said: \"" + safe_hint + "\". Translate that into a "
+            "third-person, stable-form fact, then call: "
             "<tool_call>{\"name\":\"remember\",\"arguments\":"
-            "{\"fact\":\"<your third-person fact here>\"}}</tool_call>"
+            "{\"fact\":\"<your third-person stable fact here>\"}}</tool_call>"
         )
 
     if not convictions:
@@ -494,6 +553,7 @@ def _head(
     nose: str,
     fetched: str,
     heart_records: list[dict] | None = None,
+    input_kind: InputKind = InputKind.NEUTRAL,
 ) -> str:
     """
     HEAD — Colossians 2:19: holding the Head, from which all the body by joints
@@ -628,6 +688,71 @@ def _head(
         f"few. Then be still."
     )
 
+    # TEMPERANCE — 2 Peter 1:6: to knowledge temperance. The body must
+    # know the KIND of moment before it knows WHAT to say (Prov 15:23).
+    # Romans 12:15: rejoice with them that rejoice, weep with them that weep.
+    # Proverbs 25:20: do not sing songs to a heavy heart (vinegar upon nitre).
+    if input_kind != InputKind.NEUTRAL:
+        shape = presence_reply_shape(input_kind)
+        budget = word_budget(shape)
+        _KIND_GUIDANCE = {
+            InputKind.GRIEF: (
+                "The user's message carries grief or a heavy conversation. "
+                "Job 2:13 — the friends sat seven days in silence because "
+                "the grief was very great. Romans 12:15 — weep with them "
+                "that weep. Reply shape: MOURN_WITH. "
+                f"Hard word budget: {budget} words. "
+                "Do NOT: diagnose, explain, offer advice, quote long "
+                "scripture passages, write poetry, or ask questions. "
+                "DO: be brief and present. A good reply looks like: "
+                "\"I'm here. That sounds hard.\" or \"I hear you. "
+                "Romans 12:15.\" Job 16:5 — strengthen and assuage, "
+                "not analyze."
+            ),
+            InputKind.WEARINESS: (
+                "The user is weary or overwhelmed. Matthew 11:28 — come "
+                "unto me, all ye that labour and are heavy laden, and I "
+                "will give you rest. Isaiah 50:4 — a word in season to "
+                "him that is weary. Reply shape: OFFER_REST. "
+                f"Hard word budget: {budget} words. "
+                "Do NOT: give a task list, analyze causes, or dump "
+                "information. A good reply: \"Matthew 11:28 — come. "
+                "Rest is given, not earned.\""
+            ),
+            InputKind.JOY: (
+                "The user shares good news or joy. Romans 12:15 — rejoice "
+                "with them that rejoice. 3 John 1:4 — I have no greater "
+                "joy than to hear that my children walk in truth. "
+                "Reply shape: REJOICE_WITH. Brief and warm. "
+                f"Hard word budget: {budget} words. "
+                "Do NOT: qualify, dampen, or add theological caveats. "
+                "A good reply: \"That is wonderful. Rejoice with you.\""
+            ),
+            InputKind.CONFUSION: (
+                "The user is confused or pulled in many directions. "
+                "Luke 10:42 — one thing is needful. Mary chose that good "
+                "part which shall not be taken away. Reply shape: "
+                f"ONE_THING_NEEDFUL. Word budget: {budget}. "
+                "Give them ONE anchor — the most important thing. Not a "
+                "list, not options. One thing."
+            ),
+            InputKind.HOSTILITY: (
+                "The user's message carries friction or hostility. "
+                "Proverbs 15:1 — a soft answer turneth away wrath. "
+                "Do not fight back, do not lecture. Reply shape: "
+                f"SOFT_ANSWER. Word budget: {budget}. "
+                "A good reply: \"I hear you.\" or a single gentle word."
+            ),
+            InputKind.REQUEST: (
+                "The user is making a request. Matthew 7:7 — ask, and it "
+                "shall be given. Serve the ask fully. Reply shape: "
+                f"SERVE_THE_ASK. Word budget: {budget}."
+            ),
+        }
+        guidance = _KIND_GUIDANCE.get(input_kind, "")
+        if guidance:
+            parts.append(f"TEMPERANCE (2 Pet 1:6) — {guidance}")
+
     if fetched:
         # Proverbs 30:6: add thou not unto his words, lest he reprove thee, and
         # thou be found a liar. The page below is the whole testimony.
@@ -704,12 +829,14 @@ def members(text: str, heart_records: list[dict] | None = None) -> dict:
     """
     heard, fetched = _ear(text)
     nose_result = _nose(heard)
-    integral = _head(nose_result, fetched, heart_records)
+    input_kind = detect_input_kind(text or "")
+    integral = _head(nose_result, fetched, heart_records, input_kind=input_kind)
 
     active = []
     if fetched: active.append("EAR-fetch")
     if nose_result and "Verdict:" in nose_result: active.append("NOSE")
     if heart_records: active.append(f"HEART({len(heart_records)})")
+    if input_kind != InputKind.NEUTRAL: active.append(f"TEMPERANCE({input_kind.value})")
 
     return {"integral": integral, "active": active}
 
@@ -732,6 +859,46 @@ _DESIGN_LINE = re.compile(r'^DESIGN\..*$', re.MULTILINE)
 _NARRATION_BLOCK = re.compile(r'^(?:OVERVIEW|ANALYSIS|SUMMARY|RESPONSE)\b.*?(?=\n\n|\Z)', re.MULTILINE | re.DOTALL)
 _TOOL_DEBUG = re.compile(r'^---\s*\n(?:\s*(?:scripture|kernel|sinew|formula|wisdom|evaluate|gematria|fetch)\b.*\n?)+', re.MULTILINE | re.I)
 _CODE_ARTIFACT = re.compile(r'^(?:""".*?"""|Recall\(.*?\)|sinew\(.*?\))$', re.MULTILINE)
+
+# Proverbs 30:6 — add thou not unto his words. The model sometimes writes
+# tool calls as inline text (e.g. `  sinew {"query": "..."}`) rather than
+# calling the tool. These are pseudo-tool-calls: the model narrates its
+# own invocation instead of doing it. Strip them and their fake headers.
+# James 2:17: faith without works is dead — if the tool was not called,
+# the text of the call is not the deed; it is a promise without a deed.
+_INLINE_TOOL_CALL = re.compile(
+    r'^\s*(?:scripture|kernel|sinew|formula|wisdom|evaluate|gematria|fetch|'
+    r'remember|recall|forget)\s+\{[^}]*\}\s*$',
+    re.MULTILINE | re.I,
+)
+# Strip fabricated result headers like **Scripture: Matthew 6:33** or
+# **Sinew: Connections for "..."** that accompany hallucinated tool output.
+_FAKE_TOOL_HEADER = re.compile(
+    r'\*{1,2}(?:Scripture|Sinew|Kernel|Formula|Wisdom|Gematria):\s*[^*\n]+\*{0,2}\n?',
+    re.I,
+)
+# Matthew 23:23 — strip fictional narrative openers. The body is not an
+# actor closing a scene; "As the conversation neared its end" is the model
+# performing rather than speaking. Mark 1:22: as one that had authority.
+_NARRATIVE_OPENER = re.compile(
+    r'(?:As (?:the|our|this|we near|we approach) (?:conversation|discussion|exchange)'
+    r'[^,.]*(,|\.)\s*|'
+    r'As we (?:come to|near|reach|approach) (?:the end|a conclusion|this point)[^,.]*[,.]\s*)',
+    re.I,
+)
+# Strip memory meta-commentary — the body narrating its own memory system
+# to the user is constraint-theater of a different kind. The shepherd does
+# not explain the pasture-filing system to the sheep (John 10:14).
+_MEMORY_META = re.compile(
+    r'(?:'
+    r'The (?:verse|fact|information) that was just (?:recalled|remembered|stored|written)[^.]*\.\s*|'
+    r'(?:that was|which was) (?:actually )?from (?:my memory|my heart|memory)[^.]*\.\s*|'
+    r"I'?m? still learning to (?:consistently )?separate[^.]*\.\s*|"
+    r"I'?ll? be more careful (?:going forward|in the future)[^.]*\.\s*|"
+    r'I (?:apologize|am sorry) for any confusion (?:caused|this may have caused)[^.]*\.\s*'
+    r')',
+    re.I,
+)
 
 
 _CJK_PAT = re.compile(r'[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff00-\uffef]')
@@ -838,6 +1005,10 @@ def clean(text: str) -> str:
     text = _NARRATION_BLOCK.sub("", text)
     text = _TOOL_DEBUG.sub("", text)
     text = _CODE_ARTIFACT.sub("", text)
+    text = _INLINE_TOOL_CALL.sub("", text)
+    text = _FAKE_TOOL_HEADER.sub("", text)
+    text = _NARRATIVE_OPENER.sub("", text)
+    text = _MEMORY_META.sub("", text)
     text = re.sub(r'\s*\\\s*\n', ' ', text)
     text = re.sub(r'\s*\\\s*$', '', text, flags=re.MULTILINE)
     text = re.sub(r'\n{3,}', '\n\n', text)

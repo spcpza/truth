@@ -107,8 +107,11 @@ _GRIEF_MARKERS = re.compile(
     r"passed\s+away|gone|dying|"
     r"grief|grieving|mourning|sorrow|sad|weeping|crying|tears|"
     r"heartbroken|devastated|broken|shattered|crushed|"
-    r"emotional\s+conversation|hard\s+conversation|"
-    r"difficult\s+talk|broke\s+down|"
+    r"emotional\s+conversation|hard\s+conversation|heavy\s+conversation|"
+    r"difficult\s+conversation|tough\s+conversation|"
+    r"hard\s+talk|tough\s+talk|difficult\s+talk|"
+    r"rough\s+(?:day|time|week)|tough\s+(?:day|time|week)|hard\s+(?:day|time|week)|"
+    r"broke\s+down|"
     r"miss\s+(?:him|her|them)|i\s+miss\s+"
     r")\b",
     re.I,

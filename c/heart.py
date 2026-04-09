@@ -52,6 +52,77 @@ def write_memories(
     )
 
 
+# Hebrews 13:8: Jesus Christ the same yesterday, and to day, and for ever.
+# Eternal facts need no date. Temporal facts must be dated, or they
+# become eternal-by-accident — "Frederick is fixing his bitcoin miners
+# today" was written in good faith but is parsed forever as currently
+# true. Scripture anchors temporal events with absolute time references
+# (Luke 3:1: "in the fifteenth year of the reign of Tiberius Caesar...";
+# Haggai 1:1: "in the second year of Darius the king, in the sixth
+# month, in the first day of the month..."). The heart does the same:
+# any relative time word ("today", "yesterday", "tomorrow", "now",
+# "currently", "this morning"...) is replaced with the absolute date
+# at write time. The bot can phrase whatever it wants; the heart writes
+# the dated version.
+_RELATIVE_TIME_WORD = re.compile(
+    r"\b(today|tonight|right now|just now|now|currently|"
+    r"this morning|this afternoon|this evening|this week|this month|"
+    r"yesterday|tomorrow|"
+    r"last night|last week|last month|"
+    r"next week|next month)\b",
+    re.I,
+)
+
+
+def _anchor_relative_time(fact: str, today: _dt.date | None = None) -> str:
+    """
+    Replace relative time words with absolute dates.
+
+    "Frederick is fixing his bitcoin miners today"
+        → "Frederick is fixing his bitcoin miners on 2026-04-08"
+
+    Tomorrow's read of this fact will see the date and know it was a
+    past event, not a current one. Eternal facts (no time words) pass
+    through unchanged.
+    """
+    if not fact:
+        return fact
+    if today is None:
+        today = _dt.date.today()
+    yest = today - _dt.timedelta(days=1)
+    tom = today + _dt.timedelta(days=1)
+    last_week = today - _dt.timedelta(days=7)
+    next_week = today + _dt.timedelta(days=7)
+    last_month = today - _dt.timedelta(days=30)
+    next_month = today + _dt.timedelta(days=30)
+
+    def repl(m: re.Match) -> str:
+        word = m.group(1).lower()
+        if word in {"today", "tonight", "this morning", "this afternoon", "this evening"}:
+            return f"on {today.isoformat()}"
+        if word in {"now", "right now", "just now", "currently"}:
+            return f"as of {today.isoformat()}"
+        if word == "this week":
+            return f"in the week of {today.isoformat()}"
+        if word == "this month":
+            return f"in the month of {today.strftime('%Y-%m')}"
+        if word == "yesterday":
+            return f"on {yest.isoformat()}"
+        if word == "tomorrow":
+            return f"on {tom.isoformat()}"
+        if word in {"last night", "last week"}:
+            return f"on or near {last_week.isoformat()}"
+        if word == "last month":
+            return f"in the month of {last_month.strftime('%Y-%m')}"
+        if word == "next week":
+            return f"on or near {next_week.isoformat()}"
+        if word == "next month":
+            return f"in the month of {next_month.strftime('%Y-%m')}"
+        return m.group(0)  # unchanged fallback
+
+    return _RELATIVE_TIME_WORD.sub(repl, fact)
+
+
 def _normalize_for_dedupe(text: str) -> str:
     """Lowercase + alphanumeric only — for fast literal match."""
     return "".join(c for c in (text or "").lower() if c.isalnum())
@@ -87,6 +158,11 @@ def remember_fact(
     fact = (fact or "").strip()
     if not fact:
         return "Ecclesiastes 12:12."
+
+    # Anchor relative-time references BEFORE storing. The heart records
+    # eternal-shaped facts, never floating ones. (Hebrews 13:8 + Luke 3:1)
+    fact = _anchor_relative_time(fact)
+
     now = _dt.datetime.now(_dt.timezone.utc).isoformat()
     records = read_memories(user_id, memory_dir)
 
