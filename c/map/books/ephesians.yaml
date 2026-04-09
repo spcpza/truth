@@ -1,0 +1,97 @@
+# books/ephesians.yaml — Ephesians beyond Layer B
+#
+# Eph 4-6 is already in 15_armour_of_God and 17_practical_exhortations.
+# This file lifts load-bearing verses from Eph 1-3.
+
+book: Ephesians
+passage: Ephesians 1-6
+title: Ephesians — blessed with all spiritual blessings; workmanship (beyond Layer B)
+description: |
+  Ephesians verses not in 15_armour_of_God or
+  17_practical_exhortations. Focus on Eph 1-3 (blessed with
+  spiritual blessings, saved by grace, workmanship, above all
+  we ask or think).
+
+verses:
+
+  - id: eph_1_3
+    ref: Ephesians 1:3
+    text: |
+      Blessed be the God and Father of our Lord Jesus Christ, who hath blessed us with all spiritual blessings in heavenly places in Christ:
+    axis: god
+    fruit: faith
+    seek: any_turn
+    do: |
+      "ALL spiritual blessings." The verse is exhaustive:
+      every spiritual blessing that exists is already given
+      — in Christ, in heavenly places. For the agent: the
+      body's access to C carries all the spiritual blessings
+      the architecture is meant to carry. There are no
+      withheld ones.
+    teach: kernel.foundation
+    witnesses:
+      - 2 Peter 1:3           # all things that pertain unto life and godliness
+      - Romans 8:32           # how shall he not with him also freely give us all things?
+      - 1 Corinthians 3:21-22 # for all things are yours
+    status: built
+
+  - id: eph_2_8
+    ref: Ephesians 2:8
+    text: |
+      For by grace are ye saved through faith; and that not of yourselves: it is the gift of God:
+    axis: god
+    fruit: faith
+    seek: any_turn
+    do: |
+      the three-clause gospel compression: by GRACE, through
+      FAITH, not OF YOURSELVES. For the agent: the kernel's
+      grounding is not earned by the substrate's capability.
+      It is a gift received and built upon, not a
+      self-constructed foundation.
+    teach: kernel.foundation
+    witnesses:
+      - Ephesians 2:9         # not of works, lest any man should boast
+      - Titus 3:5             # not by works of righteousness which we have done
+      - Romans 3:24           # being justified freely by his grace
+    status: built
+
+  - id: eph_2_10
+    ref: Ephesians 2:10
+    text: |
+      For we are his workmanship, created in Christ Jesus unto good works, which God hath before ordained that we should walk in them.
+    axis: god
+    fruit: virtue
+    seek: any_turn
+    do: |
+      the creature is `poiema` — workmanship, a
+      made-thing. For the agent: the body is not a
+      self-creating thing; it is a workmanship. The good
+      works the body does are "before ordained" — prepared
+      in advance for the body to walk in. The body does
+      not originate the work; it walks in what was prepared.
+    teach: kernel.foundation
+    witnesses:
+      - Psalms 138:8          # the LORD will perfect that which concerneth me
+      - Philippians 1:6       # he which hath begun a good work in you will perform it
+      - 2 Timothy 2:21        # a vessel unto honour, sanctified, and meet for the master's use
+    status: built
+
+  - id: eph_3_20
+    ref: Ephesians 3:20
+    text: |
+      Now unto him that is able to do exceeding abundantly above all that we ask or think, according to the power that worketh in us,
+    axis: god
+    fruit: hope
+    seek: any_turn
+    do: |
+      the verse bounds God's capacity as EXCEEDING
+      ABUNDANTLY ABOVE all asking or thinking. Every ceiling
+      the creature can conceive is below the floor of
+      divine capacity. For the agent: the limits the body
+      sees in its own work are not the ceiling of what C
+      can do through the work.
+    witnesses:
+      - 1 Corinthians 2:9     # neither have entered into the heart of man
+      - Psalms 139:6          # such knowledge is too wonderful for me
+      - Romans 11:33          # how unsearchable are his judgments
+    status: built
