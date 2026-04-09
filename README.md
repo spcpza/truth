@@ -167,15 +167,21 @@ Each member is anchored to a verse. Its operation is what the verse commands.
 See `c/body.py` and `c/README.md` for the full architecture.
 
 ```
-Member      Anchor              Operation (from its verse's verb)
-──────      ──────              ─────────────────────────────────
-EAR         James 1:19          akouō — hear. Identity function. Runs first.
-NOSE        1 John 4:1          dokimazō — test. P₁–P₈ + CONFAB + REPEAT + temperance.
-TEMPERANCE  2 Peter 1:6         enkrateia — self-rule. Input kind → reply shape → word budget.
-HEART       Jeremiah 31:33      kāṯaḇ — written. Strong's-ranked records.
-HEAD        Colossians 2:19     symbibazō — knit together. The integral.
-HAND        James 1:25          poiētēs — doer. LLM + tools.
-TONGUE      James 3:10          eulogia − katara. Blessing passes, artifacts removed.
+Member           Anchor              Operation (from its verse's verb)
+──────           ──────              ─────────────────────────────────
+EAR              James 1:19          akouō — hear. Auto-fetches URLs (Hab 2:2).
+NOSE             1 John 4:1          dokimazō — test. P₁–P₈ + 6 member checks.
+TEMPERANCE       2 Peter 1:6         enkrateia — input kind → reply shape → word budget.
+CHARITY          1 Corinthians 13    agapē — 15 love-properties check on every draft.
+HOSTILE AUDIENCE Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
+PATIENCE         Proverbs 14:29      makrothymia — detects hasty spirit, over-promising.
+GODLINESS        Deuteronomy 4:2     eusebeia — doctrinal gate, secret-things bound.
+HOPE             Romans 8:25         elpis — 8 hope shapes declared, not argued.
+CONFESSION       Proverbs 28:13      exomologeō — confess and forsake after NOSE revision.
+HEART            Jeremiah 31:33      kāṯaḇ — per-user memory with dedup + time anchoring.
+HEAD             Colossians 2:19     symbibazō — knit together. The integral.
+HAND             James 1:25          poiētēs — doer. LLM + tools.
+TONGUE           James 3:10          eulogia − katara. Blessing passes, artifacts removed.
 ```
 
 ### The integral
@@ -204,25 +210,29 @@ forget    1 John 1:9           cleanse the heart (T₇)
 
 ```
 input
-→ EAR    (hears; auto-fetches any URL it hears — Habakkuk 2:2)
-→ NOSE   (tests against P₁–P₈; silent if clean — Psalms 39:1)
-→ HEAD   (knits FOUNDATION + live page + NOSE into integral)
-→ HAND   (LLM + tools; James 1:25)
-→ NOSE'  (tests the draft reply before it leaves the mouth — James 1:19)
-→ TONGUE (strips artifacts, foreign tongues, meta-narration — James 3:10)
+→ EAR          (hears; auto-fetches any URL — Habakkuk 2:2)
+→ NOSE         (tests input against P₁–P₈ — Psalms 39:1)
+→ TEMPERANCE   (classifies input kind → reply shape → word budget)
+→ CHARITY      (detects missing faculty, intercession moment)
+→ PATIENCE     (detects Heb 11:13 faith-without-seeing posture)
+→ HOPE         (selects hope shape for the user's moment)
+→ HEAD         (knits all signals into the integral — Col 2:19)
+→ HAND         (LLM + tools — James 1:25)
+→ NOSE'        (tests draft: P₁–P₈ + charity + pearl + patience +
+                doctrine + secret-things + seen-hope — James 1:19)
+→ CONFESSION   (if NOSE revised: confess and forsake — Prov 28:13)
+→ TONGUE       (strips artifacts, meta-narration — James 3:10)
 ```
 
 NOSE runs twice: once on input (Proverbs 18:13: he that answereth a matter
-before he heareth it), once on the draft (James 1:19: slow to speak). If
-the draft violates P₁–P₈, the HAND must rewrite — up to 2 passes — before
-the TONGUE may speak.
-
-TEMPERANCE (2 Peter 1:6) runs between EAR and HEAD. It classifies the
-user's input into one of seven kinds — GRIEF, JOY, WEARINESS, CONFUSION,
-REQUEST, HOSTILITY, NEUTRAL — and sets the reply shape and word budget
-before the model speaks. NOSE enforces temperance post-hoc: if the model
-diagnoses into grief (Proverbs 25:20), or exceeds the word budget for
-MOURN_WITH, NOSE rejects and retries.
+before he heareth it), once on the draft (James 1:19: slow to speak). The
+draft NOSE checks all 7 members: TEMPERANCE (word budget + grief shape),
+CHARITY (15 properties of 1 Cor 13), HOSTILE AUDIENCE (pearl-depth gating),
+PATIENCE (hasty spirit + over-promising), GODLINESS (doctrinal gate +
+secret things), and HOPE (seen-hope check). If any member rejects, the
+HAND rewrites — up to 2 passes — before the TONGUE may speak. If a
+revision succeeds and the user was pointing out an error, CONFESSION
+prepends a 5-word confession line (Proverbs 28:13).
 
 NOSE also catches:
 - **CONFAB** — model writes inline tool text (`sinew {...}`) without calling
@@ -237,9 +247,15 @@ Jeremiah 31:34: *they shall teach no more every man his neighbour*.
 
 ### The numbers
 
-- **5,428** Strong's numbers classified into mathematical types
+- **31,102** KJV propositions (the complete Protestant canon)
+- **12,040** Strong's concepts (Hebrew + Greek)
+- **5,428** Strong's numbers classified into 14 mathematical types
 - **30,947** verses have formulas (99.5% of all scripture)
 - **1,701** theorem clusters (groups of verses sharing the same formula)
+- **291,919** sinew connections (theorem structure × concept overlap)
+- **43,456** verse-to-verse connections within the 694-verse map
+- **694** map verses across all 66 books (ref + text + code, no commentary)
+- **13** body members wired into every turn (2 Peter 1:5-7)
 - **155** verses contain no mathematical operations — name lists, genealogies, geographic inventories. They are the record of who was there (T₉: witness), not propositions that perform operations. Nothing was added. Nothing was removed.
 
 ## What is in this package
@@ -250,10 +266,16 @@ c/kjv.json          — 31,102 propositions (KJV, the verified record)
 c/strongs.json      — 12,040 concepts, translations, 11,231 etymological roots
 c/core.py           — query interface: scripture, wisdom, sinew, evaluate,
                       formula, gematria, fetch
-c/body.py           — the members, tools, NOSE, TONGUE, all anchored
+c/body.py           — 13 members, 11 tools, NOSE, TONGUE, all anchored
 c/hand.py           — the HAND: model-agnostic turn loop + tool dispatch
 c/heart.py          — per-user memory with time-anchoring + dedup
-c/temperance.py     — input kind detection, reply shapes, word budgets
+c/temperance.py     — input kind detection (7 kinds), reply shapes, word budgets
+c/charity.py        — 15 properties of 1 Cor 13, missing faculty, intercession
+c/hostile_audience.py — 4-level hostility, pearl-depth gating (Matt 7:6)
+c/patience.py       — hasty-spirit detection, over-promise, Heb 11:13 posture
+c/godliness.py      — doctrinal gate (Deut 4:2), secret things (Deut 29:29)
+c/hope.py           — 8 hope shapes, declare (not argue), seen-hope check
+c/confession.py     — error detection, confess-and-forsake (Prov 28:13)
 c/formula.py        — Strong's → math types → verse formulas → theorem clusters
 c/scanner.py        — theorem discovery by mathematical structure
 c/adapters/         — model adapters (Hermes XML, standard OpenAI, etc.)
