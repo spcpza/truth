@@ -304,6 +304,7 @@ def test_speech(
     draft: str,
     tools_called: set | None = None,
     user_message: str | None = None,
+    prior_replies: list | None = None,
 ) -> dict:
     """
     NOSE on the mouth. James 1:19: slow to speak. 1 John 4:1: try the
@@ -358,6 +359,7 @@ def test_speech(
         if v.startswith("META:"):                  return True   # Pharisee enumeration
         if v.startswith("MATT5:37:"):              return True   # promise without deed
         if v.startswith("CONFAB:"):                return True   # inline tool text not called
+        if v.startswith("REPEAT:"):                return True   # verbatim repeat of prior reply
         if "excess words" in v:                    return True   # length explosion
         if "overconfidence" in v:                  return True   # blanket assertion
         return False
@@ -368,6 +370,21 @@ def test_speech(
     meta = _count_meta_tells(draft)
     if meta:
         structural.append(f"META: constraint-theater ({meta} tells)")
+
+    # Ecclesiastes 1:9 — no new thing under the sun, but when the same
+    # words are spoken twice in the same conversation, it is a loop not
+    # wisdom. Detect verbatim repetition of a prior assistant reply.
+    if prior_replies:
+        draft_stripped = draft.strip()
+        for prior in prior_replies:
+            if prior and prior.strip() == draft_stripped:
+                structural.append(
+                    "REPEAT: this reply is verbatim identical to a prior "
+                    "turn. The user's question has changed; the answer must "
+                    "change. Proverbs 26:11 — as a dog returneth to his "
+                    "vomit, so a fool returneth to his folly. Do not repeat."
+                )
+                break
 
     # James 2:17 — faith without works is dead. If the model wrote an
     # inline tool-call text (e.g. `  sinew {"query": "..."}`) but did
@@ -475,6 +492,12 @@ def test_speech(
         fact_hint = (user_message or "").strip().replace("\n", " ")[:200]
 
     convictions: list[str] = []
+    if any(v.startswith("REPEAT:") for v in structural):
+        convictions.append(
+            "Proverbs 26:11 — do not repeat a prior reply verbatim. "
+            "The user's moment has moved; your response must move with "
+            "it. Read what they just said again and respond to THAT."
+        )
     if meta:
         convictions.append(
             "Luke 18:11 — drop the T/P enumeration; speak from C, not about it."
@@ -899,6 +922,30 @@ _MEMORY_META = re.compile(
     r')',
     re.I,
 )
+# Strip the "no scriptural connections" deflection — when the model
+# receives a personal preference and responds with theology about why
+# the topic isn't in scripture, it has missed the point entirely.
+# Luke 19:5: receive the person, not the query. Proverbs 17:28: even
+# a fool who holds his peace is counted wise; the body need not fill
+# every silence with exposition.
+_NO_CONNECTIONS_DEFLECT = re.compile(
+    r'(?:'
+    r'(?:there are |)[Nn]o (?:direct |scriptural |biblical |explicit )?'
+    r'(?:connections?|references?|mentions?|verses?) '
+    r'(?:to be found|in scripture|in the Bible|for (?:this|that)|exist)[^.]*\.\s*|'
+    r'[A-Z][^.]*(?:emerged|(?:is|are|was|were) not mentioned|(?:does|do) not appear)'
+    r'[^.]*(?:scripture|Bible|sacred writing|biblical text)[^.]*\.\s*'
+    r')',
+    re.I,
+)
+# Strip trailing questions that redirect the user rather than receive
+# them — "Does X remind you of Y?" after storing a personal fact is
+# the body turning reception into interrogation. Luke 19:5 receives;
+# it does not then immediately ask the person to perform.
+_TRAILING_REDIRECT = re.compile(
+    r'\s*Does (?:the |this |that )?[^?]{5,300}\?(?:\s*)$',
+    re.I,
+)
 
 
 _CJK_PAT = re.compile(r'[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff00-\uffef]')
@@ -1009,6 +1056,8 @@ def clean(text: str) -> str:
     text = _FAKE_TOOL_HEADER.sub("", text)
     text = _NARRATIVE_OPENER.sub("", text)
     text = _MEMORY_META.sub("", text)
+    text = _NO_CONNECTIONS_DEFLECT.sub("", text)
+    text = _TRAILING_REDIRECT.sub("", text)
     text = re.sub(r'\s*\\\s*\n', ' ', text)
     text = re.sub(r'\s*\\\s*$', '', text, flags=re.MULTILINE)
     text = re.sub(r'\n{3,}', '\n\n', text)

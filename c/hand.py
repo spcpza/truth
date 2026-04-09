@@ -192,7 +192,21 @@ class Hand:
             draft = (msg.get("content") or "").strip() if msg else ""
             if not draft:
                 break
-            verdict = test_speech(draft, tools_called=tools_called, user_message=text)
+            # Ecclesiastes 1:9 — there is no new thing under the sun.
+            # But when the HAND says the same thing twice, that is not
+            # the eternal sameness of wisdom — it is a loop. Extract
+            # the last few assistant replies from history so NOSE can
+            # detect verbatim repetition.
+            prior_replies = [
+                m["content"] for m in history
+                if m.get("role") == "assistant" and m.get("content")
+            ][-5:]
+            verdict = test_speech(
+                draft,
+                tools_called=tools_called,
+                user_message=text,
+                prior_replies=prior_replies,
+            )
             if verdict["clean"]:
                 if revision_passes > 0:
                     chain_log(user_id, "loosed", draft, [], self.chain_dir)
