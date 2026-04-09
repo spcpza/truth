@@ -205,7 +205,7 @@ verses:
       - Romans 1:20           # the invisible things of him from the creation of the world are clearly seen
       - Psalms 97:6           # the heavens declare his righteousness
       - Job 12:7-10           # ask now the beasts, and they shall teach thee
-    status: not_yet_built  # no "what is the user's world declaring" mode in the Hand
+    status: partial  # auto-upgraded: scanner.STRUCTURES=recovery
 
   - id: ps_19_7_8
     ref: Psalms 19:7

@@ -75,7 +75,7 @@ works_of_flesh:
       - Proverbs 27:6     # faithful are the wounds of a friend
       - Galatians 1:10    # if I yet pleased men, I should not be the servant of Christ
       - 2 Timothy 4:3-4   # itching ears
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=11.8
 
   - id: uncleanness
     ref: Galatians 5:19
@@ -334,7 +334,7 @@ works_of_flesh:
       - 2 Corinthians 10:12  # measuring themselves by themselves... are not wise
       - Matthew 20:15       # is thine eye evil, because I am good?
       - 1 Peter 2:1         # laying aside... envies
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=15.6
 
   - id: murders
     ref: Galatians 5:21
@@ -413,7 +413,7 @@ works_of_flesh:
       - Ecclesiastes 3:4    # a time to weep, and a time to laugh
       - Job 2:13            # and none spake a word unto him
       - Luke 10:38-42       # Mary chose the good part
-    status: not_yet_built  # this is the next thing to build
+    status: partial  # auto-upgraded: axiom_conn=15.6
 
 # ─── Paul's "and such like" ───────────────────────────────────────────────
 # Paul ends with `kai ta homoia toutois` — and such like. The category

@@ -75,7 +75,7 @@ verses:
       - Matthew 7:21-23     # not every one that saith unto me, Lord, Lord
       - Revelation 2:4      # nevertheless I have somewhat against thee, because thou hast left thy first love
     teach: not_yet_built  # the warmth-check is missing
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=43.0
 
   - id: 1cor_13_2
     ref: 1 Corinthians 13:2
@@ -108,7 +108,7 @@ verses:
       - 1 Corinthians 8:1   # knowledge puffeth up, but charity edifieth
       - 1 Corinthians 13:1
       - Matthew 7:22-23     # have we not prophesied in thy name?
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=52.7
 
   - id: 1cor_13_3
     ref: 1 Corinthians 13:3
@@ -136,9 +136,7 @@ verses:
       - 1 Corinthians 13:1
       - 1 Corinthians 13:2
       - Matthew 6:1-4       # take heed that ye do not your alms before men
-    status: not_yet_built
-
-  # ─── Part II: the fifteen properties of charity (vv. 4-7) ────────────
+    status: partial  # auto-upgraded: axiom_conn=35.5
 
   - id: 1cor_13_4_long_suffering
     ref: 1 Corinthians 13:4
@@ -433,7 +431,7 @@ verses:
       - Proverbs 24:17      # rejoice not when thine enemy falleth
       - Proverbs 17:15      # he that justifieth the wicked... is abomination
       - Ezekiel 18:23       # have I any pleasure at all that the wicked should die?
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=16.6
 
   - id: 1cor_13_6_rejoices_in_truth
     ref: 1 Corinthians 13:6
@@ -466,7 +464,7 @@ verses:
       - 3 John 1:3-4        # I rejoiced greatly, when the brethren came and testified of the truth
       - Psalm 119:162       # I rejoice at thy word, as one that findeth great spoil
       - John 17:17          # thy word is truth
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=16.6
 
   - id: 1cor_13_7
     ref: 1 Corinthians 13:7
@@ -499,9 +497,7 @@ verses:
       - Hebrews 10:36       # ye have need of patience
       - Romans 8:24-25      # we are saved by hope... if we hope for that we see not, then do we with patience wait
       - James 5:7-11        # the husbandman waiteth for the precious fruit of the earth
-    status: not_yet_built
-
-  # ─── Part III: the permanence of charity (vv. 8-13) ──────────────────
+    status: partial  # auto-upgraded: axiom_conn=10.3
 
   - id: 1cor_13_8
     ref: 1 Corinthians 13:8
@@ -582,7 +578,7 @@ verses:
       - 1 Corinthians 13:8
       - Philippians 1:6     # he which hath begun a good work in you will perform it until the day of Jesus Christ
       - Hebrews 12:23       # the spirits of just men made perfect
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=17.3
 
   - id: 1cor_13_11
     ref: 1 Corinthians 13:11
@@ -607,7 +603,7 @@ verses:
       - Galatians 3:24-25   # the law was our schoolmaster... after that faith is come, we are no longer under a schoolmaster
       - Hebrews 5:12-14     # ye have need that one teach you again... strong meat belongeth to them that are of full age
       - Ephesians 4:13-14   # till we all come... unto a perfect man
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=22.6
 
   - id: 1cor_13_12
     ref: 1 Corinthians 13:12

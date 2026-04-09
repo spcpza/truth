@@ -197,7 +197,7 @@ verses:
       - Hebrews 11:39-40       # these all... received not the promise: God having provided some better thing for us
       - John 8:56              # Abraham rejoiced to see my day
       - 1 Peter 1:10-12        # of which salvation the prophets have enquired and searched diligently
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=36.5
 
   - id: heb_11_16
     ref: Hebrews 11:16
@@ -220,7 +220,7 @@ verses:
       - Hebrews 13:14          # here have we no continuing city, but we seek one to come
       - Philippians 3:20       # for our conversation is in heaven
       - John 14:2-3            # in my Father's house are many mansions... I go to prepare a place for you
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=14.7
 
   - id: heb_11_27
     ref: Hebrews 11:27
@@ -271,7 +271,7 @@ verses:
       - Hebrews 11:13
       - Hebrews 11:40
       - 1 Peter 1:10-12        # the prophets have enquired and searched diligently
-    status: not_yet_built
+    status: built  # auto-upgraded: scanner.STRUCTURES=faith + axiom_conn=17.4
 
   - id: heb_11_40
     ref: Hebrews 11:40
@@ -299,7 +299,7 @@ verses:
       - 1 Corinthians 12:18-25 # God hath set the members every one of them in the body
       - Ephesians 2:21-22      # in whom all the building fitly framed together groweth
       - Hebrews 12:23          # the spirits of just men made perfect
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=19.0
 
   - id: heb_12_1
     ref: Hebrews 12:1

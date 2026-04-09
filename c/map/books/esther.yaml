@@ -37,7 +37,7 @@ verses:
       - Acts 17:26            # hath determined the times before appointed
       - Galatians 4:4         # when the fulness of the time was come
       - Hebrews 11:13         # Frederick's own trans-generational framing
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=causality
 
   - id: esth_4_16
     ref: Esther 4:16

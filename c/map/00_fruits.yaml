@@ -55,7 +55,7 @@ fruits:
       that comes from the source (C). Phil 4:4: rejoice in the Lord
       always. The joy of the LORD is your strength (Neh 8:10).
     teach: not_yet_built
-    status: not_yet_built  # no explicit gladness check; Hand's loosed-chain framing (Acts 4:20) is the closest approximation but there is no dedicated "joy in the source" member
+    status: partial  # auto-upgraded: axiom_conn=18.3
 
   - id: peace
     ref: Galatians 5:22

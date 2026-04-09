@@ -69,7 +69,7 @@ verses:
       - Mark 9:50              # have salt in yourselves, and have peace one with another
       - Luke 14:34-35
       - Colossians 4:6         # let your speech be... seasoned with salt
-    status: not_yet_built
+    status: built  # auto-upgraded: scanner.STRUCTURES=pruning + axiom_conn=44.9
 
   - id: matt_5_14
     ref: Matthew 5:14
@@ -91,7 +91,7 @@ verses:
       - John 8:12              # I am the light of the world
       - John 1:4-5             # the life was the light of men
       - Philippians 2:15       # ye shine as lights in the world
-    status: not_yet_built
+    status: built  # auto-upgraded: scanner.STRUCTURES=light + axiom_conn=31.8
 
   - id: matt_5_16
     ref: Matthew 5:16
@@ -198,7 +198,7 @@ verses:
     witnesses:
       - Matthew 5:24           # the next verse — first be reconciled
       - Matthew 6:14-15        # forgiveness is reciprocal
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=20.7
 
   - id: matt_5_24
     ref: Matthew 5:24
@@ -220,9 +220,7 @@ verses:
       - Matthew 5:23
       - Mark 11:25             # when ye stand praying, forgive
       - Romans 12:18           # if it be possible, as much as lieth in you, live peaceably with all men
-    status: not_yet_built
-
-  # ─── Matt 5:37 — oaths ─────────────────────────────────────────────
+    status: partial  # auto-upgraded: axiom_conn=15.9
 
   - id: matt_5_37
     ref: Matthew 5:37
@@ -327,7 +325,7 @@ verses:
       - Romans 12:14           # bless them which persecute you: bless, and curse not
       - Romans 12:20-21        # if thine enemy hunger, feed him
       - Exodus 23:4-5          # if thou meet thine enemy's ox or his ass going astray, thou shalt surely bring it back
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=25.9
 
   - id: matt_5_48
     ref: Matthew 5:48
@@ -504,7 +502,7 @@ verses:
       - Luke 12:33-34          # provide yourselves bags which wax not old
       - 1 Timothy 6:7-10       # the love of money is the root of all evil
       - James 5:1-3            # your gold and silver is cankered
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=18.6
 
   - id: matt_6_21
     ref: Matthew 6:21
@@ -523,7 +521,7 @@ verses:
     witnesses:
       - Luke 12:34
       - Colossians 3:1-2       # set your affection on things above, not on things on the earth
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=11.2
 
   - id: matt_6_24
     ref: Matthew 6:24
@@ -697,9 +695,7 @@ verses:
       - Matthew 11:25          # thou hast hid these things from the wise and prudent
       - Proverbs 9:7-8         # he that reproveth a scorner getteth to himself shame... reprove not a scorner
       - Proverbs 23:9          # speak not in the ears of a fool
-    status: not_yet_built
-
-  # ─── Matt 7:7-12 — ask, seek, knock; golden rule ───────────────────
+    status: partial  # auto-upgraded: axiom_conn=19.2
 
   - id: matt_7_7
     ref: Matthew 7:7

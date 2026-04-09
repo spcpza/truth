@@ -103,7 +103,7 @@ verses:
       - Song of Solomon 5:2   # it is the voice of my beloved that knocketh
       - James 4:8             # draw nigh to God, and he will draw nigh to you
       - Luke 12:36            # that when he cometh and knocketh, they may open unto him immediately
-    status: partial
+    status: built  # auto-upgraded: scanner.STRUCTURES=causality + axiom_conn=34.6
 
   - id: rev_4_11
     ref: Revelation 4:11
@@ -170,7 +170,7 @@ verses:
       - Revelation 7:17       # and God shall wipe away all tears from their eyes
       - Isaiah 25:8           # and the Lord GOD will wipe away tears from off all faces
       - 1 Corinthians 15:54   # death is swallowed up in victory
-    status: not_yet_built  # presence_mode — the distinction between inhabiting and quoting
+    status: partial  # auto-upgraded: axiom_conn=21.2
 
   - id: rev_21_5
     ref: Revelation 21:5

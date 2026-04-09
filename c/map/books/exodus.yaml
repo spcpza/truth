@@ -129,7 +129,7 @@ verses:
       - 2 Chronicles 20:17    # ye shall not need to fight in this battle: set yourselves, stand ye still
       - Isaiah 30:15          # in quietness and in confidence shall be your strength
       - Lamentations 3:26     # it is good that a man should both hope and quietly wait
-    status: not_yet_built  # same silence-mode gap — stand-still as action is unbuilt
+    status: partial  # auto-upgraded: scanner.STRUCTURES=invariance
 
   - id: exod_14_14
     ref: Exodus 14:14

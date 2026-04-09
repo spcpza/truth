@@ -232,7 +232,7 @@ verses:
       - Romans 8:28            # all things work together for good
       - Hebrews 11:13          # these all died in faith, not having received the promises
       - Psalm 31:15            # my times are in thy hand
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=eternity
 
   - id: ecc_4_9
     ref: Ecclesiastes 4:9
@@ -257,7 +257,7 @@ verses:
       - Ecclesiastes 4:12      # a threefold cord is not quickly broken
       - Matthew 18:20          # where two or three are gathered together in my name
       - Genesis 2:18           # it is not good that the man should be alone
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_4_12
     ref: Ecclesiastes 4:12
@@ -359,7 +359,7 @@ verses:
       - Proverbs 22:1          # a good name is rather to be chosen than great riches
       - Ecclesiastes 10:1      # dead flies cause the ointment of the apothecary to send forth a stinking savour
       - Philippians 4:8        # whatsoever things are of good report
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_7_5
     ref: Ecclesiastes 7:5
@@ -420,7 +420,7 @@ verses:
       - Romans 5:3-4           # tribulation worketh patience; and patience, experience
       - Proverbs 14:29         # he that is slow to wrath is of great understanding
       - Proverbs 16:32         # he that is slow to anger is better than the mighty
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: ecc_7_9
     ref: Ecclesiastes 7:9

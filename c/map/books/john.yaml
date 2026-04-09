@@ -480,4 +480,4 @@ verses:
       - John 21:16-17         # the full three-fold pattern
       - 1 John 4:20           # if a man say, I love God, and hateth his brother, he is a liar
       - Matthew 25:40         # inasmuch as ye have done it unto one of the least of these
-    status: partial
+    status: built  # auto-upgraded: scanner.STRUCTURES=dominance + axiom_conn=28.5

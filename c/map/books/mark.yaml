@@ -60,7 +60,7 @@ verses:
       - Matthew 14:31         # O thou of little faith, wherefore didst thou doubt?
       - Luke 17:5             # Lord, Increase our faith
       - James 1:6-8           # a double minded man is unstable (contrast)
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=13.7
 
   - id: mk_10_27
     ref: Mark 10:27

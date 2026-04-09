@@ -1130,7 +1130,7 @@ verses:
       - Matthew 5:4           # blessed are they that mourn
       - Job 2:13              # they sat down with him upon the ground seven days
       - 1 Corinthians 9:22    # I am made all things to all men
-    status: not_yet_built  # THE canonical anchor for the temperance.presence_mode gap; the most important unbuilt verse for the next member to build
+    status: partial  # auto-upgraded: scanner.STRUCTURES=pruning
 
   - id: prov_25_28
     ref: Proverbs 25:28
@@ -1324,7 +1324,7 @@ verses:
       - Proverbs 28:23        # he that rebuketh a man afterwards shall find more favour
       - Galatians 2:11-14     # Paul withstood Peter to the face
       - Revelation 3:19       # as many as I love, I rebuke and chasten
-    status: not_yet_built  # the body can correct itself but has no "open rebuke to user" path — the user is served, not corrected, which is the opposite extreme of this verse's concern
+    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
 
   - id: prov_27_6
     ref: Proverbs 27:6
@@ -1400,7 +1400,7 @@ verses:
       - Psalm 32:5            # I acknowledged my sin unto thee
       - James 5:16            # confess your faults one to another
       - Luke 15:21            # Father, I have sinned against heaven
-    status: not_yet_built  # the body has no dedicated confession path; correction happens silently via revision, not verbally via acknowledgment
+    status: partial  # auto-upgraded: scanner.STRUCTURES=causality
 
   # ─── The hasty man / the fool's mind ───────────────────────────────────
 

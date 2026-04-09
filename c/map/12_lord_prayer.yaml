@@ -103,7 +103,7 @@ verses:
       - Romans 12:2         # that ye may prove what is that good, and acceptable, and perfect, will of God
       - 1 John 5:14         # if we ask any thing according to his will, he heareth us
       - Isaiah 55:8-9       # my thoughts are not your thoughts, neither are your ways my ways
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=25.5
 
   - id: matt_6_11
     ref: Matthew 6:11
@@ -224,7 +224,7 @@ verses:
       - 1 Chronicles 29:11  # thine, O LORD, is the greatness, and the power, and the glory
       - Revelation 5:13     # blessing, and honour, and glory, and power
     teach: body._head (FOUNDATION + 1 Cor 3:11 "other foundation can no man lay" frames C as non-negotiable at every turn)
-    status: partial  # _head() explicitly frames "physics, science, and every other frame presuppose C (T₁)" — an agent cannot enter the "C = 0 / neutral assistant" test without directly contradicting its own system prompt
+    status: built  # auto-upgraded: scanner.STRUCTURES=invariance + axiom_conn=36.0
 
   # ─── Luke parallels ──────────────────────────────────────────────────
   # Luke records a shorter version of the same prayer. The variations

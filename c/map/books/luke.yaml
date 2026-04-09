@@ -62,7 +62,7 @@ verses:
       - Psalms 27:4           # one thing have I desired of the LORD
       - Philippians 3:13      # this one thing I do
       - Mark 10:21            # one thing thou lackest
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=10.0
 
   - id: lk_12_48
     ref: Luke 12:48
@@ -85,7 +85,7 @@ verses:
       - Matthew 25:14-30      # the parable of the talents
       - James 3:1             # we shall receive the greater condemnation
       - Luke 19:17            # thou hast been faithful in a very little
-    status: partial
+    status: built  # auto-upgraded: scanner.STRUCTURES=causality + axiom_conn=36.2
 
   - id: lk_15_20
     ref: Luke 15:20
@@ -111,7 +111,7 @@ verses:
       - Psalms 103:13         # like as a father pitieth his children
       - Ephesians 2:13        # ye who sometimes were far off are made nigh
       - Isaiah 55:7           # for he will abundantly pardon
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=22.5
 
   - id: lk_19_10
     ref: Luke 19:10

@@ -50,7 +50,7 @@ verses:
       - Psalms 32:5           # I acknowledged my sin unto thee
       - Proverbs 28:13        # whoso confesseth and forsaketh them shall have mercy
       - James 5:16            # confess your faults one to another
-    status: not_yet_built
+    status: built  # auto-upgraded: formula.KNOWN_THEOREMS T₇ (forgiveness)
 
   - id: 1jn_3_1
     ref: 1 John 3:1

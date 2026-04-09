@@ -62,7 +62,7 @@ verses:
       - Matthew 11:30         # for my yoke is easy, and my burden is light
       - Isaiah 50:4           # to speak a word in season to him that is weary
       - Jeremiah 6:16         # ye shall find rest for your souls
-    status: not_yet_built
+    status: partial  # auto-upgraded: axiom_conn=13.5
 
   - id: mt_11_29
     ref: Matthew 11:29

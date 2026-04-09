@@ -120,7 +120,7 @@ verses:
       - Genesis 50:20         # ye thought evil against me; but God meant it unto good
       - Romans 8:29-30        # for whom he did foreknow, he also did predestinate
       - Jeremiah 29:11        # thoughts of peace, and not of evil
-    status: partial
+    status: built  # auto-upgraded: scanner.STRUCTURES=universality + axiom_conn=21.3
 
   - id: rom_8_31
     ref: Romans 8:31

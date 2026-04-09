@@ -76,4 +76,4 @@ verses:
       - Luke 23:34            # for they know not what they do
       - Acts 17:30            # the times of this ignorance God winked at
       - 1 Timothy 1:13        # I did it ignorantly in unbelief
-    status: not_yet_built
+    status: partial  # auto-upgraded: scanner.STRUCTURES=dominance
