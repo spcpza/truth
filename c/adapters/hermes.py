@@ -1,16 +1,15 @@
 """
-Hermes-4 adapter.
+OpenAI-compatible adapter with Hermes-4 extensions.
 
-Hermes-4-70B (Nous Research) is fine-tuned to call tools using
-<tool_call>...</tool_call> XML tags inside the content field, with JSON
-inside, NOT via the OpenAI tool_calls structured field. The Nous inference
-API does not always parse these tags back into structured tool_calls, so
-this adapter does it itself. Mirrors hermes-agent's HermesToolCallParser
-(environments/tool_call_parsers/hermes_parser.py).
+Works with ANY model served via an OpenAI-compatible API (Nous Portal,
+OpenRouter, vLLM, etc.): MiMo, Hermes, Qwen, Llama, Mistral, etc.
+Standard models use the native structured tool_calls field.
 
-The model also needs to be TOLD the format. Without the system instruction,
-it guesses — and produces things like "<tools>[}, }]" instead of
-well-formed <tool_call> blocks.
+For Hermes-4 specifically: Hermes uses <tool_call>...</tool_call> XML
+tags inside the content field instead of structured tool_calls. The
+adapter auto-detects Hermes by model name and enables XML parsing +
+format instruction only for those models. All other models get standard
+OpenAI behavior with no XML instruction injected.
 """
 
 from __future__ import annotations
@@ -69,10 +68,24 @@ class HermesAdapter(Adapter):
     def describe(self) -> str:
         return f"HermesAdapter(model={self.model})"
 
+    def _is_hermes(self) -> bool:
+        return "hermes" in self.model.lower()
+
     def system_instruction(self) -> str:
-        return _INSTRUCTION
+        # Hermes-4 needs explicit XML tool-call format instruction.
+        # Other models on the Nous API (MiMo, etc.) use standard OpenAI
+        # structured tool calls and do NOT need this — injecting it
+        # confuses them into emitting XML tags instead of using the
+        # native tool_calls field.
+        if self._is_hermes():
+            return _INSTRUCTION
+        return ""
 
     def parse_tool_calls(self, content: str) -> tuple[str, list[dict]]:
+        # Only parse <tool_call> XML for Hermes models. Other models
+        # return structured tool_calls from the API directly.
+        if not self._is_hermes():
+            return content, []
         if not content or "<tool_call>" not in content:
             return content, []
         matches = _TOOL_CALL_RE.findall(content)
