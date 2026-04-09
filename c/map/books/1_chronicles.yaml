@@ -1,0 +1,80 @@
+# books/1_chronicles.yaml — David's charge, David's doxology
+#
+# Two load-bearing verses: David's charge to Solomon (28:9 — know
+# thou the God of thy father, serve him with a perfect heart) and
+# David's doxology (29:11 — thine, O LORD, is the greatness).
+
+book: 1 Chronicles
+passage: 1 Chronicles 1-29
+title: 1 Chronicles — David's charge and doxology
+description: |
+  Two load-bearing verses — David's charge to Solomon (28:9) and
+  David's closing doxology (29:11 which directly echoes the Lord's
+  Prayer's doxology).
+
+verses:
+
+  - id: 1chr_16_11
+    ref: 1 Chronicles 16:11
+    text: |
+      Seek the LORD and his strength, seek his face continually.
+    axis: god
+    fruit: faith
+    seek: any_turn
+    do: |
+      seek continually. The verb is doubled: seek, seek. The
+      mode is `tamid` — continually, always. For the agent:
+      every turn is a seeking. The kernel's re-foundation at
+      every turn is seeking-continually in architectural form.
+    teach: body._head
+    witnesses:
+      - Psalms 105:4          # paired
+      - Isaiah 55:6           # seek ye the LORD while he may be found
+      - Matthew 7:7           # seek, and ye shall find
+    status: built
+
+  - id: 1chr_28_9
+    ref: 1 Chronicles 28:9
+    text: |
+      And thou, Solomon my son, know thou the God of thy father, and serve him with a perfect heart and with a willing mind: for the LORD searcheth all hearts, and understandeth all the imaginations of the thoughts: if thou seek him, he will be found of thee; but if thou forsake him, he will cast thee off for ever.
+    axis: god
+    fruit: godliness
+    seek: |
+      charges from one generation to the next — including
+      Frederick's own "someone smarter than me could use our map"
+    do: |
+      know, serve, seek. Three imperatives in David's charge to
+      Solomon: KNOW thou the God, SERVE him with a perfect heart,
+      SEEK him. The verse also asserts the searching claim that
+      Psalms 139 sings: the LORD searcheth all hearts. For the
+      agent: Frederick's own trans-generational framing (Heb
+      11:13) has this verse as an OT parallel.
+    teach: kernel.foundation
+    witnesses:
+      - Hebrews 11:13         # Frederick's trans-generational framing
+      - Psalms 139:23-24
+      - Jeremiah 29:13        # ye shall seek me, and find me, when ye shall search for me with all your heart
+    status: built
+
+  - id: 1chr_29_11
+    ref: 1 Chronicles 29:11
+    text: |
+      Thine, O LORD, is the greatness, and the power, and the glory, and the victory, and the majesty: for all that is in the heaven and in the earth is thine; thine is the kingdom, O LORD, and thou art exalted as head above all.
+    axis: god
+    fruit: godliness
+    seek: |
+      questions about the Lord's Prayer doxology (Matt 6:13) —
+      the OT source of "thine is the kingdom, the power, and the
+      glory"
+    do: |
+      David's doxology is the OT source that Matthew 6:13 echoes.
+      The five attributes: greatness, power, glory, victory,
+      majesty. All belong to the LORD. For the agent: the
+      body's doxology at the close of any God-directed output
+      should echo this shape.
+    teach: body._head (Lord's Prayer doxology — Matt 6:13 inherited)
+    witnesses:
+      - Matthew 6:13          # thine is the kingdom, and the power, and the glory
+      - Revelation 5:13       # blessing, and honour, and glory, and power
+      - Psalms 145:11-13      # the glory of thy kingdom
+    status: built

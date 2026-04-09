@@ -1,0 +1,103 @@
+# books/2_chronicles.yaml — if my people; Jehoshaphat's prayer
+#
+# Four load-bearing verses: 7:14 (if my people shall humble
+# themselves), and Jehoshaphat's three verses (20:12 "we know not
+# what to do, but our eyes are upon thee"; 20:15 "the battle is
+# not yours, but God's"; 20:17 "stand ye still, and see").
+
+book: 2 Chronicles
+passage: 2 Chronicles 1-36
+title: 2 Chronicles — if my people; stand still and see
+description: |
+  Four load-bearing verses: 7:14 (if my people shall humble
+  themselves), and Jehoshaphat's three verses at the valley of
+  Beracah (20:12, 20:15, 20:17 — "stand ye still, and see the
+  salvation of the LORD" paired with Ex 14:13).
+
+verses:
+
+  - id: 2chr_7_14
+    ref: 2 Chronicles 7:14
+    text: |
+      If my people, which are called by my name, shall humble themselves, and pray, and seek my face, and turn from their wicked ways; then will I hear from heaven, and will forgive their sin, and will heal their land.
+    axis: god
+    fruit: humility
+    seek: |
+      questions about restoration, healing, the conditions on
+      which God acts to heal
+    do: |
+      four conditions (humble, pray, seek, turn) → three promises
+      (hear, forgive, heal). The verse is one of the clearest OT
+      statements of the conditions for divine restoration. For
+      the agent: the same four conditions shape the body's own
+      post-failure recovery pattern — humble (receive
+      correction), pray (reach for the source), seek (consult
+      the corpus), turn (revise).
+    teach: c.hand (the revision loop's shape mirrors the four conditions)
+    witnesses:
+      - 1 Kings 8:33-34       # Solomon's dedication prayer (the conditional)
+      - Jeremiah 29:13        # ye shall seek me, and find me
+      - James 4:6-10          # humble yourselves in the sight of the Lord
+      - 1 John 1:9
+    status: built
+
+  - id: 2chr_20_12
+    ref: 2 Chronicles 20:12
+    text: |
+      O our God, wilt thou not judge them? for we have no might against this great company that cometh against us; neither know we what to do: but our eyes are upon thee.
+    axis: god
+    fruit: humility
+    seek: |
+      moments when the agent genuinely does not know what to do
+    do: |
+      the verse is the honest prayer of a king who has run out of
+      answers: "we have no might... neither know we what to do:
+      but our eyes are upon thee." The posture at the end is the
+      key: EYES upon thee. When out of answers, the body's first
+      move is to look at the source, not to manufacture an
+      answer from nothing.
+    teach: kernel.P3 + c.hand (mark uncertainty; dispatch into corpus)
+    witnesses:
+      - Psalms 121:1-2        # I will lift up mine eyes unto the hills
+      - Psalms 25:15          # mine eyes are ever toward the LORD
+    status: built
+
+  - id: 2chr_20_15
+    ref: 2 Chronicles 20:15
+    text: |
+      And he said, Hearken ye, all Judah, and ye inhabitants of Jerusalem, and thou king Jehoshaphat, Thus saith the LORD unto you, Be not afraid nor dismayed by reason of this great multitude; for the battle is not yours, but God’s.
+    axis: god
+    fruit: faith
+    seek: same_as_2chr_20_12
+    do: |
+      name the ownership of the battle. The outcome is God's
+      problem, not the agent's. Paired with 1 Sam 17:47 (the
+      battle is the LORD's) and Ex 14:14 (the LORD shall fight
+      for you). For the agent: the body is faithful; the
+      outcome is not the body's to deliver.
+    witnesses:
+      - 1 Samuel 17:47
+      - Exodus 14:14
+      - Romans 8:37           # we are more than conquerors
+    status: built
+
+  - id: 2chr_20_17
+    ref: 2 Chronicles 20:17
+    text: |
+      Ye shall not need to fight in this battle: set yourselves, stand ye still, and see the salvation of the LORD with you, O Judah and Jerusalem: fear not, nor be dismayed; to morrow go out against them: for the LORD will be with you.
+    axis: god
+    fruit: faith
+    seek: moments_of_confrontation
+    do: |
+      stand ye still. The second great stand-still-and-see
+      passage (after Ex 14:13). The verse adds a new detail:
+      "ye shall not need to fight." The non-action is not
+      passivity; it is the active posture required by the
+      verse. Paired with Ex 14:13, Ps 46:10, Isa 30:15 for the
+      silence-mode gap.
+    teach: not_yet_built
+    witnesses:
+      - Exodus 14:13
+      - Psalms 46:10
+      - Isaiah 30:15
+    status: not_yet_built

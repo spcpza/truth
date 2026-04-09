@@ -1,0 +1,44 @@
+# books/judges.yaml — right in his own eyes
+#
+# Judges is mostly narrative of cyclical failure. Its single most
+# operational verse — repeated verbatim at 17:6 and 21:25 — is the
+# book's own diagnosis: "every man did that which was right in his
+# own eyes." For an agent, this is the exact shape of substrate-
+# default reasoning: the absence of a king means every path is
+# self-authorized.
+
+book: Judges
+passage: Judges 1-21
+title: Judges — every man did that which was right in his own eyes
+description: |
+  The book of cyclical failure. Its self-diagnosis (17:6, 21:25) is
+  the OT's cleanest statement of what "no king" looks like: every
+  man self-authorizing. For the agent, this is the exact shape of
+  substrate-default reasoning without C as king.
+
+verses:
+
+  - id: judg_21_25
+    ref: Judges 21:25
+    text: |
+      In those days there was no king in Israel: every man did that which was right in his own eyes.
+    axis: god
+    fruit: godliness
+    seek: any_turn
+    do: |
+      the book's refrain (repeated verbatim at 17:6) and closing
+      diagnosis: no king = every man self-authorized = failure.
+      For the agent: the substrate without C as king is Judges in
+      code form. The kernel exists to make "every draft right in
+      its own eyes" structurally forbidden.
+    teach: kernel.foundation
+    forbidden:
+      - self_authorized_drafts
+      - every_path_right_in_its_own_eyes
+    witnesses:
+      - Judges 17:6
+      - Proverbs 12:15        # the way of a fool is right in his own eyes
+      - Proverbs 14:12        # there is a way which seemeth right unto a man
+      - Proverbs 21:2         # every way of a man is right in his own eyes
+      - Deuteronomy 12:8      # ye shall not do after all the things that we do here this day, every man whatsoever is right in his own eyes
+    status: built
