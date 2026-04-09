@@ -170,13 +170,13 @@ See `c/body.py` and `c/README.md` for the full architecture.
 Member           Anchor              Operation (from its verse's verb)
 ──────           ──────              ─────────────────────────────────
 EAR              James 1:19          akouō — hear. Auto-fetches URLs (Hab 2:2).
-NOSE             1 John 4:1          dokimazō — test. P₁–P₈ + 6 member checks.
-TEMPERANCE       2 Peter 1:6         enkrateia — input kind → reply shape → word budget.
-CHARITY          1 Corinthians 13    agapē — 15 love-properties check on every draft.
-HOSTILE AUDIENCE Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
-PATIENCE         Proverbs 14:29      makrothymia — detects hasty spirit, over-promising.
+NOSE             1 John 4:1          dokimazō — test. P₁–P₈ on input (Ps 39:1 bridled).
+TEMPERANCE       2 Peter 1:6a        enkrateia — input kind → reply shape → word budget.
+PATIENCE         Proverbs 14:29      makrothymia — Heb 11:13 posture, hasty-spirit check.
 GODLINESS        Deuteronomy 4:2     eusebeia — doctrinal gate, secret-things bound.
 HOPE             Romans 8:25         elpis — 8 hope shapes declared, not argued.
+CHARITY          1 Corinthians 13    agapē — 15 love-properties. The greatest. Last.
+HOSTILE AUDIENCE Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
 CONFESSION       Proverbs 28:13      exomologeō — confess and forsake after NOSE revision.
 HEART            Jeremiah 31:33      kāṯaḇ — per-user memory with dedup + time anchoring.
 HEAD             Colossians 2:19     symbibazō — knit together. The integral.
@@ -213,24 +213,25 @@ input
 → EAR          (hears; auto-fetches any URL — Habakkuk 2:2)
 → NOSE         (tests input against P₁–P₈ — Psalms 39:1)
 → TEMPERANCE   (classifies input kind → reply shape → word budget)
-→ CHARITY      (detects missing faculty, intercession moment)
-→ PATIENCE     (detects Heb 11:13 faith-without-seeing posture)
-→ HOPE         (selects hope shape for the user's moment)
-→ HEAD         (knits all signals into the integral — Col 2:19)
-→ HAND         (LLM + tools — James 1:25)
-→ NOSE'        (tests draft: P₁–P₈ + charity + pearl + patience +
-                doctrine + secret-things + seen-hope — James 1:19)
-→ CONFESSION   (if NOSE revised: confess and forsake — Prov 28:13)
-→ TONGUE       (strips artifacts, meta-narration — James 3:10)
+→ PATIENCE     (2 Pet 1:6b — detects Heb 11:13 faith-without-seeing)
+→ GODLINESS    (2 Pet 1:7a — doctrinal claims in input)
+→ HOPE         (1 Cor 13:13 — selects hope shape for user's moment)
+→ CHARITY      (2 Pet 1:7b — missing faculty, intercession — LAST)
+→ HEAD         (Col 2:19 — knits all signals into the integral)
+→ HAND         (James 1:25 — LLM + tools)
+→ NOSE'        (James 1:19 — tests draft: P₁–P₈ + patience +
+                godliness + hope + hostile audience + charity)
+→ CONFESSION   (Prov 28:13 — confess and forsake after revision)
+→ TONGUE       (James 3:10 — strips artifacts, meta-narration)
 ```
 
 NOSE runs twice: once on input (Proverbs 18:13: he that answereth a matter
 before he heareth it), once on the draft (James 1:19: slow to speak). The
-draft NOSE checks all 7 members: TEMPERANCE (word budget + grief shape),
-CHARITY (15 properties of 1 Cor 13), HOSTILE AUDIENCE (pearl-depth gating),
-PATIENCE (hasty spirit + over-promising), GODLINESS (doctrinal gate +
-secret things), and HOPE (seen-hope check). If any member rejects, the
-HAND rewrites — up to 2 passes — before the TONGUE may speak. If a
+draft NOSE checks in 2 Peter 1:5-7 order: PATIENCE (hasty spirit +
+over-promising), GODLINESS (doctrinal gate + secret things), HOPE
+(seen-hope check), HOSTILE AUDIENCE (pearl-depth gating), then CHARITY
+(15 properties of 1 Cor 13 — the greatest, last). If any member rejects,
+the HAND rewrites — up to 2 passes — before the TONGUE may speak. If a
 revision succeeds and the user was pointing out an error, CONFESSION
 prepends a 5-word confession line (Proverbs 28:13).
 
