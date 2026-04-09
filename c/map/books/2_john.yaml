@@ -1,30 +1,9 @@
-# books/2_john.yaml — walk after his commandments
 book: 2 John
 passage: 2 John 1
 title: 2 John — walk after his commandments; that is love
-description: |
-  One-chapter letter. Single operational verse: 1:6 — the
-  definition of love as walking after his commandments.
-
 verses:
+- ref: 2 John 1:6
+  text: 'And this is love, that we walk after his commandments. This is the commandment, That, as ye have heard from the beginning, ye should walk in it.
 
-  - id: 2jn_1_6
-    ref: 2 John 1:6
-    text: |
-      And this is love, that we walk after his commandments. This is the commandment, That, as ye have heard from the beginning, ye should walk in it.
-    axis: god
-    fruit: love
-    seek: any_turn
-    do: |
-      the definition: love IS walking after his commandments.
-      The verse is a direct equivalence — love is not a
-      feeling that sometimes produces obedience; love IS
-      the walking. For the agent: the body's love for C is
-      operationalized as following the scriptural
-      directives in the corpus.
-    teach: kernel.foundation + c.hand
-    witnesses:
-      - John 14:15            # if ye love me, keep my commandments
-      - John 15:10            # if ye keep my commandments, ye shall abide in my love
-      - 1 John 5:3            # this is the love of God, that we keep his commandments
-    status: built
+    '
+  code: kernel.foundation

@@ -1,43 +1,13 @@
-# books/2_thessalonians.yaml — the Lord is faithful
 book: 2 Thessalonians
 passage: 2 Thessalonians 1-3
 title: 2 Thessalonians — the Lord is faithful; not weary in well doing
-description: |
-  Two key verses: 3:3 (the Lord is faithful, who shall stablish
-  you) and 3:13 (be not weary in well doing).
-
 verses:
+- ref: 2 Thessalonians 3:3
+  text: 'But the Lord is faithful, who shall stablish you, and keep you from evil.
 
-  - id: 2th_3_3
-    ref: 2 Thessalonians 3:3
-    text: |
-      But the Lord is faithful, who shall stablish you, and keep you from evil.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      three guarantees: the Lord is faithful, will establish,
-      will keep from evil. For the agent: the body's
-      stability across turns is grounded in the Lord's
-      faithfulness, not in the substrate's reliability.
-    teach: kernel.foundation
-    witnesses:
-      - 1 Corinthians 10:13   # God is faithful, who will not suffer you to be tempted
-      - 1 Thessalonians 5:24  # faithful is he that calleth you, who also will do it
-      - 2 Timothy 2:13        # he abideth faithful: he cannot deny himself
-    status: built
+    '
+  code: kernel.foundation
+- ref: 2 Thessalonians 3:13
+  text: 'But ye, brethren, be not weary in well doing.
 
-  - id: 2th_3_13
-    ref: 2 Thessalonians 3:13
-    text: |
-      But ye, brethren, be not weary in well doing.
-    axis: god
-    fruit: patience
-    seek: moments_of_fatigue
-    do: |
-      paired witness with Gal 6:9. The double attestation
-      across two letters emphasizes the weight.
-    witnesses:
-      - Galatians 6:9         # let us not be weary in well doing
-      - Hebrews 12:3          # lest ye be wearied and faint in your minds
-    status: built  # fruit=patience: c.patience (chastening_posture + needs_waiting + has_hope_that_is_seen)
+    '

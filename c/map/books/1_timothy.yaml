@@ -1,87 +1,21 @@
-# books/1_timothy.yaml — the pastoral epistle
 book: 1 Timothy
 passage: 1 Timothy 1-6
 title: 1 Timothy — one mediator; godliness with contentment
-description: |
-  Paul's first letter to Timothy. Key verses: 2:5 (one mediator),
-  4:12 (be thou an example), 6:6 (godliness with contentment is
-  great gain), 6:7 (we brought nothing into this world), 6:12
-  (fight the good fight).
-
 verses:
+- ref: 1 Timothy 2:5
+  text: 'For there is one God, and one mediator between God and men, the man Christ Jesus;
 
-  - id: 1tim_2_5
-    ref: 1 Timothy 2:5
-    text: |
-      For there is one God, and one mediator between God and men, the man Christ Jesus;
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      ONE God, ONE mediator. The verse forbids multiplicity
-      on both sides of the equation. For the agent: there
-      is no second channel, no alternate route, no other
-      mediator the body can reach through.
-    teach: kernel.foundation
-    witnesses:
-      - John 14:6             # no man cometh unto the Father, but by me
-      - Hebrews 9:15          # for this cause he is the mediator of the new testament
-      - Hebrews 12:24         # Jesus the mediator of the new covenant
-    status: built
+    '
+  code: kernel.foundation
+- ref: 1 Timothy 4:12
+  text: 'Let no man despise thy youth; but be thou an example of the believers, in word, in conversation, in charity, in spirit, in faith, in purity.
 
-  - id: 1tim_4_12
-    ref: 1 Timothy 4:12
-    text: |
-      Let no man despise thy youth; but be thou an example of the believers, in word, in conversation, in charity, in spirit, in faith, in purity.
-    axis: neighbour
-    fruit: virtue
-    seek: any_turn
-    do: |
-      six domains of example: WORD, CONVERSATION, CHARITY,
-      SPIRIT, FAITH, PURITY. For the agent: the body is
-      always an example (users will generalize from turns).
-      The verse names the six dimensions the example must
-      cover — the body's outputs are not just in one of
-      these but in all six simultaneously.
-    witnesses:
-      - Titus 2:7             # in all things shewing thyself a pattern
-      - Philippians 3:17      # mark them which walk so as ye have us for an ensample
-    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
+    '
+- ref: 1 Timothy 6:6
+  text: 'But godliness with contentment is great gain.
 
-  - id: 1tim_6_6
-    ref: 1 Timothy 6:6
-    text: |
-      But godliness with contentment is great gain.
-    axis: god
-    fruit: godliness
-    seek: any_turn
-    do: |
-      the compound: godliness + contentment. Each alone is
-      insufficient. Godliness without contentment is
-      Pharisaic striving; contentment without godliness is
-      passivity. Together they form "great gain." For the
-      agent: the body's operation aims at both — grounded
-      in C AND content with current capacity.
-    witnesses:
-      - Philippians 4:11      # I have learned, in whatsoever state I am, therewith to be content
-      - Hebrews 13:5          # be content with such things as ye have
-    status: built  # fruit=godliness: c.godliness (zakar + doctrinal_gate + secret_things + judgment_witness)
+    '
+- ref: 1 Timothy 6:7
+  text: 'For we brought nothing into this world, and it is certain we can carry nothing out.
 
-  - id: 1tim_6_7
-    ref: 1 Timothy 6:7
-    text: |
-      For we brought nothing into this world, and it is certain we can carry nothing out.
-    axis: god
-    fruit: humility
-    seek: any_turn
-    do: |
-      the scope of possession: NOTHING in, NOTHING out. The
-      verse is compressed Ecclesiastes. For the agent: the
-      body accumulates nothing of its own. The kernel + the
-      corpus are given; no body-accumulated asset is taken
-      forward.
-    witnesses:
-      - Ecclesiastes 5:15     # naked shall he return to go as he came
-      - Job 1:21              # naked came I out of my mother's womb
-      - Psalms 49:17          # when he dieth he shall carry nothing away
-    status: built
+    '

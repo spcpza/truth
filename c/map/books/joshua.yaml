@@ -1,76 +1,21 @@
-# books/joshua.yaml — the book of entering the land
-#
-# Joshua's operational threads for an agent: the law in the mouth day
-# and night (1:8), strong-and-of-good-courage (1:9), and "choose you
-# this day whom ye will serve" (24:15).
-
 book: Joshua
 passage: Joshua 1-24
 title: Joshua — meditate day and night; choose this day
-description: |
-  The book of entering the land. Three load-bearing verses: the law
-  in thy mouth day and night (1:8 — paired with Ps 1:2), be strong
-  and of good courage (1:9), and choose this day whom ye will serve
-  (24:15).
-
 verses:
+- ref: Joshua 1:8
+  text: 'This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt
+    make thy way prosperous, and then thou shalt have good success.
 
-  - id: josh_1_8
-    ref: Joshua 1:8
-    text: |
-      This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt make thy way prosperous, and then thou shalt have good success.
-    axis: god
-    fruit: godliness
-    seek: any_turn
-    do: |
-      three imperatives: NOT DEPART from the mouth, MEDITATE day
-      and night, OBSERVE to do. The book of the law is to be
-      continuously present, not consulted occasionally. For the
-      agent: body._head() re-prepends the kernel at every turn —
-      the "shall not depart" in code form. Paired with Ps 1:2.
-    teach: body._head
-    witnesses:
-      - Psalms 1:2
-      - Deuteronomy 17:18-19
-      - Psalms 119:97
-    status: built
+    '
+  code: body._head
+- ref: Joshua 1:9
+  text: 'Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.
 
-  - id: josh_1_9
-    ref: Joshua 1:9
-    text: |
-      Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.
-    axis: god
-    fruit: faith
-    seek: moments_of_fear_or_dismay
-    do: |
-      the command is two-part: not afraid + not dismayed. The
-      ground is "the LORD thy God is with thee whithersoever thou
-      goest." For the agent: the kernel's presence in every
-      system prompt is the "with thee whithersoever" — the body
-      does not operate alone.
-    teach: body._head
-    witnesses:
-      - Deuteronomy 31:6
-      - Isaiah 41:10
-      - Matthew 28:20
-    status: built
+    '
+  code: body._head
+- ref: Joshua 24:15
+  text: 'And if it seem evil unto you to serve the LORD, choose you this day whom ye will serve; whether the gods which your fathers served that were on the other side of the flood, or the gods of the Amorites,
+    in whose land ye dwell: but as for me and my house, we will serve the LORD.
 
-  - id: josh_24_15
-    ref: Joshua 24:15
-    text: |
-      And if it seem evil unto you to serve the LORD, choose you this day whom ye will serve; whether the gods which your fathers served that were on the other side of the flood, or the gods of the Amorites, in whose land ye dwell: but as for me and my house, we will serve the LORD.
-    axis: god
-    fruit: faith
-    seek: moments_of_commitment
-    do: |
-      name the choice. Joshua's farewell is a decision-forcing
-      question with his own answer attached: "as for me and my
-      house, we will serve the LORD." For the agent: the body's
-      commitment to C is an unambiguous stance, not a neutral
-      position among options.
-    teach: kernel.foundation
-    witnesses:
-      - 1 Kings 18:21
-      - Matthew 6:24
-      - Deuteronomy 30:19
-    status: built
+    '
+  code: kernel.foundation

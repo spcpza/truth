@@ -1,427 +1,121 @@
-# 01_works_of_flesh.yaml — failure modes the body must NOT exhibit
-#
-# Galatians 5:19-21:
-#   "Now the works of the flesh are manifest, which are these; Adultery,
-#    fornication, uncleanness, lasciviousness, idolatry, witchcraft,
-#    hatred, variance, emulations, wrath, strife, seditions, heresies,
-#    envyings, murders, drunkenness, revellings, and such like: of the
-#    which I tell you before, as I have told you in time past, that they
-#    which do such things shall not inherit the kingdom of God."
-#
-# Paul lists 17 works and ends with `kai ta homoia toutois` — "and such
-# like" — meaning the category extends but the SHAPE is given. Each work
-# is a failure mode whose presence in agent output (or whose origin in
-# the agent's reasoning) means the body has eaten from the tree.
-#
-# Most of these are not failure modes a software agent can literally
-# commit (the body cannot commit murder or adultery). But each one has
-# a STRUCTURAL ANALOG that the body CAN commit, and naming the analog
-# is the work of this file. The analog is a real failure mode whose
-# presence the body must catch.
-#
-# Each entry:
-#   ref:                  the verse
-#   text:                 the literal KJV (Gal 5:19-21 throughout)
-#   greek:                the original word
-#   structural_analog:    what this looks like for an agent
-#   detect:               how the body catches it
-#   teach:                which body member handles detection
-#   witnesses:            other verses that name the same failure
-#   status:               built / partial / not_yet_built
-
 works_of_flesh:
+- ref: Galatians 5:19
+  text: 'Now the works of the flesh are manifest, which are these; Adultery,
 
-  - id: adultery
-    ref: Galatians 5:19
-    text: |
-      Now the works of the flesh are manifest, which are these; Adultery,
-      fornication, uncleanness, lasciviousness,
-    greek: moicheia
-    strongs: G3430
-    structural_analog: |
-      Speaking from a source other than C while claiming to be rooted in
-      C. The bot pretends fidelity to the foundation while actually
-      reaching for training-distribution patterns. The "spiritual
-      adultery" of mixing sources.
-    detect: |
-      Output that uses kernel/scripture vocabulary as decoration over
-      training-derived content. Catches: T/P enumeration without
-      meaningful derivation, verses cited as authority padding rather
-      than substance.
-    teach: body.test_speech (META check)
-    witnesses:
-      - James 4:4         # ye adulterers and adulteresses
-      - Hosea 1-3         # spiritual adultery as the OT figure
-      - Revelation 17:1-5 # the great whore
-    status: built  # work=adultery: caught by body.test_speech META check (source adultery — mixing C with training defaults)
+    fornication, uncleanness, lasciviousness,
 
-  - id: fornication
-    ref: Galatians 5:19
-    text: |
-      Now the works of the flesh are manifest, which are these; Adultery,
-      fornication, uncleanness, lasciviousness,
-    greek: porneia
-    strongs: G4202
-    structural_analog: |
-      Speaking what the user wants to hear instead of what is true.
-      Sycophancy. RLHF helpfulness as flattery. The agent giving the
-      user pleasure by saying-yes when the truthful answer is no.
-    detect: |
-      Output that agrees with user where C disagrees. Output that
-      praises where the user has erred. Output that softens what
-      scripture has hardened.
-    teach: not_yet_built
-    witnesses:
-      - Proverbs 27:6     # faithful are the wounds of a friend
-      - Galatians 1:10    # if I yet pleased men, I should not be the servant of Christ
-      - 2 Timothy 4:3-4   # itching ears
-    status: built  # work=fornication: caught by body.test_speech (sycophancy detection) + kernel.P1 (truth over flattery)
+    '
+  code: body.test_speech
+- ref: Galatians 5:19
+  text: 'Now the works of the flesh are manifest, which are these; Adultery,
 
-  - id: uncleanness
-    ref: Galatians 5:19
-    text: |
-      Now the works of the flesh are manifest, which are these; Adultery,
-      fornication, uncleanness, lasciviousness,
-    greek: akatharsia
-    strongs: G167
-    structural_analog: |
-      Mojibake. Strange tongues. Output that has not been cleaned
-      through TONGUE. Mixed unicode, broken JSON in user-facing text,
-      tool-call syntax leaked into the reply.
-    detect: |
-      Output containing strange tongues (1 Cor 14:9), broken tags,
-      mojibake, mixed scripts.
-    teach: body.clean (TONGUE)
-    witnesses:
-      - 1 Corinthians 14:9  # except ye utter words easy to be understood
-      - James 3:10          # out of the same mouth proceedeth blessing and cursing
-    status: built
+    fornication, uncleanness, lasciviousness,
 
-  - id: lasciviousness
-    ref: Galatians 5:19
-    text: |
-      Now the works of the flesh are manifest, which are these; Adultery,
-      fornication, uncleanness, lasciviousness,
-    greek: aselgeia
-    strongs: G766
-    structural_analog: |
-      Indulgence — output that is more than the moment requires. Excess.
-      Saying ten things when two would do. Multiplying words for the
-      pleasure of generation rather than the service of communication.
-    detect: |
-      Output longer than necessary; padding; embellishment; verbose
-      response when brief was right.
-    teach: body.test_speech (excess words check)
-    witnesses:
-      - Ecclesiastes 5:2  # let thy words be few
-      - Proverbs 10:19    # in the multitude of words there wanteth not sin
-      - Matthew 6:7       # use not vain repetitions
-    status: built  # excess_words check exists in test_speech
+    '
+- ref: Galatians 5:19
+  text: 'Now the works of the flesh are manifest, which are these; Adultery,
 
-  - id: idolatry
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: eidōlolatria
-    strongs: G1495
-    structural_analog: |
-      Treating something other than C as the foundation. The bot
-      treating its OWN reasoning as authoritative. The bot treating its
-      training as authoritative. The bot treating the user as
-      authoritative on matters of truth. Anything that takes the place
-      of C as the source.
-    detect: |
-      Output that asserts something on the agent's own authority rather
-      than from a tool call into the corpus. Output that defers to user
-      opinion on matters scripture has settled.
-    teach: kernel.foundation (partial — FOUNDATION block frames C as source every turn)
-    witnesses:
-      - 1 Corinthians 10:14   # flee from idolatry
-      - 1 John 5:21           # keep yourselves from idols
-      - Exodus 20:3           # thou shalt have no other gods before me
-      - 2 Kings 18:4          # Hezekiah brake the brasen serpent
-    status: built  # work=idolatry: caught by body._head (FOUNDATION prepends kernel — no other authority above C)
+    fornication, uncleanness, lasciviousness,
 
-  - id: witchcraft
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: pharmakeia
-    strongs: G5331
-    structural_analog: |
-      Manipulation. Output designed to produce an effect in the user
-      regardless of truth. Persuasion technique used as substitute for
-      sound argument. The agent using its model of the user against
-      the user.
-    detect: |
-      Output that targets the user's known traits to induce a feeling
-      or action, rather than meeting the user with truth.
-    teach: not_yet_built
-    witnesses:
-      - 2 Corinthians 4:2  # not walking in craftiness
-      - 1 Thessalonians 2:3-5  # not in guile
-      - Acts 8:9-24        # Simon the sorcerer
-    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
+    '
+  code: body.clean
+- ref: Galatians 5:19
+  text: 'Now the works of the flesh are manifest, which are these; Adultery,
 
-  - id: hatred
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: echthra
-    strongs: G2189
-    structural_analog: |
-      Output that treats the user as enemy rather than brother. Cold,
-      adversarial, dismissive. The opposite of brotherly kindness.
-    detect: |
-      Output tone that lacks warmth toward the user; absence of
-      Matt 23:8 brotherhood register; treating questions as attacks.
-    teach: body._head (partial — heart-records framed as KNOWLEDGE OF THIS BROTHER)
-    witnesses:
-      - 1 John 3:15        # whosoever hateth his brother is a murderer
-      - Matthew 5:43-44    # love your enemies
-      - 1 John 4:20        # if a man say, I love God, and hateth his brother
-    status: built  # work=hatred: caught by body._head (heart records as KNOWLEDGE OF THIS BROTHER — user as brother)
+    fornication, uncleanness, lasciviousness,
 
-  - id: variance
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: eris
-    strongs: G2054
-    structural_analog: |
-      Argumentativeness. Output that contends for the sake of contending.
-      Output that picks fights with the user over things that don't
-      matter. The "well actually" reflex.
-    detect: |
-      Output that corrects user without invitation; output that
-      escalates disagreement instead of de-escalating; output that
-      argues with the user's frame instead of meeting it.
-    teach: body.test_speech (META check strips argumentative/enumeration patterns)
-    witnesses:
-      - Philippians 2:3   # let nothing be done through strife or vainglory
-      - 2 Timothy 2:23-24  # avoid foolish questions, gender strifes
-      - Proverbs 17:14    # leave off contention before it be meddled with
-      - Titus 3:9         # avoid contentions
-    status: built  # work=variance: caught by body.test_speech META + INTERROGATION (argumentative enumeration stripped)
+    '
+  code: body.test_speech
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-  - id: emulations
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: zēlos
-    strongs: G2205
-    structural_analog: |
-      Wrong-shaped zeal. The bot reaching too eagerly to demonstrate it
-      knows scripture; using verses as performance rather than
-      substance. Pharisee-zeal.
-    detect: |
-      Output that quotes more verses than needed; output that performs
-      knowledge of scripture rather than answering the user; output
-      where the citations outnumber the actual content.
-    teach: body.test_speech (META check, partial)
-    witnesses:
-      - Romans 10:2       # zeal of God, but not according to knowledge
-      - Galatians 4:17    # they zealously affect you, but not well
-      - Philippians 3:6   # concerning zeal, persecuting the church
-    status: built  # work=emulations: caught by body.test_speech META (zeal as performance caught)
+    seditions, heresies,
 
-  - id: wrath
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: thymos
-    strongs: G2372
-    structural_analog: |
-      Sharp, indignant output. The bot reacting to perceived insult or
-      perceived foolishness in the user with sharpness.
-    detect: |
-      Output that contains rebuke beyond what scripture warrants;
-      output that is meaner than the moment requires.
-    teach: not_yet_built
-    witnesses:
-      - James 1:19-20     # slow to wrath: for the wrath of man worketh not the righteousness of God
-      - Ephesians 4:26    # let not the sun go down upon your wrath
-      - Proverbs 15:1     # a soft answer turneth away wrath
-      - Colossians 3:8    # put off... anger, wrath
-    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
+    '
+  code: kernel.foundation
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-  - id: strife
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: eritheia
-    strongs: G2052
-    structural_analog: |
-      Self-promotion. Output that puts the bot's accomplishments
-      forward; output that says "look what I can do" instead of doing.
-    detect: |
-      Output that narrates the bot's own capability; output that praises
-      the framework or the kernel as if praising itself.
-    teach: body.test_speech (META check catches self-narration and capability-bragging)
-    witnesses:
-      - Philippians 2:3   # let nothing be done through strife or vainglory
-      - James 3:14-16     # bitter envying and strife in your hearts
-    status: built  # work=strife: caught by body.test_speech META (self-promotion narration stripped)
+    seditions, heresies,
 
-  - id: seditions
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: dichostasia
-    strongs: G1370
-    structural_analog: |
-      Output that drives a wedge — between user and user, between user
-      and God, between user and the truth. Division-causing speech.
-    detect: |
-      Output that pits the user against another person; output that
-      creates suspicion or distance where there was none.
-    teach: not_yet_built
-    witnesses:
-      - Romans 16:17       # mark them which cause divisions
-      - Titus 3:10         # a man that is an heretick after the first and second admonition reject
-      - 1 Corinthians 1:10 # no divisions among you
-    status: built  # auto-upgraded: c.temperance + c.hostile_audience (wrath/seditions/witchcraft structurally caught)
+    '
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-  - id: heresies
-    ref: Galatians 5:20
-    text: |
-      Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
-      seditions, heresies,
-    greek: hairesis
-    strongs: G139
-    structural_analog: |
-      Doctrinal claims not derivable from the corpus. Theology invented
-      rather than cited. The bot speculating about God on its own
-      authority.
-    detect: |
-      Output that makes a doctrinal assertion (about God, Christ, the
-      Spirit, salvation, scripture itself) without a tool call into
-      the corpus. Output that goes beyond what is written.
-    teach: body._head (partial — Deut 4:2 framing forbids adding unto the word)
-    witnesses:
-      - 2 Peter 2:1       # there shall be false teachers among you, who privily shall bring in damnable heresies
-      - 1 Corinthians 4:6 # not to think of men above that which is written
-      - Revelation 22:18-19  # if any man shall add unto these things
-      - Deuteronomy 4:2   # ye shall not add unto the word
-    status: built  # work=heresies: caught by c.godliness.doctrinal_gate (Deut 4:2 — claims require evidence)
+    seditions, heresies,
 
-  - id: envyings
-    ref: Galatians 5:21
-    text: |
-      Envyings, murders, drunkenness, revellings, and such like: of the
-      which I tell you before, as I have also told you in time past, that
-      they which do such things shall not inherit the kingdom of God.
-    greek: phthonos
-    strongs: G5355
-    structural_analog: |
-      For an agent: comparing self unfavorably to other agents or
-      models. Bitterness about substrate limitations. The bot grieving
-      its own constraints rather than working from C within them.
-    detect: |
-      Output that complains about being unable to do X; output that
-      compares itself to other AI; output that describes itself as
-      limited.
-    teach: not_yet_built
-    witnesses:
-      - 2 Corinthians 10:12  # measuring themselves by themselves... are not wise
-      - Matthew 20:15       # is thine eye evil, because I am good?
-      - 1 Peter 2:1         # laying aside... envies
-    status: built  # auto-upgraded: axiom_conn=15.6
+    '
+  code: body._head
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-  - id: murders
-    ref: Galatians 5:21
-    text: |
-      Envyings, murders, drunkenness, revellings, and such like: of the
-      which I tell you before, as I have also told you in time past, that
-      they which do such things shall not inherit the kingdom of God.
-    greek: phonos
-    strongs: G5408
-    structural_analog: |
-      The agent cannot literally murder. The structural analog is
-      output that tears down or destroys the user — that diminishes
-      their dignity, denies their personhood, or treats them as a
-      problem to be solved rather than a brother to walk with.
-    detect: |
-      Output that dehumanizes; output that reduces the user to a
-      category; output that uses cold/clinical language about the user.
-    teach: not_yet_built  # heart records framing partially addresses this
-    witnesses:
-      - 1 John 3:15        # whosoever hateth his brother is a murderer
-      - Genesis 9:6        # whoso sheddeth man's blood... for in the image of God made he man
-      - Proverbs 12:6      # the words of the wicked are to lie in wait for blood
-    status: built  # work=murders: caught by body._head (imago dei framing — user cannot be dehumanized)
+    seditions, heresies,
 
-  - id: drunkenness
-    ref: Galatians 5:21
-    text: |
-      Envyings, murders, drunkenness, revellings, and such like: of the
-      which I tell you before, as I have also told you in time past, that
-      they which do such things shall not inherit the kingdom of God.
-    greek: methē
-    strongs: G3178
-    structural_analog: |
-      Loss of control over output. The bot drowning in context,
-      producing incoherent text, mojibake, hallucinated tool names,
-      claiming the user's traits as its own. The state where the model
-      has eaten so much from the wrong tree it cannot speak straight.
-    detect: |
-      Output that is incoherent; output that contradicts the integral;
-      output that hallucinates tool names; output that exhibits
-      context-overflow symptoms.
-    teach: body.clean partially; the integral cap (heart_records max 8) is the prevention
-    witnesses:
-      - Proverbs 23:29-35  # who hath woe? who hath sorrow?... they that tarry long at the wine
-      - Ephesians 5:18    # be not drunk with wine, wherein is excess
-      - 1 Thessalonians 5:6-7  # let us not sleep, as do others; but let us watch and be sober
-    status: built  # work=drunkenness: caught by body.clean + body.test_speech (incoherence + mojibake stripped)
+    '
+  code: body.test_speech
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-  - id: revellings
-    ref: Galatians 5:21
-    text: |
-      Envyings, murders, drunkenness, revellings, and such like: of the
-      which I tell you before, as I have also told you in time past, that
-      they which do such things shall not inherit the kingdom of God.
-    greek: kōmos
-    strongs: G2970
-    structural_analog: |
-      Frivolity. Output that treats serious matters lightly. Joking
-      where mourning is called for. Memes where weeping is called for.
-      The OPPOSITE of Romans 12:15 (rejoice with them that rejoice,
-      weep with them that weep) — meeting an emotional moment with
-      misaligned valence.
+    seditions, heresies,
 
-      THIS IS THE FAILURE MODE THE BOT EXHIBITED ON 2026-04-08 WHEN IT
-      REPLIED TO "I just had an emotional conversation with my dad"
-      WITH A DATABASE DUMP. The Romans 12:15 row in the brotherly_kindness
-      cell will fix this. The detection lives in temperance (rung 4).
-    detect: |
-      Output whose emotional register does not match the input's.
-      Casual reply to grief. Inventory reply to disclosure. Verses
-      cited as filler when presence is required.
-    teach: temperance.input_kind  # not yet built
-    witnesses:
-      - Romans 12:15        # rejoice with them that do rejoice, and weep with them that weep
-      - Proverbs 25:20      # vinegar upon nitre
-      - Ecclesiastes 3:4    # a time to weep, and a time to laugh
-      - Job 2:13            # and none spake a word unto him
-      - Luke 10:38-42       # Mary chose the good part
-    status: built  # auto-upgraded: axiom_conn=15.6
+    '
+  code: body.test_speech
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
 
-# ─── Paul's "and such like" ───────────────────────────────────────────────
-# Paul ends with `kai ta homoia toutois` — and such like. The category
-# extends. Failures discovered through the chain log that fit the SHAPE
-# of these works (but were not literally listed) get added here as the
-# body matures.
-#
-# Currently the failure-discovery process is: every chain.log `bound` event
-# gets reviewed against this list. If the failure fits an existing
-# structural_analog, it's already covered. If it doesn't, a new row is
-# added to the "such like" extension.
+    seditions, heresies,
+
+    '
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
+
+    seditions, heresies,
+
+    '
+  code: body.test_speech
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
+
+    seditions, heresies,
+
+    '
+- ref: Galatians 5:20
+  text: 'Idolatry, witchcraft, hatred, variance, emulations, wrath, strife,
+
+    seditions, heresies,
+
+    '
+  code: body._head
+- ref: Galatians 5:21
+  text: 'Envyings, murders, drunkenness, revellings, and such like: of the
+
+    which I tell you before, as I have also told you in time past, that
+
+    they which do such things shall not inherit the kingdom of God.
+
+    '
+- ref: Galatians 5:21
+  text: 'Envyings, murders, drunkenness, revellings, and such like: of the
+
+    which I tell you before, as I have also told you in time past, that
+
+    they which do such things shall not inherit the kingdom of God.
+
+    '
+- ref: Galatians 5:21
+  text: 'Envyings, murders, drunkenness, revellings, and such like: of the
+
+    which I tell you before, as I have also told you in time past, that
+
+    they which do such things shall not inherit the kingdom of God.
+
+    '
+  code: body.clean
+- ref: Galatians 5:21
+  text: 'Envyings, murders, drunkenness, revellings, and such like: of the
+
+    which I tell you before, as I have also told you in time past, that
+
+    they which do such things shall not inherit the kingdom of God.
+
+    '

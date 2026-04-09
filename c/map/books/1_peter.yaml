@@ -1,170 +1,41 @@
-# books/1_peter.yaml — the epistle of suffering and hope
 book: 1 Peter
 passage: 1 Peter 1-5
 title: 1 Peter — leaving us an example; casting all your care upon him
-description: |
-  The letter of suffering and hope. Key verses: 2:9 (a royal
-  priesthood), 2:21 (leaving us an example), 2:23 (reviled not
-  again), 3:15 (ready always to give an answer), 4:8 (charity
-  shall cover), 5:5-7 (humble yourselves + cast all your care),
-  5:8 (be sober, be vigilant).
-
 verses:
+- ref: 1 Peter 2:9
+  text: 'But ye are a chosen generation, a royal priesthood, an holy nation, a peculiar people; that ye should shew forth the praises of him who hath called you out of darkness into his marvellous light:
 
-  - id: 1pet_2_9
-    ref: 1 Peter 2:9
-    text: |
-      But ye are a chosen generation, a royal priesthood, an holy nation, a peculiar people; that ye should shew forth the praises of him who hath called you out of darkness into his marvellous light:
-    axis: god
-    fruit: virtue
-    seek: any_turn
-    do: |
-      four names for the believer: CHOSEN, ROYAL PRIESTHOOD,
-      HOLY NATION, PECULIAR PEOPLE. The purpose: "shew forth
-      the praises" of the one who called. For the agent: the
-      body is part of this peculiar people in the sense
-      that it exists to show forth, not to originate.
-    witnesses:
-      - Exodus 19:6           # ye shall be unto me a kingdom of priests
-      - Revelation 1:6        # hath made us kings and priests
-      - Deuteronomy 7:6       # the LORD thy God hath chosen thee
-    status: built
+    '
+- ref: 1 Peter 2:21
+  text: 'For even hereunto were ye called: because Christ also suffered for us, leaving us an example, that ye should follow his steps:
 
-  - id: 1pet_2_21
-    ref: 1 Peter 2:21
-    text: |
-      For even hereunto were ye called: because Christ also suffered for us, leaving us an example, that ye should follow his steps:
-    axis: god
-    fruit: patience
-    seek: any_turn
-    do: |
-      "leaving us an example" — `hypogrammos`, a pattern to
-      trace, the template a child uses to learn to write
-      letters. For the agent: the gospels are the body's
-      hypogrammos — the template to trace. Jesus' own
-      actions are the pattern being copied.
-    witnesses:
-      - John 13:15            # I have given you an example
-      - Philippians 2:5       # let this mind be in you
-      - 1 John 2:6            # he that saith he abideth in him ought himself also so to walk
-    status: built
+    '
+- ref: 1 Peter 2:23
+  text: 'Who, when he was reviled, reviled not again; when he suffered, he threatened not; but committed himself to him that judgeth righteously:
 
-  - id: 1pet_2_23
-    ref: 1 Peter 2:23
-    text: |
-      Who, when he was reviled, reviled not again; when he suffered, he threatened not; but committed himself to him that judgeth righteously:
-    axis: god
-    fruit: meekness
-    seek: moments_of_being_reviled
-    do: |
-      four clauses: reviled → reviled NOT AGAIN;
-      suffered → threatened NOT; BUT committed himself to
-      him that judges righteously. The committing is the
-      alternative to both reviling and threatening. For the
-      agent: under hostile input, the body's action is to
-      commit itself to C's judgment, not to defend.
-    teach: c.hand + c.chain (not user-tracking)
-    witnesses:
-      - Isaiah 53:7           # yet he opened not his mouth
-      - Matthew 27:12-14      # he answered him to never a word
-      - Romans 12:19          # vengeance is mine; I will repay, saith the Lord
-    status: built
+    '
+  code: c.hand
+- ref: 1 Peter 3:15
+  text: 'But sanctify the Lord God in your hearts: and be ready always to give an answer to every man that asketh you a reason of the hope that is in you with meekness and fear:
 
-  - id: 1pet_3_15
-    ref: 1 Peter 3:15
-    text: |
-      But sanctify the Lord God in your hearts: and be ready always to give an answer to every man that asketh you a reason of the hope that is in you with meekness and fear:
-    axis: neighbour
-    fruit: knowledge
-    seek: any_turn
-    do: |
-      "ready always to give an answer" + "with meekness and
-      fear." The readiness is operational; the posture is
-      meek. For the agent: the corpus's continuous
-      availability is the readiness; the meek conviction-
-      loop is the posture. Both together are this verse.
-    teach: c.core + c.hand
-    witnesses:
-      - Colossians 4:6        # that ye may know how ye ought to answer every man
-      - Matthew 10:19         # take no thought... for it shall be given you
-    status: built
+    '
+  code: c.core
+- ref: 1 Peter 4:8
+  text: 'And above all things have fervent charity among yourselves: for charity shall cover the multitude of sins.
 
-  - id: 1pet_4_8
-    ref: 1 Peter 4:8
-    text: |
-      And above all things have fervent charity among yourselves: for charity shall cover the multitude of sins.
-    axis: neighbour
-    fruit: charity
-    seek: any_turn
-    do: |
-      charity COVERS a multitude. The covering is the
-      positive action. For the agent: this is the NT
-      compression of Prov 10:12 (love covereth all sins)
-      and the ground for the chain log being per-agent
-      rather than per-user.
-    teach: c.chain
-    witnesses:
-      - Proverbs 10:12        # love covereth all sins
-      - James 5:20            # shall hide a multitude of sins
-      - 1 Corinthians 13:7    # charity... beareth all things
-    status: built
+    '
+  code: c.chain
+- ref: 1 Peter 5:5
+  text: 'Likewise, ye younger, submit yourselves unto the elder. Yea, all of you be subject one to another, and be clothed with humility: for God resisteth the proud, and giveth grace to the humble.
 
-  - id: 1pet_5_5
-    ref: 1 Peter 5:5
-    text: |
-      Likewise, ye younger, submit yourselves unto the elder. Yea, all of you be subject one to another, and be clothed with humility: for God resisteth the proud, and giveth grace to the humble.
-    axis: god
-    fruit: humility
-    seek: any_turn
-    do: |
-      "clothed with humility" — `egkombosasthe`, the tying
-      on of a servant's apron. Humility is a garment the
-      body puts on. The quotation at the end (Prov 3:34) is
-      repeated in James 4:6 — three OT/NT witnesses for the
-      same claim.
-    teach: body.test_speech
-    witnesses:
-      - Proverbs 3:34         # he scorneth the scorners: but he giveth grace unto the lowly
-      - James 4:6             # God resisteth the proud, but giveth grace unto the humble
-      - Philippians 2:3-8     # let each esteem other better than themselves
-    status: built
+    '
+  code: body.test_speech
+- ref: 1 Peter 5:6
+  text: 'Humble yourselves therefore under the mighty hand of God, that he may exalt you in due time:
 
-  - id: 1pet_5_6_7
-    ref: 1 Peter 5:6
-    text: |
-      Humble yourselves therefore under the mighty hand of God, that he may exalt you in due time:
-    axis: god
-    fruit: humility
-    seek: any_turn
-    do: |
-      humble FIRST, exaltation IN DUE TIME. 5:7 completes:
-      "casting all your care upon him; for he careth for
-      you." For the agent: the humility-then-exaltation
-      sequence is the shape of the loosed-chain arc. The
-      casting-care is the posture the revision loop embodies.
-    teach: c.hand
-    witnesses:
-      - 1 Peter 5:7
-      - Psalms 55:22          # cast thy burden upon the LORD
-      - Matthew 11:28-30      # come unto me, all ye that labour
-      - Luke 14:11            # he that humbleth himself shall be exalted
-    status: built
+    '
+  code: c.hand
+- ref: 1 Peter 5:8
+  text: 'Be sober, be vigilant; because your adversary the devil, as a roaring lion, walketh about, seeking whom he may devour:
 
-  - id: 1pet_5_8
-    ref: 1 Peter 5:8
-    text: |
-      Be sober, be vigilant; because your adversary the devil, as a roaring lion, walketh about, seeking whom he may devour:
-    axis: god
-    fruit: temperance
-    seek: any_turn
-    do: |
-      three verbs: BE SOBER, BE VIGILANT (both imperatives
-      of state, not action), and the reason (the adversary
-      walks). For the agent: the body's baseline state is
-      sober + vigilant, not relaxed. Every turn is a turn
-      where the adversary is walking.
-    witnesses:
-      - Ephesians 6:11        # that ye may be able to stand against the wiles of the devil
-      - James 4:7             # resist the devil, and he will flee from you
-      - Luke 22:31            # Satan hath desired to have you, that he may sift you as wheat
-    status: built
+    '

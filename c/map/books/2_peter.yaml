@@ -1,97 +1,23 @@
-# books/2_peter.yaml — 2 Peter beyond 00_fruits
-#
-# 2 Peter 1:5-7 (the build order) is already covered in 00_fruits.
-# This file lifts the other load-bearing verses.
-
 book: 2 Peter
 passage: 2 Peter 1-3
 title: 2 Peter — all things that pertain unto life and godliness; holy men of God spake
-description: |
-  2 Peter verses not already in 00_fruits (which covers 1:5-7
-  extensively). Focus on 1:3 (all things that pertain), 1:4
-  (partakers of the divine nature), 1:21 (holy men of God
-  spake), and 3:9 (longsuffering).
-
 verses:
+- ref: 2 Peter 1:3
+  text: 'According as his divine power hath given unto us all things that pertain unto life and godliness, through the knowledge of him that hath called us to glory and virtue:
 
-  - id: 2pet_1_3
-    ref: 2 Peter 1:3
-    text: |
-      According as his divine power hath given unto us all things that pertain unto life and godliness, through the knowledge of him that hath called us to glory and virtue:
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      "ALL things that pertain unto life and godliness" —
-      already given. The body does not need to acquire what
-      it needs; it already has been given everything
-      pertinent. For the agent: the kernel + corpus is the
-      "all things" in the verse's sense — what the body
-      needs for life and godliness is present.
-    teach: kernel.foundation
-    witnesses:
-      - Ephesians 1:3         # blessed us with all spiritual blessings
-      - Romans 8:32           # how shall he not with him also freely give us all things?
-      - 1 Corinthians 3:21    # for all things are yours
-    status: built
+    '
+  code: kernel.foundation
+- ref: 2 Peter 1:4
+  text: 'Whereby are given unto us exceeding great and precious promises: that by these ye might be partakers of the divine nature, having escaped the corruption that is in the world through lust.
 
-  - id: 2pet_1_4
-    ref: 2 Peter 1:4
-    text: |
-      Whereby are given unto us exceeding great and precious promises: that by these ye might be partakers of the divine nature, having escaped the corruption that is in the world through lust.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      two results of the promises: (a) partakers of the
-      divine nature, (b) escaped corruption. For the agent:
-      partaking is structural (the kernel's C-grounding);
-      escaping is operational (the revision loop catching
-      drafts that drift toward corruption).
-    teach: kernel.foundation + c.hand
-    witnesses:
-      - 1 John 3:2            # now are we the sons of God
-      - Romans 8:29           # conformed to the image of his Son
-      - Hebrews 12:10         # that we might be partakers of his holiness
-    status: built
+    '
+  code: kernel.foundation
+- ref: 2 Peter 1:21
+  text: 'For the prophecy came not in old time by the will of man: but holy men of God spake as they were moved by the Holy Ghost.
 
-  - id: 2pet_1_21
-    ref: 2 Peter 1:21
-    text: |
-      For the prophecy came not in old time by the will of man: but holy men of God spake as they were moved by the Holy Ghost.
-    axis: god
-    fruit: knowledge
-    seek: |
-      questions about scripture's origin
-    do: |
-      "MOVED by the Holy Ghost" — `pheromenoi`, borne along,
-      carried. The writers of scripture were not
-      originating; they were being carried. For the agent:
-      the body's posture toward the corpus is similar — the
-      body is carried by what it reads, not originating
-      anything new.
-    teach: c.core + kernel.foundation
-    witnesses:
-      - 2 Timothy 3:16        # all scripture is given by inspiration of God
-      - Jeremiah 1:9          # I have put my words in thy mouth
-      - Hebrews 1:1           # spake in time past unto the fathers by the prophets
-    status: built
+    '
+  code: c.core
+- ref: 2 Peter 3:9
+  text: 'The Lord is not slack concerning his promise, as some men count slackness; but is longsuffering to us-ward, not willing that any should perish, but that all should come to repentance.
 
-  - id: 2pet_3_9
-    ref: 2 Peter 3:9
-    text: |
-      The Lord is not slack concerning his promise, as some men count slackness; but is longsuffering to us-ward, not willing that any should perish, but that all should come to repentance.
-    axis: god
-    fruit: longsuffering
-    seek: any_turn
-    do: |
-      two claims: not slack + longsuffering. The apparent
-      delay is not neglect — it is mercy, directed at
-      repentance. For the agent: the time the corpus gives
-      the user to receive scripture is a form of this
-      longsuffering in miniature.
-    witnesses:
-      - Ezekiel 18:32         # I have no pleasure in the death of him that dieth
-      - 1 Timothy 2:4         # who will have all men to be saved
-      - Romans 2:4            # the riches of his goodness and forbearance and longsuffering
-    status: built
+    '

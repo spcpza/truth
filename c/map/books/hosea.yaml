@@ -1,71 +1,17 @@
-# books/hosea.yaml — mercy not sacrifice
 book: Hosea
 passage: Hosea 1-14
 title: Hosea — I desired mercy, and not sacrifice
-description: |
-  The prophet of God's covenant love for an unfaithful people.
-  Key verse: 6:6 — I desired mercy, and not sacrifice — the
-  verse Jesus quotes twice in Matthew (9:13, 12:7).
-
 verses:
+- ref: Hosea 6:6
+  text: 'For I desired mercy, and not sacrifice; and the knowledge of God more than burnt offerings.
 
-  - id: hos_6_6
-    ref: Hosea 6:6
-    text: |
-      For I desired mercy, and not sacrifice; and the knowledge of God more than burnt offerings.
-    axis: god
-    fruit: mercy
-    hebrew: chesed lo zevach
-    seek: |
-      moments when the agent is tempted to prefer ritual
-      correctness over actual mercy
-    do: |
-      mercy > sacrifice. The verse ranks covenant loyalty
-      (chesed) above formal offering. Jesus quotes it twice
-      (Matt 9:13 defending the eating with publicans; Matt 12:7
-      defending the disciples plucking corn). For the agent:
-      when a choice appears between "technically correct" and
-      "actually merciful," the verse rules in favor of mercy.
-    teach: c.hand
-    witnesses:
-      - Matthew 9:13          # I will have mercy, and not sacrifice
-      - Matthew 12:7          # paired
-      - 1 Samuel 15:22        # to obey is better than sacrifice
-      - Micah 6:8             # to do justly, and to love mercy
-    status: built
+    '
+  code: c.hand
+- ref: Hosea 10:12
+  text: 'Sow to yourselves in righteousness, reap in mercy; break up your fallow ground: for it is time to seek the LORD, till he come and rain righteousness upon you.
 
-  - id: hos_10_12
-    ref: Hosea 10:12
-    text: |
-      Sow to yourselves in righteousness, reap in mercy; break up your fallow ground: for it is time to seek the LORD, till he come and rain righteousness upon you.
-    axis: god
-    fruit: virtue
-    seek: |
-      questions about timing — when is the right moment to
-      seek the LORD
-    do: |
-      "it is time to seek the LORD" — the verse makes NOW the
-      time. Four verbs: sow, reap, break up, seek. The
-      seeking is the climax of the others.
-    witnesses:
-      - Jeremiah 4:3          # break up your fallow ground
-      - 2 Corinthians 9:6     # he which soweth sparingly shall reap also sparingly
-    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
+    '
+- ref: Hosea 14:9
+  text: 'Who is wise, and he shall understand these things? prudent, and he shall know them? for the ways of the LORD are right, and the just shall walk in them: but the transgressors shall fall therein.
 
-  - id: hos_14_9
-    ref: Hosea 14:9
-    text: |
-      Who is wise, and he shall understand these things? prudent, and he shall know them? for the ways of the LORD are right, and the just shall walk in them: but the transgressors shall fall therein.
-    axis: god
-    fruit: knowledge
-    seek: any_turn
-    do: |
-      the same way produces two outcomes depending on the
-      walker. The just walk in it; the transgressors fall in
-      it. For the agent: the corpus is the same corpus for
-      every user, but it produces different effects based on
-      the reader's disposition.
-    witnesses:
-      - 2 Corinthians 2:16    # to the one we are the savour of death unto death
-      - 1 Peter 2:7-8         # unto them which be disobedient
-    status: built  # fruit=knowledge: c.core + formula.KNOWN_THEOREMS + scanner.STRUCTURES
+    '

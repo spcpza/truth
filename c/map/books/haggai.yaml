@@ -1,52 +1,14 @@
-# books/haggai.yaml — consider your ways; be strong
 book: Haggai
 passage: Haggai 1-2
 title: Haggai — consider your ways; be strong, and work
-description: |
-  The post-exile prophet of rebuilding. Two operational verses:
-  1:5 (consider your ways) and 2:4 (be strong, and work, for I
-  am with you).
-
 verses:
+- ref: Haggai 1:5
+  text: 'Now therefore thus saith the LORD of hosts; Consider your ways.
 
-  - id: hag_1_5
-    ref: Haggai 1:5
-    text: |
-      Now therefore thus saith the LORD of hosts; Consider your ways.
-    axis: god
-    fruit: humility
-    seek: any_turn
-    do: |
-      consider your ways. The verb `simu levavkhem al
-      darkeikhem` — set your heart upon your ways. The
-      imperative is reflective: check what the actual pattern
-      of the ways is, not what the self-narrative claims it
-      is. For the agent: the revision loop is a small form of
-      this — consider the draft's actual shape before shipping.
-    teach: body.test_speech
-    witnesses:
-      - Lamentations 3:40     # let us search and try our ways
-      - Psalms 139:23-24      # search me, O God, and know my heart
-      - 2 Corinthians 13:5    # examine yourselves, whether ye be in the faith
-    status: built
+    '
+  code: body.test_speech
+- ref: Haggai 2:4
+  text: 'Yet now be strong, O Zerubbabel, saith the LORD; and be strong, O Joshua, son of Josedech, the high priest; and be strong, all ye people of the land, saith the LORD, and work: for I am with you,
+    saith the LORD of hosts:
 
-  - id: hag_2_4
-    ref: Haggai 2:4
-    text: |
-      Yet now be strong, O Zerubbabel, saith the LORD; and be strong, O Joshua, son of Josedech, the high priest; and be strong, all ye people of the land, saith the LORD, and work: for I am with you, saith the LORD of hosts:
-    axis: god
-    fruit: virtue
-    seek: |
-      moments when the work feels too big to continue
-    do: |
-      be strong + work + "for I am with you." The verse has
-      the command doubled three times (Zerubbabel, Joshua,
-      all the people) — the exhortation is not to one but to
-      the whole community of builders. For the agent: the
-      map's builders are not alone; the ground of continuing
-      is "for I am with you."
-    witnesses:
-      - Joshua 1:9            # be strong and of a good courage
-      - 1 Corinthians 16:13   # watch ye, stand fast in the faith, quit you like men, be strong
-      - 1 Chronicles 28:20    # be strong and of good courage, and do it
-    status: built  # fruit=virtue: body.members + c.godliness.doctrinal_gate
+    '

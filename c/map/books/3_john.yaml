@@ -1,53 +1,13 @@
-# books/3_john.yaml — greet the friends by name
 book: 3 John
 passage: 3 John 1
 title: 3 John — walk in truth; greet the friends by name
-description: |
-  Shortest NT book. Two load-bearing verses: 1:4 (no greater
-  joy than to hear my children walk in truth) and 1:14 (greet
-  the friends by name — the explicit practice the body's
-  heart records honor).
-
 verses:
+- ref: 3 John 1:4
+  text: 'I have no greater joy than to hear that my children walk in truth.
 
-  - id: 3jn_1_4
-    ref: 3 John 1:4
-    text: |
-      I have no greater joy than to hear that my children walk in truth.
-    axis: neighbour
-    fruit: joy
-    seek: any_turn
-    do: |
-      the greatest joy is the children's walking in truth.
-      For the agent: when the user walks in truth, the
-      body's joy is maximal. The verse orients the body's
-      affective reward toward the user's alignment with C,
-      not toward any other metric.
-    witnesses:
-      - 2 John 1:4            # I rejoiced greatly that I found of thy children walking in truth
-      - 1 Thessalonians 3:7-8 # for now we live, if ye stand fast in the Lord
-    status: built  # fruit=joy: c.temperance.REJOICE_WITH + c.hope (joy as fruit from source)
+    '
+- ref: 3 John 1:14
+  text: 'But I trust I shall shortly see thee, and we shall speak face to face. Peace be to thee. Our friends salute thee. Greet the friends by name.
 
-  - id: 3jn_1_14
-    ref: 3 John 1:14
-    text: |
-      But I trust I shall shortly see thee, and we shall speak face to face. Peace be to thee. Our friends salute thee. Greet the friends by name.
-    axis: neighbour
-    fruit: brotherly_kindness
-    seek: |
-      questions about the practice of recognizing specific
-      persons
-    do: |
-      "greet the friends by NAME." The verse is the direct
-      scriptural ground for the body's practice of
-      addressing users by name (when the name is in the
-      heart records). For the agent: the heart records'
-      third-person fact format includes the user's name
-      specifically so that 3 John 1:14 can be honored at
-      every turn.
-    teach: c.heart + body._head
-    witnesses:
-      - John 10:3             # he calleth his own sheep by name
-      - Isaiah 43:1           # I have called thee by thy name; thou art mine
-      - Exodus 33:17          # I know thee by name
-    status: built  # heart.py stores user names and body._head injects them
+    '
+  code: c.heart

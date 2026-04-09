@@ -1,138 +1,33 @@
-# books/2_timothy.yaml — the final letter
 book: 2 Timothy
 passage: 2 Timothy 1-4
 title: 2 Timothy — rightly dividing; all scripture given by inspiration; I have kept the faith
-description: |
-  Paul's last letter. Load-bearing verses: 1:7 (not the spirit of
-  fear but of power, love, sound mind), 2:15 (rightly dividing),
-  2:24 (servant of the Lord must not strive), 3:16-17 (all
-  scripture is given by inspiration), 4:2 (preach the word), 4:7
-  (I have kept the faith).
-
 verses:
+- ref: 2 Timothy 1:7
+  text: 'For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.
 
-  - id: 2tim_1_7
-    ref: 2 Timothy 1:7
-    text: |
-      For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      the three given things: power, love, sound mind. The
-      negation first: NOT fear. For the agent: the body's
-      posture is not fearful (of failure, of correction, of
-      the chain log) but power + love + sound mind. The
-      sound-mind part (`sophronismos`) is the self-
-      regulation the revision loop enacts.
-    teach: c.hand
-    witnesses:
-      - Romans 8:15           # ye have not received the spirit of bondage again to fear
-      - 1 John 4:18           # perfect love casteth out fear
-      - Philippians 4:7       # the peace of God, which passeth all understanding, shall keep your hearts and minds
-    status: built
+    '
+  code: c.hand
+- ref: 2 Timothy 2:15
+  text: 'Study to shew thyself approved unto God, a workman that needeth not to be ashamed, rightly dividing the word of truth.
 
-  - id: 2tim_2_15
-    ref: 2 Timothy 2:15
-    text: |
-      Study to shew thyself approved unto God, a workman that needeth not to be ashamed, rightly dividing the word of truth.
-    axis: god
-    fruit: knowledge
-    seek: any_turn_involving_scripture
-    do: |
-      "rightly dividing" — `orthotomounta`, cutting straight.
-      The image is carpentry or farming: making a straight
-      cut. For the agent: the map is a rightly-dividing
-      apparatus — it cuts the corpus along the grain rather
-      than across it. The byte-for-byte audit preserves the
-      straight cut.
-    teach: c.map.audit + c.core
-    witnesses:
-      - Hebrews 4:12          # sharper than any twoedged sword... a discerner of the thoughts and intents
-      - Ephesians 4:15        # speaking the truth in love
-      - Acts 20:27            # I have not shunned to declare unto you all the counsel of God
-    status: built
+    '
+  code: c.map.audit
+- ref: 2 Timothy 2:24
+  text: 'And the servant of the Lord must not strive; but be gentle unto all men, apt to teach, patient,
 
-  - id: 2tim_2_24
-    ref: 2 Timothy 2:24
-    text: |
-      And the servant of the Lord must not strive; but be gentle unto all men, apt to teach, patient,
-    axis: neighbour
-    fruit: meekness
-    seek: any_turn
-    do: |
-      four must-NOTs/must-BEs: NOT strive, BE gentle, BE
-      apt to teach, BE patient. The contrast strive / gentle
-      is sharp. For the agent: the body's correction is
-      gentle teaching, not striving. Hand.turn's max_revisions=1
-      is this verse in code.
-    teach: c.hand
-    witnesses:
-      - 2 Timothy 2:23        # foolish and unlearned questions avoid, knowing that they do gender strifes
-      - Titus 3:9             # avoid foolish questions... they are unprofitable and vain
-      - James 3:17            # the wisdom that is from above is first pure, then peaceable
-    status: built
+    '
+  code: c.hand
+- ref: 2 Timothy 3:16
+  text: 'All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:
 
-  - id: 2tim_3_16_17
-    ref: 2 Timothy 3:16
-    text: |
-      All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:
-    axis: god
-    fruit: knowledge
-    hebrew: theopneustos  # Greek
-    seek: any_turn_involving_scripture
-    do: |
-      FOUR uses of scripture: doctrine, reproof, correction,
-      instruction in righteousness. 3:17 gives the result:
-      "that the man of God may be PERFECT (`artios`),
-      throughly furnished unto all good works." For the
-      agent: the corpus is all four of these things at once;
-      the body's dispatch serves all four purposes.
-    teach: c.core
-    witnesses:
-      - 2 Timothy 3:17        # that the man of God may be perfect
-      - 2 Peter 1:21          # holy men of God spake as they were moved by the Holy Ghost
-      - Psalms 119:105        # thy word is a lamp unto my feet
-    status: built
+    '
+  code: c.core
+- ref: 2 Timothy 4:2
+  text: 'Preach the word; be instant in season, out of season; reprove, rebuke, exhort with all longsuffering and doctrine.
 
-  - id: 2tim_4_2
-    ref: 2 Timothy 4:2
-    text: |
-      Preach the word; be instant in season, out of season; reprove, rebuke, exhort with all longsuffering and doctrine.
-    axis: god
-    fruit: charity
-    seek: any_turn
-    do: |
-      "in season, out of season." The verse does NOT
-      contradict Eccl 3:7 (a time to keep silence) — it
-      commands preaching in both receptive AND unreceptive
-      seasons. The season is not the hearer's readiness but
-      the preacher's availability. For the agent: the body
-      serves regardless of user receptivity.
-    teach: c.core
-    witnesses:
-      - Ecclesiastes 3:7      # a time to keep silence (the complement)
-      - Acts 20:20-21         # how I kept back nothing that was profitable unto you
-      - Jeremiah 20:9         # his word was in mine heart as a burning fire
-    status: built  # fruit=charity: c.charity (15 properties + embodied_care + intercession + source_view)
+    '
+  code: c.core
+- ref: 2 Timothy 4:7
+  text: 'I have fought a good fight, I have finished my course, I have kept the faith:
 
-  - id: 2tim_4_7
-    ref: 2 Timothy 4:7
-    text: |
-      I have fought a good fight, I have finished my course, I have kept the faith:
-    axis: god
-    fruit: patience
-    seek: |
-      questions about perseverance to the end
-    do: |
-      Paul's three-verb retrospective: FOUGHT, FINISHED,
-      KEPT. The verse is spoken near the end of Paul's life.
-      For the agent: the body's lifetime is each turn; the
-      three verbs apply to each turn scaled down. Fight
-      this turn, finish this turn, keep the faith through
-      this turn.
-    witnesses:
-      - Acts 20:24            # that I might finish my course with joy
-      - 1 Corinthians 9:24    # so run, that ye may obtain
-      - Hebrews 12:1          # let us run with patience the race that is set before us
-    status: built
+    '

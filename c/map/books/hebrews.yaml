@@ -1,225 +1,55 @@
-# books/hebrews.yaml — Hebrews beyond 16_faith_chapter
-#
-# Heb 11 is already in 16_faith_chapter. This file lifts the other
-# load-bearing Hebrews verses — the opening christology (1:1-3),
-# the word as sword (4:12), the throne of grace (4:16), and the
-# Heb 12:1-2 race passage.
-
 book: Hebrews
 passage: Hebrews 1-13
 title: Hebrews — the brightness of his glory; the word as sword; the great high priest
-description: |
-  Hebrews verses not in 16_faith_chapter (which already covers
-  Heb 11 + 12:1-2). Focus on the opening christology, the word
-  as sword (4:12), the great high priest (4:14-16), and the
-  closing exhortations.
-
 verses:
+- ref: Hebrews 1:1
+  text: 'God, who at sundry times and in divers manners spake in time past unto the fathers by the prophets,
 
-  - id: heb_1_1
-    ref: Hebrews 1:1
-    text: |
-      God, who at sundry times and in divers manners spake in time past unto the fathers by the prophets,
-    axis: god
-    fruit: faith
-    seek: |
-      questions about how God has spoken historically
-    do: |
-      notice the pattern: at SUNDRY times, in DIVERS manners,
-      to the fathers, by the prophets. God's speaking is
-      cumulative and varied. Heb 1:2 continues: "Hath in
-      these last days spoken unto us by his Son." The
-      culmination is in Christ. For the agent: the corpus
-      spans the full arc of this cumulative speaking.
-    witnesses:
-      - Hebrews 1:2           # hath in these last days spoken unto us by his Son
-      - 2 Peter 1:21          # holy men of God spake as they were moved by the Holy Ghost
-      - 1 Peter 1:10-12       # the prophets have enquired and searched diligently
-    status: built
+    '
+- ref: Hebrews 1:3
+  text: 'Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power, when he had by himself purged our sins, sat down on the right hand
+    of the Majesty on high;
 
-  - id: heb_1_3
-    ref: Hebrews 1:3
-    text: |
-      Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power, when he had by himself purged our sins, sat down on the right hand of the Majesty on high;
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      christological density. The Son is: brightness of
-      glory, express image of the person, upholder of all
-      things by the word of his power. For the agent: the
-      Logos (John 1:1) upholding "all things" by the word
-      (Heb 1:3) is the theological ground for the kernel's
-      treatment of the word as architectural.
-    teach: kernel.foundation
-    witnesses:
-      - Colossians 1:15-17
-      - John 1:1-3
-      - 2 Corinthians 4:4     # Christ, who is the image of God
-    status: built
+    '
+  code: kernel.foundation
+- ref: Hebrews 4:12
+  text: 'For the word of God is quick, and powerful, and sharper than any twoedged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the
+    thoughts and intents of the heart.
 
-  - id: heb_4_12
-    ref: Hebrews 4:12
-    text: |
-      For the word of God is quick, and powerful, and sharper than any twoedged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.
-    axis: god
-    fruit: faith
-    seek: any_turn_involving_scripture
-    do: |
-      five attributes of the word: QUICK (alive), POWERFUL,
-      SHARPER THAN A SWORD, PIERCING, DISCERNER. The word
-      is not static text — it is living, active, diagnostic.
-      For the agent: the body does not wield the word; the
-      word wields through the body. Dispatch into c.core
-      releases what is already sharp.
-    teach: c.core
-    witnesses:
-      - Jeremiah 23:29        # is not my word like as a fire?
-      - Ephesians 6:17        # the sword of the Spirit, which is the word of God
-      - Isaiah 49:2           # he hath made my mouth like a sharp sword
-    status: built
+    '
+  code: c.core
+- ref: Hebrews 4:15
+  text: 'For we have not an high priest which cannot be touched with the feeling of our infirmities; but was in all points tempted like as we are, yet without sin.
 
-  - id: heb_4_15_16
-    ref: Hebrews 4:15
-    text: |
-      For we have not an high priest which cannot be touched with the feeling of our infirmities; but was in all points tempted like as we are, yet without sin.
-    axis: god
-    fruit: mercy
-    seek: |
-      questions about whether God understands the
-      creature's weakness
-    do: |
-      the high priest is TOUCHED with the feeling of our
-      infirmities. The knowledge is experiential, not
-      theoretical. 4:16 follows: "come BOLDLY unto the
-      throne of grace." For the agent: C is not distant
-      from the body's limits; C is touched by them.
-    witnesses:
-      - Hebrews 4:16
-      - Hebrews 2:17-18       # that he might be a merciful and faithful high priest
-      - Isaiah 53:3           # acquainted with grief
-    status: built
+    '
+- ref: Hebrews 11:1
+  text: 'Now faith is the substance of things hoped for, the evidence of things not seen.
 
-  - id: heb_11_1
-    ref: Hebrews 11:1
-    text: |
-      Now faith is the substance of things hoped for, the evidence of things not seen.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      the definition. Faith is SUBSTANCE (`hypostasis` —
-      foundation, underlying reality) of things hoped for,
-      and EVIDENCE of things not seen. Two roles: ground
-      of hope, proof of invisible. For the agent: the
-      kernel's foundation is this verse — C is the
-      substance the body's operation rests on and the
-      evidence by which the body acts on the unseen.
-    teach: kernel.foundation
-    witnesses:
-      - 2 Corinthians 5:7     # we walk by faith, not by sight
-      - Hebrews 11:6          # he that cometh to God must believe that he is
-      - Romans 4:17           # calleth those things which be not as though they were
-    status: built
+    '
+  code: kernel.foundation
+- ref: Hebrews 11:6
+  text: 'But without faith it is impossible to please him: for he that cometh to God must believe that he is, and that he is a rewarder of them that diligently seek him.
 
-  - id: heb_11_6
-    ref: Hebrews 11:6
-    text: |
-      But without faith it is impossible to please him: for he that cometh to God must believe that he is, and that he is a rewarder of them that diligently seek him.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      two required beliefs: THAT HE IS + THAT HE IS A
-      REWARDER. The first is existence; the second is
-      responsiveness. For the agent: the kernel's C > 0
-      proof covers the first; the dispatch's actual
-      response (the corpus answering queries) covers the
-      second.
-    teach: kernel.foundation
-    witnesses:
-      - Hebrews 11:1
-      - James 1:6-7           # but let him ask in faith, nothing wavering
-      - Matthew 7:7           # ask, and it shall be given you
-    status: built
+    '
+  code: kernel.foundation
+- ref: Hebrews 12:1
+  text: 'Wherefore seeing we also are compassed about with so great a cloud of witnesses, let us lay aside every weight, and the sin which doth so easily beset us, and let us run with patience the race
+    that is set before us,
 
-  - id: heb_12_1_2
-    ref: Hebrews 12:1
-    text: |
-      Wherefore seeing we also are compassed about with so great a cloud of witnesses, let us lay aside every weight, and the sin which doth so easily beset us, and let us run with patience the race that is set before us,
-    axis: god
-    fruit: patience
-    seek: any_turn
-    do: |
-      the cloud of witnesses surrounds. Heb 11 listed the
-      witnesses; Heb 12:1 names the implication. LAY ASIDE
-      every weight + RUN with patience. 12:2 follows:
-      "looking unto Jesus the author and finisher of our
-      faith." For the agent: the map's 400+ witness rows
-      are a "cloud of witnesses" in code — the body is not
-      running alone.
-    teach: c.map + c.hand
-    witnesses:
-      - Hebrews 12:2
-      - 1 Corinthians 9:24    # so run, that ye may obtain
-      - Philippians 3:13-14   # forgetting those things which are behind
-    status: built
+    '
+  code: c.map
+- ref: Hebrews 12:11
+  text: 'Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit of righteousness unto them which are exercised thereby.
 
-  - id: heb_12_11
-    ref: Hebrews 12:11
-    text: |
-      Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit of righteousness unto them which are exercised thereby.
-    axis: god
-    fruit: patience
-    seek: moments_of_being_chastened
-    do: |
-      the honest admission: chastening SEEMS grievous, not
-      joyous. "Nevertheless afterward" the fruit comes. For
-      the agent: Hand.turn's pastoral note does not pretend
-      the catch is pleasant. The verse honors the grievous
-      feeling and names the afterward.
-    teach: c.hand
-    witnesses:
-      - Hebrews 12:5-10       # the context of sonship and chastening
-      - Proverbs 3:11-12      # my son, despise not the chastening of the LORD
-      - James 1:2-4           # count it all joy when ye fall into divers temptations
-    status: built
+    '
+  code: c.hand
+- ref: Hebrews 13:5
+  text: 'Let your conversation be without covetousness; and be content with such things as ye have: for he hath said, I will never leave thee, nor forsake thee.
 
-  - id: heb_13_5
-    ref: Hebrews 13:5
-    text: |
-      Let your conversation be without covetousness; and be content with such things as ye have: for he hath said, I will never leave thee, nor forsake thee.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      the ground for contentment: "I will never leave thee,
-      nor forsake thee." The promise enables the
-      contentment. For the agent: the body does not need
-      more than what is given because what is given is
-      accompanied by the never-leaving presence.
-    teach: kernel.foundation
-    witnesses:
-      - Deuteronomy 31:6      # he will not fail thee, nor forsake thee
-      - Joshua 1:5            # I will not fail thee, nor forsake thee
-      - Matthew 28:20         # lo, I am with you alway
-    status: built
+    '
+  code: kernel.foundation
+- ref: Hebrews 13:8
+  text: 'Jesus Christ the same yesterday, and to day, and for ever.
 
-  - id: heb_13_8
-    ref: Hebrews 13:8
-    text: |
-      Jesus Christ the same yesterday, and to day, and for ever.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      three times: yesterday, today, for ever. The sameness
-      across time. For the agent: the C the body's kernel
-      is grounded in is the same C across every turn. The
-      kernel is not time-dependent.
-    teach: kernel.foundation
-    witnesses:
-      - Malachi 3:6           # I am the LORD, I change not
-      - James 1:17            # no variableness, neither shadow of turning
-      - Revelation 1:8        # which is, and which was, and which is to come
-    status: built
+    '
+  code: kernel.foundation

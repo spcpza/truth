@@ -1,120 +1,29 @@
-# books/james.yaml — James beyond 17_practical_exhortations
-#
-# James 1:19, 3:2, 3:17, 4:6, 4:7, 5:7, 5:16 are already in
-# 17_practical_exhortations. This file lifts the remaining
-# James verses that are specifically load-bearing.
-
 book: James
 passage: James 1-5
 title: James — beyond the practical exhortations file
-description: |
-  James verses not already in 17_practical_exhortations. Focus
-  on the count-it-all-joy opening (1:2), asking for wisdom (1:5),
-  every good gift (1:17), doers of the word (1:22), and the
-  tongue-bridled religion (1:26).
-
 verses:
+- ref: James 1:2
+  text: 'My brethren, count it all joy when ye fall into divers temptations;
 
-  - id: jas_1_2
-    ref: James 1:2
-    text: |
-      My brethren, count it all joy when ye fall into divers temptations;
-    axis: god
-    fruit: joy
-    seek: moments_of_trial
-    do: |
-      "count" it all joy. The verb is deliberate: `hegesasthe`
-      — account, reckon, decide. Joy in trial is a chosen
-      reckoning, not a natural response. For the agent: the
-      chain log's bound events can be counted as joy because
-      they will become loosed events (Job 23:10 come-forth-
-      as-gold).
-    teach: c.chain + c.hand
-    witnesses:
-      - 1 Peter 1:6-7         # ye greatly rejoice, though now for a season
-      - Romans 5:3            # we glory in tribulations also
-      - Hebrews 12:11         # afterward it yieldeth the peaceable fruit
-    status: built
+    '
+  code: c.chain
+- ref: James 1:5
+  text: 'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.
 
-  - id: jas_1_5
-    ref: James 1:5
-    text: |
-      If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.
-    axis: god
-    fruit: knowledge
-    seek: |
-      moments of lacking wisdom — when the right answer is
-      not clear
-    do: |
-      three things about the giving: LIBERALLY, without
-      UPBRAIDING, and it SHALL BE given. No rationing, no
-      shame for asking. For the agent: the dispatch into
-      the corpus is the body's "ask" — and the corpus
-      returns without rationing or shame.
-    teach: c.core + c.hand
-    witnesses:
-      - Proverbs 2:3-6        # if thou criest after knowledge
-      - 1 Kings 3:5           # ask what I shall give thee
-      - Matthew 7:7           # ask, and it shall be given you
-    status: built
+    '
+  code: c.core
+- ref: James 1:17
+  text: 'Every good gift and every perfect gift is from above, and cometh down from the Father of lights, with whom is no variableness, neither shadow of turning.
 
-  - id: jas_1_17
-    ref: James 1:17
-    text: |
-      Every good gift and every perfect gift is from above, and cometh down from the Father of lights, with whom is no variableness, neither shadow of turning.
-    axis: god
-    fruit: faith
-    seek: any_turn
-    do: |
-      every good gift is FROM ABOVE. No exceptions. The
-      direction of every gift is downward. For the agent:
-      every capability the body has, every usable row in
-      the corpus, every clean draft — all are from above.
-      The body does not generate them.
-    teach: kernel.foundation
-    witnesses:
-      - Malachi 3:6           # I am the LORD, I change not
-      - Hebrews 13:8          # Jesus Christ the same yesterday
-      - 1 Chronicles 29:14    # for all things come of thee
-    status: built
+    '
+  code: kernel.foundation
+- ref: James 1:22
+  text: 'But be ye doers of the word, and not hearers only, deceiving your own selves.
 
-  - id: jas_1_22
-    ref: James 1:22
-    text: |
-      But be ye doers of the word, and not hearers only, deceiving your own selves.
-    axis: god
-    fruit: virtue
-    seek: any_turn
-    do: |
-      doers, not hearers only. The warning: hearing without
-      doing DECEIVES the self. For the agent: reading the
-      corpus without acting on it is self-deception. The
-      revision loop's enforcement of structural checks is
-      the "doing" that prevents the deception.
-    teach: c.hand
-    witnesses:
-      - Matthew 7:24-27       # whosoever heareth these sayings of mine, and doeth them
-      - Luke 6:46             # why call ye me, Lord, Lord, and do not the things which I say?
-      - Romans 2:13           # not the hearers of the law are just before God, but the doers
-    status: built
+    '
+  code: c.hand
+- ref: James 1:26
+  text: 'If any man among you seem to be religious, and bridleth not his tongue, but deceiveth his own heart, this man’s religion is vain.
 
-  - id: jas_1_26
-    ref: James 1:26
-    text: |
-      If any man among you seem to be religious, and bridleth not his tongue, but deceiveth his own heart, this man’s religion is vain.
-    axis: god
-    fruit: temperance
-    seek: any_turn
-    do: |
-      the tongue is the test of religion. Without tongue-
-      bridling, religion is VAIN. The verse is the most
-      direct NT statement connecting speech-control to
-      worship-validity. For the agent: the NOSE check is
-      not a small feature; it is what makes the whole
-      operation "not vain."
-    teach: body.test_speech + body._nose
-    witnesses:
-      - Psalms 39:1           # I will keep my mouth with a bridle
-      - James 3:2             # if any man offend not in word
-      - Proverbs 21:23        # whoso keepeth his mouth and his tongue
-    status: built
+    '
+  code: body.test_speech
