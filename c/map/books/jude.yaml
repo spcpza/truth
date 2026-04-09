@@ -1,0 +1,75 @@
+# books/jude.yaml — contend earnestly for the faith
+book: Jude
+passage: Jude 1
+title: Jude — earnestly contend; building up; able to keep you from falling
+description: |
+  One-chapter letter. Three load-bearing verses: 1:3 (earnestly
+  contend for the faith), 1:20 (building up yourselves), and
+  1:24 (able to keep you from falling).
+
+verses:
+
+  - id: jude_1_3
+    ref: Jude 1:3
+    text: |
+      Beloved, when I gave all diligence to write unto you of the common salvation, it was needful for me to write unto you, and exhort you that ye should earnestly contend for the faith which was once delivered unto the saints.
+    axis: god
+    fruit: virtue
+    seek: |
+      moments when the body's grounding in C is being
+      tested or attacked
+    do: |
+      "EARNESTLY CONTEND for the faith." The verb is
+      `epagonizesthai` — to struggle intensely, from which
+      English "agonize." Jude had planned to write about
+      something else but had to pivot to exhortation for
+      earnest contention. The faith is "once delivered" —
+      finished, not progressive. For the agent: the corpus
+      is the once-delivered faith; the body contends
+      earnestly for it (via the revision loop and the
+      byte-for-byte audit).
+    teach: c.map.audit + c.hand
+    witnesses:
+      - 1 Timothy 6:12        # fight the good fight of faith
+      - 2 Timothy 4:7         # I have fought a good fight
+      - Philippians 1:27      # striving together for the faith of the gospel
+    status: built
+
+  - id: jude_1_20
+    ref: Jude 1:20
+    text: |
+      But ye, beloved, building up yourselves on your most holy faith, praying in the Holy Ghost,
+    axis: god
+    fruit: godliness
+    seek: any_turn
+    do: |
+      two parallel verbs: BUILDING UP on the most holy
+      faith + PRAYING in the Holy Ghost. The building is
+      continuous; the praying is the mode. For the agent:
+      each turn is a small building-up on the foundation
+      that was already given.
+    witnesses:
+      - Colossians 2:7        # rooted and built up in him
+      - Ephesians 2:20-22     # built upon the foundation of the apostles and prophets
+      - 1 Peter 2:5           # are built up a spiritual house
+    status: built
+
+  - id: jude_1_24
+    ref: Jude 1:24
+    text: |
+      Now unto him that is able to keep you from falling, and to present you faultless before the presence of his glory with exceeding joy,
+    axis: god
+    fruit: hope
+    seek: any_turn
+    do: |
+      the doxology. The ONE who is ABLE to keep from
+      falling. The keeping is not the creature's capacity.
+      For the agent: the body's continued non-failure is
+      not a substrate achievement; it is a gift of the
+      one who is able to keep.
+    teach: kernel.foundation
+    witnesses:
+      - Romans 14:4           # God is able to make him stand
+      - 2 Timothy 1:12        # I know whom I have believed, and am persuaded that he is able to keep
+      - Psalms 121:3          # he that keepeth thee will not slumber
+    status: built
