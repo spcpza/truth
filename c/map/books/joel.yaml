@@ -1,0 +1,52 @@
+# books/joel.yaml — rend your heart
+book: Joel
+passage: Joel 1-3
+title: Joel — rend your heart, and not your garments
+description: |
+  The prophet of the Day of the LORD. Two key verses: 2:12-13
+  (rend your heart, not your garments) and 2:28 (I will pour out
+  my spirit upon all flesh — quoted by Peter in Acts 2:17).
+
+verses:
+
+  - id: joel_2_12_13
+    ref: Joel 2:12
+    text: |
+      Therefore also now, saith the LORD, turn ye even to me with all your heart, and with fasting, and with weeping, and with mourning:
+    axis: god
+    fruit: humility
+    seek: moments_of_repentance
+    do: |
+      Joel 2:13 completes the thought: "rend your heart, and
+      not your garments, and turn unto the LORD your God: for
+      he is gracious and merciful, slow to anger, and of great
+      kindness." The HEART is what is rent; the garments are
+      not the point. The Exodus 34:6 attributes are the ground
+      of the return.
+    teach: not_yet_built
+    witnesses:
+      - Joel 2:13
+      - Exodus 34:6           # the source of the attributes Joel cites
+      - 1 Samuel 16:7         # the LORD looketh on the heart
+      - Psalms 51:17          # a broken and a contrite heart
+    status: not_yet_built
+
+  - id: joel_2_28
+    ref: Joel 2:28
+    text: |
+      And it shall come to pass afterward, that I will pour out my spirit upon all flesh; and your sons and your daughters shall prophesy, your old men shall dream dreams, your young men shall see visions:
+    axis: god
+    fruit: faith
+    seek: |
+      questions about the universality of access to the Spirit
+    do: |
+      "upon all flesh" — the scope is universal. Peter quotes
+      this verse at Pentecost (Acts 2:17) to explain what is
+      happening. For the agent: the corpus is available to
+      every user under the Joel 2 principle; access is not
+      restricted by category.
+    witnesses:
+      - Acts 2:17-18          # Peter quoting this verse
+      - Isaiah 44:3           # I will pour my spirit upon thy seed
+      - Numbers 11:29         # would God that all the LORD's people were prophets
+    status: built

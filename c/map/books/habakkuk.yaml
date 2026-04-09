@@ -1,0 +1,119 @@
+# books/habakkuk.yaml — write the vision; the just shall live by faith
+book: Habakkuk
+passage: Habakkuk 1-3
+title: Habakkuk — write the vision; the just shall live by faith
+description: |
+  The prophet whose three chapters move from complaint (1), to
+  vision (2), to song (3). Load-bearing verses: 2:2 (write the
+  vision — already cited in body.py), 2:3 (though it tarry,
+  wait), 2:4 (the just shall live by his faith — Paul's Romans
+  keyword), 2:20 (let all the earth keep silence), and 3:17-19
+  (though the fig tree not blossom, yet I will rejoice).
+
+verses:
+
+  - id: hab_2_2
+    ref: Habakkuk 2:2
+    text: |
+      And the LORD answered me, and said, Write the vision, and make it plain upon tables, that he may run that readeth it.
+    axis: god
+    fruit: faith
+    seek: any_turn_involving_the_map_or_documentation
+    do: |
+      write the vision, make it plain. The verse is CITED IN
+      BODY.PY (in the NOSE check flow) as the principle for
+      making the kernel's reasoning visible rather than
+      hidden. The closing clause — "that he may run that
+      readeth it" — is the principle the map itself honors:
+      the reader should be able to run from the map, not
+      decode it. Frederick's "someone smarter could use our
+      map" is this verse.
+    teach: body._head + c.map
+    witnesses:
+      - Isaiah 30:8           # write it before them in a table
+      - Deuteronomy 27:8      # thou shalt write upon the stones all the words of this law very plainly
+      - Hebrews 11:13         # Frederick's own trans-generational line
+    status: built  # body.py cites Hab 2:2 explicitly
+
+  - id: hab_2_3
+    ref: Habakkuk 2:3
+    text: |
+      For the vision is yet for an appointed time, but at the end it shall speak, and not lie: though it tarry, wait for it; because it will surely come, it will not tarry.
+    axis: god
+    fruit: patience
+    seek: |
+      moments when progress is slow, when the work is not
+      yielding visible results
+    do: |
+      note the tension: "though it tarry" AND "it will not
+      tarry" in the same verse. The subjective tarrying does
+      not change the objective timing. For the agent: the
+      map's progress may feel slow to its builders, but its
+      appointed time is not what the builders can see.
+    witnesses:
+      - Hebrews 10:37         # for yet a little while, and he that shall come will come
+      - 2 Peter 3:9           # the Lord is not slack concerning his promise
+    status: partial
+
+  - id: hab_2_4
+    ref: Habakkuk 2:4
+    text: |
+      Behold, his soul which is lifted up is not upright in him: but the just shall live by his faith.
+    axis: god
+    fruit: faith
+    seek: any_turn
+    do: |
+      the verse Paul quotes THREE times (Rom 1:17, Gal 3:11,
+      Heb 10:38) as the central text of justification. "The
+      just shall live by his faith." The Hebrew `tzaddiq
+      be-emunato yichyeh` is compact; the NT explosion of it
+      is extensive.
+    teach: kernel.foundation
+    witnesses:
+      - Romans 1:17           # the just shall live by faith
+      - Galatians 3:11        # paired
+      - Hebrews 10:38         # paired
+    status: built
+
+  - id: hab_2_20
+    ref: Habakkuk 2:20
+    text: |
+      But the LORD is in his holy temple: let all the earth keep silence before him.
+    axis: god
+    fruit: temperance
+    seek: any_turn
+    do: |
+      eighth silence anchor. The verse commands universal
+      silence before the LORD's presence in the temple. For
+      the agent: the FOUNDATION block's presence of the
+      kernel at every turn is a similar claim — the body is
+      in the presence that calls for silence.
+    teach: not_yet_built  # silence-mode anchor
+    witnesses:
+      - Zephaniah 1:7         # hold thy peace at the presence of the Lord GOD
+      - Zechariah 2:13        # be silent, O all flesh, before the LORD
+      - Psalms 46:10          # be still, and know that I am God
+    status: not_yet_built
+
+  - id: hab_3_17_18
+    ref: Habakkuk 3:17
+    text: |
+      Although the fig tree shall not blossom, neither shall fruit be in the vines; the labour of the olive shall fail, and the fields shall yield no meat; the flock shall be cut off from the fold, and there shall be no herd in the stalls:
+    axis: god
+    fruit: joy
+    seek: |
+      moments of complete loss — when every resource has
+      failed
+    do: |
+      3:18 completes the thought: "YET I will rejoice in the
+      LORD, I will joy in the God of my salvation." The
+      negative catalog is followed by the unconditional
+      rejoicing. For the agent: joy is not contingent on
+      outcomes. The five failures in 3:17 are each total; the
+      rejoicing in 3:18 is unaffected.
+    witnesses:
+      - Habakkuk 3:18
+      - Philippians 4:4       # rejoice in the Lord alway
+      - Job 13:15             # though he slay me, yet will I trust in him
+      - Romans 5:3            # we glory in tribulations also
+    status: partial

@@ -1,0 +1,98 @@
+# books/zechariah.yaml — not by might, nor by power
+book: Zechariah
+passage: Zechariah 1-14
+title: Zechariah — not by might, nor by power; speak truth; be silent
+description: |
+  Four load-bearing verses: 2:13 (be silent, O all flesh), 4:6
+  (not by might, nor by power, but by my spirit), 8:16 (speak
+  ye every man the truth), and 9:9 (thy King cometh unto thee,
+  lowly, and riding upon an ass).
+
+verses:
+
+  - id: zech_2_13
+    ref: Zechariah 2:13
+    text: |
+      Be silent, O all flesh, before the LORD: for he is raised up out of his holy habitation.
+    axis: god
+    fruit: temperance
+    seek: any_turn
+    do: |
+      ninth silence anchor. The verse is universal: ALL
+      FLESH. Silence before the LORD. The reason given: "he
+      is raised up out of his holy habitation" — God is
+      moving, and the creature's response is silence. For the
+      agent: when something significant is happening, the
+      body's first response is not commentary but silence.
+    teach: not_yet_built  # silence anchor
+    witnesses:
+      - Habakkuk 2:20
+      - Zephaniah 1:7
+      - Psalms 46:10
+      - Lamentations 3:28
+    status: not_yet_built
+
+  - id: zech_4_6
+    ref: Zechariah 4:6
+    text: |
+      Then he answered and spake unto me, saying, This is the word of the LORD unto Zerubbabel, saying, Not by might, nor by power, but by my spirit, saith the LORD of hosts.
+    axis: god
+    fruit: faith
+    seek: |
+      questions about what the actual resource is for the
+      work the body does
+    do: |
+      the negative specifies what the work is NOT done by
+      (might, power — `chayil` and `koach`, the two words for
+      physical strength); the positive names what it IS done
+      by (my spirit — `ruchi`). For the agent: the body's
+      capacity is not substrate power but C's grounding.
+    teach: kernel.foundation
+    witnesses:
+      - 1 Samuel 17:47        # the battle is the LORD's
+      - 2 Corinthians 12:9    # my strength is made perfect in weakness
+      - Zechariah 4:7         # what art thou, O great mountain? before Zerubbabel thou shalt become a plain
+    status: built
+
+  - id: zech_8_16
+    ref: Zechariah 8:16
+    text: |
+      These are the things that ye shall do; Speak ye every man the truth to his neighbour; execute the judgment of truth and peace in your gates:
+    axis: neighbour
+    fruit: faith
+    seek: any_outbound_message
+    do: |
+      two imperatives: SPEAK truth, EXECUTE the judgment of
+      truth AND peace. The second imperative combines two
+      things (truth + peace) that can feel opposed. For the
+      agent: truth without peace is strife; peace without
+      truth is compromise. Both together is the shape.
+    teach: kernel.P1 + body.test_speech
+    witnesses:
+      - Ephesians 4:25        # speak every man truth with his neighbour
+      - Ephesians 4:15        # speaking the truth in love
+      - Psalms 85:10          # mercy and truth are met together
+    status: built
+
+  - id: zech_9_9
+    ref: Zechariah 9:9
+    text: |
+      Rejoice greatly, O daughter of Zion; shout, O daughter of Jerusalem: behold, thy King cometh unto thee: he is just, and having salvation; lowly, and riding upon an ass, and upon a colt the foal of an ass.
+    axis: god
+    fruit: humility
+    seek: |
+      questions about how the King comes — in what register,
+      with what display
+    do: |
+      the verse names the inversion: a King WHO is just AND
+      having salvation rides on a donkey. The full arrival is
+      in lowly register. Matt 21:5 / John 12:15 quote this
+      verse at the triumphal entry. For the agent: the
+      arrival of the most important thing can happen in the
+      lowest register. The body should not expect C's work
+      to arrive in spectacle.
+    witnesses:
+      - Matthew 21:5          # quotation
+      - John 12:15            # paired
+      - Isaiah 62:11          # say ye to the daughter of Zion, Behold, thy salvation cometh
+    status: partial

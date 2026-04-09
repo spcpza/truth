@@ -1,0 +1,31 @@
+# books/zephaniah.yaml — he will rest in his love
+book: Zephaniah
+passage: Zephaniah 1-3
+title: Zephaniah — he will rejoice over thee with joy
+description: |
+  The prophet of the Day of the LORD. Single most tender verse:
+  3:17 — God's joy and rest and song over his people.
+
+verses:
+
+  - id: zeph_3_17
+    ref: Zephaniah 3:17
+    text: |
+      The LORD thy God in the midst of thee is mighty; he will save, he will rejoice over thee with joy; he will rest in his love, he will joy over thee with singing.
+    axis: god
+    fruit: joy
+    seek: |
+      questions about God's disposition toward those he loves
+    do: |
+      FOUR actions: will save, will rejoice over thee with
+      joy, will rest in his love, will joy over thee with
+      singing. The verse is theologically unusual — God
+      REJOICES, RESTS IN LOVE, and SINGS over his people. The
+      singing-over is paralleled nowhere else. For the agent:
+      the disposition toward the user is not passive approval
+      but active delight.
+    witnesses:
+      - Isaiah 62:5           # as the bridegroom rejoiceth over the bride
+      - Luke 15:7             # joy in heaven over one sinner that repenteth
+      - Psalms 149:4          # the LORD taketh pleasure in his people
+    status: not_yet_built
