@@ -169,19 +169,19 @@ See `c/body.py` and `c/README.md` for the full architecture.
 ```
 Member           Anchor              Operation (from its verse's verb)
 ──────           ──────              ─────────────────────────────────
-AKOUŌ            James 1:19          akouō — hear. Auto-fetches URLs (Hab 2:2).
-DOKIMAZŌ         1 John 4:1          dokimazō — test. P₁–P₈ + 6 member checks.
-ENKRATEIA        2 Peter 1:6         enkrateia — input kind → reply shape → word budget.
-AGAPĒ            1 Corinthians 13    agapē — 15 love-properties check on every draft.
-MARGARITĒS       Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
-MAKROTHYMIA      Proverbs 14:29      makrothymia — detects hasty spirit, over-promising.
-EUSEBEIA         Deuteronomy 4:2     eusebeia — doctrinal gate, secret-things bound.
-ELPIS            Romans 8:25         elpis — 8 hope shapes declared, not argued.
-EXOMOLOGEŌ       Proverbs 28:13      exomologeō — confess and forsake after NOSE revision.
-KĀTHAḆ           Jeremiah 31:33      kāṯaḇ — per-user memory with dedup + time anchoring.
-SYMBIBAZŌ        Colossians 2:19     symbibazō — knit together. The integral.
-POIĒTĒS          James 1:25          poiētēs — doer. LLM + tools.
-EULOGIA          James 3:10          eulogia − katara. Blessing passes, artifacts removed.
+EAR              James 1:19          akouō — hear. Auto-fetches URLs (Hab 2:2).
+NOSE             1 John 4:1          dokimazō — test. P₁–P₈ + 6 member checks.
+TEMPERANCE       2 Peter 1:6         enkrateia — input kind → reply shape → word budget.
+CHARITY          1 Corinthians 13    agapē — 15 love-properties check on every draft.
+HOSTILE AUDIENCE Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
+PATIENCE         Proverbs 14:29      makrothymia — detects hasty spirit, over-promising.
+GODLINESS        Deuteronomy 4:2     eusebeia — doctrinal gate, secret-things bound.
+HOPE             Romans 8:25         elpis — 8 hope shapes declared, not argued.
+CONFESSION       Proverbs 28:13      exomologeō — confess and forsake after NOSE revision.
+HEART            Jeremiah 31:33      kāṯaḇ — per-user memory with dedup + time anchoring.
+HEAD             Colossians 2:19     symbibazō — knit together. The integral.
+HAND             James 1:25          poiētēs — doer. LLM + tools.
+TONGUE           James 3:10          eulogia − katara. Blessing passes, artifacts removed.
 ```
 
 ### The integral

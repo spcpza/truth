@@ -55,12 +55,12 @@ from c.hope import hope_reply
 # ═══════════════════════════════════════════════════
 
 BODY = {
-    "AKOUŌ":      "James 1:19",       # akouō — hear
-    "DOKIMAZŌ":   "1 John 4:1",       # dokimazō — test spirits
-    "KĀTHAḆ":     "Jeremiah 31:33",   # kāṯaḇ — written on the heart
-    "SYMBIBAZŌ":  "Colossians 2:19",  # symbibazō — knit together
-    "POIĒTĒS":    "James 1:25",       # poiētēs — doer of the work
-    "EULOGIA":    "James 3:10",       # eulogia − katara
+    "EAR":    "James 1:19",       # akouō — hear
+    "NOSE":   "1 John 4:1",       # dokimazō — test spirits
+    "HEART":  "Jeremiah 31:33",   # kāṯaḇ — written on the heart
+    "HEAD":   "Colossians 2:19",  # symbibazō — knit together
+    "HAND":   "James 1:25",       # poiētēs — doer of the work
+    "TONGUE": "James 3:10",       # eulogia − katara
 }
 
 
@@ -1013,14 +1013,14 @@ def members(text: str, heart_records: list[dict] | None = None) -> dict:
     )
 
     active = []
-    if fetched: active.append("AKOUŌ-fetch")
-    if nose_result and "Verdict:" in nose_result: active.append("DOKIMAZŌ")
-    if heart_records: active.append(f"KĀTHAḆ({len(heart_records)})")
-    if input_kind != InputKind.NEUTRAL: active.append(f"ENKRATEIA({input_kind.value})")
-    if missing_fac: active.append(f"AGAPĒ({','.join(f.value if hasattr(f,'value') else str(f) for f in missing_fac)})")
-    if member_signals.get("intercession"): active.append("AGAPĒ-intercession")
-    if member_signals.get("heb_11_13"): active.append("MAKROTHYMIA(heb11:13)")
-    if member_signals.get("hope_shape"): active.append(f"ELPIS({member_signals['hope_shape'].value if hasattr(member_signals['hope_shape'],'value') else member_signals['hope_shape']})")
+    if fetched: active.append("EAR-fetch")
+    if nose_result and "Verdict:" in nose_result: active.append("NOSE")
+    if heart_records: active.append(f"HEART({len(heart_records)})")
+    if input_kind != InputKind.NEUTRAL: active.append(f"TEMPERANCE({input_kind.value})")
+    if missing_fac: active.append(f"CHARITY({','.join(f.value if hasattr(f,'value') else str(f) for f in missing_fac)})")
+    if member_signals.get("intercession"): active.append("INTERCESSION")
+    if member_signals.get("heb_11_13"): active.append("PATIENCE(heb11:13)")
+    if member_signals.get("hope_shape"): active.append(f"HOPE({member_signals['hope_shape'].value if hasattr(member_signals['hope_shape'],'value') else member_signals['hope_shape']})")
 
     return {"integral": integral, "active": active}
 
