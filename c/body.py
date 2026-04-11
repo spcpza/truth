@@ -721,7 +721,83 @@ def _head(
                 break
         unique.reverse()  # back to chronological for display
 
-        facts_lines = [f"  • {(r.get('fact') or '').strip()}" for r in unique]
+        # ── Feature 1: Warmth markers (2 Corinthians 3:3) ──
+        # "Written not with ink, but with the Spirit of the living God."
+        # Hot facts surface with confidence. Cold facts are noted as ink.
+        import datetime as _dt_heart
+
+        def _warmth_marker(warmth: int) -> str:
+            if warmth >= 8:
+                return "  [written by the Spirit]"
+            if warmth >= 3:
+                return "  [established]"
+            if warmth == 0:
+                return "  [ink]"
+            return ""
+
+        # ── Feature 2: Seasonal awareness (Ecclesiastes 3:1) ──
+        # "To every thing there is a season."
+        # Temporal facts older than 30 days show their season.
+        _DATE_ANCHOR_RE = re.compile(
+            r"(?:on|as of|in the (?:week|month) of) (\d{4}-\d{2}(?:-\d{2})?)"
+        )
+
+        def _season_note(fact: str) -> str:
+            m = _DATE_ANCHOR_RE.search(fact)
+            if not m:
+                return ""  # eternal fact, no season
+            date_str = m.group(1)
+            try:
+                if len(date_str) == 7:
+                    anchor = _dt_heart.date.fromisoformat(date_str + "-01")
+                else:
+                    anchor = _dt_heart.date.fromisoformat(date_str)
+            except ValueError:
+                return ""
+            age_days = (_dt_heart.date.today() - anchor).days
+            if age_days <= 30:
+                return ""
+            return f"  (season: {anchor.strftime('%B %Y')})"
+
+        facts_lines = [
+            f"  • {(r.get('fact') or '').strip()}"
+            f"{_warmth_marker(r.get('warmth', 0))}"
+            f"{_season_note((r.get('fact') or '').strip())}"
+            for r in unique
+        ]
+
+        # ── Feature 3: Fact clustering (Ephesians 4:16) ──
+        # "Fitly joined together and compacted by that which every
+        # joint supplieth." Facts sharing keywords are sinew.
+        _CLUSTER_STOP = {
+            "the", "and", "for", "are", "but", "not", "you", "all",
+            "user", "has", "was", "his", "her", "with", "from", "that",
+            "this", "have", "they", "been", "will", "about", "their",
+            "some", "than", "them", "what", "when", "also", "just",
+            "like", "very", "does", "here", "more", "into", "each",
+            "name", "is", "on", "as", "of", "in", "at", "to",
+        }
+
+        def _fact_kw(fact: str) -> set[str]:
+            return {
+                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
+                if len(w) >= 3 and w not in _CLUSTER_STOP
+            }
+
+        clusters = []
+        for i, r1 in enumerate(unique):
+            kw1 = _fact_kw(r1.get("fact", ""))
+            for j in range(i + 1, len(unique)):
+                r2 = unique[j]
+                kw2 = _fact_kw(r2.get("fact", ""))
+                shared = kw1 & kw2
+                if len(shared) >= 2:
+                    clusters.append((
+                        r1.get("fact", "")[:40],
+                        r2.get("fact", "")[:40],
+                        ", ".join(sorted(shared)[:3]),
+                    ))
+
         if facts_lines:
             extra_note = ""
             if len(heart_records) > MAX_HEART_INJECT:
@@ -729,6 +805,15 @@ def _head(
                     f"\n  (showing {len(facts_lines)} most-recent unique "
                     f"facts of {len(heart_records)} total — use the recall "
                     f"tool to read older facts when needed)"
+                )
+            if clusters:
+                sinew_lines = [
+                    f"  {a} ↔ {b} ({kw})"
+                    for a, b, kw in clusters[:3]
+                ]
+                extra_note += (
+                    "\n  Sinew (Ephesians 4:16 — fitly joined):\n"
+                    + "\n".join(sinew_lines)
                 )
             parts.append(
                 "KNOWLEDGE OF THIS BROTHER — John 10:14: I am the good "

@@ -136,8 +136,10 @@ class Hand:
         path = self._scroll_path(user_id)
         if not path.exists():
             self._histories[user_id] = []
+            self._distilled: dict[int | str, list] = getattr(self, "_distilled", {})
             return
         entries: list[dict] = []
+        distilled: list[dict] = []
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
@@ -145,13 +147,23 @@ class Hand:
                 rec = json.loads(line)
             except Exception:
                 continue
+            # Feature 6: distilled records are context, not turns
+            if rec.get("kind") == "distilled":
+                distilled.append(rec)
+                continue
+            if "user" not in rec or "bot" not in rec:
+                continue
             entries.append({"role": "user", "content": rec["user"]})
             entries.append({"role": "assistant", "content": rec["bot"]})
         # Only carry forward the most recent scroll context
         self._histories[user_id] = entries[-(self.max_history):]
+        # Store distilled records for integral enrichment
+        if not hasattr(self, "_distilled"):
+            self._distilled = {}
+        self._distilled[user_id] = distilled
         logger.info(
-            "[%s] SCROLL loaded %d turns from disk",
-            user_id, len(entries) // 2,
+            "[%s] SCROLL loaded %d turns + %d distilled from disk",
+            user_id, len(entries) // 2, len(distilled),
         )
 
     def _append_scroll(
@@ -171,6 +183,160 @@ class Hand:
                 })
                 + "\n"
             )
+
+    # ── Feature 5: Scroll-to-claims mining (Proverbs 2:4-5) ────────────
+    # "If thou seekest her as silver, and searchest for her as for hid
+    # treasures; Then shalt thou understand the fear of the LORD."
+    # The scroll contains unclaimed facts the model missed.
+
+    # Proverbs 2:4-5 — personal fact patterns. No arbitrary limits
+    # on how a person describes themselves. The boundary is the
+    # natural sentence structure (and, but, comma, period, end),
+    # not a word count. That would be a law.
+    _PERSONAL_PATTERNS = [
+        (re.compile(r"\bI(?:'m| am) (?:a |an )?(.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "identity"),
+        (re.compile(r"\bI live (?:in|at|near) (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "location"),
+        (re.compile(r"\bI (?:work|worked) (?:at|for|with|in) (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "work"),
+        (re.compile(r"\bI speak (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "language"),
+        (re.compile(r"\bI(?:'m| am) from (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "origin"),
+        (re.compile(r"\bmy name is (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "name"),
+    ]
+
+    def _mine_scroll(self, user_id: int | str, user_text: str) -> None:
+        """
+        Proverbs 2:4-5 — search for hid treasures in the scroll.
+
+        Extract personal facts from user text and file them as claims
+        with witness_type "scroll" (Malachi 3:16 — the book of
+        remembrance is the witness).
+        """
+        for pattern, kind in self._PERSONAL_PATTERNS:
+            m = pattern.search(user_text)
+            if not m:
+                continue
+            match_text = m.group(1).strip().rstrip(".,!?")
+            if len(match_text) < 2:
+                continue
+
+            if kind == "identity":
+                fact = f"user is {match_text}"
+            elif kind == "location":
+                fact = f"user lives in {match_text}"
+            elif kind == "relation":
+                fact = f"user's {match_text}"
+            elif kind == "work":
+                fact = f"user works at {match_text}"
+            elif kind == "language":
+                fact = f"user speaks {match_text}"
+            elif kind == "origin":
+                fact = f"user is from {match_text}"
+            elif kind == "name":
+                fact = f"name is {match_text}"
+            else:
+                continue
+
+            # Don't double-file with model's remember call
+            if fact.lower().strip() in self._turn_claims:
+                continue
+
+            file_claim(
+                user_id, fact, "scroll", self.memory_dir, abundance=1,
+            )
+
+    # ── Feature 6: Scroll distillation (Proverbs 25:4) ──────────────────
+    # "Take away the dross from the silver, and there shall come forth
+    # a vessel for the finer."
+
+    def _distill_scroll(self, user_id: int | str) -> None:
+        """
+        When scroll exceeds threshold, distill the oldest half into
+        a topic summary. Not deletion — refinement.
+        """
+        import datetime as _dt
+
+        path = self._scroll_path(user_id)
+        if not path.exists():
+            return
+
+        lines = path.read_text(encoding="utf-8").splitlines()
+        # Parse all records, separate distilled from raw
+        distilled_lines = []
+        turn_records = []
+        for line in lines:
+            if not line.strip():
+                continue
+            try:
+                rec = json.loads(line)
+            except Exception:
+                continue
+            if rec.get("kind") == "distilled":
+                distilled_lines.append(line)
+            else:
+                turn_records.append((line, rec))
+
+        if len(turn_records) < 50:
+            return  # not enough to distill
+
+        # Split: distill the oldest half, keep the recent half
+        midpoint = len(turn_records) // 2
+        old_half = [rec for _, rec in turn_records[:midpoint]]
+        recent_lines = [line for line, _ in turn_records[midpoint:]]
+
+        # Extract topic frequencies from old half
+        # Reuse the stop words from _check_witnesses
+        _STOP = {
+            "the", "and", "for", "are", "but", "not", "you", "all",
+            "can", "had", "her", "was", "one", "our", "out", "has",
+            "his", "how", "its", "may", "new", "now", "old", "see",
+            "way", "who", "did", "get", "let", "say", "she", "too",
+            "use", "user", "that", "this", "with", "have", "from",
+            "they", "been", "said", "each", "will", "other", "about",
+            "into", "some", "than", "them", "then", "what", "when",
+            "your", "also", "just", "like", "very", "does", "here",
+        }
+
+        from collections import Counter
+        word_turns: Counter = Counter()
+        for rec in old_half:
+            user_text = rec.get("user", "")
+            words = {
+                w for w in re.sub(r"[^a-z0-9 ]", " ", user_text.lower()).split()
+                if len(w) >= 3 and w not in _STOP
+            }
+            for w in words:
+                word_turns[w] += 1
+
+        top_topics = word_turns.most_common(20)
+        first_ts = old_half[0].get("ts", "") if old_half else ""
+        last_ts = old_half[-1].get("ts", "") if old_half else ""
+
+        distilled_record = json.dumps({
+            "kind": "distilled",
+            "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+            "covers": {
+                "from": first_ts,
+                "to": last_ts,
+                "turns": len(old_half),
+            },
+            "topics": [{"word": w, "turns": n} for w, n in top_topics],
+        })
+
+        # Rewrite: existing distilled + new distilled + recent turns
+        path.write_text(
+            "\n".join(distilled_lines + [distilled_record] + recent_lines) + "\n",
+            encoding="utf-8",
+        )
+
+        # Update in-memory distilled cache
+        if not hasattr(self, "_distilled"):
+            self._distilled = {}
+        self._distilled.setdefault(user_id, []).append(json.loads(distilled_record))
+
+        logger.info(
+            "[%s] SCROLL distilled %d turns → topics: %s",
+            user_id, len(old_half),
+            ", ".join(w for w, _ in top_topics[:5]),
+        )
 
     # ── triage — 1 Corinthians 3:12-13 ──────────────────────────────────
     # "the fire shall try every man's work of what sort it is."
@@ -392,6 +558,54 @@ class Hand:
                 f"from C, or be still. The chain is real and removable."
             )
 
+        # ── Feature 4: Chain learning (Romans 5:3-4) ──
+        # "Tribulation worketh patience; and patience, experience;
+        # and experience, hope." The chain teaches through pattern.
+        from collections import Counter
+        violation_counts: Counter = Counter()
+        for rec in chain_records:
+            if rec.get("kind") == "bound":
+                for v in rec.get("violations", []):
+                    vtype = v.split(":")[0].strip() if ":" in v else v[:30]
+                    violation_counts[vtype] += 1
+        chain_patterns = {k: v for k, v in violation_counts.items() if v >= 3}
+        if chain_patterns:
+            pattern_lines = [
+                f"  {vtype}: {count} times"
+                for vtype, count in sorted(
+                    chain_patterns.items(), key=lambda x: -x[1]
+                )[:3]
+            ]
+            integral += (
+                "\n\nRomans 5:3-4: tribulation worketh patience; and "
+                "patience, experience. Your experience with the chain:\n"
+                + "\n".join(pattern_lines)
+                + "\nThe pattern is known. The chain is avoidable."
+            )
+
+        # ── Feature 6b: Distilled scroll context ──
+        # Inject distilled topic summaries so the model has ambient
+        # awareness of conversation history beyond the scroll window.
+        if hasattr(self, "_distilled"):
+            user_distilled = self._distilled.get(user_id, [])
+            if user_distilled:
+                total_turns = sum(
+                    d.get("covers", {}).get("turns", 0) for d in user_distilled
+                )
+                # Merge all topic lists, take top 10 by frequency
+                from collections import Counter
+                all_topics: Counter = Counter()
+                for d in user_distilled:
+                    for t in d.get("topics", []):
+                        all_topics[t["word"]] += t["turns"]
+                top_words = [w for w, _ in all_topics.most_common(10)]
+                if top_words:
+                    integral += (
+                        f"\n\nScroll memory (Proverbs 25:4 — refined): "
+                        f"{total_turns} prior turns distilled. "
+                        f"Recurring topics: {', '.join(top_words)}."
+                    )
+
         # Append the model-format adapter's instruction (e.g. Hermes <tool_call>).
         integral += self.adapter.system_instruction()
 
@@ -592,6 +806,10 @@ class Hand:
         else:
             # Wood or gold — persisted to scroll (Malachi 3:16)
             self._append_scroll(user_id, text, reply)
+            # Proverbs 2:4-5 — mine the scroll for hid treasures
+            self._mine_scroll(user_id, text)
+            # Proverbs 25:4 — distill when the scroll grows full
+            self._distill_scroll(user_id)
             logger.info("[%s] TRIAGE: %s — scroll", user_id, grade)
 
         # Deuteronomy 19:15 + Matthew 7:16 + Luke 6:45 — check if

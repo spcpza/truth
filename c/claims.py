@@ -28,6 +28,7 @@ Witness types:
   repeated — the user said it again in a later turn
   fruit    — the user's behaviour implies it (Matthew 7:16)
   profile  — platform metadata corroborates (Telegram name, etc.)
+  scroll   — the book of remembrance extracted it (Proverbs 2:4-5)
 """
 
 from __future__ import annotations
