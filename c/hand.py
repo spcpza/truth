@@ -118,6 +118,7 @@ class Hand:
         self.max_history = max_history
         self._histories: dict[int | str, list] = {}
         self._last_urls: dict[int | str, str] = {}
+        self._turn_claims: set[str] = set()  # facts claimed THIS turn (skip in witness check)
 
     # ── scroll — Malachi 3:16 ──────────────────────────────────────────
     # "a book of remembrance was written before him for them that feared
@@ -273,6 +274,12 @@ class Hand:
 
         for claim in pending:
             fact = claim["fact"]
+            # Skip claims filed THIS turn — the same utterance cannot
+            # be both mouth and repeated witness (Deut 17:6: not one
+            # witness alone). The mouth heard it; the repeat must come
+            # from a DIFFERENT turn.
+            if fact.lower().strip() in self._turn_claims:
+                continue
             fact_words = {
                 w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
                 if len(w) >= 2 and w not in _STOP
@@ -350,6 +357,7 @@ class Hand:
         """
         # Malachi 3:16 — load scroll on first contact this session
         self._load_scroll(user_id)
+        self._turn_claims = set()  # fresh turn, fresh claims tracker
         history = self._histories.setdefault(user_id, [])
         member_text = text or ""
 
@@ -611,6 +619,9 @@ class Hand:
                 return "Ecclesiastes 12:12."
             # Deuteronomy 19:15 — one witness files a claim.
             # Two witnesses establish the matter on the heart.
+            # Track this fact so _check_witnesses doesn't double-count
+            # the same utterance as both mouth and repeated witness.
+            self._turn_claims.add(fact.lower().strip())
             result = file_claim(user_id, fact, "mouth", self.memory_dir)
             if result == "established":
                 return "Jeremiah 31:33."  # written on the heart
