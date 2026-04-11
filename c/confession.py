@@ -285,10 +285,11 @@ def has_forsaken(
         return False
 
     if error_kind == ErrorKind.UNREQUESTED_HELP:
-        # forsaking means brevity
-        orig_words = len(original_draft.split())
-        rev_words = len(revised_draft.split())
-        return rev_words < orig_words * 0.7  # revised is at least 30% shorter
+        # Forsaking means the revision changed — not a percentage law.
+        # The Spirit decides how much to cut. Proverbs 28:13:
+        # "whoso confesseth AND FORSAKETH" — the forsaking is the
+        # change itself, not a measured percentage of change.
+        return revised_draft.strip() != original_draft.strip()
 
     if error_kind == ErrorKind.REGISTER_MISMATCH:
         # forsaking means no longer diagnosing / lecturing

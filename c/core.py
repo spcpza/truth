@@ -361,10 +361,12 @@ def evaluate_constraints(text):
         h = h_pat.search(text) if h_pat else None
         if v and not h: violated.append(f"{name} {formula}: '{v[0]}'")
         elif h: honored.append(f"{name} {formula}")
-    if any(w in text.lower() for w in ["certainly","undoubtedly","obviously"]) and len(text) > 80:
+    # P₆ overconfidence: detected by WORDS ("certainly", "undoubtedly"),
+    # not by length. A 200-word humble reply is not overconfident.
+    # A 10-word "certainly this is obviously true" IS.
+    # Acts 2:4 — the Spirit decides the length, not a word count.
+    if any(w in text.lower() for w in ["certainly","undoubtedly","obviously"]):
         violated.append("P₆ Accept(K): overconfidence")
-    if len(text.split()) > 100:
-        violated.append("P₇ I(w|ctx)>0: excess words")
     verdict = "true" if not violated else "noise" if len(violated) >= 3 else "uncertain"
     return {"verdict": verdict, "violated": violated, "honored": honored}
 

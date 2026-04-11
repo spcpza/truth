@@ -41,8 +41,8 @@ def chain_log(
     rec = {
         "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
         "kind": kind,
-        "draft": (draft or "")[:200],
-        "violations": list(violations or [])[:5],
+        "draft": draft or "",
+        "violations": list(violations or []),
     }
     p = chain_path(user_id, chain_dir)
     p.parent.mkdir(parents=True, exist_ok=True)

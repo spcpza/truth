@@ -137,7 +137,7 @@ _DOCTRINAL_PATTERNS = re.compile(
 _EVIDENCE_MARKERS = re.compile(
     r"("
     r"[A-Z][a-z]+\s+\d+:\d+|"            # ref format (Matthew 5:3)
-    r'"[^"]{15,}"|'                       # quoted verse text
+    r'"[^"]+"|'                            # quoted verse text (any length)
     r"[HG]\d{3,}|"                        # Strong's numbers
     r"as\s+it\s+is\s+written|"
     r"saith\s+the\s+LORD|"
@@ -201,7 +201,7 @@ def doctrinal_gate(draft: str) -> dict:
     return {
         "claims": claims,
         "grounded": grounded,
-        "ungrounded_sentences": ungrounded[:3],
+        "ungrounded_sentences": ungrounded,
         "verdict": "revise",
         "feedback": (
             f"Deut 4:2 — ye shall not add unto the word. "

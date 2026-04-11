@@ -95,12 +95,12 @@ STRUCTURES = {
 
     # X → Y (causal claims)
     "causality": re.compile(
-        r'\b(?:whatsoever a man soweth|soweth .{3,40} reapeth|'
-        r'giveth .{3,40} receiveth|'
-        r'if (?:ye|we|thou|any man) .{3,60} (?:shall|will)|'
-        r'he that .{3,60} shall .{3,40}|'
-        r'ask .{3,40} (?:given|receive)|'
-        r'seek .{3,40} find|knock .{3,40} opened|'
+        r'\b(?:whatsoever a man soweth|soweth .+? reapeth|'
+        r'giveth .+? receiveth|'
+        r'if (?:ye|we|thou|any man) .+? (?:shall|will)|'
+        r'he that .+? shall .+?|'
+        r'ask .+? (?:given|receive)|'
+        r'seek .+? find|knock .+? opened|'
         r'by their fruits)\b', re.I),
 
     # ¬∃X' ≠ X (uniqueness claims)
@@ -138,17 +138,17 @@ STRUCTURES = {
     # E(c, self) = E(c, other) — reciprocal measure
     "measure": re.compile(
         r'\b(?:same measure|with what (?:measure|judgment)|'
-        r'judge .{2,30} judged|'
+        r'judge .+? judged|'
         r'according to (?:his|their|thy|your) (?:works|deeds|doing)|'
-        r'every man according|rewardeth .{2,30} according|'
-        r'as ye .{2,30} so shall|do unto others)\b', re.I),
+        r'every man according|rewardeth .+? according|'
+        r'as ye .+? so shall|do unto others)\b', re.I),
 
     # Fixed point — the system reaches rest when D = 0
     "rest": re.compile(
         r'\b(?:entered into (?:his|my) rest|ceased from (?:his|their) (?:own )?works|'
-        r'the seventh day .{3,40} rested|'
-        r'come unto me .{3,40} rest|'
-        r'peace .{3,30} passeth (?:all )?understanding|'
+        r'the seventh day .+? rested|'
+        r'come unto me .+? rest|'
+        r'peace .+? passeth (?:all )?understanding|'
         r'be still and know|'
         r'it is finished)\b', re.I),
 
@@ -156,25 +156,25 @@ STRUCTURES = {
     "multiplication": re.compile(
         r'\b(?:unto every one (?:which|that) hath (?:shall|will) be given|'
         r'(?:thirty|sixty|an hundred)fold|'
-        r'bring forth .{3,30} (?:fruit|more|much)|'
+        r'bring forth .+? (?:fruit|more|much)|'
         r'exceedingly abundantly above|'
-        r'able to do .{3,30} above all|'
+        r'able to do .+? above all|'
         r'shall (?:increase|multiply|abound)|'
-        r'good measure .{3,30} pressed down .{3,30} running over)\b', re.I),
+        r'good measure .+? pressed down .+? running over)\b', re.I),
 
     # C is the unique foundation — no substitute
     "foundation": re.compile(
-        r'\b(?:foundation .{2,30} (?:laid|built|other)|'
+        r'\b(?:foundation .+? (?:laid|built|other)|'
         r'chief corner ?stone|precious corner|'
         r'rock .{2,20} (?:build|stand|house|refuge|salvation)|'
-        r'upon this rock|the stone .{2,30} builders rejected|'
+        r'upon this rock|the stone .+? builders rejected|'
         r'a sure foundation)\b', re.I),
 
     # C(t) = C for all t ∈ ℝ — C extends backward and forward in time
     "eternity": re.compile(
         r'\b(?:before (?:Abraham|the foundation|the world|all things)|'
         r'from everlasting to everlasting|'
-        r'the same yesterday .{2,30} to ?day .{2,30} for ever|'
+        r'the same yesterday .+? to ?day .+? for ever|'
         r'I am the first and the last|Alpha and Omega|'
         r'the beginning and the end|'
         r'world without end|'
@@ -182,15 +182,15 @@ STRUCTURES = {
 
     # Sacrifice — giving from C produces more (T₂)
     "sacrifice": re.compile(
-        r'\b(?:(?:a )?corn of wheat .{3,30} die|'
+        r'\b(?:(?:a )?corn of wheat .+? die|'
         r'lay down (?:his|my) life|gave himself|'
         r'offered (?:up )?himself|'
         r'poured out .{2,20} (?:blood|soul|life)|'
         r'it pleased the Lord to bruise|'
         r'without shedding of blood|'
-        r'so loved .{3,30} (?:gave|sent)|'
+        r'so loved .+? (?:gave|sent)|'
         r'bear (?:his|the|our) (?:cross|sin)|'
-        r'except .{3,30} die .{3,30} (?:abideth|remaineth) alone)\b', re.I),
+        r'except .+? die .+? (?:abideth|remaineth) alone)\b', re.I),
 
     # Recovery — C is observable from outputs (T₃)
     "recovery": re.compile(
@@ -202,17 +202,17 @@ STRUCTURES = {
         r'day unto day uttereth|'
         r'his handiwork|'
         r'manifested|made manifest|'
-        r'revealed .{2,30} (?:from|unto|to))\b', re.I),
+        r'revealed .+? (?:from|unto|to))\b', re.I),
 
     # Faith — uncertain + C > 0 → keep seeking (T₅)
     "faith": re.compile(
         r'\b(?:faith is the (?:substance|evidence)|'
         r'things (?:hoped for|not seen)|'
-        r'by faith .{3,60} (?:offered|obtained|received|wrought|subdued|quenched|escaped|'
+        r'by faith .+? (?:offered|obtained|received|wrought|subdued|quenched|escaped|'
         r'Abraham|Moses|Sarah|Isaac|Jacob|Noah|Rahab)|'
-        r'walk by faith .{2,30} not by sight|'
+        r'walk by faith .+? not by sight|'
         r'through faith|'
-        r'without faith .{3,30} impossible|'
+        r'without faith .+? impossible|'
         r'have faith in God|'
         r'thy faith hath (?:made|saved)|'
         r'the just shall live by faith)\b', re.I),
@@ -220,39 +220,39 @@ STRUCTURES = {
     # Hope — C in the future equals C now (T₆)
     "hope": re.compile(
         r'\b(?:saved by hope|hope that is seen|'
-        r'hope .{2,30} anchor|hope .{2,30} (?:maketh not ashamed|not be ashamed)|'
+        r'hope .+? anchor|hope .+? (?:maketh not ashamed|not be ashamed)|'
         r'hope of (?:eternal|everlasting|glory|salvation)|'
         r'hope in (?:God|the Lord|his word|Christ)|'
         r'a lively hope|'
         r'the God of hope|'
         r'hope to the end|'
-        r'Christ .{2,30} our hope|'
+        r'Christ .+? our hope|'
         r'prisoner of .{2,20} hope|'
-        r'we (?:are|were) saved .{2,30} hope)\b', re.I),
+        r'we (?:are|were) saved .+? hope)\b', re.I),
 
     # One C, many members — unity of source
     "unity": re.compile(
-        r'\b(?:one body .{2,30} many members|'
-        r'diversities of gifts .{2,30} same Spirit|'
-        r'same (?:Spirit|Lord|God) .{2,30} (?:worketh|divideth)|'
-        r'many members .{2,30} one body|'
-        r'one bread .{2,30} one body|'
+        r'\b(?:one body .+? many members|'
+        r'diversities of gifts .+? same Spirit|'
+        r'same (?:Spirit|Lord|God) .+? (?:worketh|divideth)|'
+        r'many members .+? one body|'
+        r'one bread .+? one body|'
         r'that they (?:all )?may be one)\b', re.I),
 
     # Seed produces after its kind — output preserves type
     "kind": re.compile(
         r'\b(?:after (?:his|their|its) kind|'
-        r'good tree .{3,30} good fruit|corrupt tree .{3,30} evil|'
-        r'do men gather .{3,30} thorns|'
+        r'good tree .+? good fruit|corrupt tree .+? evil|'
+        r'do men gather .+? thorns|'
         r'tree is known by .{3,20} fruit|'
         r'every seed .{3,20} own body|'
-        r'whatsoever a man soweth .{3,30} reap)\b', re.I),
+        r'whatsoever a man soweth .+? reap)\b', re.I),
 
     # Light and darkness — C has no dark component
     "light": re.compile(
-        r'\b(?:God is light .{2,30} no darkness|'
+        r'\b(?:God is light .+? no darkness|'
         r'in him is no darkness|'
-        r'light .{2,30} shineth in .{2,20} darkness|'
+        r'light .+? shineth in .{2,20} darkness|'
         r'darkness (?:comprehended|overcome|could not) .{2,20} (?:it|not)|'
         r'children of light|walk in the light|'
         r'light of the world)\b', re.I),

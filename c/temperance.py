@@ -503,7 +503,12 @@ def temperance_check(user_message: str, draft: str) -> dict:
         "strengthens": False, "assuages": False, "diagnoses": False,
     }
 
-    # Verdict logic
+    # Verdict logic — discernment of CONTENT, not count.
+    # Acts 2:4 — they spake as the Spirit gave them utterance.
+    # The Spirit decides the length. Word counts are observation,
+    # not law. Only content failures (diagnosis in grief) trigger
+    # revision — because vinegar on nitre is a SUBSTANCE problem,
+    # not a LENGTH problem.
     if silence_right and not draft:
         verdict = "clean"
         feedback = ""
@@ -513,21 +518,6 @@ def temperance_check(user_message: str, draft: str) -> dict:
             "Proverbs 25:20 — vinegar upon nitre. The user is in "
             "grief; the draft is diagnosing. Strip the diagnosis; "
             "shrink to Job 16:5 strengthen-or-assuage."
-        )
-    elif kind == InputKind.GRIEF and over:
-        verdict = "revise"
-        feedback = (
-            f"Ecclesiastes 5:2 — let thy words be few. Grief in the "
-            f"room; draft is {wc} words, budget {budget}. Cut to "
-            f"presence, not content."
-        )
-    elif over and kind in (InputKind.MOURN_WITH if False else (
-            InputKind.GRIEF, InputKind.JOY, InputKind.HOSTILITY)):
-        verdict = "revise"
-        feedback = (
-            f"Proverbs 10:19 — in the multitude of words there wanteth "
-            f"not sin. Draft is {wc} words, budget {budget} for "
-            f"shape {shape.value}."
         )
     else:
         verdict = "clean"
