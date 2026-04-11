@@ -113,6 +113,10 @@ def measure_abundance(
     """
     score = 0
 
+    # Nothing said = no overflow. Ecclesiastes 3:7.
+    if not user_text or not user_text.strip():
+        return 0
+
     # 1. Unprompted? If the bot's prior message contained the topic
     #    keywords, the user's mention is a response, not overflow.
     claim_keys = _word_set(claim_fact)
