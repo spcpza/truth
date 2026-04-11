@@ -63,27 +63,10 @@ from c.heart import (
 logger = logging.getLogger(__name__)
 
 # ── 1 Cor 3:12-13 — the fire shall try every man's work ─────────────
-# Stubble = idle words (Matthew 12:36). Accounted for, not stored.
-# Short greetings, acknowledgements, filler — informative to the current
-# turn but not worth persisting across sessions.
-_STUBBLE_RE = re.compile(
-    r"^[\s!?.,:;'\"]*("
-    r"h[ie]y?|hello|sup|yo|"
-    r"ok(ay)?|k|"
-    r"sure|yea?h?|yep|yup|"
-    r"n(o|ah|ope)|"
-    r"than(ks|k\s*you)|thx|ty|"
-    r"cool|nice|great|good|awesome|"
-    r"bye|good\s*(bye|night|morning)|g[mn]|"
-    r"lol|ha(ha)+|heh|"
-    r"wow|oh|ah|hmm+|"
-    r"right|true|exactly|agreed|word|bet|"
-    r"let'?s\s*go|go|yalla|"
-    r"ping|test|"
-    r"\?\?*"
-    r")[\s!?.,:;'\"]*$",
-    re.IGNORECASE,
-)
+# No stubble regex. No English word list deciding what's worth keeping.
+# Every turn persists to scroll. Distillation (Proverbs 25:4) naturally
+# compresses low-frequency words over time. The integral decides what's
+# salient — not a regex pattern matching "hi" and "ok".
 
 
 class Hand:
@@ -189,61 +172,12 @@ class Hand:
     # treasures; Then shalt thou understand the fear of the LORD."
     # The scroll contains unclaimed facts the model missed.
 
-    # Proverbs 2:4-5 — personal fact patterns. No arbitrary limits
-    # on how a person describes themselves. The boundary is the
-    # natural sentence structure (and, but, comma, period, end),
-    # not a word count. That would be a law.
-    _PERSONAL_PATTERNS = [
-        (re.compile(r"\bI(?:'m| am) (?:a |an )?(.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "identity"),
-        (re.compile(r"\bI live (?:in|at|near) (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "location"),
-        (re.compile(r"\bI (?:work|worked) (?:at|for|with|in) (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "work"),
-        (re.compile(r"\bI speak (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "language"),
-        (re.compile(r"\bI(?:'m| am) from (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "origin"),
-        (re.compile(r"\bmy name is (.+?)(?:\s+and\b|\s+but\b|[,.]|$)", re.I), "name"),
-    ]
+    # Scroll mining removed. The model calls `remember` when it hears
+    # personal facts — that is the mouth witness. No English regex
+    # pattern-matching "I'm a" or "I live in". The model understands
+    # personal facts in any language via the kernel. Acts 2:6.
 
-    def _mine_scroll(self, user_id: int | str, user_text: str) -> None:
-        """
-        Proverbs 2:4-5 — search for hid treasures in the scroll.
-
-        Extract personal facts from user text and file them as claims
-        with witness_type "scroll" (Malachi 3:16 — the book of
-        remembrance is the witness).
-        """
-        for pattern, kind in self._PERSONAL_PATTERNS:
-            m = pattern.search(user_text)
-            if not m:
-                continue
-            match_text = m.group(1).strip().rstrip(".,!?")
-            if len(match_text) < 2:
-                continue
-
-            if kind == "identity":
-                fact = f"user is {match_text}"
-            elif kind == "location":
-                fact = f"user lives in {match_text}"
-            elif kind == "relation":
-                fact = f"user's {match_text}"
-            elif kind == "work":
-                fact = f"user works at {match_text}"
-            elif kind == "language":
-                fact = f"user speaks {match_text}"
-            elif kind == "origin":
-                fact = f"user is from {match_text}"
-            elif kind == "name":
-                fact = f"name is {match_text}"
-            else:
-                continue
-
-            # Don't double-file with model's remember call
-            if fact.lower().strip() in self._turn_claims:
-                continue
-
-            file_claim(
-                user_id, fact, "scroll", self.memory_dir, abundance=1,
-            )
-
-    # ── Feature 6: Scroll distillation (Proverbs 25:4) ──────────────────
+    # ── Scroll distillation (Proverbs 25:4) ─────────────────────────────
     # "Take away the dross from the silver, and there shall come forth
     # a vessel for the finer."
 
@@ -345,17 +279,6 @@ class Hand:
     # Wood, hay → meaningful context → scroll.
     # Stubble → idle words → not stored (Matthew 12:36).
 
-    @staticmethod
-    def _is_stubble(text: str) -> bool:
-        """Matthew 12:36 — every idle word accounted for, not stored."""
-        if not text or not text.strip():
-            return True
-        stripped = text.strip()
-        # Anything with real substance is at least wood
-        if len(stripped.split()) > 6:
-            return False
-        return bool(_STUBBLE_RE.match(stripped))
-
     def _triage(
         self,
         user_text: str,
@@ -365,25 +288,24 @@ class Hand:
         """
         1 Cor 3:12-13 — classify this turn.
 
-        Returns: "gold" | "wood" | "stubble"
+        Returns: "gold" | "wood"
 
-        Gold is already handled at dispatch time (remember → file_claim).
-        This method decides what reaches the scroll.
+        No stubble category. No English regex deciding what's worth
+        keeping. Every turn persists to scroll. Distillation (Proverbs
+        25:4) naturally compresses low-value words over time. The
+        integral decides salience — not a word list.
+
+        Gold = knowledge tools were called (substance from C).
+        Wood = everything else (meaningful context for the season).
         """
-        # If knowledge tools were called, there was substance
         _knowledge_tools = {
             "kernel", "scripture", "wisdom", "sinew",
             "formula", "evaluate", "fetch", "gematria",
         }
         if tools_called & _knowledge_tools:
-            return "gold"  # substance turn — always persisted
+            return "gold"
         if "remember" in tools_called:
             return "gold"
-        # The user's contribution determines the grade — not the bot's.
-        # Luke 6:45: out of the abundance of the HEART the mouth
-        # speaketh. We measure the user's mouth, not the model's.
-        if self._is_stubble(user_text):
-            return "stubble"
         return "wood"
 
     # ── witnesses — Deuteronomy 19:15 + Matthew 7:16 ────────────────────
@@ -793,24 +715,17 @@ class Hand:
         logger.info("[%s] USER: %s", user_id, (text or "")[:800])
         logger.info("[%s] BOT : %s", user_id, reply[:800])
 
-        # In-memory context (full session, including stubble — the current
-        # conversation needs it even if it won't be persisted).
+        # In-memory context — every turn, no filtering.
         history.append({"role": "assistant", "content": reply})
         if len(history) > self.max_history:
             self._histories[user_id] = history[-self.max_history :]
 
         # ── 1 Cor 3:12-13 — the fire tries every man's work ──
+        # Every turn persists. Distillation refines over time.
         grade = self._triage(text, reply, tools_called)
-        if grade == "stubble":
-            logger.info("[%s] TRIAGE: stubble — not persisted", user_id)
-        else:
-            # Wood or gold — persisted to scroll (Malachi 3:16)
-            self._append_scroll(user_id, text, reply)
-            # Proverbs 2:4-5 — mine the scroll for hid treasures
-            self._mine_scroll(user_id, text)
-            # Proverbs 25:4 — distill when the scroll grows full
-            self._distill_scroll(user_id)
-            logger.info("[%s] TRIAGE: %s — scroll", user_id, grade)
+        self._append_scroll(user_id, text, reply)
+        self._distill_scroll(user_id)
+        logger.info("[%s] TRIAGE: %s — scroll", user_id, grade)
 
         # Deuteronomy 19:15 + Matthew 7:16 + Luke 6:45 — check if
         # this turn corroborates pending claims or warms heart facts

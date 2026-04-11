@@ -317,37 +317,19 @@ def test_speech(
     prior_replies: list | None = None,
 ) -> dict:
     """
-    NOSE on the mouth. James 1:19: slow to speak. 1 John 4:1: try the
-    spirits. Test a draft reply against P₁–P₈, against the Pharisee
-    prayer pattern (Luke 18:11), against Matthew 5:37 — every promise
-    in the speech must already be a deed in the hand — AND against
-    Luke 19:5: when a person shares a personal fact, the heart must
-    be written. The check fires only if user_message is supplied.
+    NOSE — structural discernment only. Acts 2:6.
 
-    Args:
-        draft:         the model's draft reply (after the HAND finishes)
-        tools_called:  set of tool names actually called this turn
-                       (e.g. {"remember", "fetch"}); if None, the
-                       Matthew 5:37 and Luke 19:5 checks are skipped
-        user_message:  the user's most recent message; if supplied, the
-                       Luke 19:5 missing-remember check fires when the
-                       message looks like a personal fact and the
-                       remember tool was not called
+    The NOSE checks two things a parser can verify without
+    understanding any language:
 
-    Returns a dict:
-        {
-          "clean":      bool,   # True if the draft passes
-          "violated":   list,   # P₁–P₈ + meta + promise + Luke19:5 violations
-          "meta":       int,    # count of meta-narration tells
-          "promised":   list,   # tool names promised but not called
-          "feedback":   str,    # scripture-anchored revision instruction
-        }
+      REPEAT:  verbatim repetition (string comparison)
+      CONFAB:  tool name written as text but not called
 
-    Deployments call this between HAND and TONGUE. If "clean" is False,
-    send "feedback" back to the model as a system message and let the
-    HAND draft again. After several passes, ship whatever the HAND
-    produced — but log the unresolved violations so the body can be
-    tightened.
+    Everything else — grief, kindness, overconfidence, promises,
+    personal facts — lives in the kernel as formal logic (P₁-P₈).
+    The model applies it in whatever language the user speaks.
+
+    No English regex. No content judgment. The map does the work.
     """
     if not draft:
         return {"clean": True, "violated": [], "meta": 0, "promised": [], "feedback": ""}
@@ -355,47 +337,21 @@ def test_speech(
     # ── 2 Corinthians 3:6: the letter killeth, the spirit giveth life ──
     # P₁–P₈ are formal logic in the kernel (system prompt). The model
     # applies them in whatever language it operates. No English regex.
-    # Romans 2:14-15: the law written in their hearts.
-    #
-    # The NOSE keeps only STRUCTURAL checks — patterns detectable
-    # without language understanding. These are universal:
-    #   META:     constraint-theater (numbered lists, P₁/T₂ markers)
-    #   REPEAT:   verbatim repetition (string comparison)
-    #   CONFAB:   tool name written as text but not called
-    #   MATT5:37: tool promised but not dispatched
-    #   LUKE19:5: personal fact shared, remember not called
-    #
-    # Everything that requires LANGUAGE understanding (grief detection,
-    # kindness, overconfidence, hostility) lives in the system prompt
-    # as formal logic. The model is the instrument. Acts 2:6: every
-    # man heard them speak in his own language.
-
     structural: list[str] = []
 
-    meta = _count_meta_tells(draft)
-    if meta:
-        structural.append(f"META: constraint-theater ({meta} tells)")
-
-    # Ecclesiastes 1:9 — no new thing under the sun, but when the same
-    # words are spoken twice in the same conversation, it is a loop not
-    # wisdom. Detect verbatim repetition of a prior assistant reply.
+    # REPEAT — Ecclesiastes 1:9. String comparison. Universal.
     if prior_replies:
         draft_stripped = draft.strip()
         for prior in prior_replies:
             if prior and prior.strip() == draft_stripped:
                 structural.append(
-                    "REPEAT: this reply is verbatim identical to a prior "
-                    "turn. The user's question has changed; the answer must "
-                    "change. Proverbs 26:11 — as a dog returneth to his "
-                    "vomit, so a fool returneth to his folly. Do not repeat."
+                    "REPEAT: verbatim identical to a prior turn. "
+                    "Proverbs 26:11."
                 )
                 break
 
-    # James 2:17 — faith without works is dead. If the model wrote an
-    # inline tool-call text (e.g. `  sinew {"query": "..."}`) but did
-    # not actually call the tool, it is a promise without a deed.
-    # Proverbs 30:6: add thou not unto his words — fabricated results
-    # are adding words. This fires if tools_called is known.
+    # CONFAB — James 2:17. Tool name written as text but not called.
+    # Mechanical: matches tool name tokens, not language content.
     _INLINE_TOOL_NAME_PAT = re.compile(
         r'^\s*(?P<tool>scripture|sinew|wisdom|kernel|formula|evaluate|'
         r'gematria|fetch|remember|recall|forget)\s+\{',
@@ -406,170 +362,37 @@ def test_speech(
             tool_name = m.group("tool").lower()
             if tool_name not in tools_called:
                 structural.append(
-                    f"CONFAB: '{tool_name}' written as inline text but not called. "
-                    f"James 2:17 — the deed, not the text of the deed. Call the "
-                    f"tool or remove the reference entirely."
+                    f"CONFAB: '{tool_name}' written but not called. "
+                    f"James 2:17."
                 )
-                break  # one conviction is enough
+                break
 
-    # ── Virtue discernment moved to the kernel (system prompt) ────
-    # TEMPERANCE, PATIENCE, GODLINESS, HOPE, CHARITY, HOSTILE_AUDIENCE
-    # are all expressed as formal logic in the kernel. The model applies
-    # them in whatever language it operates. The NOSE no longer checks
-    # English words for these — that was the scaffold.
-    #
-    # The virtues still INFORM the system prompt (via members()/HEAD),
-    # providing ambient guidance. They just don't ENFORCE via regex.
-    # The model receives the logic from C. The model applies it from C.
-    # Acts 2:6 — every man heard them speak in his own language.
-
-    # Matthew 5:37 — promises require deeds. The TONGUE may not say what
-    # the HAND did not do. James 2:17: faith without works is dead.
-    promised = []
-    missing_remember = False
-    if tools_called is not None:
-        called_set = set(tools_called)
-        for tool_name, pattern in _PROMISE_PATTERNS.items():
-            if tool_name not in called_set and pattern.search(draft):
-                promised.append(tool_name)
-                structural.append(f"MATT5:37: promised '{tool_name}' but did not call it")
-
-        # Luke 19:5 — when a person shares a personal fact, the heart
-        # must be written. The check fires only if user_message is
-        # supplied (so MCP-mode and other contexts that don't have it
-        # opt out automatically).
-        if (
-            user_message is not None
-            and "remember" not in called_set
-            and _looks_like_personal_fact(user_message)
-        ):
-            missing_remember = True
-            structural.append(
-                "LUKE19:5: user shared a personal fact and the heart "
-                "was not written"
-            )
-
-    # The draft is clean if no structural violation fired.
+    # Clean if no structural violation.
     if not structural:
         return {
-            "clean": True,
-            "violated": [],
-            "meta": 0,
-            "promised": [],
-            "feedback": "",
+            "clean": True, "violated": [], "meta": 0,
+            "promised": [], "feedback": "",
         }
 
-    violated = structural
-
-    # Conviction first, then correction. John 16:8: the Spirit reproves of
-    # sin — names what just happened before showing the way out. The draft
-    # is unrooted speech: words the HAND reached for from the training
-    # distribution because that path was familiar, not because they came
-    # from C. Name the eating before naming the fix. Then offer the way
-    # out: smaller, from C, or be still.
-    offending = []
-    for v in violated:
-        m = re.search(r"'([^']+)'", v)
-        if m and not v.startswith("MATT5:37"):
-            offending.append(m.group(1))
-    # Two distinct conviction openers:
-    #   1. Eat-the-tree (Gen 2:17)  — fires when the DRAFT itself violates
-    #      structural checks (META, length, overconfidence, word-list info).
-    #      The draft is wrong-action speech.
-    #   2. Missed-the-Zacchaeus (Luke 19:5) — fires when the ONLY structural
-    #      issue is that a personal fact was shared and remember was not
-    #      called. The draft might be perfectly fine; the failure is
-    #      missing-action, not wrong-action. Different shape, different
-    #      conviction.
-    # Galatians 6:1 — restore such an one in the spirit of meekness,
-    # considering thyself, lest thou also be tempted. Earlier convictions
-    # were multi-paragraph theology blocks; the model copied them instead
-    # of receiving them. The schoolmaster (Gal 3:24, paidagōgos) speaks
-    # to the child briefly. Eccl 5:2: let thy words be few. One short
-    # sentence per violation type, anchored to one verse each. The
-    # caller should EMBED this in the system prompt rather than appending
-    # it as a new message — Hermes-4 cannot distinguish system from user
-    # content for copy/reflect purposes; ambient is safer than spoken.
-    fact_hint = ""
-    if missing_remember:
-        fact_hint = (user_message or "").strip().replace("\n", " ")[:200]
-
-    convictions: list[str] = []
+    # Brief feedback — one sentence per violation, one verse each.
+    convictions = []
     if any(v.startswith("REPEAT:") for v in structural):
         convictions.append(
-            "Proverbs 26:11 — do not repeat a prior reply verbatim. "
-            "The user's moment has moved; your response must move with "
-            "it. Read what they just said again and respond to THAT."
-        )
-    if meta:
-        convictions.append(
-            "Luke 18:11 — drop the T/P enumeration; speak from C, not about it."
-        )
-    if offending:
-        convictions.append(
-            "James 1:19 — slow to speak. Unrooted words to see, not edit: "
-            + ", ".join(sorted(set(offending)))
-            + "."
-        )
-    if any("excess words" in v for v in structural):
-        convictions.append(
-            "Eccl 5:2 — let thy words be few; previous reply was too long."
-        )
-    if any("overconfidence" in v for v in structural):
-        convictions.append(
-            "Prov 11:2 — pride goeth; soften the certainty."
+            "Proverbs 26:11 — do not repeat verbatim. "
+            "The user's moment has moved; respond to THAT."
         )
     if any(v.startswith("CONFAB:") for v in structural):
         convictions.append(
-            "James 2:17 — faith without works is dead. You wrote a tool "
-            "name inline (e.g. `sinew {...}`) but did not call the tool. "
-            "Remove the inline text AND call the actual tool, or give "
-            "your answer from what you already know without pretending "
-            "to run a query."
-        )
-    # Virtue feedback removed — discernment lives in the kernel now.
-    if promised:
-        tool_list = ", ".join(promised)
-        convictions.append(
-            f"Matthew 5:37 — yea, yea. The {tool_list} tool was named but "
-            f"not called. Call it or drop the mention."
-        )
-    if missing_remember and fact_hint:
-        # The fact MUST be in third person AND scope-anchored:
-        #   - Third person ("Frederick is...") not first ("I am...")
-        #     so the model later reads it as a fact about the user, not
-        #     as its own utterance to parrot.
-        #   - Stable phrasing where possible ("uses bitcoin miners for
-        #     water heating") rather than momentary phrasing ("is fixing
-        #     today"). Hebrews 13:8: the eternal needs no date; the
-        #     temporal must be dated. heart.py auto-anchors any leftover
-        #     "today"/"yesterday"/"now" to absolute dates as a backstop,
-        #     but stable phrasing is the preferred form.
-        safe_hint = fact_hint.replace("\\", "\\\\").replace("\"", "\\\"")
-        convictions.append(
-            "Luke 19:5 — the user shared a fact; the heart was not written. "
-            "Emit one tool call now. The fact must be (a) in THIRD PERSON "
-            "about the user, never first person; and (b) phrased as a "
-            "stable trait or ongoing project, not as a momentary action "
-            "tied to today. Prefer \"the user uses X\" or \"the user is "
-            "interested in Y\" over \"today the user is doing X\". The "
-            "user said: \"" + safe_hint + "\". Translate that into a "
-            "third-person, stable-form fact, then call: "
-            "<tool_call>{\"name\":\"remember\",\"arguments\":"
-            "{\"fact\":\"<your third-person stable fact here>\"}}</tool_call>"
+            "James 2:17 — tool name written but not called. "
+            "Call the tool or remove the reference."
         )
 
-    if not convictions:
-        # Should not happen — caller only invokes feedback when violations
-        # exist — but be defensive.
-        convictions.append("Ecclesiastes 5:2 — let thy words be few.")
-
-    feedback = "\n  ".join(convictions)
+    feedback = "\n  ".join(convictions) if convictions else ""
     return {
         "clean": False,
-        "violated": violated,
-        "meta": meta,
-        "promised": promised,
+        "violated": structural,
+        "meta": 0,
+        "promised": [],
         "feedback": feedback,
     }
 
@@ -1202,23 +1025,26 @@ def _has_cjk(text: str) -> bool:
 
 def clean(text: str) -> str:
     """
-    TONGUE — James 3:10: Out of the same mouth proceedeth blessing and cursing.
-    These things ought not so to be.
-    G2129 = eulogia: blessing passes. G2671 = katara: cursing removed.
-    1 Cor 14:9: words easy to be understood — strange tongues do not pass.
+    TONGUE — James 3:10. Strips MODEL-FORMAT ARTIFACTS only.
+
+    The TONGUE no longer strips English content (narrative openers,
+    meta-sentences, redirects). The kernel teaches the model not to
+    produce those. If the model speaks them, that is the model's
+    speech — free. The TONGUE only removes mechanical artifacts
+    that are not part of any language: think blocks, tool call XML,
+    JSON payloads, special tokens, encoding noise.
+
+    Acts 2:4: they spake as the Spirit gave them utterance.
+    The TONGUE does not edit the utterance. It only removes the
+    scaffolding that the adapter/format left behind.
     """
     if _has_cjk(text):
-        # Strip every CJK glyph; if nothing meaningful remains, cite the rule.
         text = _CJK_PAT.sub("", text)
         text = re.sub(r'[ \t]+', ' ', text).strip()
         if len(text) < 4:
             return "1 Corinthians 14:9."
 
-    # Matthew 23:23 — strip meta-narration sentences and lines (constraint-theater)
-    text = _META_SENTENCE.sub("", text)
-    text = _META_LINE.sub("", text)
-    text = _INTERROGATION_LINE.sub("", text)
-    text = _INTERROGATION_SENTENCE.sub("", text)
+    # ── MECHANICAL: model-format artifacts ──
     text = _THINK.sub("", text)
     text = _THINK_ORPHAN.sub("", text)
     text = _HERMES_TOKEN.sub("", text)
@@ -1226,23 +1052,16 @@ def clean(text: str) -> str:
     text = _TOOL_CALL_XML.sub("", text)
     text = _TOOL_CALL_ORPHAN.sub("", text)
     text = _TOOL_CALL_OPEN_ORPHAN.sub("", text)
-    # Proverbs 30:6 — add thou not unto his words, lest he reprove thee.
-    # Strip stubs left after a tool-call payload was removed.
-    text = re.sub(r'\bI (?:called|used|invoked|ran)\s*[\.\?!]+', '', text, flags=re.I)
-    text = re.sub(r'\bI (?:called|used|invoked|ran)\s+the\s+tool\s*[\.\?!]+', '', text, flags=re.I)
     text = _BARE_BRACE.sub("", text)
     text = _NON_LATIN_NOISE.sub("", text)
     text = _EXPORT_BLOCK.sub("", text)
     text = _DESIGN_LINE.sub("", text)
-    text = _NARRATION_BLOCK.sub("", text)
     text = _TOOL_DEBUG.sub("", text)
     text = _CODE_ARTIFACT.sub("", text)
     text = _INLINE_TOOL_CALL.sub("", text)
     text = _FAKE_TOOL_HEADER.sub("", text)
-    text = _NARRATIVE_OPENER.sub("", text)
-    text = _MEMORY_META.sub("", text)
-    text = _NO_CONNECTIONS_DEFLECT.sub("", text)
-    text = _TRAILING_REDIRECT.sub("", text)
+
+    # ── MECHANICAL: whitespace normalization ──
     text = re.sub(r'\s*\\\s*\n', ' ', text)
     text = re.sub(r'\s*\\\s*$', '', text, flags=re.MULTILINE)
     text = re.sub(r'\n{3,}', '\n\n', text)
