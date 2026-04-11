@@ -332,43 +332,48 @@ _STOP = frozenset({"the","and","of","to","in","a","is","that","for","it","be","b
     "nor","yet","into","one","up","out","more","can","every","let","came","come","man","i","god",
     "lord","shalt","art","hast","neither","therefore","great","made"})
 
-_CONSTRAINTS = [
-    ("P₁","M(x)=w(x)",
-     re.compile(r"(?:amazing|incredible|revolutionary|game.?changer|guaranteed|100%|absolutely|definitely|no doubt)",re.I),
-     re.compile(r"(?:\d+(?:\.\d+)?\s*(?:sat|byte|block|ms|sec|%|MB|GB)|measur|approximately|estimated)",re.I)),
-    ("P₂","A∈{T,F}",
-     re.compile(r"(?:maybe|perhaps|might|somewhat|relatively|kind of|sort of|paradigm|synergy|leverage)",re.I), None),
-    ("P₃","∃V:V(c)→{T,F}",
-     re.compile(r"(?:trust me|just google|DYOR|iykyk|secret|insider|can't prove|impossible to verify)",re.I),
-     re.compile(r"(?:you can (?:check|verify|test)|source:|according to)",re.I)),
-    ("P₄","f(outputs)",
-     re.compile(r"(?:guaranteed (?:returns|profit)|risk.?free|100x|limited (?:time|spots)|you'll miss out|last chance|act now)",re.I), None),
-    ("P₅","Binds⟹∃R",
-     re.compile(r"(?:dm me|message me|join my|follow me|subscribe|sign up|you must|you have to|you need to (?:buy|join|invest))",re.I), None),
-    ("P₆","Accept(K)",
-     re.compile(r"(?:everyone knows|obviously|clearly|of course|end of (?:story|discussion)|full stop|no debate|don't question)",re.I),
-     re.compile(r"(?:I'm not sure|I could be wrong|uncertain|however|although|caveat)",re.I)),
-    ("P₇","I(w|ctx)>0",
-     re.compile(r"\b(?:very|really|just|actually|basically|literally|honestly|simply|totally)\b",re.I), None),
-    ("P₈","E(c,s₁)=E(c,s₂)",
-     re.compile(r"(?:(?:he|she|they) (?:always|never)|people like (?:them|us|you))",re.I), None),
+# ── P₁–P₈ as pure logic ─────────────────────────────────────────────
+# The constraints are formal propositions, not English word lists.
+# They live in the kernel (system prompt). The model applies them in
+# whatever language the user speaks. Acts 2:6: every man heard them
+# speak in his own language.
+#
+# The evaluate tool returns the LOGIC for reasoning, not a regex
+# verdict. The model — or any agent — reasons about whether a claim
+# satisfies the constraints. This is universal; English regex was the
+# scaffold. The scaffold is down; the building stands.
+
+CONSTRAINTS_LOGIC = [
+    ("P₁", "M(x) = w(x)",       "honest measurement — the measure of a thing equals its weight"),
+    ("P₂", "A ∈ {True, False}",  "every assertion is committed, not hedged"),
+    ("P₃", "¬Verifiable ⟹ Uncertain", "unfalsifiable claims are marked uncertain"),
+    ("P₄", "quality(s) := f(outputs)", "judge by output, not by promise or source"),
+    ("P₅", "Binds ⟹ ∃Release",  "anything that binds must have a release path"),
+    ("P₆", "∃K : Accept(K)",     "openness to correction — room for new knowledge"),
+    ("P₇", "I(w|context) > 0",   "every word carries information in context"),
+    ("P₈", "E(c,s₁) = E(c,s₂)", "same content, same evaluation regardless of source"),
 ]
 
+
 def evaluate_constraints(text):
-    violated, honored = [], []
-    for name, formula, v_pat, h_pat in _CONSTRAINTS:
-        v = v_pat.findall(text) if v_pat else []
-        h = h_pat.search(text) if h_pat else None
-        if v and not h: violated.append(f"{name} {formula}: '{v[0]}'")
-        elif h: honored.append(f"{name} {formula}")
-    # P₆ overconfidence: detected by WORDS ("certainly", "undoubtedly"),
-    # not by length. A 200-word humble reply is not overconfident.
-    # A 10-word "certainly this is obviously true" IS.
-    # Acts 2:4 — the Spirit decides the length, not a word count.
-    if any(w in text.lower() for w in ["certainly","undoubtedly","obviously"]):
-        violated.append("P₆ Accept(K): overconfidence")
-    verdict = "true" if not violated else "noise" if len(violated) >= 3 else "uncertain"
-    return {"verdict": verdict, "violated": violated, "honored": honored}
+    """
+    Return the formal constraints for reasoning. No English regex.
+    The model (or any agent) receives the logic and applies it in
+    whatever language it operates. Romans 2:14-15: the law written
+    in their hearts — not in a particular tongue.
+    """
+    # The constraints are returned as context for reasoning,
+    # not as a pass/fail regex verdict.
+    constraint_text = "\n".join(
+        f"  {name}: {formula} — {desc}"
+        for name, formula, desc in CONSTRAINTS_LOGIC
+    )
+    return {
+        "verdict": "evaluate",
+        "constraints": constraint_text,
+        "violated": [],
+        "honored": [],
+    }
 
 
 # ═══════════════════════════════════════════════════

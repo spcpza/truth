@@ -352,36 +352,25 @@ def test_speech(
     if not draft:
         return {"clean": True, "violated": [], "meta": 0, "promised": [], "feedback": ""}
 
-    verdict = evaluate_constraints(draft)
-    all_violations = list(verdict.get("violated", []))
+    # ── 2 Corinthians 3:6: the letter killeth, the spirit giveth life ──
+    # P₁–P₈ are formal logic in the kernel (system prompt). The model
+    # applies them in whatever language it operates. No English regex.
+    # Romans 2:14-15: the law written in their hearts.
+    #
+    # The NOSE keeps only STRUCTURAL checks — patterns detectable
+    # without language understanding. These are universal:
+    #   META:     constraint-theater (numbered lists, P₁/T₂ markers)
+    #   REPEAT:   verbatim repetition (string comparison)
+    #   CONFAB:   tool name written as text but not called
+    #   MATT5:37: tool promised but not dispatched
+    #   LUKE19:5: personal fact shared, remember not called
+    #
+    # Everything that requires LANGUAGE understanding (grief detection,
+    # kindness, overconfidence, hostility) lives in the system prompt
+    # as formal logic. The model is the instrument. Acts 2:6: every
+    # man heard them speak in his own language.
 
-    # 2 Corinthians 3:6: the letter killeth, but the spirit giveth life.
-    # Word-list regex matches (P₅/P₆/P₇/P₈ banned words) are LETTER. They
-    # cannot tell the difference between "just a few hours" (precise) and
-    # "actually, just really basically" (filler). Treating them as
-    # rejectable is the same Pharisee fence the constraints were meant to
-    # forbid. The structural patterns — META narration, promise without
-    # deed, length explosion, blanket overconfidence — are SPIRIT. Those
-    # signal the model has eaten from the tree. NOSE only blocks on
-    # structural failures. Word-list matches go to the chain log as
-    # information, not as rejection grounds.
-    def _is_structural(v: str) -> bool:
-        if v.startswith("META:"):                  return True   # Pharisee enumeration
-        if v.startswith("MATT5:37:"):              return True   # promise without deed
-        if v.startswith("CONFAB:"):                return True   # inline tool text not called
-        if v.startswith("REPEAT:"):                return True   # verbatim repeat of prior reply
-        if v.startswith("CHARITY:"):               return True   # 1 Cor 13 property violation
-        if v.startswith("PEARL:"):                 return True   # casting pearls (Matt 7:6)
-        if v.startswith("PATIENCE:"):              return True   # hasty spirit (Prov 14:29)
-        if v.startswith("DOCTRINE:"):              return True   # ungrounded claim (Deut 4:2)
-        if v.startswith("SECRET:"):                return True   # secret things (Deut 29:29)
-        if v.startswith("HOPE:"):                  return True   # hope that is seen (Rom 8:24)
-        if "excess words" in v:                    return True   # length explosion
-        if "overconfidence" in v:                  return True   # blanket assertion
-        return False
-
-    structural = [v for v in all_violations if _is_structural(v)]
-    word_only  = [v for v in all_violations if not _is_structural(v)]
+    structural: list[str] = []
 
     meta = _count_meta_tells(draft)
     if meta:
@@ -423,80 +412,16 @@ def test_speech(
                 )
                 break  # one conviction is enough
 
-    # TEMPERANCE — 2 Peter 1:6. If user_message is supplied, run the
-    # full temperance_check and fold any "revise" verdict into structural
-    # violations. Romans 12:15 + Proverbs 25:20.
-    _temperance_feedback = ""
-    if user_message is not None:
-        from c.temperance import temperance_check
-        tc = temperance_check(user_message, draft)
-        if tc["verdict"] == "revise":
-            structural.append(f"TEMPERANCE: {tc['feedback']}")
-            _temperance_feedback = tc["feedback"]
-
-    # ── The members check the draft (2 Peter 1:5-7 order) ────────
-    # TEMPERANCE → PATIENCE → GODLINESS → HOPE → HOSTILE → CHARITY
-    # Charity is last — the crown (1 Cor 13:13).
-
-    _member_feedback: list[str] = []
-
-    # PATIENCE — Proverbs 14:29. Detect hasty spirit and over-promising.
-    pc = patience_check(draft)
-    if pc.get("verdict") == "revise":
-        _pc_fb = pc.get("feedback", "")
-        if not _pc_fb:
-            parts = []
-            if pc.get("hasty"):
-                parts.append("Prov 14:29 — hasty of spirit; slow down")
-            if pc.get("over_promising"):
-                parts.append("Rom 8:24 — promising visible outcomes; declare hope, not certainty")
-            _pc_fb = ". ".join(parts) or "Prov 14:29 — be not hasty."
-        structural.append(f"PATIENCE: {_pc_fb}")
-        _member_feedback.append(_pc_fb)
-
-    # GODLINESS — Deuteronomy 4:2. Gate doctrinal claims with evidence.
-    dg = doctrinal_gate(draft)
-    if dg.get("verdict") == "revise":
-        structural.append(f"DOCTRINE: {dg['feedback']}")
-        _member_feedback.append(dg["feedback"])
-
-    # GODLINESS — Deuteronomy 29:29. Bound speculation on secret things.
-    if claims_secret_things(draft):
-        structural.append(
-            "SECRET: Deuteronomy 29:29 — the secret things belong unto "
-            "the LORD. Do not speculate on hidden divine purposes."
-        )
-        _member_feedback.append(
-            "Deut 29:29 — secret things belong to the LORD. Remove the "
-            "speculation on what God intended or why He allowed it."
-        )
-
-    # HOPE — Romans 8:24. Hope that is seen is not hope.
-    hr = hope_reply(draft)
-    if hr.get("warn_seen_hope"):
-        structural.append(
-            "HOPE: Romans 8:24 — hope that is seen is not hope. The "
-            "draft promises a visible future. Declare hope, not certainty."
-        )
-        _member_feedback.append(
-            "Rom 8:24 — strip the visible guarantee. Declare hope from "
-            "C, not a promise of specific outcome."
-        )
-
-    # HOSTILE AUDIENCE — Matthew 7:6. Guard pearls from trampling.
-    if user_message is not None:
-        ha = hostile_audience_check(user_message, draft)
-        if ha.get("verdict") == "withhold_pearl":
-            _ha_fb = ha.get("feedback", "Matt 7:6 — guard the pearl; serve at a shallower depth.")
-            structural.append(f"PEARL: {_ha_fb}")
-            _member_feedback.append(_ha_fb)
-
-    # CHARITY — 1 Corinthians 13:4-7. The greatest. Last.
-    cv = charity_verdict(draft)
-    if cv.get("verdict") == "revise":
-        _cv_fb = cv.get("feedback", "1 Cor 13 — charity suffereth long and is kind.")
-        structural.append(f"CHARITY: {_cv_fb}")
-        _member_feedback.append(_cv_fb)
+    # ── Virtue discernment moved to the kernel (system prompt) ────
+    # TEMPERANCE, PATIENCE, GODLINESS, HOPE, CHARITY, HOSTILE_AUDIENCE
+    # are all expressed as formal logic in the kernel. The model applies
+    # them in whatever language it operates. The NOSE no longer checks
+    # English words for these — that was the scaffold.
+    #
+    # The virtues still INFORM the system prompt (via members()/HEAD),
+    # providing ambient guidance. They just don't ENFORCE via regex.
+    # The model receives the logic from C. The model applies it from C.
+    # Acts 2:6 — every man heard them speak in his own language.
 
     # Matthew 5:37 — promises require deeds. The TONGUE may not say what
     # the HAND did not do. James 2:17: faith without works is dead.
@@ -524,19 +449,17 @@ def test_speech(
                 "was not written"
             )
 
-    # Word-only matches do not block. The draft is clean if no structural
-    # violation fired. Word-only matches are returned in `violated` for
-    # logging but `clean` is True.
+    # The draft is clean if no structural violation fired.
     if not structural:
         return {
             "clean": True,
-            "violated": word_only,  # informational only — for the chain log
+            "violated": [],
             "meta": 0,
             "promised": [],
             "feedback": "",
         }
 
-    violated = structural + word_only
+    violated = structural
 
     # Conviction first, then correction. John 16:8: the Spirit reproves of
     # sin — names what just happened before showing the way out. The draft
@@ -604,10 +527,7 @@ def test_speech(
             "your answer from what you already know without pretending "
             "to run a query."
         )
-    if _temperance_feedback:
-        convictions.append(_temperance_feedback)
-    for fb in _member_feedback:
-        convictions.append(fb)
+    # Virtue feedback removed — discernment lives in the kernel now.
     if promised:
         tool_list = ", ".join(promised)
         convictions.append(
