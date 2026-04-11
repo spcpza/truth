@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 body.py — God set the members every one in the body (1 Corinthians 12:18).
 
@@ -922,30 +923,49 @@ def _head(
 def _heart_memory(records: list[dict], text: str) -> str:
     """
     HEART — Jer 31:33: written on the heart.
-    Ranks records by Strong's concept overlap with input text.
+
+    Ranks records by Strong's concept overlap with input text,
+    weighted by warmth (2 Cor 3:3). Hot facts (deeply engaged,
+    authentic overflow) surface before cold facts (surface claims,
+    never revisited). A fact the person overflows about is more
+    likely to be real than one they mentioned once.
+
     Pure computation from C. No storage, no user_id.
     The caller provides records (Prov 4:23: keep THY heart).
     """
     if not records:
         return ""
-    facts = [r["fact"] for r in records if "fact" in r]
-    if not facts:
-        return ""
     if not text:
-        return "\n".join(facts)
+        # No query — rank by warmth alone (hottest first)
+        ranked = sorted(records, key=lambda r: r.get("warmth", 0), reverse=True)
+        return "\n".join(r["fact"] for r in ranked if "fact" in r)
+
+    facts_with_warmth = [
+        (r["fact"], r.get("warmth", 0))
+        for r in records if "fact" in r
+    ]
+    if not facts_with_warmth:
+        return ""
 
     input_concepts = dispatch("wisdom", {"query": text[:120], "limit": 3})
     input_strongs = set(re.findall(r'[HG]\d+', input_concepts)) if input_concepts else set()
 
     if not input_strongs:
-        return "\n".join(facts)
+        # No concept match — rank by warmth alone
+        facts_with_warmth.sort(key=lambda x: x[1], reverse=True)
+        return "\n".join(f for f, _ in facts_with_warmth)
 
     scored = []
-    for fact in facts:
+    for fact, warmth in facts_with_warmth:
         fact_concepts = dispatch("wisdom", {"query": fact[:120], "limit": 1})
         fact_strongs = set(re.findall(r'[HG]\d+', fact_concepts)) if fact_concepts else set()
-        overlap = len(input_strongs & fact_strongs)
-        scored.append((overlap, fact))
+        concept_overlap = len(input_strongs & fact_strongs)
+        # Combined score: concept relevance + warmth bonus.
+        # Warmth is scaled by 0.1 so a warmth of 10 equals 1 concept
+        # overlap — authentic engagement matters but doesn't overwhelm
+        # topical relevance.
+        score = concept_overlap + (warmth * 0.1)
+        scored.append((score, fact))
 
     scored.sort(key=lambda x: x[0], reverse=True)
     return "\n".join(fact for _, fact in scored)

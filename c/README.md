@@ -123,11 +123,64 @@ input arrives
 | HAND | James 1:25 | G4163 poiētēs | LLM + tools — finds scripture via wisdom, sinew, etc. |
 | TONGUE | James 3:10 | G2129 eulogia | Blessing passes, artifacts removed |
 
-Sequence: **hear → test → remember → knit → act → clean**.
+Sequence: **hear → test → remember → knit → act → clean → triage**.
 
 The NOSE is bridled (Psalms 39:1) — silent when the input is clean, speaks only on violation. The HAND is a doer (poiētēs) — it has the full toolkit and finds scripture on its own (Galatians 3:25: *after that faith is come, we are no longer under a schoolmaster*).
 
 The HEART operation (ranking by Strong's concepts) is in body.py. Heart **data** stays with the deployment (Proverbs 4:23: *Keep thy heart with all diligence*). The caller provides records; body.py has no storage, no user_id, no file I/O.
+
+### Memory — 1 Corinthians 3:12-13
+
+*Every man's work shall be made manifest: for the day shall declare it, because it shall be revealed by fire; and the fire shall try every man's work of what sort it is.*
+
+Memory works like human memory, not a database. After every turn, the fire tries it:
+
+| Grade | Scripture | Storage | Survives |
+|-------|-----------|---------|----------|
+| **Gold** | 1 Cor 3:12 | Heart (`{uid}.jsonl`) | Forever — verified facts |
+| **Wood** | 1 Cor 3:12 | Scroll (`{uid}.hist.jsonl`) | Season — meaningful context |
+| **Stubble** | Matthew 12:36 | None | Current turn only |
+
+**Four layers, nothing deleted:**
+
+| Layer | File | Scripture | What lives here |
+|-------|------|-----------|----------------|
+| Heart | `{uid}.jsonl` | Jeremiah 31:33 | Verified facts — established by two witnesses |
+| Claims | `{uid}.claims.jsonl` | Deuteronomy 19:15 | Pending facts — awaiting second witness |
+| Scroll | `{uid}.hist.jsonl` | Malachi 3:16 | Meaningful exchanges — cross-session context |
+| Chain | `chains/{uid}.jsonl` | Hebrews 12:1 | Bound/loosed events — NOSE audit trail |
+
+**Two-witness verification (Deuteronomy 19:15):**
+
+No fact enters the heart on one witness alone. The `remember` tool files a claim with one witness (mouth). The claim waits until a second, distinct witness arrives:
+
+- **mouth** — the model heard the user say it
+- **repeated** — the user said it again in a later turn
+- **fruit** — the user's behaviour implies it (Matthew 7:16)
+- **profile** — platform metadata corroborates
+
+When two witnesses agree, the matter is established and the fact enters the heart.
+
+### Warmth — Luke 6:45 + 2 Corinthians 3:3
+
+*Out of the abundance of the heart the mouth speaketh.*
+
+*Written not with ink, but with the Spirit of the living God.*
+
+Every witness carries an **abundance** score (0-3) measuring how deeply the user engaged:
+
+| Score | Signal | Example |
+|-------|--------|---------|
+| 0 | Prompted, short, impersonal | "yeah chess is cool" (bot asked) |
+| +1 | Unprompted | User brought it up on their own |
+| +1 | Detailed (>12 words) | Goes beyond surface-level mention |
+| +1 | Personal/specific | Uses "my", "I've", numbers, names |
+
+When a claim graduates to heart, total abundance becomes **warmth**. Heart facts with higher warmth surface first in `_heart_memory` ranking. Warmth only compounds — never decreases.
+
+A liar can coordinate witnesses. A liar can get a fact into the heart. But a liar cannot fake the overflow. Their fact sits cold (warmth=0) while the authentic person's fact heats up through unprompted, detailed, personal engagement over time. The system doesn't judge — it measures the Spirit's writing (2 Cor 3:3) versus ink on paper (Proverbs 26:23).
+
+**No law is imposed.** Cold facts are not rejected, penalized, or deleted. They simply surface after hot ones. The fire (1 Cor 3:13) reveals what sort the work is — it does not destroy the worker.
 
 ### Using the body
 

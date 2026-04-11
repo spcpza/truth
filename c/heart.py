@@ -138,22 +138,27 @@ def _word_set(text: str) -> set[str]:
 
 
 def remember_fact(
-    user_id: int | str, fact: str, memory_dir: pathlib.Path
+    user_id: int | str,
+    fact: str,
+    memory_dir: pathlib.Path,
+    warmth: int = 0,
 ) -> str:
     """
     Ezekiel 36:26: a new heart also will I give you. Replacement, not patch.
 
+    2 Corinthians 3:3: written not with ink, but with the Spirit of the
+    living God; not in tables of stone, but in fleshy tables of the heart.
+    Each fact carries a warmth score — total abundance from its witnesses.
+    Warmth only increases (Luke 6:45: abundance compounds). Cold facts
+    (warmth=0) are technically established but never deeply engaged.
+    Hot facts have been overflowed about — unprompted, detailed, personal.
+
     Two-stage dedupe (Mark 12:32 — there is one God, and there is none other
     but he. One truth, not many copies):
-      1. Literal match — normalized lowercase alphanumeric. Catches the
-         "Today I'm fixing my bitcoin miners..." case where the model
-         copies the user message verbatim, even when words like "bitcoin"
-         aren't in the Strong's concept index.
+      1. Literal match — normalized lowercase alphanumeric.
       2. Jaccard text overlap — if >= 0.6 similarity, treat as same fact
-         and replace. Catches paraphrases like "Frederick is a follower..."
-         vs "Fred is a follower...".
-      3. Strong's concept overlap (the original mechanism) — kept as a
-         fallback for facts that share scriptural concepts but not words.
+         and replace. Catches paraphrases.
+      3. Strong's concept overlap — fallback for facts sharing concepts.
     """
     fact = (fact or "").strip()
     if not fact:
@@ -174,7 +179,12 @@ def remember_fact(
         old_fact = r.get("fact", "")
         # Stage 1: literal normalized match
         if _normalize_for_dedupe(old_fact) == new_norm:
-            records[i] = {"fact": fact, "ts": now}
+            # Warmth only increases — 2 Cor 3:3
+            old_warmth = r.get("warmth", 0)
+            records[i] = {
+                "fact": fact, "ts": now,
+                "warmth": max(old_warmth, old_warmth + warmth),
+            }
             replaced = True
             break
         # Stage 2: high jaccard similarity
@@ -183,7 +193,11 @@ def remember_fact(
             inter = len(new_words & old_words)
             union = len(new_words | old_words)
             if union > 0 and inter / union >= 0.6:
-                records[i] = {"fact": fact, "ts": now}
+                old_warmth = r.get("warmth", 0)
+                records[i] = {
+                    "fact": fact, "ts": now,
+                    "warmth": old_warmth + warmth,
+                }
                 replaced = True
                 break
 
@@ -202,12 +216,16 @@ def remember_fact(
                     set(re.findall(r"[HG]\d+", old_concepts)) if old_concepts else set()
                 )
                 if new_refs_set & old_refs:
-                    records[i] = {"fact": fact, "ts": now}
+                    old_warmth = r.get("warmth", 0)
+                    records[i] = {
+                        "fact": fact, "ts": now,
+                        "warmth": old_warmth + warmth,
+                    }
                     replaced = True
                     break
 
     if not replaced:
-        records.append({"fact": fact, "ts": now})
+        records.append({"fact": fact, "ts": now, "warmth": warmth})
     write_memories(user_id, records, memory_dir)
     return "Jeremiah 31:33."
 

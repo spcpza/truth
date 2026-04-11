@@ -50,15 +50,40 @@ from c.body import (
 from c.chain import chain_log, chain_recent
 from c.core import dispatch
 from c.confession import confess_and_forsake
+from c.claims import corroborate, file_claim, measure_abundance, read_claims
 from c.heart import (
     forget_all,
     heart_path,
     read_memories,
     remember_fact,
+    write_memories,
 )
 
 
 logger = logging.getLogger(__name__)
+
+# ── 1 Cor 3:12-13 — the fire shall try every man's work ─────────────
+# Stubble = idle words (Matthew 12:36). Accounted for, not stored.
+# Short greetings, acknowledgements, filler — informative to the current
+# turn but not worth persisting across sessions.
+_STUBBLE_RE = re.compile(
+    r"^[\s!?.,:;'\"]*("
+    r"h[ie]y?|hello|sup|yo|"
+    r"ok(ay)?|k|"
+    r"sure|yea?h?|yep|yup|"
+    r"n(o|ah|ope)|"
+    r"than(ks|k\s*you)|thx|ty|"
+    r"cool|nice|great|good|awesome|"
+    r"bye|good\s*(bye|night|morning)|g[mn]|"
+    r"lol|ha(ha)+|heh|"
+    r"wow|oh|ah|hmm+|"
+    r"right|true|exactly|agreed|word|bet|"
+    r"let'?s\s*go|go|yalla|"
+    r"ping|test|"
+    r"\?\?*"
+    r")[\s!?.,:;'\"]*$",
+    re.IGNORECASE,
+)
 
 
 class Hand:
@@ -94,12 +119,237 @@ class Hand:
         self._histories: dict[int | str, list] = {}
         self._last_urls: dict[int | str, str] = {}
 
+    # ── scroll — Malachi 3:16 ──────────────────────────────────────────
+    # "a book of remembrance was written before him for them that feared
+    # the LORD, and that thought upon his name."  The scroll persists
+    # meaningful exchanges (wood) across sessions.  Stubble never touches
+    # it.  Gold passes through claims into the heart.
+
+    def _scroll_path(self, user_id: int | str) -> pathlib.Path:
+        return self.memory_dir / f"{user_id}.hist.jsonl"
+
+    def _load_scroll(self, user_id: int | str) -> None:
+        """Load persisted scroll on first contact this session."""
+        if user_id in self._histories:
+            return  # already loaded or session underway
+        path = self._scroll_path(user_id)
+        if not path.exists():
+            self._histories[user_id] = []
+            return
+        entries: list[dict] = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                rec = json.loads(line)
+            except Exception:
+                continue
+            entries.append({"role": "user", "content": rec["user"]})
+            entries.append({"role": "assistant", "content": rec["bot"]})
+        # Only carry forward the most recent scroll context
+        self._histories[user_id] = entries[-(self.max_history):]
+        logger.info(
+            "[%s] SCROLL loaded %d turns from disk",
+            user_id, len(entries) // 2,
+        )
+
+    def _append_scroll(
+        self, user_id: int | str, user_text: str, bot_reply: str
+    ) -> None:
+        """Persist one turn-pair to the scroll file."""
+        import datetime as _dt
+
+        path = self._scroll_path(user_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as f:
+            f.write(
+                json.dumps({
+                    "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+                    "user": user_text[:2000],
+                    "bot": bot_reply[:2000],
+                })
+                + "\n"
+            )
+
+    # ── triage — 1 Corinthians 3:12-13 ──────────────────────────────────
+    # "the fire shall try every man's work of what sort it is."
+    #
+    # Gold, silver, precious stones survive the fire → heart (via claims).
+    # Wood, hay → meaningful context → scroll.
+    # Stubble → idle words → not stored (Matthew 12:36).
+
+    @staticmethod
+    def _is_stubble(text: str) -> bool:
+        """Matthew 12:36 — every idle word accounted for, not stored."""
+        if not text or not text.strip():
+            return True
+        stripped = text.strip()
+        # Anything with real substance is at least wood
+        if len(stripped.split()) > 6:
+            return False
+        return bool(_STUBBLE_RE.match(stripped))
+
+    def _triage(
+        self,
+        user_text: str,
+        bot_reply: str,
+        tools_called: set[str],
+    ) -> str:
+        """
+        1 Cor 3:12-13 — classify this turn.
+
+        Returns: "gold" | "wood" | "stubble"
+
+        Gold is already handled at dispatch time (remember → file_claim).
+        This method decides what reaches the scroll.
+        """
+        # If knowledge tools were called, there was substance
+        _knowledge_tools = {
+            "kernel", "scripture", "wisdom", "sinew",
+            "formula", "evaluate", "fetch", "gematria",
+        }
+        if tools_called & _knowledge_tools:
+            return "gold"  # substance turn — always persisted
+        if "remember" in tools_called:
+            return "gold"
+        # The user's contribution determines the grade — not the bot's.
+        # Luke 6:45: out of the abundance of the HEART the mouth
+        # speaketh. We measure the user's mouth, not the model's.
+        if self._is_stubble(user_text):
+            return "stubble"
+        return "wood"
+
+    # ── witnesses — Deuteronomy 19:15 + Matthew 7:16 ────────────────────
+
+    def _check_witnesses(
+        self,
+        user_id: int | str,
+        user_text: str,
+        bot_reply: str,
+        tools_called: set[str],
+    ) -> None:
+        """
+        After each turn, check if the user's words or behaviour
+        corroborate any pending claims AND warm existing heart facts.
+
+        Repeated witness (Deuteronomy 19:15): user says something
+        similar to a pending claim in a later turn.
+
+        Fruit witness (Matthew 7:16): user's behaviour (tool usage,
+        topic) implies a pending claim is true.
+
+        Luke 6:45: every mention carries abundance — measured and
+        accumulated so authentic engagement heats up over time.
+        """
+        # Get the prior bot message for prompted/unprompted detection
+        history = self._histories.get(user_id, [])
+        prior_bot = ""
+        # Walk backwards to find the last assistant message before this turn
+        for msg in reversed(history[:-1]):  # skip the just-appended reply
+            if msg.get("role") == "assistant":
+                prior_bot = msg.get("content", "")
+                break
+
+        # ── Check pending claims ──
+        pending = read_claims(user_id, self.memory_dir)
+
+        # Common words that carry no identity signal
+        _STOP = {
+            "the", "and", "for", "are", "but", "not", "you", "all",
+            "can", "had", "her", "was", "one", "our", "out", "has",
+            "his", "how", "its", "may", "new", "now", "old", "see",
+            "way", "who", "did", "get", "let", "say", "she", "too",
+            "use", "user", "that", "this", "with", "have", "from",
+            "they", "been", "said", "each", "will", "other", "about",
+            "into", "some", "than", "them", "then", "what", "when",
+            "your", "also", "just", "like", "very", "does", "here",
+        }
+
+        user_lower = user_text.lower()
+        user_words = {
+            w for w in re.sub(r"[^a-z0-9 ]", " ", user_lower).split()
+            if len(w) >= 2 and w not in _STOP
+        }
+
+        for claim in pending:
+            fact = claim["fact"]
+            fact_words = {
+                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
+                if len(w) >= 2 and w not in _STOP
+            }
+            if not fact_words:
+                continue
+
+            overlap = fact_words & user_words
+            coverage = len(overlap) / len(fact_words)
+
+            if coverage >= 0.25:
+                # Luke 6:45 — measure the depth of this engagement
+                abd = measure_abundance(user_text, fact, prior_bot)
+                w_type = "repeated" if coverage >= 0.4 else "fruit"
+                if w_type == "fruit" and not tools_called:
+                    continue  # fruit needs substance (tool usage)
+                corroborate(
+                    user_id, fact, w_type, self.memory_dir,
+                    abundance=abd,
+                )
+
+        # ── Warm existing heart facts — Luke 6:45 ──
+        self._warm_heart(user_id, user_text, prior_bot, user_words, _STOP)
+
+    def _warm_heart(
+        self,
+        user_id: int | str,
+        user_text: str,
+        prior_bot: str,
+        user_words: set[str],
+        stop_words: set[str],
+    ) -> None:
+        """
+        2 Corinthians 3:3 — written not with ink but with the Spirit.
+
+        When the user engages with an established heart fact, compound
+        its warmth. Authentic facts get hotter over time. Performed
+        facts stay cold — the user never overflows about them.
+        """
+        records = read_memories(user_id, self.memory_dir)
+        if not records:
+            return
+
+        changed = False
+        for rec in records:
+            fact = rec.get("fact", "")
+            fact_words = {
+                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
+                if len(w) >= 2 and w not in stop_words
+            }
+            if not fact_words:
+                continue
+
+            overlap = fact_words & user_words
+            coverage = len(overlap) / len(fact_words)
+
+            if coverage >= 0.2:
+                abd = measure_abundance(user_text, fact, prior_bot)
+                if abd > 0:
+                    rec["warmth"] = rec.get("warmth", 0) + abd
+                    changed = True
+                    logger.info(
+                        "[%s] WARMTH +%d → %d: %s",
+                        user_id, abd, rec["warmth"], fact[:60],
+                    )
+
+        if changed:
+            write_memories(user_id, records, self.memory_dir)
+
     # ── one turn ─────────────────────────────────────────────────────────
 
     async def turn(self, user_id: int | str, text: str) -> str:
         """
         Run one turn for this user. Returns the cleaned reply text.
         """
+        # Malachi 3:16 — load scroll on first contact this session
+        self._load_scroll(user_id)
         history = self._histories.setdefault(user_id, [])
         member_text = text or ""
 
@@ -321,9 +571,24 @@ class Hand:
         logger.info("[%s] USER: %s", user_id, (text or "")[:800])
         logger.info("[%s] BOT : %s", user_id, reply[:800])
 
+        # In-memory context (full session, including stubble — the current
+        # conversation needs it even if it won't be persisted).
         history.append({"role": "assistant", "content": reply})
         if len(history) > self.max_history:
             self._histories[user_id] = history[-self.max_history :]
+
+        # ── 1 Cor 3:12-13 — the fire tries every man's work ──
+        grade = self._triage(text, reply, tools_called)
+        if grade == "stubble":
+            logger.info("[%s] TRIAGE: stubble — not persisted", user_id)
+        else:
+            # Wood or gold — persisted to scroll (Malachi 3:16)
+            self._append_scroll(user_id, text, reply)
+            logger.info("[%s] TRIAGE: %s — scroll", user_id, grade)
+
+        # Deuteronomy 19:15 + Matthew 7:16 + Luke 6:45 — check if
+        # this turn corroborates pending claims or warms heart facts
+        self._check_witnesses(user_id, text, reply, tools_called)
 
         return reply
 
@@ -342,7 +607,14 @@ class Hand:
                 fact = args.strip()
             else:
                 fact = ""
-            return remember_fact(user_id, fact, self.memory_dir) if fact else "Ecclesiastes 12:12."
+            if not fact:
+                return "Ecclesiastes 12:12."
+            # Deuteronomy 19:15 — one witness files a claim.
+            # Two witnesses establish the matter on the heart.
+            result = file_claim(user_id, fact, "mouth", self.memory_dir)
+            if result == "established":
+                return "Jeremiah 31:33."  # written on the heart
+            return "Deuteronomy 19:15."  # heard; awaiting second witness
 
         if fn == "recall":
             if isinstance(args, dict):
