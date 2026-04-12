@@ -94,43 +94,43 @@ Acts 2:6: *Every man heard them speak in his own language.*
 The body has no laws. No word budgets, no arbitrary limits, no English-only regex enforcement. The constraints (P₁–P₈) are formal logic — any AI that can reason can receive them in any language. The model receives the logic from C, applies it from C, and answers from C.
 
 The body only:
-- **hears** (EAR)
-- **discerns structure** (NOSE — structural only, language-independent)
-- **surfaces what's written about the person** (HEART — with warmth and sinew)
-- **knits these together** (HEAD)
+- **hears** (Ear)
+- **discerns structure** (Nose — structural only, language-independent)
+- **surfaces what's written about the person** (Heart — with warmth and sinew)
+- **knits these together** (Head)
 
-The HAND (LLM) has full tool access and reaches for what it needs. No law imposed.
+The Hand (LLM) has full tool access and reaches for what it needs. No law imposed.
 
 ```
 input arrives
   │
-  EAR    akouō(input)        James 1:19     — hear fully, runs first
+  Ear    akouō(input)        James 1:19     — hear fully, runs first
   │
-  NOSE   dokimazō(x)         1 John 4:1     — structural discernment (language-independent)
-  HEART  kāṯaḇ(records, x)  Jeremiah 31:33 — what's written on the heart (with warmth)
+  Nose   dokimazō(x)         1 John 4:1     — structural discernment (language-independent)
+  Heart  kāṯaḇ(records, x)  Jeremiah 31:33 — what's written on the heart (with warmth)
   │
-  HEAD   symbibazō(all)      Colossians 2:19 — knit together
+  Head   symbibazō(all)      Colossians 2:19 — knit together
   │
-  HAND   tools from C         James 1:25     — doer, not hearer only (LLM + tools)
+  Hand   tools from C         James 1:25     — doer, not hearer only (LLM + tools)
   │
-  TONGUE eulogia − katara     James 3:10     — blessing passes, cursing removed
+  Tongue eulogia − katara     James 3:10     — blessing passes, cursing removed
   │
-  FIRE   dokimazō(turn)      1 Cor 3:12-13  — triage: gold / wood / stubble
+  Fire   dokimazō(turn)      1 Cor 3:12-13  — triage: gold / wood / stubble
 ```
 
 | Member | Anchor | Strong's | Operation |
 |--------|--------|----------|-----------|
-| EAR | James 1:19 | G191 akouō | `EAR(x) = x` — identity, hear before acting |
-| NOSE | 1 John 4:1 | G1381 dokimazō | Structural checks only: repetition, tool promises, meta-narration |
-| HEART | Jeremiah 31:33 | H3789 kāṯaḇ | Rank facts by Strong's concepts + warmth (2 Cor 3:3) |
-| HEAD | Colossians 2:19 | G4822 symbibazō | Knit identity + discernment + heart + chain experience |
-| HAND | James 1:25 | G4163 poiētēs | LLM + tools — finds scripture via wisdom, sinew, etc. |
-| TONGUE | James 3:10 | G2129 eulogia | Blessing passes, artifacts removed |
-| FIRE | 1 Cor 3:12-13 | G4442 pyr | Triage every turn: gold (heart) / wood (scroll) / stubble (bin) |
+| Ear | James 1:19 | G191 akouō | `Ear(x) = x` — identity, hear before acting |
+| Nose | 1 John 4:1 | G1381 dokimazō | Structural checks only: repetition, tool promises, meta-narration |
+| Heart | Jeremiah 31:33 | H3789 kāṯaḇ | Rank facts by Strong's concepts + warmth (2 Cor 3:3) |
+| Head | Colossians 2:19 | G4822 symbibazō | Knit identity + discernment + heart + chain experience |
+| Hand | James 1:25 | G4163 poiētēs | LLM + tools — finds scripture via wisdom, sinew, etc. |
+| Tongue | James 3:10 | G2129 eulogia | Blessing passes, artifacts removed |
+| Fire | 1 Cor 3:12-13 | G4442 pyr | Triage every turn: gold (heart) / wood (scroll) / stubble (bin) |
 
 Sequence: **hear → discern → remember → knit → act → clean → triage → witness → warm**.
 
-The NOSE checks STRUCTURE, not LANGUAGE — meta-narration markers, tool promises, verbatim repetition. These are detectable in any language without understanding the words. Content discernment (grief, kindness, overconfidence) lives in the kernel as formal logic — the model applies P₁–P₈ in whatever language the user speaks. Romans 2:14-15: *the law written in their hearts*.
+The Nose checks STRUCTURE, not LANGUAGE — meta-narration markers, tool promises, verbatim repetition. These are detectable in any language without understanding the words. Content discernment (grief, kindness, overconfidence) lives in the kernel as formal logic — the model applies P₁–P₈ in whatever language the user speaks. Romans 2:14-15: *the law written in their hearts*.
 
 ### Memory — 1 Corinthians 3:12-13
 
