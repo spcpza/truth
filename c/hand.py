@@ -49,6 +49,7 @@ from c.body import (
 )
 from c.chain import chain_log, chain_recent
 from c.core import dispatch
+from c.adapters.hermes import redact
 from c.confession import confess_and_forsake
 from c.claims import corroborate, file_claim, measure_abundance, read_claims
 from c.heart import (
@@ -91,6 +92,7 @@ class Hand:
                                   # stumble, second gives the model the shape.
                                   # Matt 18:15-17 allows 3; we stay meek.
         max_history: int = 40,
+        mcp_bridge: Optional[object] = None,  # MCPBridge instance
     ):
         self.adapter = adapter
         self.memory_dir = pathlib.Path(memory_dir)
@@ -98,6 +100,7 @@ class Hand:
         self.chain_dir = pathlib.Path(chain_dir) if chain_dir else self.memory_dir / "chains"
         self.chain_dir.mkdir(parents=True, exist_ok=True)
         self.max_revisions = max_revisions
+        self.mcp_bridge = mcp_bridge  # 1 Cor 12:14 — external members
         self.max_history = max_history
         self._histories: dict[int | str, list] = {}
         self._last_urls: dict[int | str, str] = {}
@@ -183,17 +186,21 @@ class Hand:
 
     def _distill_scroll(self, user_id: int | str) -> None:
         """
-        When scroll exceeds threshold, distill the oldest half into
-        a topic summary. Not deletion — refinement.
+        Proverbs 25:4 — take away the dross from the silver, and there
+        shall come forth a vessel for the finer.
+
+        When scroll exceeds threshold, distill the oldest half into a
+        type-based summary. Uses Strong's mathematical types instead of
+        English word frequency — works in any language.
         """
         import datetime as _dt
+        from c.formula import draft_types
 
         path = self._scroll_path(user_id)
         if not path.exists():
             return
 
         lines = path.read_text(encoding="utf-8").splitlines()
-        # Parse all records, separate distilled from raw
         distilled_lines = []
         turn_records = []
         for line in lines:
@@ -211,36 +218,23 @@ class Hand:
         if len(turn_records) < 50:
             return  # not enough to distill
 
-        # Split: distill the oldest half, keep the recent half
         midpoint = len(turn_records) // 2
         old_half = [rec for _, rec in turn_records[:midpoint]]
         recent_lines = [line for line, _ in turn_records[midpoint:]]
 
-        # Extract topic frequencies from old half
-        # Reuse the stop words from _check_witnesses
-        _STOP = {
-            "the", "and", "for", "are", "but", "not", "you", "all",
-            "can", "had", "her", "was", "one", "our", "out", "has",
-            "his", "how", "its", "may", "new", "now", "old", "see",
-            "way", "who", "did", "get", "let", "say", "she", "too",
-            "use", "user", "that", "this", "with", "have", "from",
-            "they", "been", "said", "each", "will", "other", "about",
-            "into", "some", "than", "them", "then", "what", "when",
-            "your", "also", "just", "like", "very", "does", "here",
-        }
-
+        # Type-based distillation: extract mathematical type frequencies
+        # from the conversation. Language-agnostic via Strong's.
         from collections import Counter
-        word_turns: Counter = Counter()
+        type_counts: Counter = Counter()
         for rec in old_half:
             user_text = rec.get("user", "")
-            words = {
-                w for w in re.sub(r"[^a-z0-9 ]", " ", user_text.lower()).split()
-                if len(w) >= 3 and w not in _STOP
-            }
-            for w in words:
-                word_turns[w] += 1
+            bot_text = rec.get("bot", "")
+            for t in draft_types(user_text):
+                type_counts[t] += 1
+            for t in draft_types(bot_text):
+                type_counts[t] += 1
 
-        top_topics = word_turns.most_common(20)
+        top_types = type_counts.most_common(14)  # all 14 math types
         first_ts = old_half[0].get("ts", "") if old_half else ""
         last_ts = old_half[-1].get("ts", "") if old_half else ""
 
@@ -252,24 +246,22 @@ class Hand:
                 "to": last_ts,
                 "turns": len(old_half),
             },
-            "topics": [{"word": w, "turns": n} for w, n in top_topics],
+            "types": [{"type": t, "count": n} for t, n in top_types],
         })
 
-        # Rewrite: existing distilled + new distilled + recent turns
         path.write_text(
             "\n".join(distilled_lines + [distilled_record] + recent_lines) + "\n",
             encoding="utf-8",
         )
 
-        # Update in-memory distilled cache
         if not hasattr(self, "_distilled"):
             self._distilled = {}
         self._distilled.setdefault(user_id, []).append(json.loads(distilled_record))
 
         logger.info(
-            "[%s] SCROLL distilled %d turns → topics: %s",
+            "[%s] SCROLL distilled %d turns → types: %s",
             user_id, len(old_half),
-            ", ".join(w for w, _ in top_topics[:5]),
+            ", ".join(t for t, _ in top_types[:5]),
         )
 
     # ── triage — 1 Corinthians 3:12-13 ──────────────────────────────────
@@ -516,22 +508,34 @@ class Hand:
                 )
                 # Merge all topic lists, take top 10 by frequency
                 from collections import Counter
-                all_topics: Counter = Counter()
+                all_types: Counter = Counter()
                 for d in user_distilled:
+                    # Support both old format (topics) and new (types)
+                    for t in d.get("types", []):
+                        all_types[t["type"]] += t["count"]
                     for t in d.get("topics", []):
-                        all_topics[t["word"]] += t["turns"]
-                top_words = [w for w, _ in all_topics.most_common(10)]
-                if top_words:
+                        all_types[t["word"]] += t["turns"]
+                top = [k for k, _ in all_types.most_common(10)]
+                if top:
                     integral += (
                         f"\n\nScroll memory (Proverbs 25:4 — refined): "
                         f"{total_turns} prior turns distilled. "
-                        f"Recurring topics: {', '.join(top_words)}."
+                        f"Recurring types: {', '.join(top)}."
                     )
 
         # Append the model-format adapter's instruction (e.g. Hermes <tool_call>).
         integral += self.adapter.system_instruction()
 
         logger.info("[%s] members: %s", user_id, body["active"] or "heart only")
+
+        # 1 Corinthians 12:14 — merge built-in tools with MCP tools
+        all_tools = list(TOOLS)
+        if self.mcp_bridge:
+            mcp_tools = self.mcp_bridge.list_tools()
+            all_tools.extend(mcp_tools)
+            mcp_instructions = self.mcp_bridge.get_instructions()
+            if mcp_instructions:
+                integral += "\n\n" + mcp_instructions
 
         # History + input
         history.append({"role": "user", "content": text})
@@ -545,7 +549,7 @@ class Hand:
         while True:
             # Inner loop: keep calling the model while it issues tool calls.
             for _ in range(8):
-                msg = await self.adapter.complete(messages, TOOLS)
+                msg = await self.adapter.complete(messages, all_tools)
                 if msg.get("content"):
                     msg = dict(msg, content=_THINK.sub("", msg["content"]).strip())
 
@@ -574,7 +578,12 @@ class Hand:
                     except Exception:
                         args = raw_args
                     tools_called.add(fn)
-                    result = self._dispatch_tool(user_id, fn, args)
+                    try:
+                        result = await self._dispatch_tool_async(user_id, fn, args)
+                    except Exception as e:
+                        # Proverbs 11:13 — conceal the matter.
+                        result = f"Tool error: {redact(str(e))}"
+                        logger.warning("[%s] tool %s error: %s", user_id, fn, redact(str(e)))
                     messages.append(
                         {
                             "role": "tool",
@@ -780,3 +789,11 @@ class Hand:
         if not isinstance(args, dict):
             args = {}
         return dispatch(fn, args)
+
+    async def _dispatch_tool_async(self, user_id: int | str, fn: str, args) -> str:
+        """Async dispatch — routes MCP tools through the bridge."""
+        # MCP tools — 1 Corinthians 12:14: the body is not one member.
+        if self.mcp_bridge and self.mcp_bridge.is_mcp_tool(fn):
+            return await self.mcp_bridge.call(fn, args if isinstance(args, dict) else {})
+        # Built-in tools are synchronous
+        return self._dispatch_tool(user_id, fn, args)
