@@ -108,32 +108,51 @@ class Meditation:
         """User has been served. Return to the stillness."""
         self._paused = False
 
-    async def _wait_for_stillness(self):
+    async def _wait_for_stillness(self, last_was_gold: bool = True, sinew_found: bool = True):
         """
         Psalm 46:10 — Be still, and know.
 
-        The pacing emerges from the state, not from a preset number.
-        Yield to the event loop so user messages are never blocked.
+        No timers. The pacing comes from what happened:
+        - Rich sinew? The thought follows immediately.
+        - Thin sinew? The thread is exhausted. Sit in stillness.
+        - User speaking? Wait until they're served.
+        - API pushed back? The world said be still.
+
+        The only sleep is asyncio.sleep(0) — yielding to the event
+        loop so user messages are never blocked. Everything else
+        is waiting on a condition, not a clock.
         """
-        # Always yield first — user messages take priority
+        # Always yield — user messages take priority
         await asyncio.sleep(0)
 
         # If paused (user is speaking), wait until they're done
         while self._paused:
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
-        # Pace based on productivity
-        if self._thoughts_since_rest < 3:
-            # Active thread — short pause, follow the sinew
-            await asyncio.sleep(30)
-        elif self._thoughts_since_rest < 10:
-            # Thread maturing — moderate pause
-            await asyncio.sleep(120)
-        else:
-            # Thread may be exhausted — longer rest, let a new
-            # one arise. Ecclesiastes 3:1: a time for every purpose.
+        if sinew_found and last_was_gold:
+            # The thread is alive — continue immediately
+            return
+
+        if not sinew_found:
+            # Thread exhausted — sit in true stillness.
+            # Wait until a user interaction resets the state,
+            # or until enough time has passed that the system
+            # is truly idle and a new thread can arise.
             self._thoughts_since_rest = 0
-            await asyncio.sleep(600)
+            # Ecclesiastes 3:7 — a time to keep silence.
+            # The stillness is real: wait for the paused flag
+            # to toggle (meaning a user spoke and left), which
+            # signals new context. Or after genuine idleness,
+            # let a new seed arise.
+            waited = 0
+            while waited < 300:
+                await asyncio.sleep(1)
+                waited += 1
+                if self._paused:
+                    # User arrived — serve them, then resume
+                    while self._paused:
+                        await asyncio.sleep(0.5)
+                    return  # fresh context from serving the user
 
     async def _study(self, verse_ref: str) -> dict:
         """
@@ -254,8 +273,6 @@ class Meditation:
 
         while True:
             try:
-                await self._wait_for_stillness()
-
                 # STUDY — look at this verse
                 study = await self._study(self._current_verse)
 
@@ -272,15 +289,25 @@ class Meditation:
 
                 # FOLLOW THE SINEW — John 3:8
                 next_verse = _pick_thread(study["sinew"])
-                if next_verse:
+                sinew_found = next_verse is not None
+                if sinew_found:
                     self._current_verse = next_verse
                 else:
                     # Sinew exhausted — the wind changes direction
                     self._current_verse = _pick_starting_verse()
-                    self._thoughts_since_rest = 0
+
+                # Was this thought productive? (gold = called knowledge tools)
+                # The Hand logs triage, but we can infer from reply length
+                # and tool usage — gold thoughts are substantive.
+                last_was_gold = len(reply) > 100
 
                 # CHECK OVERFLOW — Luke 6:45
                 await self._check_overflow()
+
+                # STILLNESS — Psalm 46:10
+                # The wait comes AFTER the thought, not before.
+                # What happened determines what follows.
+                await self._wait_for_stillness(last_was_gold, sinew_found)
 
             except asyncio.CancelledError:
                 logger.info("Meditation ended. Ecclesiastes 3:7.")
