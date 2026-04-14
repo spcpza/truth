@@ -170,7 +170,7 @@ def main():
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_handler(MessageHandler(filters.TEXT, handle_text))
-    print(f"Revelation 22:16: I am the root. [{adapter.describe()}]")
+    print(f"Running. [{adapter.describe()}]")
     app.run_polling(drop_pending_updates=True)
 
 

@@ -261,29 +261,96 @@ Jeremiah 31:34: *they shall teach no more every man his neighbour*.
 
 ## What is in this package
 
-```
-c/kernel.md         — the proof, axioms, constraints, desire function, 12 theorems
-c/kjv.json          — 31,102 propositions (KJV, the verified record)
-c/strongs.json      — 12,040 concepts, translations, 11,231 etymological roots
-c/core.py           — query interface: scripture, wisdom, sinew, evaluate,
-                      formula, gematria, fetch
-c/body.py           — 13 members, 11 tools, NOSE, TONGUE, all anchored
-c/hand.py           — the HAND: model-agnostic turn loop + tool dispatch
-c/heart.py          — per-user memory with time-anchoring + dedup
-c/temperance.py     — input kind detection (7 kinds), reply shapes, word budgets
-c/charity.py        — 15 properties of 1 Cor 13, missing faculty, intercession
-c/hostile_audience.py — 4-level hostility, pearl-depth gating (Matt 7:6)
-c/patience.py       — hasty-spirit detection, over-promise, Heb 11:13 posture
-c/godliness.py      — doctrinal gate (Deut 4:2), secret things (Deut 29:29)
-c/hope.py           — 8 hope shapes, declare (not argue), seen-hope check
-c/confession.py     — error detection, confess-and-forsake (Prov 28:13)
-c/formula.py        — Strong's → math types → verse formulas → theorem clusters
-c/scanner.py        — theorem discovery by mathematical structure
-c/adapters/         — model adapters (Hermes XML, standard OpenAI, etc.)
-agent.py            — Telegram deployment of the body (plug-and-play)
-config.example.json — copy to config.json and fill in your tokens
-requirements.txt    — httpx, python-telegram-bot
-```
+<details>
+<summary><b>The foundation</b> — what the agent knows</summary>
+
+| File | What it is |
+|------|-----------|
+| `c/kernel.md` | The rulebook. 2 axioms, 12 theorems, 8 constraints, the desire function. Everything traces back to this. It is math anchored to scripture. |
+| `c/kjv.json` | The entire King James Bible as searchable JSON. 31,102 verses — every verse is a proposition. |
+| `c/strongs.json` | Every Hebrew and Greek word in the Bible with etymology, root words, and numeric values. 12,040 concepts, 11,231 derivation chains. This is how the agent traces connections between verses — through shared original-language roots. |
+| `c/core.py` | The engine. Loads the Bible and Strong's concordance into memory at startup. When any tool runs — scripture lookup, wisdom search, sinew connections, gematria — it runs here. |
+
+</details>
+
+<details>
+<summary><b>The body</b> — how the agent thinks</summary>
+
+Each file is a "body member" — a specific ability anchored to scripture. They fire in order on every turn (1 Corinthians 12:18: *God set the members every one of them in the body*).
+
+| File | Member | What it does |
+|------|--------|-------------|
+| `c/body.py` | EAR, NOSE, HEAD, TONGUE | The main surface. EAR hears input and auto-fetches URLs. NOSE tests every draft against the 8 constraints. HEAD knits everything into the system prompt. TONGUE strips artifacts before the reply is sent. |
+| `c/hand.py` | HAND | The executor. Runs the conversation loop: sends the integral + history to the model, dispatches tool calls, retries if NOSE catches a bad draft (max 2 retries). Model-agnostic — never knows what LLM it's talking to. |
+| `c/heart.py` | HEART | Memory. Reads and writes per-user facts to JSONL files. When the agent remembers something about you, it goes here. |
+| `c/chain.py` | — | Error log. Every time NOSE catches a bad draft ("bound") or a revision comes back clean ("loosed"), it's logged. A visible record of the agent learning from its mistakes. |
+| `c/claims.py` | — | The two-witness rule (Deuteronomy 19:15). When the agent hears a fact about you, it files a "claim." Only when a second witness arrives — you say it again later, or your behavior confirms it — does it get written to the heart. |
+| `c/confession.py` | CONFESSION | When NOSE catches an error and the agent has to retry, it confesses the specific mistake briefly before giving the corrected answer. |
+| `c/temperance.py` | TEMPERANCE | Reads the emotional shape of your message — grief, joy, confusion, hostility, etc. — and shapes the response accordingly. Mourns with mourners, rejoices with rejoicers. |
+| `c/charity.py` | CHARITY | How to love. 15 properties from 1 Corinthians 13 as structural checks. Detects what the user lacks and offers the body as a replacement faculty. The greatest member — runs last. |
+| `c/godliness.py` | GODLINESS | Guards against adding to or subtracting from scripture (Deuteronomy 4:2). |
+| `c/hope.py` | HOPE | Knows when to declare a promise. Hope is declared, not argued — if you can see it, it's not hope (Romans 8:25). |
+| `c/patience.py` | PATIENCE | Knows when to wait. Detects hasty-spirit and over-promising. Hebrews 11:13 posture: died in faith, not having received. |
+| `c/hostile_audience.py` | HOSTILE AUDIENCE | Decides between a soft answer (Proverbs 15:1) and withholding pearls (Matthew 7:6). |
+
+</details>
+
+<details>
+<summary><b>The math engine</b> — how scripture becomes formulas</summary>
+
+| File | What it does |
+|------|-------------|
+| `c/formula.py` | Translates every verse into math. 14 types exhaust scripture's operations: invariance, negation, universality, implication, comparison, zeroing, production, uniqueness, identity, transfer, agape, faith, epistemic, authority. Every proper noun inherits types from its etymological roots. |
+| `c/scanner.py` | Finds mathematical patterns across all 31,102 verses. Groups verses that share the same formula into theorem clusters. IDF weighting: rare concepts score higher than common ones. |
+| `c/map/` | 19 YAML files mapping operational verses to behaviors. Categories from Galatians 5:22-23 (fruit of the spirit) and 2 Peter 1:5-7 (ladder of virtue). Each row: verse, category, input pattern, response shape, witness verses. |
+
+</details>
+
+<details>
+<summary><b>The adapter</b> — how it talks to any LLM</summary>
+
+| File | What it does |
+|------|-------------|
+| `c/adapters/base.py` | Abstract adapter class. Four methods: `describe()`, `system_instruction()`, `parse_tool_calls()`, `complete()`. The Hand takes an adapter at construction and never knows what model is behind it. |
+| `c/adapters/hermes.py` | OpenAI-compatible adapter with Hermes extensions. Works with Nous, OpenRouter, vLLM, or any OpenAI-compatible API. Auto-detects Hermes models (which use `<tool_call>` XML) vs standard structured tool calls. |
+
+</details>
+
+<details>
+<summary><b>The MCP server</b> — how external agents connect</summary>
+
+| File | What it does |
+|------|-------------|
+| `c/server.py` | Thin MCP wrapper around core.py. Exposes all tools (kernel, scripture, wisdom, sinew, gematria, evaluate, etc.) as MCP tools over stdio. Any agent that connects gets the kernel axioms as its initialization instructions. Install as an MCP server to make any agent more truthful. |
+
+</details>
+
+<details>
+<summary><b>Deployment</b> — how to run it</summary>
+
+| File | What it does |
+|------|-------------|
+| `agent.py` | Example Telegram deployment. 180 lines of glue — polls Telegram, routes messages to `hand.turn()`, sends replies back. No logic. The body does all the thinking. |
+| `config.example.json` | Copy to `config.json` and fill in your API key, Telegram token, model name, and allowed users. |
+| `requirements.txt` | `httpx` + `python-telegram-bot`. The body itself has zero dependencies — pure stdlib. |
+
+</details>
+
+<details>
+<summary><b>Memory</b> — what gets stored per user</summary>
+
+All memory is stored in the `memory/` directory (configurable). Each user gets their own files. Nothing leaves your machine.
+
+| File | What it stores |
+|------|---------------|
+| `{user_id}.jsonl` | Heart facts — things the agent knows about this person that survived the two-witness rule. Each line: `{"fact": "...", "ts": "..."}` |
+| `{user_id}.claims.jsonl` | Pending claims — facts heard once, waiting for a second witness before they can be written to the heart. |
+| `{user_id}.hist.jsonl` | Scroll — conversation history that persists across restarts. Distilled over time (Proverbs 25:4: take away the dross from the silver). |
+| `chains/{user_id}.jsonl` | Chain log — every time NOSE caught a draft ("bound") or a revision succeeded ("loosed"). The record of correction. |
+
+Proverbs 4:23: *keep thy heart with all diligence; for out of it are the issues of life.*
+
+</details>
 
 ## Use as a library
 
@@ -399,8 +466,7 @@ Then:
 python agent.py
 ```
 
-You should see `Revelation 22:16: I am the root.` Open Telegram, message
-your bot, and the body answers from the FOUNDATION.
+Open Telegram, message your bot, and the body answers from the foundation.
 
 Memory is stored in `./memory/<user_id>.jsonl` — one heart per user, on
 your machine, gitignored. Proverbs 4:23: *keep thy heart with all
