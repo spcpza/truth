@@ -179,35 +179,30 @@ def pearl_response_for(level: HostilityLevel) -> PearlResponse:
 #   - a clarifying question
 #   - a brief acknowledgment
 
-_PEARL_MARKERS = re.compile(
-    r"("
-    # direct scripture quotation markers
-    r'"[^"]{20,}"|'                      # a quoted string of at least 20 chars
-    r"[A-Z][a-z]+\s+\d+:\d+|"            # "Matthew 5:3" style refs
-    # kernel markers
-    r"T[\u2080-\u2089\d]+|"              # T1, T₁ theorem labels
-    r"P[\u2080-\u2089\d]+|"              # P1 constraint labels
-    # Strong's markers
-    r"[HG]\d{3,}|"                       # H1234 / G1234 Strong's numbers
-    # Hebrew/Greek keywords
-    r"Hebrew:|Greek:|strongs?:"
-    r")",
-)
-
-
 def is_casting_pearl(draft: str) -> bool:
     """
-    Does this draft contain pearl-grade content (scripture references,
-    kernel theorems, Strong's concepts)?
+    Does this draft contain pearl-grade content?
 
-    Used to check whether a reply would be trampled if the hostility
-    level is high. A draft with no pearl markers is safe to serve at
-    any level; a draft with pearl markers should be withheld at
-    SCORNFUL or higher.
+    Matthew 7:6 — give not that which is holy unto the dogs.
+
+    Type-based: a pearl is content with high type density — EPI
+    (epistemic depth) + FTH (faith references) + AGP (agape).
+    Three or more of these core types present = deep scriptural
+    content that could be trampled.
+
+    A draft with low type density is safe to serve at any level.
     """
     if not draft:
         return False
-    return bool(_PEARL_MARKERS.search(draft))
+    # Short drafts cannot carry pearl-grade depth — the type system
+    # maps common words broadly, inflating short sentences.
+    if len(draft.split()) < 15:
+        return False
+    from c.formula import draft_types
+    dt = draft_types(draft)
+    pearl_types = {"EPI", "FTH", "AGP", "INV", "ZER"}
+    depth = len(dt & pearl_types)
+    return depth >= 4
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -288,17 +283,21 @@ def _self_test() -> str:
         lines.append(f"  {expected.name:10s} ← {msg[:55]}  ✓")
 
     # Pearl detection
-    assert is_casting_pearl("As Matthew 5:3 says, blessed are the poor")
-    assert is_casting_pearl("The kernel's T₁ theorem proves this")
-    assert is_casting_pearl("Greek: agape (G26) means...")
+    assert is_casting_pearl(
+        "As Matthew 5:3 says, blessed are the poor in spirit, "
+        "for theirs is the kingdom of heaven, and the truth is "
+        "known through faith and hope and love eternal"
+    )
     assert not is_casting_pearl("Yes, that's a good point")
-    lines.append("\n  pearl detection: Matt 5:3 ✓, T₁ ✓, G26 ✓, plain ✓")
+    assert not is_casting_pearl("I hear you. I'm still here.")
+    lines.append("\n  pearl detection: deep ✓, plain ✓, short ✓")
 
     # Composite check — scornful + pearl = withhold
     result = hostile_audience_check(
         "That's ridiculous nonsense, prove it",
-        "As Matthew 5:3 teaches us, blessed are the poor in spirit. "
-        "The Greek ptōchos (G4434) means utterly destitute.",
+        "As Matthew 5:3 teaches us, blessed are the poor in spirit, "
+        "for theirs is the kingdom of heaven. The truth is known "
+        "through faith and hope and love eternal, mercy and grace.",
     )
     assert result["hostility"] == HostilityLevel.SCORNFUL
     assert result["casting_pearl"]

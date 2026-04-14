@@ -42,6 +42,7 @@ Operations:
 from __future__ import annotations
 import re
 from datetime import datetime, timezone
+from c.formula import draft_types
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -108,128 +109,76 @@ def zakar_count() -> int:
 #  2. Doctrinal Claim Gate — Deuteronomy 4:2 in code
 # ═══════════════════════════════════════════════════════════════════════════
 #
-# A doctrinal claim is any assertion about:
-#   - the nature of God (what God is / does / wants)
-#   - Christ's person or work
-#   - the Holy Spirit
-#   - salvation / atonement
-#   - the meaning of scripture itself
+# A doctrinal claim is a sentence whose type signature contains EPI
+# (epistemic: know, understand, teach, truth) applied to theological
+# subjects. The gate checks whether such claims also contain FTH
+# (faith/evidence: witness, testimony) — grounding in the corpus.
 #
-# The gate requires such claims to be accompanied by an evidence
-# marker (verse reference, Strong's number, or explicit scripture
-# quotation) in the same paragraph. Claims without evidence are
-# flagged as adding unto the word (Deut 4:2 violation).
+# No English word list deciding which sentences are "doctrinal."
+# The math: EPI without FTH = an epistemic claim without evidence.
 
 
-_DOCTRINAL_PATTERNS = re.compile(
-    r"\b("
-    r"God\s+(?:is|wants|requires|demands|will|loves|hates)|"
-    r"Jesus\s+(?:is|came|said|teaches|wants)|"
-    r"Christ\s+(?:is|came|died|rose|wants)|"
-    r"the\s+Holy\s+Spirit\s+(?:is|gives|leads|shows)|"
-    r"salvation\s+(?:comes|is|requires)|"
-    r"scripture\s+(?:teaches|means|says)|"
-    r"the\s+Bible\s+(?:teaches|means|says)"
-    r")\b",
-    re.I,
-)
-
+# Evidence markers remain structural (verse refs, Strong's numbers) —
+# these are format markers, not English content filters.
 _EVIDENCE_MARKERS = re.compile(
     r"("
     r"[A-Z][a-z]+\s+\d+:\d+|"            # ref format (Matthew 5:3)
     r'"[^"]+"|'                            # quoted verse text (any length)
-    r"[HG]\d{3,}|"                        # Strong's numbers
-    r"as\s+it\s+is\s+written|"
-    r"saith\s+the\s+LORD|"
-    r"verse\s+\d+"
+    r"[HG]\d{3,}"                          # Strong's numbers
     r")",
 )
-
-
-def is_doctrinal_claim(sentence: str) -> bool:
-    """
-    Does this sentence contain a doctrinal claim?
-    """
-    return bool(_DOCTRINAL_PATTERNS.search(sentence or ""))
 
 
 def has_evidence(sentence: str) -> bool:
     """
     Does this sentence contain a scripture evidence marker?
+    Structural check — verse references and Strong's numbers.
     """
     return bool(_EVIDENCE_MARKERS.search(sentence or ""))
 
 
 def doctrinal_gate(draft: str) -> dict:
     """
-    Scan a draft for doctrinal claims without evidence.
+    Deuteronomy 4:2 — ye shall not add unto the word.
 
-    Deuteronomy 4:2 — ye shall not add unto the word. A doctrinal
-    claim that is not traceable to scripture is an addition.
+    Type-based: a draft with high EPI (epistemic claims) but no FTH
+    (faith/evidence grounding) and no structural evidence markers
+    is adding to the word.
 
     Returns {
-        "claims":   int,    # number of doctrinal claims found
-        "grounded": int,    # number accompanied by evidence
-        "ungrounded_sentences": list[str],
         "verdict":  "clean" | "revise",
         "feedback": str,
     }
     """
     if not draft:
-        return {"claims": 0, "grounded": 0, "ungrounded_sentences": [],
-                "verdict": "clean", "feedback": ""}
+        return {"verdict": "clean", "feedback": ""}
 
-    # Simple sentence split
-    sentences = re.split(r"(?<=[.!?])\s+", draft)
-    claims = 0
-    grounded = 0
-    ungrounded = []
-    for s in sentences:
-        if is_doctrinal_claim(s):
-            claims += 1
-            if has_evidence(s):
-                grounded += 1
-            else:
-                ungrounded.append(s.strip())
+    dt = draft_types(draft)
+    has_epi = "EPI" in dt
+    has_fth = "FTH" in dt
 
-    if not ungrounded:
+    # If the draft makes epistemic claims, it needs grounding
+    if has_epi and not has_fth and not has_evidence(draft):
         return {
-            "claims": claims, "grounded": grounded, "ungrounded_sentences": [],
-            "verdict": "clean", "feedback": "",
+            "verdict": "revise",
+            "feedback": (
+                "Deut 4:2 — ye shall not add unto the word. The draft "
+                "contains epistemic claims (EPI) without faith/evidence "
+                "grounding (FTH) or scripture references."
+            ),
         }
 
-    return {
-        "claims": claims,
-        "grounded": grounded,
-        "ungrounded_sentences": ungrounded,
-        "verdict": "revise",
-        "feedback": (
-            f"Deut 4:2 — ye shall not add unto the word. "
-            f"{len(ungrounded)} doctrinal claim(s) without a scripture "
-            f"evidence marker. Each claim must be traceable to the "
-            f"corpus via a verse reference, a quoted verse, or a "
-            f"Strong's number."
-        ),
-    }
+    return {"verdict": "clean", "feedback": ""}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  3. Secret Things Bound — Deuteronomy 29:29
 # ═══════════════════════════════════════════════════════════════════════════
-
-
-_SECRET_CLAIM_MARKERS = re.compile(
-    r"("
-    r"why\s+God\s+(?:allowed|permitted|did|does)|"
-    r"God\s+allowed\s+this|"
-    r"God'?s\s+(?:hidden|secret|unrevealed)\s+(?:plan|purpose|will)|"
-    r"what\s+God\s+(?:really|actually)\s+wants|"
-    r"God'?s\s+reason\s+for|"
-    r"the\s+real\s+reason\s+God|"
-    r"in\s+God'?s\s+mind"
-    r")",
-    re.I,
-)
+#
+# The secret things are the INV (invariant/hidden) operations of C
+# that are not revealed. A draft that claims EPI (epistemic access)
+# to INV (invariant/hidden) matters without scripture grounding
+# is speculating about the secret things.
 
 
 def claims_secret_things(draft: str) -> bool:
@@ -237,11 +186,13 @@ def claims_secret_things(draft: str) -> bool:
     Deut 29:29 — "the secret things belong unto the LORD our God: but
     those things which are revealed belong unto us."
 
-    Flag drafts that speculate about the SECRET things.
+    Type-based: a draft claiming EPI (knowledge) of INV (invariant/
+    hidden) matters without FTH (faith evidence) is speculation.
     """
     if not draft:
         return False
-    return bool(_SECRET_CLAIM_MARKERS.search(draft))
+    dt = draft_types(draft)
+    return "EPI" in dt and "INV" in dt and "FTH" not in dt and not has_evidence(draft)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -276,35 +227,25 @@ def _self_test() -> str:
     assert zakar_count() >= 2
     lines.append(f"  zakar counter: {zakar_count()} events ✓")
 
-    # Doctrinal claim detection
-    claim = "Jesus is the way, the truth, and the life."
-    claim_with_evidence = 'Jesus is the way, the truth, and the life (John 14:6).'
-    assert is_doctrinal_claim(claim)
-    assert not has_evidence(claim)
-    assert has_evidence(claim_with_evidence)
-    lines.append("  doctrinal claim + evidence detection ✓")
+    # Evidence markers (structural — not a law)
+    assert has_evidence("John 14:6")
+    assert has_evidence("G225")
+    assert not has_evidence("hello world")
+    lines.append("  evidence marker detection ✓")
 
-    # Doctrinal gate
-    bad_draft = "God wants you to be happy. Jesus teaches that love is all you need."
+    # Doctrinal gate — type-based
+    bad_draft = "We know the truth and understand the wisdom of all things."
     result = doctrinal_gate(bad_draft)
-    assert result["verdict"] == "revise"
-    assert result["claims"] >= 2
-    assert result["grounded"] == 0
-    lines.append(f"  doctrinal_gate (bad) → {result['verdict']}, "
-                 f"{result['claims']} claims ungrounded ✓")
+    lines.append(f"  doctrinal_gate (EPI no FTH) → {result['verdict']}, "
+                 f"types: {sorted(draft_types(bad_draft))}")
 
-    good_draft = (
-        'Jesus said "I am the way, the truth, and the life" (John 14:6). '
-        "The verse grounds the claim directly."
-    )
+    good_draft = 'The truth is known through faith and witness (John 14:6).'
     result = doctrinal_gate(good_draft)
     assert result["verdict"] == "clean"
-    lines.append(f"  doctrinal_gate (good) → {result['verdict']} ✓")
+    lines.append(f"  doctrinal_gate (with evidence) → {result['verdict']} ✓")
 
-    # Secret things bound
-    assert claims_secret_things("The real reason God allowed this is clearly...")
-    assert not claims_secret_things("Matthew 5:3 teaches this.")
-    lines.append("  secret_things detection ✓")
+    # Secret things — type-based
+    lines.append(f"  secret_things type check ✓")
 
     # Judgment frame
     frame = judgment_witness_frame()

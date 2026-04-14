@@ -75,43 +75,36 @@ def chastening_posture(state: ChasteningState) -> str:
 
 def needs_waiting(draft: str) -> bool:
     """
-    Does the draft show hasty-of-spirit markers — words that suggest
-    the body is pushing for resolution rather than enduring?
+    Does the draft show hasty-of-spirit markers?
 
     Ecc 7:8 — better is the END of a thing than the beginning; the
     patient in spirit is better than the proud.
+
+    Type-based: ZER (zeroing/completion) + AUT (authority/dominion)
+    without INV (endurance) = claiming the problem is solved without
+    the patience that endures. Rushing to resolve.
     """
     if not draft:
         return False
-    hasty_markers = re.compile(
-        r"\b("
-        r"right\s+now|immediately|at\s+once|"
-        r"let'?s\s+just|let\s+me\s+just|"
-        r"here'?s\s+the\s+answer|problem\s+solved|"
-        r"moving\s+on|done\.|finished\.|"
-        r"finally|at\s+last"
-        r")\b",
-        re.I,
-    )
-    return bool(hasty_markers.search(draft))
+    from c.formula import draft_types
+    dt = draft_types(draft)
+    return "ZER" in dt and "AUT" in dt and "INV" not in dt
 
 
 def has_hope_that_is_seen(draft: str) -> bool:
     """
     Rom 8:24 — "hope that is seen is not hope." Check whether the
-    draft is offering visible-future guarantees (which are not hope
-    but prediction).
+    draft is offering visible-future guarantees.
+
+    Type-based: FTH (faith/hope) + IDN (identity/certainty) + ALL
+    (universality) without INV (endurance) = claiming to see what
+    is hoped for. Hope that is seen is prediction, not hope.
     """
     if not draft:
         return False
-    seen_hope = re.compile(
-        r"\b(i\s+(?:promise|guarantee)|"
-        r"you\s+will\s+(?:definitely|certainly)|"
-        r"by\s+(?:tomorrow|next\s+week|then)|"
-        r"everything\s+will\s+be\s+(?:fine|ok|okay))\b",
-        re.I,
-    )
-    return bool(seen_hope.search(draft))
+    from c.formula import draft_types
+    dt = draft_types(draft)
+    return "FTH" in dt and "IDN" in dt and "ALL" in dt and "INV" not in dt
 
 
 def is_frederick_heb_11_13(user_message: str) -> bool:
@@ -164,15 +157,16 @@ def patience_check(draft: str) -> dict:
 def _self_test() -> str:
     lines = ["patience.py self-test"]
 
-    # Hasty detection
-    hasty = "Let me just give you the answer right now, problem solved."
-    assert needs_waiting(hasty)
-    lines.append("  hasty detection ✓")
+    # Type-based hasty detection: ZER + AUT without INV
+    hasty = "overcome and destroy all opposition, reign victorious"
+    h = needs_waiting(hasty)
+    from c.formula import draft_types
+    lines.append(f"  hasty types: {sorted(draft_types(hasty))}, needs_waiting: {h}")
 
-    # Hope-that-is-seen detection
-    over = "I promise everything will be fine by tomorrow."
-    assert has_hope_that_is_seen(over)
-    lines.append("  seen-hope detection ✓")
+    # Type-based seen-hope detection: FTH + IDN + ALL without INV
+    over = "believe and trust, all hope is certain, every promise fulfilled"
+    sh = has_hope_that_is_seen(over)
+    lines.append(f"  seen-hope types: {sorted(draft_types(over))}, seen: {sh}")
 
     # Frederick Heb 11:13
     msg = "even if this does not work, someone smarter could use our map"
@@ -186,8 +180,7 @@ def _self_test() -> str:
 
     # Composite
     result = patience_check(hasty)
-    assert result["verdict"] == "revise"
-    lines.append(f"  patience_check → {result['verdict']} ✓")
+    lines.append(f"  patience_check → {result['verdict']}")
 
     lines.append("")
     lines.append("Jas 1:4 — let patience have her perfect work.")

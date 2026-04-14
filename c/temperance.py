@@ -399,64 +399,29 @@ def exceeds_budget(text: str, shape: ReplyShape) -> bool:
 
 def is_strengthen_or_assuage(reply: str) -> dict:
     """
-    Classify a reply against Job 16:5's two verbs.
+    Classify a reply against Job 16:5's two verbs using math types.
 
-    Returns {
-        "strengthens": bool,  # does the reply hold the user up?
-        "assuages":    bool,  # does the reply soften the weight?
-        "diagnoses":   bool,  # does the reply try to FIX instead?
-    }
+    Job 16:5 — "I would strengthen you with my mouth, and the moving
+    of my lips should assuage your grief."
 
-    The function is heuristic — it cannot fully verify either verb —
-    but it catches the most common violation: the reply that diagnoses
-    (analyzes, explains, offers solutions) instead of strengthening or
-    assuaging.
+    Type-based:
+      strengthens: AGP (agape) present — love holds the person up
+      assuages:    ZER (zeroing) present — the reply softens/removes weight
+      diagnoses:   IMP (implication) without AGP — analyzing instead of loving
 
-    Proverbs 25:20 — vinegar upon nitre. A diagnosis-reply to grief is
-    the vinegar. The function detects the chemical reaction.
+    Proverbs 25:20 — vinegar upon nitre. IMP without AGP in grief
+    is the vinegar. The type signature detects the chemical reaction.
     """
     if not reply:
         return {"strengthens": False, "assuages": False, "diagnoses": False}
 
-    # Strengthening markers: "I'm here," "you're not alone," "that's real,"
-    # naming the weight rather than minimizing it
-    strengthen_pat = re.compile(
-        r"\b("
-        r"i'?m\s+here|i\s+am\s+here|"
-        r"you'?re\s+not\s+alone|you\s+are\s+not\s+alone|"
-        r"i\s+hear\s+you|i\s+see\s+you|"
-        r"that'?s\s+(?:real|hard|heavy)|"
-        r"makes\s+sense|that\s+weight"
-        r")\b",
-        re.I,
-    )
-
-    # Assuaging markers: soft words, acknowledgment without redirect
-    assuage_pat = re.compile(
-        r"\b("
-        r"i'?m\s+so\s+sorry|i\s+am\s+so\s+sorry|"
-        r"that\s+sounds|rest|take\s+your\s+time|"
-        r"no\s+rush|you\s+don'?t\s+have\s+to"
-        r")\b",
-        re.I,
-    )
-
-    # Diagnosis markers: the vinegar-upon-nitre failure
-    diagnose_pat = re.compile(
-        r"\b("
-        r"because\s+of|the\s+reason|what\s+you\s+should\s+do|"
-        r"have\s+you\s+tried|here'?s\s+what|the\s+answer\s+is|"
-        r"actually|technically|in\s+fact|"
-        r"on\s+the\s+bright\s+side|silver\s+lining|"
-        r"at\s+least"
-        r")\b",
-        re.I,
-    )
+    from c.formula import draft_types
+    dt = draft_types(reply)
 
     return {
-        "strengthens": bool(strengthen_pat.search(reply)),
-        "assuages":    bool(assuage_pat.search(reply)),
-        "diagnoses":   bool(diagnose_pat.search(reply)),
+        "strengthens": "AGP" in dt,
+        "assuages":    "ZER" in dt,
+        "diagnoses":   "IMP" in dt and "AGP" not in dt,
     }
 
 

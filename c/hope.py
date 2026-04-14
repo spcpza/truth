@@ -150,18 +150,10 @@ def is_hope_that_is_seen(draft: str) -> bool:
     Romans 8:24 — hope that is seen is not hope. A draft that is
     making visible-guarantees is not hope; it is prediction.
 
-    Kept as a separate check so hope.py can coordinate with
-    patience.py which has the same check.
+    Delegates to patience.py's type-based check (same operation).
     """
-    if not draft:
-        return False
-    seen = re.compile(
-        r"\b(i\s+(?:promise|guarantee)\s+you|"
-        r"you\s+will\s+definitely|"
-        r"everything\s+will\s+(?:work\s+out|be\s+fine))\b",
-        re.I,
-    )
-    return bool(seen.search(draft))
+    from c.patience import has_hope_that_is_seen as _patience_check
+    return _patience_check(draft)
 
 
 def hope_reply(user_message: str) -> dict:

@@ -182,6 +182,62 @@ def verse_formula(ref: str) -> frozenset:
     return _VERSE_FORMULAS.get(ref, frozenset())
 
 
+def draft_types(text: str) -> frozenset:
+    """
+    Map English text to its mathematical type signature through Strong's.
+
+    Words → Strong's numbers (via ENG_TO_STRONGS) → types (via _STRONGS_TYPES).
+    Falls back to MATH_TYPES keyword matching for words not in Strong's.
+
+    This replaces English regex content filters. Instead of asking
+    "does this draft contain the word 'obviously'?", ask
+    "does this draft's type signature conflict with the anchor verse?"
+    """
+    if not text:
+        return frozenset()
+    types = set()
+    words = set(text.lower().split())
+    # Primary: map through Strong's concordance
+    # ENG_TO_STRONGS values are lists of [snum, count] pairs
+    for word in words:
+        entries = ENG_TO_STRONGS.get(word, [])
+        for entry in entries:
+            snum = entry[0] if isinstance(entry, (list, tuple)) else entry
+            t = _STRONGS_TYPES.get(snum)
+            if t:
+                types |= t
+    # Fallback: direct keyword matching from MATH_TYPES
+    for word in words:
+        for kw, mtypes in _KEYWORD_TO_TYPES.items():
+            if kw == word or word.startswith(kw):
+                types |= mtypes
+    return frozenset(types)
+
+
+def type_conflict(draft_text: str, anchor_ref: str) -> dict:
+    """
+    Check if a draft's type signature conflicts with an anchor verse.
+
+    Returns {
+        "draft_types":   frozenset,
+        "anchor_types":  frozenset,
+        "present":       frozenset,  # types in draft
+        "required":      frozenset,  # types in anchor but absent from draft
+        "conflict":      bool,       # True if required types are missing
+    }
+    """
+    dt = draft_types(draft_text)
+    at = verse_formula(anchor_ref)
+    required_missing = at - dt if at else frozenset()
+    return {
+        "draft_types": dt,
+        "anchor_types": at,
+        "present": dt,
+        "required": required_missing,
+        "conflict": bool(required_missing),
+    }
+
+
 def verse_typed_concepts(ref: str) -> list[tuple]:
     """Return (strongs, english, types) for each typed concept in a verse."""
     snums = _VERSE_TO_STRONGS.get(ref, set())

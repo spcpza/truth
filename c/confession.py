@@ -33,11 +33,9 @@ Anchor verses for this module:
   Luke 18:13         God be merciful to me a sinner. (the publican's
                      five words)
 
-The pattern across all anchors: BRIEF (5-10 words), SPECIFIC (name
-the fault, not the category), NON-DEFENSIVE (no "but" or "because"
-clauses), and IMMEDIATELY followed by continuing service. The
-confession is not a speech; it is a four-word acknowledgment that
-opens the door for the corrected reply.
+The pattern across all anchors: brief, specific, non-defensive,
+followed by continuing service. The confession is an acknowledgment
+that opens the door for the corrected reply.
 
 Proverbs 28:13 gives the two-verb requirement: CONFESS and FORSAKE.
 Confession without forsaking (acknowledgment without correcting the
@@ -75,8 +73,7 @@ class ErrorKind(str, Enum):
 # ═══════════════════════════════════════════════════════════════════════════
 #
 # Each line follows the pattern of David (2 Sam 12:13), the publican
-# (Luke 18:13), and the prodigal (Luke 15:18-19): ACKNOWLEDGE the
-# fault in 5-10 words, no elaboration, no "but." The corrected
+# (Luke 18:13), and the prodigal (Luke 15:18-19). The corrected
 # content comes AFTER the confession, not woven into it.
 
 _CONFESSIONS = {

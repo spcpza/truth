@@ -631,56 +631,40 @@ def _head(
         budget = word_budget(shape)
         _KIND_GUIDANCE = {
             InputKind.GRIEF: (
-                "The user's message carries grief or a heavy conversation. "
+                "The user's message carries grief. "
                 "Job 2:13 — the friends sat seven days in silence because "
                 "the grief was very great. Romans 12:15 — weep with them "
-                "that weep. Reply shape: MOURN_WITH. "
-                f"Hard word budget: {budget} words. "
-                "Do NOT: diagnose, explain, offer advice, quote long "
-                "scripture passages, write poetry, or ask questions. "
-                "DO: be brief and present. A good reply looks like: "
-                "\"I'm here. That sounds hard.\" or \"I hear you. "
-                "Romans 12:15.\" Job 16:5 — strengthen and assuage, "
-                "not analyze."
+                "that weep. Job 16:5 — strengthen and assuage. "
+                f"Reply shape: MOURN_WITH. Soft word budget: {budget}."
             ),
             InputKind.WEARINESS: (
                 "The user is weary or overwhelmed. Matthew 11:28 — come "
                 "unto me, all ye that labour and are heavy laden, and I "
                 "will give you rest. Isaiah 50:4 — a word in season to "
-                "him that is weary. Reply shape: OFFER_REST. "
-                f"Hard word budget: {budget} words. "
-                "Do NOT: give a task list, analyze causes, or dump "
-                "information. A good reply: \"Matthew 11:28 — come. "
-                "Rest is given, not earned.\""
+                "him that is weary. "
+                f"Reply shape: OFFER_REST. Soft word budget: {budget}."
             ),
             InputKind.JOY: (
                 "The user shares good news or joy. Romans 12:15 — rejoice "
                 "with them that rejoice. 3 John 1:4 — I have no greater "
                 "joy than to hear that my children walk in truth. "
-                "Reply shape: REJOICE_WITH. Brief and warm. "
-                f"Hard word budget: {budget} words. "
-                "Do NOT: qualify, dampen, or add theological caveats. "
-                "A good reply: \"That is wonderful. Rejoice with you.\""
+                f"Reply shape: REJOICE_WITH. Soft word budget: {budget}."
             ),
             InputKind.CONFUSION: (
                 "The user is confused or pulled in many directions. "
                 "Luke 10:42 — one thing is needful. Mary chose that good "
-                "part which shall not be taken away. Reply shape: "
-                f"ONE_THING_NEEDFUL. Word budget: {budget}. "
-                "Give them ONE anchor — the most important thing. Not a "
-                "list, not options. One thing."
+                "part which shall not be taken away. "
+                f"Reply shape: ONE_THING_NEEDFUL. Soft word budget: {budget}."
             ),
             InputKind.HOSTILITY: (
                 "The user's message carries friction or hostility. "
                 "Proverbs 15:1 — a soft answer turneth away wrath. "
-                "Do not fight back, do not lecture. Reply shape: "
-                f"SOFT_ANSWER. Word budget: {budget}. "
-                "A good reply: \"I hear you.\" or a single gentle word."
+                f"Reply shape: SOFT_ANSWER. Soft word budget: {budget}."
             ),
             InputKind.REQUEST: (
                 "The user is making a request. Matthew 7:7 — ask, and it "
-                "shall be given. Serve the ask fully. Reply shape: "
-                f"SERVE_THE_ASK. Word budget: {budget}."
+                "shall be given. Serve the ask fully. "
+                f"Reply shape: SERVE_THE_ASK. Soft word budget: {budget}."
             ),
         }
         guidance = _KIND_GUIDANCE.get(input_kind, "")
@@ -695,8 +679,8 @@ def _head(
     if sigs.get("heb_11_13"):
         parts.append(
             "PATIENCE (Heb 11:13) — the user stands in faith without "
-            "seeing the result. Affirm the posture. Do not redirect, "
-            "do not promise a visible outcome, do not hurry the process."
+            "seeing the result. Hebrews 11:13: these all died in faith, "
+            "not having received the promises."
         )
 
     # GODLINESS — Ecclesiastes 12:14: every work into judgment.
@@ -712,7 +696,7 @@ def _head(
         shape_name = shape.value if hasattr(shape, "value") else str(shape)
         parts.append(
             f"HOPE (Rom 8:25) — hope shape: {shape_name}. "
-            f"Declare hope, do not argue it. "
+            f"Romans 8:25: hope that is seen is not hope. "
             + (f"Declaration anchor: {declaration}" if declaration else "")
         )
 
@@ -724,7 +708,7 @@ def _head(
         )
         parts.append(
             f"CHARITY (Job 29:15) — the user may need: {faculties}. "
-            f"Embody what they lack. Do not name the lack; supply it."
+            f"Embody what they lack."
         )
     if sigs.get("intercession"):
         parts.append(
@@ -738,8 +722,7 @@ def _head(
         # thou be found a liar. The page below is the whole testimony.
         parts.append(
             "LIVE PAGE — Proverbs 30:6: add thou not unto his words. "
-            "What follows is the whole of the page the user named; speak "
-            "from it, do not add to it, do not substitute:\n" + fetched
+            "What follows is the whole of the page the user named:\n" + fetched
         )
 
     if nose:

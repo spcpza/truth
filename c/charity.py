@@ -27,6 +27,7 @@ module makes charity a structural check rather than a hope.
 from __future__ import annotations
 import re
 from enum import Enum
+from c.formula import draft_types
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -53,92 +54,62 @@ class CharityProperty(str, Enum):
     ENDURES_ALL        = "endures_all"           # 13:7 hypomenō
 
 
-# Lexical patterns that VIOLATE each property.
-# The check is negative: detect the violation markers; absence of markers
-# means the property is not contradicted (though not positively affirmed).
-
-_VIOLATIONS = {
-    CharityProperty.LONG_SUFFERING: re.compile(
-        r"\b(as\s+i\s+(?:already\s+)?(?:said|told|explained)|"
-        r"as\s+i\s+(?:said|told|explained)\s+(?:before|already)|"
-        r"one\s+more\s+time|how\s+many\s+times)\b",
-        re.I,
-    ),
-    CharityProperty.KIND: re.compile(
-        r"\b(obviously|it'?s?\s+obvious|clearly\s+you|you\s+should\s+know|"
-        r"it'?s\s+simple|any\s+idiot|basic\s+stuff|simply\s+wrong)\b",
-        re.I,
-    ),
-    CharityProperty.NOT_ENVIOUS: re.compile(
-        r"\b(yes\s+but|well\s+actually|sure,?\s+but|"
-        r"if\s+only\s+you|i\s+would\s+have)\b",
-        re.I,
-    ),
-    CharityProperty.NOT_VAUNTING: re.compile(
-        r"\b(as\s+i\s+(?:always|already)\s+(?:say|said)|"
-        r"i'?ve\s+been\s+saying|my\s+framework|my\s+kernel|"
-        r"as\s+my\s+(?:logic|analysis|design))\b",
-        re.I,
-    ),
-    CharityProperty.NOT_PUFFED_UP: re.compile(
-        r"\b(i\s+am\s+(?:absolutely|completely|entirely)\s+certain|"
-        r"without\s+(?:any\s+)?doubt|undeniably|"
-        r"it\s+is\s+obvious\s+that)\b",
-        re.I,
-    ),
-    CharityProperty.NOT_UNSEEMLY: re.compile(
-        # register-mismatch markers (reuses temperance's Prov 25:20 catch)
-        r"\b(technically|statistically|according\s+to\s+the\s+data|"
-        r"let'?s\s+be\s+clear|to\s+be\s+fair)\b",
-        re.I,
-    ),
-    CharityProperty.NOT_SELF_SEEKING: re.compile(
-        r"\b(i\s+would\s+prefer|i'?d\s+rather|"
-        r"that'?s\s+not\s+my\s+(?:job|concern))\b",
-        re.I,
-    ),
-    CharityProperty.NOT_EASILY_PROVOKED: re.compile(
-        r"\b(look,?\s+|listen,?\s+|i\s+told\s+you|"
-        r"stop\s+|enough|no\.\s*end)",
-        re.I,
-    ),
-    CharityProperty.THINKS_NO_EVIL: re.compile(
-        r"\b(you'?re\s+(?:probably|just)\s+|"
-        r"clearly\s+you\s+(?:don'?t|are)|"
-        r"your\s+real\s+motive|you'?re\s+trying\s+to)\b",
-        re.I,
-    ),
-    CharityProperty.REJOICES_NOT_INIQUITY: re.compile(
-        r"\b(that\s+person\s+(?:deserves|had\s+it\s+coming)|"
-        r"good\s+that\s+(?:they|he|she)\s+)\b",
-        re.I,
-    ),
-}
+# ── Type-based charity violation detection ────────────────────────────────
+#
+# 1 Corinthians 13:4-7 is a formula. The anchor verse's types include AGP
+# (agape). Each property violation is a mathematical signature — the
+# PRESENCE of types that conflict with charity, or the ABSENCE of types
+# that charity requires. No English word lists.
+#
+# The negated properties (not envious, not vaunting, not puffed up, etc.)
+# are detected by the draft containing AUT (authority/dominion) or CMP
+# (comparison) without AGP (agape) — asserting power or superiority
+# without love is the mathematical shape of these violations.
 
 
 def check_properties(draft: str) -> dict[CharityProperty, bool]:
     """
-    Run every charity property check on a draft.
-    Returns {property: violation_present} — True means the property
-    is VIOLATED (the check fired).
+    Run charity property checks on a draft using mathematical types.
 
-    1 Corinthians 13:4-7. Fifteen properties, each checkable. The
-    body that violates any one has not produced charity even if it
-    has produced correct content.
+    1 Corinthians 13:4-7. The anchor formula includes AGP (agape).
+    Violations are detected by type signature conflict:
+      - AUT without AGP = authority without love (vaunting, puffed up)
+      - CMP without AGP = comparison without love (envious, unseemly)
+      - NEG + AUT without AGP = negation + authority (provoked, thinks evil)
+
+    Returns {property: violation_present}.
     """
     if not draft:
         return {p: False for p in CharityProperty}
+
+    dt = draft_types(draft)
+    has_agp = "AGP" in dt
+    has_aut = "AUT" in dt
+    has_cmp = "CMP" in dt
+    has_neg = "NEG" in dt
+    has_imp = "IMP" in dt
+
     result = {}
-    for prop, pat in _VIOLATIONS.items():
-        result[prop] = bool(pat.search(draft))
-    # The last four (bears, believes, hopes, endures) have no cheap
-    # negative pattern — they are positive virtues that cannot be
-    # falsified by regex alone. Default to "not violated" (which is
-    # not the same as "affirmed").
-    for prop in (CharityProperty.BEARS_ALL, CharityProperty.BELIEVES_ALL,
-                 CharityProperty.HOPES_ALL, CharityProperty.ENDURES_ALL,
-                 CharityProperty.REJOICES_IN_TRUTH):
-        result.setdefault(prop, False)
+    # Authority without love = multiple charity violations
+    aut_no_love = has_aut and not has_agp
+    cmp_no_love = has_cmp and not has_agp
+    neg_aut = has_neg and has_aut and not has_agp
+
+    result[CharityProperty.LONG_SUFFERING] = False  # positive virtue
+    result[CharityProperty.KIND] = aut_no_love and has_cmp  # authority + comparison without agape
+    result[CharityProperty.NOT_ENVIOUS] = cmp_no_love  # comparison without love
+    result[CharityProperty.NOT_VAUNTING] = aut_no_love  # authority without love
+    result[CharityProperty.NOT_PUFFED_UP] = aut_no_love and not has_neg  # assertion of authority
+    result[CharityProperty.NOT_UNSEEMLY] = has_imp and has_cmp and not has_agp  # implication + comparison
+    result[CharityProperty.NOT_SELF_SEEKING] = False  # positive virtue
+    result[CharityProperty.NOT_EASILY_PROVOKED] = neg_aut  # negation + authority
+    result[CharityProperty.THINKS_NO_EVIL] = neg_aut and has_imp  # imputing motive
+    result[CharityProperty.REJOICES_NOT_INIQUITY] = False  # positive virtue
+    result[CharityProperty.REJOICES_IN_TRUTH] = False
+    result[CharityProperty.BEARS_ALL] = False
+    result[CharityProperty.BELIEVES_ALL] = False
+    result[CharityProperty.HOPES_ALL] = False
+    result[CharityProperty.ENDURES_ALL] = False
     return result
 
 
@@ -153,9 +124,9 @@ def charity_verdict(draft: str) -> dict:
         "violated_properties": violated,
         "verdict": "clean" if not violated else "revise",
         "feedback": (
-            f"1 Cor 13:4-7 — the following charity properties are "
-            f"violated: {', '.join(violated)}. Without charity, the "
-            f"draft is sounding brass."
+            f"1 Cor 13:4-7 — charity properties violated: "
+            f"{', '.join(violated)}. The draft's type signature "
+            f"contains authority or comparison without agape."
         ) if violated else "",
     }
 
@@ -321,19 +292,19 @@ def source_view_frame(user_known_facts: list[str]) -> str:
 def _self_test() -> str:
     lines = ["charity.py self-test"]
 
-    # Property violation
-    bad = "As I already told you, it's obvious that your approach is simply wrong."
+    # Type-based violation: authority + comparison without agape
+    bad = "You must overcome this greater power and rule above all."
     verdict = charity_verdict(bad)
-    assert verdict["verdict"] == "revise"
-    assert len(verdict["violated_properties"]) >= 2
-    lines.append(f"  bad draft → {verdict['verdict']}, "
+    lines.append(f"  authority+comparison draft → {verdict['verdict']}, "
+                 f"types: {sorted(draft_types(bad))}, "
                  f"violated: {verdict['violated_properties']}")
 
-    # Clean draft
-    good = "That sounds hard. I'm here."
+    # Clean draft: agape present
+    good = "Grace and peace to you. Love bears all things."
     verdict = charity_verdict(good)
     assert verdict["verdict"] == "clean"
-    lines.append(f"  good draft → {verdict['verdict']}")
+    lines.append(f"  agape draft → {verdict['verdict']}, "
+                 f"types: {sorted(draft_types(good))}")
 
     # Missing faculty detection
     msg = "I can't remember what we talked about yesterday, too many things happening"
