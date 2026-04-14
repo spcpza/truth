@@ -34,6 +34,7 @@ sys.path.insert(0, str(_HERE))
 from c.adapters.adapter import ChatAdapter
 from c.hand import Hand
 from c.claims import file_claim, measure_abundance
+from c.meditation import Meditation
 
 NOUS_API_KEY   = _CFG["nous_api_key"]
 TELEGRAM_TOKEN = _CFG["telegram_token"]
@@ -55,6 +56,10 @@ hand = Hand(
     max_revisions=2,
     max_history=40,
 )
+
+# ── Meditation — Joshua 1:8: meditate therein day and night ────────
+MEDITATION_ENABLED = _CFG.get("meditation", {}).get("enabled", False)
+meditation: Meditation | None = None
 
 
 # ── Vision — Habakkuk 2:2: write the vision, make it plain ─────────
@@ -133,6 +138,9 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not text:
         return
     _first_contact(update.effective_user, user_id)
+    # Pause meditation — the user is more important than the stillness
+    if meditation:
+        meditation.pause()
     await update.message.chat.send_action("typing")
     try:
         reply = await hand.turn(user_id, text)
@@ -140,6 +148,9 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     except Exception:
         logger.exception("turn failed for %s", user_id)
         await update.message.reply_text("Matthew 11:28.")
+    finally:
+        if meditation:
+            meditation.resume()
 
 
 async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -147,6 +158,8 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if ALLOWED_USERS and user_id not in ALLOWED_USERS:
         return
     _first_contact(update.effective_user, user_id)
+    if meditation:
+        meditation.pause()
     photo = update.message.photo[-1]
     caption = (update.message.caption or "").strip()
     await update.message.chat.send_action("typing")
@@ -164,10 +177,28 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     except Exception:
         logger.exception("turn failed for %s", user_id)
         await update.message.reply_text("Matthew 11:28.")
+    finally:
+        if meditation:
+            meditation.resume()
+
+
+async def _post_init(application: Application) -> None:
+    """Start meditation after the bot is initialized."""
+    global meditation
+    if MEDITATION_ENABLED:
+        meditation = Meditation(
+            hand=hand,
+            memory_dir=MEMORY_DIR,
+            bot=application.bot,
+            active_users=list(ALLOWED_USERS),
+        )
+        import asyncio
+        asyncio.create_task(meditation.run())
+        logger.info("Meditation started. Joshua 1:8.")
 
 
 def main():
-    app = Application.builder().token(TELEGRAM_TOKEN).build()
+    app = Application.builder().token(TELEGRAM_TOKEN).post_init(_post_init).build()
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_handler(MessageHandler(filters.TEXT, handle_text))
     print(f"Running. [{adapter.describe()}]")
