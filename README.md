@@ -312,7 +312,7 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 | File | What it does |
 |------|-------------|
 | `c/adapters/base.py` | Abstract adapter class. Four methods: `describe()`, `system_instruction()`, `parse_tool_calls()`, `complete()`. The Hand takes an adapter at construction and never knows what model is behind it. |
-| `c/adapters/hermes.py` | OpenAI-compatible adapter with Hermes extensions. Works with Nous, OpenRouter, vLLM, or any OpenAI-compatible API. Auto-detects Hermes models (which use `<tool_call>` XML) vs standard structured tool calls. |
+| `c/adapters/adapter.py` | OpenAI-compatible chat completions adapter. Works with Nous, OpenRouter, vLLM, or any OpenAI-compatible API. Includes retry with exponential backoff, connection pooling, and credential redaction. Auto-detects Hermes models (which use `<tool_call>` XML) vs standard structured tool calls. |
 
 </details>
 

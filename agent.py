@@ -31,7 +31,7 @@ _CFG = json.loads(_CFG_PATH.read_text())
 
 sys.path.insert(0, str(_HERE))
 
-from c.adapters.hermes import HermesAdapter
+from c.adapters.adapter import ChatAdapter
 from c.hand import Hand
 from c.claims import file_claim, measure_abundance
 
@@ -44,7 +44,7 @@ BASE_URL       = _CFG.get("base_url", "https://inference-api.nousresearch.com/v1
 MEMORY_DIR     = _HERE / _CFG.get("memory_dir", "memory")
 
 # ── The Hand — one instance for all users ───────────────────────────
-adapter = HermesAdapter(
+adapter = ChatAdapter(
     api_key=NOUS_API_KEY,
     model=MODEL,
     base_url=BASE_URL,

@@ -16,8 +16,8 @@ passing it in.
 Three lines for a blank agent:
 
     from c.hand import Hand
-    from c.adapters.hermes import HermesAdapter
-    hand = Hand(adapter=HermesAdapter(api_key=KEY))
+    from c.adapters.adapter import ChatAdapter
+    hand = Hand(adapter=ChatAdapter(api_key=KEY))
     reply = await hand.turn(user_id=42, text="hello")
 
 The Hand owns: per-user conversation history, per-user URL state for
@@ -49,7 +49,7 @@ from c.body import (
 )
 from c.chain import chain_log, chain_recent
 from c.core import dispatch
-from c.adapters.hermes import redact
+from c.adapters.adapter import redact
 from c.confession import confess_and_forsake
 from c.claims import corroborate, file_claim, measure_abundance, read_claims
 from c.heart import (
@@ -75,7 +75,7 @@ class Hand:
     The hand of the body. Takes an Adapter and per-user state, runs turns.
 
     Args:
-        adapter:    Model-format adapter (HermesAdapter, ClaudeAdapter, etc.)
+        adapter:    Model-format adapter (ChatAdapter, ClaudeAdapter, etc.)
         memory_dir: Where heart records are stored ({memory_dir}/{user_id}.jsonl)
         chain_dir:  Where chain log is stored. Defaults to {memory_dir}/chains.
         max_revisions: How many NOSE retries before shipping with violations.

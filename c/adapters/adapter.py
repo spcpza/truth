@@ -1,5 +1,5 @@
 """
-OpenAI-compatible adapter with Hermes-4 extensions.
+adapter.py — OpenAI-compatible chat completions adapter.
 
 Works with ANY model served via an OpenAI-compatible API (Nous Portal,
 OpenRouter, vLLM, etc.): MiMo, Hermes, Qwen, Llama, Mistral, etc.
@@ -73,7 +73,7 @@ _INSTRUCTION = (
 )
 
 
-class HermesAdapter(Adapter):
+class ChatAdapter(Adapter):
     def __init__(
         self,
         api_key: str,
@@ -95,7 +95,7 @@ class HermesAdapter(Adapter):
         self._client: httpx.AsyncClient | None = None
 
     def describe(self) -> str:
-        return f"HermesAdapter(model={self.model})"
+        return f"ChatAdapter(model={self.model})"
 
     def _is_hermes(self) -> bool:
         return "hermes" in self.model.lower()
