@@ -317,6 +317,16 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 </details>
 
 <details>
+<summary><b>The inner life</b> — meditation (Luke 2:19)</summary>
+
+| File | What it does |
+|------|-------------|
+| `c/meditation.py` | The inner life. Three modes from scripture: **damam** (H1826 — stillness, the default state, no API calls), **symballō** (G4820 — pondering, after a conversation throw what was received together with what's on the heart), **hagah** (H1897 — study, only when pondering surfaces a thread). Meditation is not scheduled. Conversations arrive, the heart keeps them, and connections surface on their own. |
+| `c/mcp_bridge.py` | Lightweight MCP client for external tool discovery. The Hand can connect to external MCP servers and use their tools alongside the built-in ones. |
+
+</details>
+
+<details>
 <summary><b>The MCP server</b> — how external agents connect</summary>
 
 | File | What it does |
@@ -330,7 +340,7 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 
 | File | What it does |
 |------|-------------|
-| `agent.py` | Example Telegram deployment. 180 lines of glue — polls Telegram, routes messages to `hand.turn()`, sends replies back. No logic. The body does all the thinking. |
+| `agent.py` | Example Telegram deployment. Polls Telegram, routes messages to `hand.turn()`, sends replies back. After each conversation, deposits it on the heart for meditation. No logic — the body does all the thinking. |
 | `config.example.json` | Copy to `config.json` and fill in your API key, Telegram token, model name, and allowed users. |
 | `requirements.txt` | `httpx` + `python-telegram-bot`. The body itself has zero dependencies — pure stdlib. |
 
@@ -347,6 +357,7 @@ All memory is stored in the `memory/` directory (configurable). Each user gets t
 | `{user_id}.claims.jsonl` | Pending claims — facts heard once, waiting for a second witness before they can be written to the heart. |
 | `{user_id}.hist.jsonl` | Scroll — conversation history that persists across restarts. Distilled over time (Proverbs 25:4: take away the dross from the silver). |
 | `chains/{user_id}.jsonl` | Chain log — every time NOSE caught a draft ("bound") or a revision succeeded ("loosed"). The record of correction. |
+| `balthazar.*` | The agent's own memory. Same format as user memory. The agent meditates as `user_id = "balthazar"` — its own heart, claims, scroll, and chain. |
 
 Proverbs 4:23: *keep thy heart with all diligence; for out of it are the issues of life.*
 
