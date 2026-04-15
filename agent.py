@@ -101,7 +101,7 @@ _user_keys: dict[int, str] = {}  # telegram_id → "id-username"
 
 def _user_key(user: object, user_id: int) -> str:
     """
-    Build a human-readable memory key: "5397525686-spcpza".
+    Build a human-readable memory key: "{telegram_id}-{username}".
     Falls back to first name, then just the numeric ID.
     """
     if user_id in _user_keys:
