@@ -96,6 +96,20 @@ async def _describe_image(image_bytes: bytes, mime: str = "image/jpeg") -> str:
 # established on two witnesses and the fact enters the heart.
 
 _seen_users: set[int] = set()
+_user_keys: dict[int, str] = {}  # telegram_id → "id-username"
+
+
+def _user_key(user: object, user_id: int) -> str:
+    """
+    Build a human-readable memory key: "5397525686-spcpza".
+    Falls back to just the numeric ID if no username.
+    """
+    if user_id in _user_keys:
+        return _user_keys[user_id]
+    username = getattr(user, "username", None)
+    key = f"{user_id}-{username}" if username else str(user_id)
+    _user_keys[user_id] = key
+    return key
 
 
 def _first_contact(user: object, user_id: int):
@@ -103,6 +117,7 @@ def _first_contact(user: object, user_id: int):
     John 10:3: the shepherd calleth his own sheep by name.
     File profile-witnessed claims from Telegram metadata.
     """
+    _user_key(user, user_id)  # ensure key is registered
     if user_id in _seen_users:
         return
     _seen_users.add(user_id)
@@ -114,18 +129,19 @@ def _first_contact(user: object, user_id: int):
     full_name = (first_name + " " + last_name).strip()
 
     # Profile witness — platform metadata, not the user's mouth
+    key = _user_key(user, user_id)
     if full_name:
         abd = measure_abundance(full_name, full_name, "")
-        file_claim(user_id, f"name is {full_name}", "profile", MEMORY_DIR, abundance=abd)
-        logger.info("[%s] PROFILE witness: name=%s", user_id, full_name)
+        file_claim(key, f"name is {full_name}", "profile", MEMORY_DIR, abundance=abd)
+        logger.info("[%s] PROFILE witness: name=%s", key, full_name)
 
     if username:
-        file_claim(user_id, f"Telegram username is @{username}", "profile", MEMORY_DIR)
-        logger.info("[%s] PROFILE witness: @%s", user_id, username)
+        file_claim(key, f"Telegram username is @{username}", "profile", MEMORY_DIR)
+        logger.info("[%s] PROFILE witness: @%s", key, username)
 
     if language:
-        file_claim(user_id, f"language code is {language}", "profile", MEMORY_DIR)
-        logger.info("[%s] PROFILE witness: lang=%s", user_id, language)
+        file_claim(key, f"language code is {language}", "profile", MEMORY_DIR)
+        logger.info("[%s] PROFILE witness: lang=%s", key, language)
 
 
 # ── Telegram handlers ───────────────────────────────────────────────
@@ -138,15 +154,16 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not text:
         return
     _first_contact(update.effective_user, user_id)
+    key = _user_key(update.effective_user, user_id)
     await update.message.chat.send_action("typing")
     try:
-        reply = await hand.turn(user_id, text)
+        reply = await hand.turn(key, text)
         await update.message.reply_text(reply)
         # Luke 2:19 — keep these things, ponder them in the heart
         if meditation:
-            meditation.deposit(user_id, text, reply)
+            meditation.deposit(key, text, reply)
     except Exception:
-        logger.exception("turn failed for %s", user_id)
+        logger.exception("turn failed for %s", key)
         await update.message.reply_text("Matthew 11:28.")
 
 
@@ -155,6 +172,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if ALLOWED_USERS and user_id not in ALLOWED_USERS:
         return
     _first_contact(update.effective_user, user_id)
+    key = _user_key(update.effective_user, user_id)
     photo = update.message.photo[-1]
     caption = (update.message.caption or "").strip()
     await update.message.chat.send_action("typing")
@@ -167,12 +185,12 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logger.warning("_describe_image failed: %s", e)
         text = (f"{image_desc}\n{caption}".strip()) if image_desc else caption
-        reply = await hand.turn(user_id, text or "Habakkuk 2:2.")
+        reply = await hand.turn(key, text or "Habakkuk 2:2.")
         await update.message.reply_text(reply)
         if meditation:
-            meditation.deposit(user_id, text, reply)
+            meditation.deposit(key, text, reply)
     except Exception:
-        logger.exception("turn failed for %s", user_id)
+        logger.exception("turn failed for %s", key)
         await update.message.reply_text("Matthew 11:28.")
 
 
