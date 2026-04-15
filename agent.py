@@ -102,12 +102,15 @@ _user_keys: dict[int, str] = {}  # telegram_id → "id-username"
 def _user_key(user: object, user_id: int) -> str:
     """
     Build a human-readable memory key: "5397525686-spcpza".
-    Falls back to just the numeric ID if no username.
+    Falls back to first name, then just the numeric ID.
     """
     if user_id in _user_keys:
         return _user_keys[user_id]
     username = getattr(user, "username", None)
-    key = f"{user_id}-{username}" if username else str(user_id)
+    first_name = (getattr(user, "first_name", None) or "").strip().lower()
+    # Prefer @username, fall back to first name (alphanumeric only)
+    label = username or "".join(c for c in first_name if c.isalnum()) or None
+    key = f"{user_id}-{label}" if label else str(user_id)
     _user_keys[user_id] = key
     return key
 
