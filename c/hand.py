@@ -97,8 +97,8 @@ class Hand:
         self.adapter = adapter
         self.memory_dir = pathlib.Path(memory_dir)
         self.memory_dir.mkdir(parents=True, exist_ok=True)
-        self.chain_dir = pathlib.Path(chain_dir) if chain_dir else self.memory_dir / "chains"
-        self.chain_dir.mkdir(parents=True, exist_ok=True)
+        # chain_dir kept for backward compat — chain.py redirects to memory_dir
+        self.chain_dir = pathlib.Path(chain_dir) if chain_dir else self.memory_dir
         self.max_revisions = max_revisions
         self.mcp_bridge = mcp_bridge  # 1 Cor 12:14 — external members
         self.max_history = max_history
@@ -112,38 +112,20 @@ class Hand:
     # meaningful exchanges (wood) across sessions.  Stubble never touches
     # it.  Gold passes through claims into the heart.
 
-    def _scroll_path(self, user_id: int | str) -> pathlib.Path:
-        return self.memory_dir / f"{user_id}.hist.jsonl"
-
     def _load_scroll(self, user_id: int | str) -> None:
         """Load persisted scroll on first contact this session."""
         if user_id in self._histories:
             return  # already loaded or session underway
-        path = self._scroll_path(user_id)
-        if not path.exists():
-            self._histories[user_id] = []
-            self._distilled: dict[int | str, list] = getattr(self, "_distilled", {})
-            return
+        from c.heart import read_turns, read_distilled
+        turns = read_turns(user_id, self.memory_dir)
+        distilled = read_distilled(user_id, self.memory_dir)
         entries: list[dict] = []
-        distilled: list[dict] = []
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            try:
-                rec = json.loads(line)
-            except Exception:
-                continue
-            # Feature 6: distilled records are context, not turns
-            if rec.get("kind") == "distilled":
-                distilled.append(rec)
-                continue
+        for rec in turns:
             if "user" not in rec or "bot" not in rec:
                 continue
             entries.append({"role": "user", "content": rec["user"]})
             entries.append({"role": "assistant", "content": rec["bot"]})
-        # Only carry forward the most recent scroll context
         self._histories[user_id] = entries[-(self.max_history):]
-        # Store distilled records for integral enrichment
         if not hasattr(self, "_distilled"):
             self._distilled = {}
         self._distilled[user_id] = distilled
@@ -155,20 +137,9 @@ class Hand:
     def _append_scroll(
         self, user_id: int | str, user_text: str, bot_reply: str
     ) -> None:
-        """Persist one turn-pair to the scroll file."""
-        import datetime as _dt
-
-        path = self._scroll_path(user_id)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a", encoding="utf-8") as f:
-            f.write(
-                json.dumps({
-                    "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
-                    "user": user_text[:2000],
-                    "bot": bot_reply[:2000],
-                })
-                + "\n"
-            )
+        """Persist one turn-pair to the scroll."""
+        from c.heart import append_turn
+        append_turn(user_id, user_text, bot_reply, self.memory_dir)
 
     # ── Feature 5: Scroll-to-claims mining (Proverbs 2:4-5) ────────────
     # "If thou seekest her as silver, and searchest for her as for hid
@@ -186,77 +157,51 @@ class Hand:
 
     def _distill_scroll(self, user_id: int | str) -> None:
         """
-        Proverbs 25:4 — take away the dross from the silver, and there
-        shall come forth a vessel for the finer.
+        Proverbs 25:4 — take away the dross from the silver.
 
         When scroll exceeds threshold, distill the oldest half into a
-        type-based summary. Uses Strong's mathematical types instead of
-        English word frequency — works in any language.
+        type-based summary. Works with the unified heart file.
         """
         import datetime as _dt
         from c.formula import draft_types
+        from c.heart import _read_all, _write_all
 
-        path = self._scroll_path(user_id)
-        if not path.exists():
+        all_recs = _read_all(user_id, self.memory_dir)
+        turns = [r for r in all_recs if r.get("type") == "turn"]
+
+        if len(turns) < 50:
             return
 
-        lines = path.read_text(encoding="utf-8").splitlines()
-        distilled_lines = []
-        turn_records = []
-        for line in lines:
-            if not line.strip():
-                continue
-            try:
-                rec = json.loads(line)
-            except Exception:
-                continue
-            if rec.get("kind") == "distilled":
-                distilled_lines.append(line)
-            else:
-                turn_records.append((line, rec))
+        midpoint = len(turns) // 2
+        old_half = turns[:midpoint]
 
-        if len(turn_records) < 50:
-            return  # not enough to distill
-
-        midpoint = len(turn_records) // 2
-        old_half = [rec for _, rec in turn_records[:midpoint]]
-        recent_lines = [line for line, _ in turn_records[midpoint:]]
-
-        # Type-based distillation: extract mathematical type frequencies
-        # from the conversation. Language-agnostic via Strong's.
         from collections import Counter
         type_counts: Counter = Counter()
         for rec in old_half:
-            user_text = rec.get("user", "")
-            bot_text = rec.get("bot", "")
-            for t in draft_types(user_text):
+            for t in draft_types(rec.get("user", "")):
                 type_counts[t] += 1
-            for t in draft_types(bot_text):
+            for t in draft_types(rec.get("bot", "")):
                 type_counts[t] += 1
 
-        top_types = type_counts.most_common(14)  # all 14 math types
+        top_types = type_counts.most_common(14)
         first_ts = old_half[0].get("ts", "") if old_half else ""
         last_ts = old_half[-1].get("ts", "") if old_half else ""
 
-        distilled_record = json.dumps({
-            "kind": "distilled",
+        distilled = {
+            "type": "distilled",
             "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
-            "covers": {
-                "from": first_ts,
-                "to": last_ts,
-                "turns": len(old_half),
-            },
+            "covers": {"from": first_ts, "to": last_ts, "turns": len(old_half)},
             "types": [{"type": t, "count": n} for t, n in top_types],
-        })
+        }
 
-        path.write_text(
-            "\n".join(distilled_lines + [distilled_record] + recent_lines) + "\n",
-            encoding="utf-8",
-        )
+        # Remove old turns, add distilled record, keep recent turns
+        non_turns = [r for r in all_recs if r.get("type") != "turn"]
+        recent_turns = turns[midpoint:]
+        _write_all(user_id, non_turns + [distilled] + recent_turns, self.memory_dir)
 
         if not hasattr(self, "_distilled"):
             self._distilled = {}
-        self._distilled.setdefault(user_id, []).append(json.loads(distilled_record))
+        self._distilled.setdefault(user_id, []).append(distilled)
 
         logger.info(
             "[%s] SCROLL distilled %d turns → types: %s",

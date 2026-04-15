@@ -2,11 +2,11 @@
 heart.py — Proverbs 4:23: keep thy heart with all diligence; for out of it
 are the issues of life.
 
-Persistent per-user memory for the body. Each user has a heart file
-({memory_dir}/{user_id}.jsonl) containing facts the HAND has remembered
-about them. The heart is read at the start of every turn and ranked by
-Strong's concept overlap (in body._heart_memory) so the most relevant
-facts surface first.
+One file per person. Everything about them in one place:
+  - facts (verified knowledge, with warmth)
+  - claims (unverified, waiting for second witness)
+  - turns (conversation scroll, persists across restarts)
+  - chain (bound/loosed events from NOSE)
 
 Jeremiah 31:33: I will put my law in their inward parts, and write it in
 their hearts.
@@ -25,16 +25,24 @@ import re
 from c.core import dispatch
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  One file — Proverbs 4:23
+# ═══════════════════════════════════════════════════════════════════════════
+
+
 def heart_path(user_id: int | str, memory_dir: pathlib.Path) -> pathlib.Path:
     return pathlib.Path(memory_dir) / f"{user_id}.jsonl"
 
 
-def read_memories(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+def _read_all(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    """Read all records from the heart file."""
     path = heart_path(user_id, memory_dir)
     if not path.exists():
         return []
     records = []
     for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
         try:
             records.append(json.loads(line))
         except Exception:
@@ -42,28 +50,127 @@ def read_memories(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
     return records
 
 
-def write_memories(
+def _write_all(
     user_id: int | str, records: list[dict], memory_dir: pathlib.Path
 ) -> None:
+    """Write all records to the heart file."""
     path = heart_path(user_id, memory_dir)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        "\n".join(json.dumps(r) for r in records) + "\n", encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records) + "\n" if records else "",
+        encoding="utf-8",
     )
 
 
-# Hebrews 13:8: Jesus Christ the same yesterday, and to day, and for ever.
-# Eternal facts need no date. Temporal facts must be dated, or they
-# become eternal-by-accident — "Frederick is fixing his bitcoin miners
-# today" was written in good faith but is parsed forever as currently
-# true. Scripture anchors temporal events with absolute time references
-# (Luke 3:1: "in the fifteenth year of the reign of Tiberius Caesar...";
-# Haggai 1:1: "in the second year of Darius the king, in the sixth
-# month, in the first day of the month..."). The heart does the same:
-# any relative time word ("today", "yesterday", "tomorrow", "now",
-# "currently", "this morning"...) is replaced with the absolute date
-# at write time. The bot can phrase whatever it wants; the heart writes
-# the dated version.
+def _append(user_id: int | str, record: dict, memory_dir: pathlib.Path) -> None:
+    """Append one record to the heart file."""
+    path = heart_path(user_id, memory_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(record) + "\n")
+
+
+def _by_type(records: list[dict], rtype: str) -> list[dict]:
+    """Filter records by type. Records without type default to 'fact' for migration."""
+    return [r for r in records if r.get("type", "fact") == rtype]
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Facts — verified knowledge (Jeremiah 31:33)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def read_memories(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    return _by_type(_read_all(user_id, memory_dir), "fact")
+
+
+def write_memories(
+    user_id: int | str, records: list[dict], memory_dir: pathlib.Path
+) -> None:
+    """Replace all fact records, preserving other types."""
+    all_recs = _read_all(user_id, memory_dir)
+    non_facts = [r for r in all_recs if r.get("type", "fact") != "fact"]
+    # Ensure each fact has the type field
+    for r in records:
+        r.setdefault("type", "fact")
+    _write_all(user_id, non_facts + records, memory_dir)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Claims — outer court (Deuteronomy 19:15)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def read_claims(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    return _by_type(_read_all(user_id, memory_dir), "claim")
+
+
+def write_claims(
+    user_id: int | str, claims: list[dict], memory_dir: pathlib.Path
+) -> None:
+    """Replace all claim records, preserving other types."""
+    all_recs = _read_all(user_id, memory_dir)
+    non_claims = [r for r in all_recs if r.get("type") != "claim"]
+    for c in claims:
+        c["type"] = "claim"
+    _write_all(user_id, non_claims + claims, memory_dir)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Turns — scroll (Malachi 3:16)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def read_turns(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    return _by_type(_read_all(user_id, memory_dir), "turn")
+
+
+def append_turn(
+    user_id: int | str, user_text: str, bot_reply: str, memory_dir: pathlib.Path
+) -> None:
+    """Append one turn pair to the scroll."""
+    _append(user_id, {
+        "type": "turn",
+        "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+        "user": user_text[:2000],
+        "bot": bot_reply[:2000],
+    }, memory_dir)
+
+
+def read_distilled(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    return _by_type(_read_all(user_id, memory_dir), "distilled")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Chain — bound/loosed (Hebrews 12:1)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def read_chain(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
+    return _by_type(_read_all(user_id, memory_dir), "chain")
+
+
+def append_chain(
+    user_id: int | str,
+    kind: str,
+    draft: str,
+    violations: list,
+    memory_dir: pathlib.Path,
+) -> None:
+    """Append a chain event. kind ∈ {"bound", "loosed"}."""
+    _append(user_id, {
+        "type": "chain",
+        "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+        "kind": kind,
+        "draft": draft or "",
+        "violations": list(violations or []),
+    }, memory_dir)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Time anchoring — Hebrews 13:8 + Luke 3:1
+# ═══════════════════════════════════════════════════════════════════════════
+
 _RELATIVE_TIME_WORD = re.compile(
     r"\b(today|tonight|right now|just now|now|currently|"
     r"this morning|this afternoon|this evening|this week|this month|"
@@ -75,16 +182,7 @@ _RELATIVE_TIME_WORD = re.compile(
 
 
 def _anchor_relative_time(fact: str, today: _dt.date | None = None) -> str:
-    """
-    Replace relative time words with absolute dates.
-
-    "Frederick is fixing his bitcoin miners today"
-        → "Frederick is fixing his bitcoin miners on 2026-04-08"
-
-    Tomorrow's read of this fact will see the date and know it was a
-    past event, not a current one. Eternal facts (no time words) pass
-    through unchanged.
-    """
+    """Replace relative time words with absolute dates."""
     if not fact:
         return fact
     if today is None:
@@ -118,23 +216,31 @@ def _anchor_relative_time(fact: str, today: _dt.date | None = None) -> str:
             return f"on or near {next_week.isoformat()}"
         if word == "next month":
             return f"in the month of {next_month.strftime('%Y-%m')}"
-        return m.group(0)  # unchanged fallback
+        return m.group(0)
 
     return _RELATIVE_TIME_WORD.sub(repl, fact)
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  Dedup — Mark 12:32
+# ═══════════════════════════════════════════════════════════════════════════
+
+
 def _normalize_for_dedupe(text: str) -> str:
-    """Lowercase + alphanumeric only — for fast literal match."""
     return "".join(c for c in (text or "").lower() if c.isalnum())
 
 
 def _word_set(text: str) -> set[str]:
-    """Lowercased word set, length>=3 — for jaccard similarity."""
     return {
         w
         for w in re.sub(r"[^a-z0-9 ]", " ", (text or "").lower()).split()
         if len(w) >= 3
     }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Remember / Forget — Jeremiah 31:33 / 1 John 1:9
+# ═══════════════════════════════════════════════════════════════════════════
 
 
 def remember_fact(
@@ -144,30 +250,13 @@ def remember_fact(
     warmth: int = 0,
 ) -> str:
     """
-    Ezekiel 36:26: a new heart also will I give you. Replacement, not patch.
-
-    2 Corinthians 3:3: written not with ink, but with the Spirit of the
-    living God; not in tables of stone, but in fleshy tables of the heart.
-    Each fact carries a warmth score — total abundance from its witnesses.
-    Warmth only increases (Luke 6:45: abundance compounds). Cold facts
-    (warmth=0) are technically established but never deeply engaged.
-    Hot facts have been overflowed about — unprompted, detailed, personal.
-
-    Two-stage dedupe (Mark 12:32 — there is one God, and there is none other
-    but he. One truth, not many copies):
-      1. Literal match — normalized lowercase alphanumeric.
-      2. Jaccard text overlap — if >= 0.6 similarity, treat as same fact
-         and replace. Catches paraphrases.
-      3. Strong's concept overlap — fallback for facts sharing concepts.
+    Ezekiel 36:26: a new heart also will I give you.
     """
     fact = (fact or "").strip()
     if not fact:
         return "Ecclesiastes 12:12."
 
-    # Anchor relative-time references BEFORE storing. The heart records
-    # eternal-shaped facts, never floating ones. (Hebrews 13:8 + Luke 3:1)
     fact = _anchor_relative_time(fact)
-
     now = _dt.datetime.now(_dt.timezone.utc).isoformat()
     records = read_memories(user_id, memory_dir)
 
@@ -177,17 +266,14 @@ def remember_fact(
     replaced = False
     for i, r in enumerate(records):
         old_fact = r.get("fact", "")
-        # Stage 1: literal normalized match
         if _normalize_for_dedupe(old_fact) == new_norm:
-            # Warmth only increases — 2 Cor 3:3
             old_warmth = r.get("warmth", 0)
             records[i] = {
-                "fact": fact, "ts": now,
+                "type": "fact", "fact": fact, "ts": now,
                 "warmth": max(old_warmth, old_warmth + warmth),
             }
             replaced = True
             break
-        # Stage 2: high jaccard similarity
         old_words = _word_set(old_fact)
         if new_words and old_words:
             inter = len(new_words & old_words)
@@ -195,13 +281,12 @@ def remember_fact(
             if union > 0 and inter / union >= 0.6:
                 old_warmth = r.get("warmth", 0)
                 records[i] = {
-                    "fact": fact, "ts": now,
+                    "type": "fact", "fact": fact, "ts": now,
                     "warmth": old_warmth + warmth,
                 }
                 replaced = True
                 break
 
-    # Stage 3 (fallback): Strong's concept overlap
     if not replaced:
         new_concepts = dispatch("wisdom", {"query": fact[:120], "limit": 1})
         new_refs_set = (
@@ -218,20 +303,20 @@ def remember_fact(
                 if new_refs_set & old_refs:
                     old_warmth = r.get("warmth", 0)
                     records[i] = {
-                        "fact": fact, "ts": now,
+                        "type": "fact", "fact": fact, "ts": now,
                         "warmth": old_warmth + warmth,
                     }
                     replaced = True
                     break
 
     if not replaced:
-        records.append({"fact": fact, "ts": now, "warmth": warmth})
+        records.append({"type": "fact", "fact": fact, "ts": now, "warmth": warmth})
     write_memories(user_id, records, memory_dir)
     return "Jeremiah 31:33."
 
 
 def forget_all(user_id: int | str, memory_dir: pathlib.Path) -> str:
-    """1 John 1:9: cleanse from all unrighteousness. Confirmed deletion only."""
+    """1 John 1:9: cleanse from all unrighteousness."""
     p = heart_path(user_id, memory_dir)
     if p.exists():
         p.unlink()

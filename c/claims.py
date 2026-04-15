@@ -42,33 +42,16 @@ from datetime import datetime, timezone
 logger = logging.getLogger(__name__)
 
 
-def claims_path(user_id: int | str, memory_dir: pathlib.Path) -> pathlib.Path:
-    return pathlib.Path(memory_dir) / f"{user_id}.claims.jsonl"
-
-
 def read_claims(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
-    p = claims_path(user_id, memory_dir)
-    if not p.exists():
-        return []
-    out = []
-    for line in p.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            try:
-                out.append(json.loads(line))
-            except Exception:
-                pass
-    return out
+    from c.heart import read_claims as _read
+    return _read(user_id, memory_dir)
 
 
 def _write_claims(
     user_id: int | str, claims: list[dict], memory_dir: pathlib.Path
 ) -> None:
-    p = claims_path(user_id, memory_dir)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(
-        "\n".join(json.dumps(c) for c in claims) + "\n" if claims else "",
-        encoding="utf-8",
-    )
+    from c.heart import write_claims as _write
+    _write(user_id, claims, memory_dir)
 
 
 def _word_set(text: str) -> set[str]:
