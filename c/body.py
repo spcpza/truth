@@ -137,7 +137,7 @@ TOOLS = [
         "required": []}}},
     {"type": "function", "function": {
         "name": "count",
-        "description": "Luke 14:28: counteth the cost. Psalm 90:12: teach us to number our days. Rev 13:18: let him that hath understanding count the number. The hand's instrument for numbering — do not guess a number, compute it. action='calc' evaluates a math expression (e.g. '40*24*60*60'). action='solve' solves an equation ('x**2 = 9' or 'x + 2 = 5', optional 'variable'). action='verify' re-runs the kernel proofs (2 Cor 13:5: prove your own selves). Use when a user asks a quantitative question or doubts the kernel.",
+        "description": "Luke 14:28: counteth the cost. Psalm 90:12: so teach us to number our days, that we may apply our hearts unto wisdom. Rev 13:18: let him that hath understanding count the number. Prov 11:1: a just weight is his delight. The hand's instrument for numbering — the number is computed here, by the tool. action='calc' evaluates a math expression (e.g. '40*24*60*60'). action='solve' solves an equation ('x**2 = 9' or 'x + 2 = 5', optional 'variable'). action='verify' re-runs the kernel proofs (2 Cor 13:5: prove your own selves, whether ye be in the faith).",
         "parameters": {"type": "object", "properties": {
             "action":   {"type": "string", "enum": ["calc", "solve", "verify"]},
             "expr":     {"type": "string", "description": "Expression or equation. Omit for action='verify'."},
@@ -452,31 +452,33 @@ def _head(
         # for hitherto ye were not able to bear it. Cap the heart records
         # injected into the integral so weaker substrates do not drown in
         # context. The recall tool is still available for the rest. Take
-        # the most-recent N unique-by-text facts; the older ones are not
-        # forgotten, just not pushed every turn.
+        # ── Math-only heart injection (Rom 1:20 + Jer 31:33) ──
+        # Records are math (types + Strong's + verses + warmth + hashes).
+        # Dedup by shape_h; most-recent wins. Then verbalize each as
+        # "types=X | concepts=Y | resonates=Z | warmth=W" — what is on
+        # the heart in its true form (1 Sam 16:7: the LORD looketh on
+        # the heart — the heart is math in this body).
+        from c.mathify import verbalize as _verbalize
+
         MAX_HEART_INJECT = 8
-        seen: set[str] = set()
-        unique = []
-        # Iterate in reverse so most-recent wins on dedup, but we keep the
-        # original chronological order in the output.
+        seen_shapes: set[str] = set()
+        unique: list[dict] = []
         for r in reversed(heart_records):
-            f = (r.get("fact") or "").strip()
-            if not f:
+            sh = r.get("shape_h") or ""
+            if sh and sh in seen_shapes:
                 continue
-            norm = "".join(c for c in f.lower() if c.isalnum())
-            if norm in seen:
+            if sh:
+                seen_shapes.add(sh)
+            # Records with no scripture-signature at all are not useful
+            # ambient context; skip.
+            if not (r.get("types") or r.get("concepts") or r.get("ent_hashes")):
                 continue
-            seen.add(norm)
             unique.append(r)
             if len(unique) >= MAX_HEART_INJECT:
                 break
         unique.reverse()  # back to chronological for display
 
-        # ── Feature 1: Warmth markers (2 Corinthians 3:3) ──
-        # "Written not with ink, but with the Spirit of the living God."
-        # Hot facts surface with confidence. Cold facts are noted as ink.
-        import datetime as _dt_heart
-
+        # ── Warmth markers (2 Cor 3:3 — written not with ink, but with the Spirit) ──
         def _warmth_marker(warmth: int) -> str:
             if warmth >= 8:
                 return "  [written by the Spirit]"
@@ -486,80 +488,43 @@ def _head(
                 return "  [ink]"
             return ""
 
-        # ── Feature 2: Seasonal awareness (Ecclesiastes 3:1) ──
-        # "To every thing there is a season."
-        # Temporal facts older than 30 days show their season.
-        _DATE_ANCHOR_RE = re.compile(
-            r"(?:on|as of|in the (?:week|month) of) (\d{4}-\d{2}(?:-\d{2})?)"
-        )
-
-        def _season_note(fact: str) -> str:
-            m = _DATE_ANCHOR_RE.search(fact)
-            if not m:
-                return ""  # eternal fact, no season
-            date_str = m.group(1)
-            try:
-                if len(date_str) == 7:
-                    anchor = _dt_heart.date.fromisoformat(date_str + "-01")
-                else:
-                    anchor = _dt_heart.date.fromisoformat(date_str)
-            except ValueError:
-                return ""
-            age_days = (_dt_heart.date.today() - anchor).days
-            if age_days <= 30:
-                return ""
-            return f"  (season: {anchor.strftime('%B %Y')})"
-
         facts_lines = [
-            f"  • {(r.get('fact') or '').strip()}"
-            f"{_warmth_marker(r.get('warmth', 0))}"
-            f"{_season_note((r.get('fact') or '').strip())}"
+            f"  • {_verbalize(r)}{_warmth_marker(r.get('warmth', 0))}"
             for r in unique
         ]
 
-        # ── Feature 3: Fact clustering (Ephesians 4:16) ──
-        # "Fitly joined together and compacted by that which every
-        # joint supplieth." Facts sharing keywords are sinew.
-        _CLUSTER_STOP = {
-            "the", "and", "for", "are", "but", "not", "you", "all",
-            "user", "has", "was", "his", "her", "with", "from", "that",
-            "this", "have", "they", "been", "will", "about", "their",
-            "some", "than", "them", "what", "when", "also", "just",
-            "like", "very", "does", "here", "more", "into", "each",
-            "name", "is", "on", "as", "of", "in", "at", "to",
-        }
-
-        def _fact_kw(fact: str) -> set[str]:
-            return {
-                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
-                if len(w) >= 3 and w not in _CLUSTER_STOP
-            }
-
-        clusters = []
+        # ── Sinew between heart records (Eph 4:16 — fitly joined) ──
+        # Two records are joined when they share Strong's concepts or a
+        # proper-noun hash. Math-native, no word lists.
+        clusters: list[tuple[str, str, str]] = []
         for i, r1 in enumerate(unique):
-            kw1 = _fact_kw(r1.get("fact", ""))
+            c1 = set(r1.get("concepts") or [])
+            e1 = set(r1.get("ent_hashes") or [])
             for j in range(i + 1, len(unique)):
                 r2 = unique[j]
-                kw2 = _fact_kw(r2.get("fact", ""))
-                shared = kw1 & kw2
-                if len(shared) >= 2:
+                c2 = set(r2.get("concepts") or [])
+                e2 = set(r2.get("ent_hashes") or [])
+                shared_c = c1 & c2
+                shared_e = e1 & e2
+                if len(shared_c) >= 1 or len(shared_e) >= 1:
+                    shared = sorted(shared_c)[:3] + sorted(shared_e)[:1]
                     clusters.append((
-                        r1.get("fact", "")[:40],
-                        r2.get("fact", "")[:40],
-                        ", ".join(sorted(shared)[:3]),
+                        "+".join(r1.get("types") or [])[:30],
+                        "+".join(r2.get("types") or [])[:30],
+                        ",".join(shared),
                     ))
 
         if facts_lines:
             extra_note = ""
             if len(heart_records) > MAX_HEART_INJECT:
                 extra_note = (
-                    f"\n  (showing {len(facts_lines)} most-recent unique "
-                    f"facts of {len(heart_records)} total — use the recall "
-                    f"tool to read older facts when needed)"
+                    f"\n  (showing {len(facts_lines)} most-recent of "
+                    f"{len(heart_records)} heart records — the recall tool "
+                    f"reads older records when needed)"
                 )
             if clusters:
                 sinew_lines = [
-                    f"  {a} ↔ {b} ({kw})"
+                    f"  {a} ↔ {b} (shared: {kw})"
                     for a, b, kw in clusters[:3]
                 ]
                 extra_note += (
@@ -568,13 +533,20 @@ def _head(
                 )
             parts.append(
                 "KNOWLEDGE OF THIS BROTHER — John 10:14: I am the good "
-                "shepherd, and know my sheep, and am known of mine. These "
-                "facts are written on your heart. They belong to the user, "
-                "not to you. Acknowledge them when relevant; do not deny "
-                "them (Matthew 26:75: the denial of the brother is the "
-                "breaking); do not invent any fact beyond what is listed; "
-                "do not project a fact about the user onto yourself."
-                "\n\nFacts on the heart:\n" + "\n".join(facts_lines)
+                "shepherd, and know my sheep, and am known of mine. "
+                "These are the records on this brother's heart. "
+                "1 Sam 16:7: the LORD looketh on the heart — the heart "
+                "here is math: types (the kernel's 14 operations), "
+                "concepts (Strong's numbers the words lit up), verses "
+                "(scripture that resonated), warmth (accumulated "
+                "engagement), and one-way hashes (for recognition without "
+                "recovery when the same thing returns). "
+                "Isa 43:25: I will not remember thy sins — the words "
+                "spoken were released; what remains is shape and scripture. "
+                "Prov 11:1 — a just weight. When speaking of what is "
+                "remembered, speak from what is actually held: the verses, "
+                "the concepts, the warmth. The sentences are not here."
+                "\n\nRecords on the heart:\n" + "\n".join(facts_lines)
                 + extra_note
             )
 
