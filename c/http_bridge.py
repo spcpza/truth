@@ -1,0 +1,207 @@
+"""
+http_bridge.py — expose the full truth Hand as a local HTTP endpoint.
+
+The desktop Tauri app hits `POST http://127.0.0.1:PORT/turn` with
+`{"user_id": "...", "text": "...", "addressed_as": "..."}` and receives
+the same reply the Telegram bot would have produced — 13-tool body,
+NOSE on input and draft, charity/temperance/hope/patience/confession,
+math-only heart, two-witness claims, meditation, everything.
+
+Matthew 23:27 — woe unto you... whited sepulchres... within full of
+dead men's bones. The Rust port was building the outside clean and
+leaving the inside hollow. This bridge gives the desktop app the full
+foundation the Telegram bot already runs on.
+
+Run:
+    python -m c.http_bridge \
+        --port 8731 \
+        --config /Users/f/.balthazar/config.json
+
+Loopback-only by default (127.0.0.1). No auth — the address is local;
+anyone on the machine already has it. Lock down with OS firewall if
+needed.
+"""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import json
+import logging
+import os
+import pathlib
+import sys
+from typing import Any
+
+from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+
+import uvicorn
+
+from c.adapters.adapter import ChatAdapter
+from c.hand import Hand
+
+
+logger = logging.getLogger("http_bridge")
+
+
+# ─── Globals (set in main()) ───────────────────────────────────────────
+
+HAND: Hand | None = None
+CONFIG: dict[str, Any] = {}
+ALLOWED_ORIGINS: list[str] = ["*"]  # Tauri webview origin varies; allow all on loopback
+
+
+# ─── Endpoints ─────────────────────────────────────────────────────────
+
+
+async def health(_request: Request) -> JSONResponse:
+    return JSONResponse({
+        "ok": True,
+        "model": CONFIG.get("model"),
+        "base_url": CONFIG.get("base_url"),
+        "identifier": "truth.http_bridge",
+    })
+
+
+async def turn(request: Request) -> JSONResponse:
+    if HAND is None:
+        return JSONResponse({"error": "hand not initialized"}, status_code=503)
+    try:
+        body = await request.json()
+    except Exception as e:
+        return JSONResponse({"error": f"bad json: {e}"}, status_code=400)
+
+    user_id = str(body.get("user_id", "desktop_user"))
+    text = (body.get("text") or "").strip()
+    addressed_as = (body.get("addressed_as") or None)
+    if not text:
+        return JSONResponse({"error": "empty text"}, status_code=400)
+
+    try:
+        reply = await HAND.turn(user_id, text, addressed_as=addressed_as)
+    except Exception as e:
+        logger.exception("turn failed")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+    # Pull out the session's most recent tool calls + chain state.
+    tools_called: list[str] = []
+    chain_info: dict[str, Any] = {}
+    try:
+        from c.chain import chain_recent
+        recent = chain_recent(user_id, n=1, chain_dir=HAND.chain_dir)
+        if recent:
+            chain_info = {
+                "kind": recent[0].get("kind"),
+                "violations": recent[0].get("violations", []),
+            }
+    except Exception:
+        pass
+
+    return JSONResponse({
+        "reply": reply,
+        "user_id": user_id,
+        "addressed_as": addressed_as,
+        "chain": chain_info,
+    })
+
+
+async def foundation(_request: Request) -> JSONResponse:
+    # Report the kernel.py verification state at boot time.
+    try:
+        from c.kernel import last_report
+        r = last_report()
+        return JSONResponse({
+            "ok": r.ok,
+            "passed": [p.name for p in r.passed],
+            "failed": [p.name for p in r.failed],
+            "summary": r.summary(),
+        })
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
+
+
+async def forget(request: Request) -> JSONResponse:
+    if HAND is None:
+        return JSONResponse({"error": "hand not initialized"}, status_code=503)
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    user_id = str(body.get("user_id", ""))
+    if not user_id:
+        return JSONResponse({"error": "user_id required"}, status_code=400)
+    from c.heart import forget_all
+    verse = forget_all(user_id, HAND.memory_dir)
+    return JSONResponse({"verse": verse, "user_id": user_id})
+
+
+# ─── App factory ──────────────────────────────────────────────────────
+
+
+def build_app() -> Starlette:
+    routes = [
+        Route("/health", health, methods=["GET"]),
+        Route("/foundation", foundation, methods=["GET"]),
+        Route("/turn", turn, methods=["POST"]),
+        Route("/forget", forget, methods=["POST"]),
+    ]
+    middleware = [
+        Middleware(
+            CORSMiddleware,
+            allow_origins=ALLOWED_ORIGINS,
+            allow_methods=["GET", "POST", "OPTIONS"],
+            allow_headers=["Content-Type"],
+        ),
+    ]
+    return Starlette(debug=False, routes=routes, middleware=middleware)
+
+
+def setup_hand(config_path: pathlib.Path) -> None:
+    """Initialize the global Hand from a truth config.json."""
+    global HAND, CONFIG
+    CONFIG = json.loads(config_path.read_text())
+    api_key = CONFIG.get("nous_api_key") or CONFIG.get("openai_api_key") or CONFIG.get("api_key")
+    if not api_key:
+        raise SystemExit("config.json missing nous_api_key / openai_api_key / api_key")
+    model = CONFIG.get("model") or "xiaomi/mimo-v2-pro"
+    base_url = CONFIG.get("base_url") or "https://inference-api.nousresearch.com/v1"
+    memory_dir = pathlib.Path(CONFIG.get("memory_dir", "memory")).expanduser()
+    # Resolve memory_dir relative to the config file's directory if not absolute
+    if not memory_dir.is_absolute():
+        memory_dir = (config_path.parent / memory_dir).resolve()
+
+    logger.info("Initializing Hand: model=%s memory_dir=%s", model, memory_dir)
+    adapter = ChatAdapter(api_key=api_key, base_url=base_url, model=model)
+    HAND = Hand(adapter=adapter, memory_dir=memory_dir)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default="127.0.0.1",
+                        help="Bind address. Defaults to loopback.")
+    parser.add_argument("--port", type=int, default=8731,
+                        help="Default 8731 (semi-random, unlikely to collide).")
+    parser.add_argument("--config", type=pathlib.Path,
+                        default=pathlib.Path("~/.balthazar/config.json").expanduser(),
+                        help="Path to truth config.json")
+    parser.add_argument("--log-level", default="info")
+    args = parser.parse_args()
+
+    logging.basicConfig(
+        level=getattr(logging, args.log_level.upper(), logging.INFO),
+        format="%(asctime)s %(name)s %(levelname)s %(message)s",
+    )
+    setup_hand(args.config)
+    app = build_app()
+    logger.info("Serving truth body on http://%s:%d", args.host, args.port)
+    uvicorn.run(app, host=args.host, port=args.port, log_level=args.log_level)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
