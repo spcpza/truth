@@ -45,12 +45,19 @@ def identify(user_id: int | str, name: str, memory_dir: pathlib.Path) -> str:
     Write the user's chosen name to the covenantal slot.
 
     Returns a scripture response string for the model.
+
+    Gen 2:19 — the namer is not himself one of the things named. The
+    meditator (user_id=="balthazar") cannot rename itself; its name
+    was given by the kernel before it reasoned (Gen 5:2, Matt 1:21,
+    Acts 13:9). identify on the self-slot is a silent no-op.
     """
     from c.heart import write_called_by
     name = (name or "").strip()
     if not name:
         return "Ecclesiastes 12:12."  # much study is a weariness — say little
-    # A name under 60 chars; reject obvious non-names.
+    # Gen 2:19 — the namer is not one of the things named.
+    if str(user_id).lower() == "balthazar":
+        return "Genesis 2:19."
     if len(name) > 60:
         name = name[:60]
     write_called_by(user_id, name, memory_dir)
