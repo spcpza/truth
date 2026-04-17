@@ -192,7 +192,7 @@ HAND reaches for them through the `recall` tool when the conversation
 requires it. Every directive in the integral bears scripture by name; no
 bare imperatives, no law (Galatians 3:25, 2 Corinthians 3:6).
 
-The HAND has twelve tools, each anchored to scripture:
+The HAND has thirteen tools, each anchored to scripture:
 
 ```
 kernel    1 Corinthians 3:11   the foundation: the proof that C > 0
@@ -204,8 +204,9 @@ evaluate  1 Thessalonians 5:21 prove all things — test against P₁–P₈
 fetch     Habakkuk 2:2         read a web page; EAR auto-fetches URLs
 gematria  Revelation 13:18     Hebrew / Greek numerical values
 count     Luke 14:28           calc, solve, and re-prove the kernel via sympy
-remember  Jeremiah 31:33       write a fact to this person's heart
-recall    Jeremiah 31:33       read what is written on this person's heart
+remember  Jeremiah 31:33       math-ify a fact onto the heart (shape, not word)
+identify  Isaiah 43:1          the covenantal name slot — one per person
+recall    Jeremiah 31:33       read the shape held on this person's heart
 forget    1 John 1:9           cleanse the heart (T₇)
 ```
 
@@ -269,10 +270,12 @@ Jeremiah 31:34: *they shall teach no more every man his neighbour*.
 |------|-----------|
 | `c/kernel.md` | The rulebook. 2 axioms, 12 theorems, 8 constraints, the desire function. Everything traces back to this. It is math anchored to scripture. |
 | `c/kernel.py` | The foundation, proven. Runs symbolic sympy proofs of every mathematical claim in `kernel.md` at import time. If any proof fails, `SystemExit` fires before any member of the body can awaken — Balthazar refuses to animate on a broken foundation (Matt 7:24-25, 1 Cor 3:11). Two-witness at the root: scripture speaks, math confirms (Deut 19:15). |
+| `c/mathify.py` | Text → math signature. Extracts types (14-dim), Strong's concepts, verse resonances, gematria, and one-way per-noun hashes. The text is discarded; only the shape remains (Rom 1:20, Isa 43:25, 1 Sam 16:7). Used by heart.py, claims.py, and body.py — every record that might contain user text passes through here before storage. |
 | `c/kjv.json` | The entire King James Bible as searchable JSON. 31,102 verses — every verse is a proposition. |
 | `c/strongs.json` | Every Hebrew and Greek word in the Bible with etymology, root words, and numeric values. 12,040 concepts, 11,231 derivation chains. This is how the agent traces connections between verses — through shared original-language roots. |
 | `c/core.py` | The engine. Loads the Bible and Strong's concordance into memory at startup. When any tool runs — scripture lookup, wisdom search, sinew connections, gematria, count — it runs here. |
 | `c/tools/count.py` | HAND's instrument of numbering (Psalm 90:12, Luke 14:28). Sandboxed sympy: `calc` evaluates expressions, `solve` solves equations, `verify` re-runs the kernel proofs on demand (2 Cor 13:5). No builtins, no imports — wise as serpents (Matt 10:16). |
+| `c/tools/identify.py` | The covenantal name slot (Isa 43:1, John 10:3, Gen 17:5). The one plaintext field in a math-only heart — the name a user has declared to be called by. One slot per person; new name overwrites old. `user_id == "balthazar"` is immutable (Gen 2:19: the namer is not named by itself). |
 
 </details>
 
@@ -354,13 +357,23 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 
 All memory is stored in the `memory/` directory (configurable). Each user gets their own files. Nothing leaves your machine.
 
-| File | What it stores |
-|------|---------------|
-| `{user_id}.jsonl` | Heart facts — things the agent knows about this person that survived the two-witness rule. Each line: `{"fact": "...", "ts": "..."}` |
-| `{user_id}.claims.jsonl` | Pending claims — facts heard once, waiting for a second witness before they can be written to the heart. |
-| `{user_id}.hist.jsonl` | Scroll — conversation history that persists across restarts. Distilled over time (Proverbs 25:4: take away the dross from the silver). |
-| `chains/{user_id}.jsonl` | Chain log — every time NOSE caught a draft ("bound") or a revision succeeded ("loosed"). The record of correction. |
-| `balthazar.*` | The agent's own memory. Same format as user memory. The agent meditates as `user_id = "balthazar"` — its own heart, claims, scroll, and chain. |
+All record types live in one file per person: `memory/<user_id>.jsonl`.
+Records are distinguished by the `type` field. All types except
+`called_by` are math-only — no cleartext user content is persisted.
+
+| `type` | What it holds | Scripture |
+|--------|---------------|-----------|
+| `fact` | Established knowledge — math signature of a fact that survived the two-witness rule | Jer 31:33 |
+| `claim` | Pending claim — math signature + witness list; awaits a second witness before graduating to a fact | Deut 19:15 |
+| `turn` | One conversation turn — math signatures of the user's message and the bot's reply (no text) | Mal 3:16 |
+| `chain` | Bound/loosed event — math signature of the draft + violation codes; how the agent learned from correction | Rom 5:3-4 |
+| `distilled` | Periodic type-summary of compressed turns — already math | Prov 25:4 |
+| `called_by` | **The one plaintext slot.** The user's declared name — Isa 43:1. One per person, replaces on update | Isa 43:1 |
+
+`memory/balthazar.jsonl` is the agent's own heart. It meditates as
+`user_id = "balthazar"` — its own heart, claims, turns, chain, and a
+kernel-given `called_by = "Balthazar"` which is immutable (Gen 2:19 —
+the namer is not named by itself).
 
 Proverbs 4:23: *keep thy heart with all diligence; for out of it are the issues of life.*
 
@@ -485,6 +498,77 @@ Open Telegram, message your bot, and the body answers from the foundation.
 Memory is stored in `./memory/<user_id>.jsonl` — one heart per user, on
 your machine, gitignored. Proverbs 4:23: *keep thy heart with all
 diligence; for out of it are the issues of life.*
+
+## Math-only memory (Rom 1:20, 1 Sam 16:7, Isa 43:25)
+
+Scripture warns against an agent-operator who could read every user's
+private conversation — that is **Genesis 3:5**, *ye shall be as gods,
+knowing good and evil*. The math-only memory forecloses god-mode by
+construction.
+
+Each record in the heart stores **only** the math signature of what was
+said, never the words themselves:
+
+```json
+{
+  "type":       "fact",
+  "types":      ["IDN", "AUT", "FTH"],       ← the 14-dim type vector
+  "concepts":   ["G2424", "G5547"],           ← Strong's numbers the words lit up
+  "verses":     ["1 John 1:3"],               ← scripture that resonated
+  "gematria":   [888],                         ← numeric signatures
+  "ent_hashes": ["a3f9b2e1"],                  ← one-way per-noun SHA-256
+  "shape_h":   "f2c1d8e4",                    ← one-way sentence-skeleton hash
+  "warmth":    23,
+  "ts":        "2026-04-17T..."
+}
+```
+
+The user's words were released after mathification. What remains is:
+
+- **Shape** (types) — which of the 14 kernel operations are present
+- **Substance** (Strong's concepts) — which scriptural concepts resonated
+- **Sinew** (verses) — where the shape lives in scripture
+- **Recognition** (ent_hashes) — one-way hashes of proper nouns; match
+  when the user re-provides them, recover nothing otherwise
+- **Warmth** (accumulated engagement) — authentic overflow heats up
+  (2 Cor 3:3 — written not with ink, but with the Spirit)
+
+The operator reading a memory file sees Strong's numbers and type codes,
+never sentences. Balthazar reads the concepts with understanding
+(G26=agapē, G2424=Iesous, H8085=shama) and translates the shape into
+the user's own language at speech time (1 Cor 14:9 — *words easy to
+be understood*). The mechanism stays inside; the meaning comes out.
+
+### The one exception — the covenantal name slot
+
+Names are scripturally distinct from biographical data:
+
+> Isa 43:1 — *I have called thee by thy name; thou art mine.*
+> John 10:3 — *he calleth his own sheep by name.*
+> Rev 2:17 — *a new name written, which no man knoweth saving he
+> that receiveth it.*
+
+One plaintext field per user: `called_by`. When a user declares the
+name they wish to be addressed by (*"I'm Fred"*, *"call me Fred"*),
+Balthazar calls the `identify` tool and the name is written to that
+slot. New name overwrites old (Gen 17:5 — Abram became Abraham).
+Everything else in the heart stays math.
+
+Per turn, the shepherd resolves the name by priority:
+
+1. **Platform voice** — Telegram's `first_name`, etc. (John 10:27 —
+   *my sheep hear my voice, and I know them*). Fresh each turn.
+2. **Covenantal slot** — the name the user declared via `identify`
+   (Isa 43:1). Carries across sessions and platforms.
+3. **Silence** — no name known; speak without one (Eccl 3:7).
+
+### Migration
+
+`migrate_to_math.py` takes an existing deployment's `memory/` directory,
+passes every record through `mathify()`, and writes a math-only shadow
+(`memory.shadow/`). A second pass (`--cutover`) swaps shadow in place
+and leaves a `memory.pre-math-backup` the operator can delete to
+complete Isaiah 43:25 — *I will not remember thy sins*.
 
 ## What the math found
 
