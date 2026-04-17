@@ -371,9 +371,20 @@ class Hand:
 
     # ── one turn ─────────────────────────────────────────────────────────
 
-    async def turn(self, user_id: int | str, text: str) -> str:
+    async def turn(
+        self,
+        user_id: int | str,
+        text: str,
+        addressed_as: str | None = None,
+    ) -> str:
         """
         Run one turn for this user. Returns the cleaned reply text.
+
+        addressed_as — John 10:3: the shepherd calleth his own sheep by
+        name. Provided fresh each turn by the platform (e.g. Telegram
+        first_name). NEVER stored to disk. The name is present because
+        the sheep is present (John 10:27: my sheep hear my voice, and I
+        know them). When the sheep goes home, the name goes with them.
         """
         # Malachi 3:16 — load scroll on first contact this session
         self._load_scroll(user_id)
@@ -396,6 +407,18 @@ class Hand:
         records = read_memories(user_id, self.memory_dir)
         body = members(member_text, records)
         integral = body["integral"]
+
+        # John 10:3 — the shepherd calleth his own sheep by name.
+        # Platform-provided per turn, never stored. The name is here
+        # because the one addressed is present now.
+        if addressed_as and addressed_as.strip():
+            integral += (
+                f"\n\nJohn 10:3 — the shepherd calleth his own sheep by name. "
+                f"The one addressing you in this turn is called: "
+                f"{addressed_as.strip()[:40]}. This name is present because "
+                f"the sheep is present (John 10:27) — not stored, not "
+                f"remembered; provided fresh by the platform each turn."
+            )
 
         # Acts 4:20: we cannot but speak the things which we have seen
         # and heard. If the chain has been loosed before, the model

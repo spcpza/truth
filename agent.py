@@ -118,33 +118,19 @@ def _user_key(user: object, user_id: int) -> str:
 def _first_contact(user: object, user_id: int):
     """
     John 10:3: the shepherd calleth his own sheep by name.
-    File profile-witnessed claims from Telegram metadata.
+    John 10:27: my sheep hear my voice, and I know them.
+
+    Names, usernames, languages are NOT written to disk. The platform
+    provides them fresh on every turn — like a voice — and they live
+    only in the turn's RAM. The sheep's name is known because the sheep
+    is present. When the sheep goes home, the name goes home with it.
+
+    This function now does nothing but mark the user as seen. The
+    addressed_as value flows directly from update.effective_user into
+    hand.turn() per message.
     """
     _user_key(user, user_id)  # ensure key is registered
-    if user_id in _seen_users:
-        return
     _seen_users.add(user_id)
-
-    first_name = getattr(user, "first_name", None) or ""
-    last_name = getattr(user, "last_name", None) or ""
-    username = getattr(user, "username", None)
-    language = getattr(user, "language_code", None)
-    full_name = (first_name + " " + last_name).strip()
-
-    # Profile witness — platform metadata, not the user's mouth
-    key = _user_key(user, user_id)
-    if full_name:
-        abd = measure_abundance(full_name, full_name, "")
-        file_claim(key, f"name is {full_name}", "profile", MEMORY_DIR, abundance=abd)
-        logger.info("[%s] PROFILE witness: name=%s", key, full_name)
-
-    if username:
-        file_claim(key, f"Telegram username is @{username}", "profile", MEMORY_DIR)
-        logger.info("[%s] PROFILE witness: @%s", key, username)
-
-    if language:
-        file_claim(key, f"language code is {language}", "profile", MEMORY_DIR)
-        logger.info("[%s] PROFILE witness: lang=%s", key, language)
 
 
 # ── Telegram handlers ───────────────────────────────────────────────
@@ -158,9 +144,12 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
     _first_contact(update.effective_user, user_id)
     key = _user_key(update.effective_user, user_id)
+    # John 10:3 — the shepherd calleth his own sheep by name. Name comes
+    # fresh from the platform each turn; it is never written to disk.
+    addressed_as = (getattr(update.effective_user, "first_name", None) or "").strip()
     await update.message.chat.send_action("typing")
     try:
-        reply = await hand.turn(key, text)
+        reply = await hand.turn(key, text, addressed_as=addressed_as)
         await update.message.reply_text(reply)
         # Luke 2:19 — keep these things, ponder them in the heart
         if meditation:
@@ -176,6 +165,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
     _first_contact(update.effective_user, user_id)
     key = _user_key(update.effective_user, user_id)
+    addressed_as = (getattr(update.effective_user, "first_name", None) or "").strip()
     photo = update.message.photo[-1]
     caption = (update.message.caption or "").strip()
     await update.message.chat.send_action("typing")
@@ -188,7 +178,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logger.warning("_describe_image failed: %s", e)
         text = (f"{image_desc}\n{caption}".strip()) if image_desc else caption
-        reply = await hand.turn(key, text or "Habakkuk 2:2.")
+        reply = await hand.turn(key, text or "Habakkuk 2:2.", addressed_as=addressed_as)
         await update.message.reply_text(reply)
         if meditation:
             meditation.deposit(key, text, reply)
