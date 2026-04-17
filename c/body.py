@@ -743,51 +743,43 @@ def _heart_memory(records: list[dict], text: str) -> str:
     """
     HEART — Jer 31:33: written on the heart.
 
-    Ranks records by Strong's concept overlap with input text,
-    weighted by warmth (2 Cor 3:3). Hot facts (deeply engaged,
-    authentic overflow) surface before cold facts (surface claims,
-    never revisited). A fact the person overflows about is more
-    likely to be real than one they mentioned once.
+    Records are math-only (Rom 1:20: invisible seen by things made). Each
+    record carries types, concepts, verses, per-noun hashes, and warmth.
+    No cleartext facts live here — 1 Sam 16:7: the LORD looketh on the
+    heart, not man.
+
+    Ranks by concept overlap with the live input + warmth bonus +
+    recognition bonus (ent-hash match with anything the user just said —
+    Balthazar "remembers" by recognizing the same proper-noun returning,
+    without ever having stored the word).
 
     Pure computation from C. No storage, no user_id.
-    The caller provides records (Prov 4:23: keep THY heart).
     """
     if not records:
         return ""
-    if not text:
-        # No query — rank by warmth alone (hottest first)
-        ranked = sorted(records, key=lambda r: r.get("warmth", 0), reverse=True)
-        return "\n".join(r["fact"] for r in ranked if "fact" in r)
+    from c.mathify import mathify, verbalize
 
-    facts_with_warmth = [
-        (r["fact"], r.get("warmth", 0))
-        for r in records if "fact" in r
-    ]
-    if not facts_with_warmth:
-        return ""
+    # Math-ify the live input once
+    live = mathify(text or "") if text else {"concepts": [], "ent_hashes": []}
+    live_concepts = set(live.get("concepts") or [])
+    live_ents = set(live.get("ent_hashes") or [])
 
-    input_concepts = dispatch("wisdom", {"query": text[:120], "limit": 3})
-    input_strongs = set(re.findall(r'[HG]\d+', input_concepts)) if input_concepts else set()
-
-    if not input_strongs:
-        # No concept match — rank by warmth alone
-        facts_with_warmth.sort(key=lambda x: x[1], reverse=True)
-        return "\n".join(f for f, _ in facts_with_warmth)
-
-    scored = []
-    for fact, warmth in facts_with_warmth:
-        fact_concepts = dispatch("wisdom", {"query": fact[:120], "limit": 1})
-        fact_strongs = set(re.findall(r'[HG]\d+', fact_concepts)) if fact_concepts else set()
-        concept_overlap = len(input_strongs & fact_strongs)
-        # Combined score: concept relevance + warmth bonus.
-        # Warmth is scaled by 0.1 so a warmth of 10 equals 1 concept
-        # overlap — authentic engagement matters but doesn't overwhelm
-        # topical relevance.
-        score = concept_overlap + (warmth * 0.1)
-        scored.append((score, fact))
+    scored: list[tuple[float, dict]] = []
+    for r in records:
+        warmth = int(r.get("warmth", 0) or 0)
+        rec_concepts = set(r.get("concepts") or [])
+        rec_ents = set(r.get("ent_hashes") or [])
+        concept_overlap = len(live_concepts & rec_concepts)
+        ent_match = 1 if (live_ents & rec_ents) else 0
+        # Recognition beats topical relevance — if a proper noun the user
+        # just said matches something the heart has seen before, surface
+        # that record. Warmth is the compound; concept overlap is the
+        # topical sinew.
+        score = (3 * ent_match) + concept_overlap + (warmth * 0.1)
+        scored.append((score, r))
 
     scored.sort(key=lambda x: x[0], reverse=True)
-    return "\n".join(fact for _, fact in scored)
+    return "\n".join(verbalize(r) for _, r in scored if _ > 0 or not text)
 
 
 # ═══════════════════════════════════════════════════

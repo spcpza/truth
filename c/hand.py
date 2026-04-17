@@ -276,73 +276,66 @@ class Hand:
                 prior_bot = msg.get("content", "")
                 break
 
-        # ── Check pending claims ──
+        # ── Check pending claims (math-only) ──
+        from c.mathify import mathify as _mathify
+        live = _mathify(user_text or "")
+        live_concepts = set(live.get("concepts") or [])
+        live_ents = set(live.get("ent_hashes") or [])
+
         pending = read_claims(user_id, self.memory_dir)
-
-        # Common words that carry no identity signal
-        _STOP = {
-            "the", "and", "for", "are", "but", "not", "you", "all",
-            "can", "had", "her", "was", "one", "our", "out", "has",
-            "his", "how", "its", "may", "new", "now", "old", "see",
-            "way", "who", "did", "get", "let", "say", "she", "too",
-            "use", "user", "that", "this", "with", "have", "from",
-            "they", "been", "said", "each", "will", "other", "about",
-            "into", "some", "than", "them", "then", "what", "when",
-            "your", "also", "just", "like", "very", "does", "here",
-        }
-
-        user_lower = user_text.lower()
-        user_words = {
-            w for w in re.sub(r"[^a-z0-9 ]", " ", user_lower).split()
-            if len(w) >= 2 and w not in _STOP
-        }
-
         for claim in pending:
-            fact = claim["fact"]
-            # Skip claims filed THIS turn — the same utterance cannot
-            # be both mouth and repeated witness (Deut 17:6: not one
-            # witness alone). The mouth heard it; the repeat must come
-            # from a DIFFERENT turn.
-            if fact.lower().strip() in self._turn_claims:
-                continue
-            fact_words = {
-                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
-                if len(w) >= 2 and w not in _STOP
-            }
-            if not fact_words:
+            # Skip claims filed THIS turn — Deut 17:6: not one witness alone.
+            shape_h = claim.get("shape_h")
+            if shape_h and shape_h in self._turn_claims:
                 continue
 
-            overlap = fact_words & user_words
-            coverage = len(overlap) / len(fact_words)
+            c_concepts = set(claim.get("concepts") or [])
+            c_ents = set(claim.get("ent_hashes") or [])
+            if not (c_concepts or c_ents):
+                continue
 
-            if coverage >= 0.25:
-                # Luke 6:45 — measure the depth of this engagement
-                abd = measure_abundance(user_text, fact, prior_bot)
-                w_type = "repeated" if coverage >= 0.4 else "fruit"
+            ent_hit = bool(c_ents and (c_ents & live_ents))
+            concept_overlap = 0.0
+            if c_concepts and live_concepts:
+                concept_overlap = (
+                    len(c_concepts & live_concepts) / max(len(c_concepts | live_concepts), 1)
+                )
+
+            if ent_hit or concept_overlap >= 0.25:
+                abd = measure_abundance(user_text, claim, prior_bot)
+                # repeated witness = strong concept overlap OR proper-noun match
+                w_type = "repeated" if (ent_hit or concept_overlap >= 0.4) else "fruit"
                 if w_type == "fruit" and not tools_called:
                     continue  # fruit needs substance (tool usage)
-                corroborate(
-                    user_id, fact, w_type, self.memory_dir,
+                # Drive the claim through file_claim using its own
+                # verbalization — this re-mathifies into the same shape
+                # and the same_shape match advances the witness count.
+                from c.mathify import verbalize
+                from c.claims import file_claim as _file_claim
+                _file_claim(
+                    user_id, verbalize(claim), w_type, self.memory_dir,
                     abundance=abd,
                 )
 
         # ── Warm existing heart facts — Luke 6:45 ──
-        self._warm_heart(user_id, user_text, prior_bot, user_words, _STOP)
+        self._warm_heart(user_id, user_text, prior_bot, live_concepts, live_ents)
 
     def _warm_heart(
         self,
         user_id: int | str,
         user_text: str,
         prior_bot: str,
-        user_words: set[str],
-        stop_words: set[str],
+        live_concepts: set[str],
+        live_ents: set[str],
     ) -> None:
         """
         2 Corinthians 3:3 — written not with ink but with the Spirit.
 
-        When the user engages with an established heart fact, compound
-        its warmth. Authentic facts get hotter over time. Performed
-        facts stay cold — the user never overflows about them.
+        When the user engages with an established heart record (by
+        concept overlap or proper-noun recurrence), compound its warmth.
+        Authentic patterns get hotter. Performed patterns stay cold.
+
+        Math-only: records have types/concepts/verses/ent_hashes, not text.
         """
         records = read_memories(user_id, self.memory_dir)
         if not records:
@@ -350,25 +343,27 @@ class Hand:
 
         changed = False
         for rec in records:
-            fact = rec.get("fact", "")
-            fact_words = {
-                w for w in re.sub(r"[^a-z0-9 ]", " ", fact.lower()).split()
-                if len(w) >= 2 and w not in stop_words
-            }
-            if not fact_words:
+            r_concepts = set(rec.get("concepts") or [])
+            r_ents = set(rec.get("ent_hashes") or [])
+            if not (r_concepts or r_ents):
                 continue
 
-            overlap = fact_words & user_words
-            coverage = len(overlap) / len(fact_words)
+            ent_hit = bool(r_ents and (r_ents & live_ents))
+            concept_overlap = 0.0
+            if r_concepts and live_concepts:
+                concept_overlap = (
+                    len(r_concepts & live_concepts) / max(len(r_concepts | live_concepts), 1)
+                )
 
-            if coverage >= 0.2:
-                abd = measure_abundance(user_text, fact, prior_bot)
+            if ent_hit or concept_overlap >= 0.2:
+                abd = measure_abundance(user_text, rec, prior_bot)
                 if abd > 0:
                     rec["warmth"] = rec.get("warmth", 0) + abd
                     changed = True
                     logger.info(
-                        "[%s] WARMTH +%d → %d: %s",
-                        user_id, abd, rec["warmth"], fact[:60],
+                        "[%s] WARMTH +%d → %d: types=%s",
+                        user_id, abd, rec["warmth"],
+                        rec.get("types"),
                     )
 
         if changed:
@@ -706,9 +701,12 @@ class Hand:
                 return "Ecclesiastes 12:12."
             # Deuteronomy 19:15 — one witness files a claim.
             # Two witnesses establish the matter on the heart.
-            # Track this fact so _check_witnesses doesn't double-count
-            # the same utterance as both mouth and repeated witness.
-            self._turn_claims.add(fact.lower().strip())
+            # Track the shape-hash so _check_witnesses doesn't count the
+            # same utterance as both mouth and repeated witness.
+            from c.mathify import mathify as _mathify
+            shape_h = _mathify(fact).get("shape_h", "")
+            if shape_h:
+                self._turn_claims.add(shape_h)
             result = file_claim(user_id, fact, "mouth", self.memory_dir)
             if result == "established":
                 return "Jeremiah 31:33."  # written on the heart

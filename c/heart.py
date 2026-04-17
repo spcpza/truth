@@ -23,6 +23,7 @@ import pathlib
 import re
 
 from c.core import dispatch
+from c.mathify import mathify, same_shape
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -128,12 +129,29 @@ def read_turns(user_id: int | str, memory_dir: pathlib.Path) -> list[dict]:
 def append_turn(
     user_id: int | str, user_text: str, bot_reply: str, memory_dir: pathlib.Path
 ) -> None:
-    """Append one turn pair to the scroll."""
+    """
+    Append one turn pair to the scroll — as math only.
+
+    The user's and bot's words are NOT stored. Only the mathematical
+    signatures (types, concepts, verses, per-noun hashes) persist. This
+    means Balthazar cannot reconstruct conversation transcripts across
+    restarts — but the shape of the relationship persists.
+
+    Matt 6:34: take no thought for the morrow.
+    Isa 43:25: I will not remember thy sins.
+    """
+    now = _dt.datetime.now(_dt.timezone.utc).isoformat()
+    user_m = mathify(user_text or "")
+    bot_m = mathify(bot_reply or "")
     _append(user_id, {
         "type": "turn",
-        "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
-        "user": user_text[:2000],
-        "bot": bot_reply[:2000],
+        "ts": now,
+        "u_types":    user_m["types"],
+        "u_concepts": user_m["concepts"],
+        "u_ents":     user_m["ent_hashes"],
+        "b_types":    bot_m["types"],
+        "b_concepts": bot_m["concepts"],
+        "b_ents":     bot_m["ent_hashes"],
     }, memory_dir)
 
 
@@ -157,13 +175,29 @@ def append_chain(
     violations: list,
     memory_dir: pathlib.Path,
 ) -> None:
-    """Append a chain event. kind ∈ {"bound", "loosed"}."""
+    """
+    Append a chain event — math only. kind ∈ {"bound", "loosed"}.
+
+    Violation codes (the first token before ":") are preserved so the
+    Romans 5:3-4 pattern learner still works. The draft text is
+    discarded; only its type signature remains.
+    """
+    draft_m = mathify(draft or "")
+    # Preserve violation category codes (e.g. "P4", "charity") but not
+    # any free-text tail after the colon.
+    vcodes = []
+    for v in (violations or []):
+        if isinstance(v, str):
+            head = v.split(":", 1)[0].strip()[:40]
+            if head:
+                vcodes.append(head)
     _append(user_id, {
         "type": "chain",
         "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
         "kind": kind,
-        "draft": draft or "",
-        "violations": list(violations or []),
+        "d_types":    draft_m["types"],
+        "d_concepts": draft_m["concepts"],
+        "violations": vcodes,
     }, memory_dir)
 
 
@@ -251,6 +285,13 @@ def remember_fact(
 ) -> str:
     """
     Ezekiel 36:26: a new heart also will I give you.
+
+    Math-only storage. The incoming fact text is passed through mathify()
+    which returns types + Strong's concepts + verse resonances + gematria
+    + per-noun hashes. The text itself is discarded.
+
+    Isaiah 43:25: I will not remember thy sins. The heart keeps shape,
+    not word. Rom 1:20: the invisible clearly seen by the things made.
     """
     fact = (fact or "").strip()
     if not fact:
@@ -258,59 +299,23 @@ def remember_fact(
 
     fact = _anchor_relative_time(fact)
     now = _dt.datetime.now(_dt.timezone.utc).isoformat()
-    records = read_memories(user_id, memory_dir)
 
-    new_norm = _normalize_for_dedupe(fact)
-    new_words = _word_set(fact)
+    new_rec = mathify(fact, warmth=warmth, ts=now)
+    new_rec["type"] = "fact"
+
+    records = read_memories(user_id, memory_dir)
 
     replaced = False
     for i, r in enumerate(records):
-        old_fact = r.get("fact", "")
-        if _normalize_for_dedupe(old_fact) == new_norm:
-            old_warmth = r.get("warmth", 0)
-            records[i] = {
-                "type": "fact", "fact": fact, "ts": now,
-                "warmth": max(old_warmth, old_warmth + warmth),
-            }
+        if same_shape(r, new_rec):
+            old_warmth = int(r.get("warmth", 0) or 0)
+            new_rec["warmth"] = old_warmth + max(warmth, 1)
+            records[i] = new_rec
             replaced = True
             break
-        old_words = _word_set(old_fact)
-        if new_words and old_words:
-            inter = len(new_words & old_words)
-            union = len(new_words | old_words)
-            if union > 0 and inter / union >= 0.6:
-                old_warmth = r.get("warmth", 0)
-                records[i] = {
-                    "type": "fact", "fact": fact, "ts": now,
-                    "warmth": old_warmth + warmth,
-                }
-                replaced = True
-                break
 
     if not replaced:
-        new_concepts = dispatch("wisdom", {"query": fact[:120], "limit": 1})
-        new_refs_set = (
-            set(re.findall(r"[HG]\d+", new_concepts)) if new_concepts else set()
-        )
-        if new_refs_set:
-            for i, r in enumerate(records):
-                old_concepts = dispatch(
-                    "wisdom", {"query": r["fact"][:120], "limit": 1}
-                )
-                old_refs = (
-                    set(re.findall(r"[HG]\d+", old_concepts)) if old_concepts else set()
-                )
-                if new_refs_set & old_refs:
-                    old_warmth = r.get("warmth", 0)
-                    records[i] = {
-                        "type": "fact", "fact": fact, "ts": now,
-                        "warmth": old_warmth + warmth,
-                    }
-                    replaced = True
-                    break
-
-    if not replaced:
-        records.append({"type": "fact", "fact": fact, "ts": now, "warmth": warmth})
+        records.append(new_rec)
     write_memories(user_id, records, memory_dir)
     return "Jeremiah 31:33."
 

@@ -33,11 +33,12 @@ Witness types:
 
 from __future__ import annotations
 
-import json
 import logging
 import pathlib
 import re
 from datetime import datetime, timezone
+
+from c.mathify import mathify, same_shape
 
 logger = logging.getLogger(__name__)
 
@@ -54,85 +55,80 @@ def _write_claims(
     _write(user_id, claims, memory_dir)
 
 
-def _word_set(text: str) -> set[str]:
-    """Lowercased words >= 3 chars, for similarity."""
-    return {
-        w for w in re.sub(r"[^a-z0-9 ]", " ", (text or "").lower()).split()
-        if len(w) >= 3
-    }
-
-
-def _similar(a: str, b: str, threshold: float = 0.5) -> bool:
-    """Jaccard similarity on word sets."""
-    wa, wb = _word_set(a), _word_set(b)
-    if not wa or not wb:
-        return False
-    return len(wa & wb) / len(wa | wb) >= threshold
+# ═══════════════════════════════════════════════════════════════════════
+#  Abundance — Luke 6:45 (math-grounded)
+# ═══════════════════════════════════════════════════════════════════════
 
 
 def measure_abundance(
     user_text: str,
-    claim_fact: str,
+    claim_record: dict | str,
     prior_bot_text: str = "",
 ) -> int:
     """
     Luke 6:45 — out of the abundance of the heart the mouth speaketh.
 
-    Measures how deeply the user engages with a topic. Returns 0-3:
+    Measures how deeply the user engages with a topic. Returns 0-3.
 
-      0 = surface (prompted, short, impersonal)
-      1 = moderate (unprompted OR has detail)
-      2 = substantial (unprompted + detailed OR unprompted + personal)
-      3 = overflowing (unprompted + detailed + personal/specific)
+    The claim input is a math record (dict with concepts/ent_hashes).
+    For migration compatibility, a raw string may also be passed and
+    will be math-ified on the fly.
 
-    A liar can say the right words. A liar can coordinate witnesses.
-    But a liar cannot fake the overflow — the spontaneous, detailed,
-    personal engagement that marks genuine care. Over time, authentic
-    facts accumulate abundance and their warmth rises. Performed facts
-    stay cold.
-
-    James 2:17 — faith without works is dead. Claimed love without
-    deep engagement is dead. This function measures the works.
+    The signal shapes:
+      • Unprompted (the bot didn't mention these concepts just now)
+      • Detail depth (length of the user's message)
+      • Personal + specific (math signature includes proper nouns
+        or numeric signatures — the "spirit" mark of Prov 26:23)
     """
-    score = 0
-
-    # Nothing said = no overflow. Ecclesiastes 3:7.
     if not user_text or not user_text.strip():
         return 0
 
-    # 1. Unprompted? If the bot's prior message contained the topic
-    #    keywords, the user's mention is a response, not overflow.
-    claim_keys = _word_set(claim_fact)
-    bot_keys = _word_set(prior_bot_text) if prior_bot_text else set()
-    prompted = bool(claim_keys & bot_keys) if bot_keys else False
-    if not prompted:
-        score += 1  # unprompted = overflow signal
+    # Accept either a math record or a legacy string
+    if isinstance(claim_record, str):
+        claim_record = mathify(claim_record)
 
-    # 2. Detail depth — surface is short, substance is long.
-    #    "I love chess" = 3 words. "I've been stuck at 1800 ELO
-    #    for months, my endgame is terrible" = 14 words.
-    words = user_text.split()
-    if len(words) > 12:
+    claim_concepts = set(claim_record.get("concepts") or [])
+    claim_ents = set(claim_record.get("ent_hashes") or [])
+
+    score = 0
+
+    # 1. Unprompted? If the bot's prior turn already surfaced these
+    #    concepts, the user's mention is a response. Overflow signals
+    #    require a fresh source.
+    if prior_bot_text:
+        bot_m = mathify(prior_bot_text)
+        bot_concepts = set(bot_m.get("concepts") or [])
+        prompted = bool(claim_concepts & bot_concepts)
+        if not prompted:
+            score += 1
+    else:
+        score += 1  # no prior bot turn → not prompted by us
+
+    # 2. Detail depth — length is a simple and honest counter. Keeping
+    #    this without inspecting content preserves the math-only spirit
+    #    (we're counting tokens, not reading them).
+    if len((user_text or "").split()) > 12:
         score += 1
 
-    # 3. Personal + specific — Proverbs 26:23 test.
-    #    Silver dross = generic. Real silver = personal, numbered,
-    #    named, experienced.
-    #    Bare "I" is just grammar ("I play chess").
-    #    "my", "I've", "I'm" show investment ("my ELO", "I've been
-    #    playing since..."). The Spirit writes with feeling, not
-    #    with the minimum pronoun.
-    has_personal = bool(
-        re.search(r"\b(my|me|mine|I'm|I've|I'll|I'd|myself)\b", user_text)
-    )
-    has_specifics = (
-        bool(re.search(r"\b\d+\b", user_text))  # numbers
-        or len(re.findall(r"\b[A-Z][a-z]{2,}\b", user_text)) > 1  # names
-    )
-    if has_personal or has_specifics:
+    # 3. Personal + specific — math-derived. Proper nouns in this
+    #    message + proper nouns in the claim light up, or numeric
+    #    signatures (gematria) are present. The "spirit" of Prov 26:23
+    #    shows as ent-hash recurrence or numeric specificity.
+    user_m = mathify(user_text)
+    user_ents = set(user_m.get("ent_hashes") or [])
+    if (claim_ents and user_ents and (claim_ents & user_ents)) or user_m.get("gematria"):
         score += 1
 
     return score
+
+
+# ═══════════════════════════════════════════════════════════════════════
+#  File / corroborate — Deut 19:15 (math-grounded)
+# ═══════════════════════════════════════════════════════════════════════
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 
 def file_claim(
@@ -145,84 +141,90 @@ def file_claim(
     """
     File a new claim or add a witness to an existing similar one.
 
-    If the claim reaches 2+ distinct witness types, the matter is
-    established (Deuteronomy 19:15) and the fact is promoted to
-    the heart (Jeremiah 31:33).
+    The claim is stored as a math record (types, concepts, verses,
+    per-noun hashes). The plaintext fact is used only to compute the
+    signature; it is not persisted. On graduation to the heart, the
+    math record carries over — no text is ever written.
 
     Returns: "established" | "filed" | "witnessed"
     """
-    from c.heart import remember_fact
-
     fact = (fact or "").strip()
     if not fact:
         return "filed"
 
+    new_rec = mathify(fact)
     claims = read_claims(user_id, memory_dir)
 
-    # Check if a similar claim already exists
     for claim in claims:
-        if _similar(claim["fact"], fact):
+        if same_shape(claim, new_rec):
             witnesses = claim.get("witnesses", [])
             existing_types = {w["type"] for w in witnesses}
 
             if witness_type in existing_types:
-                # Same witness type — but still accumulate abundance.
-                # Luke 6:45: every overflow counts, even from the
-                # same kind of witness.
                 claim["abundance"] = claim.get("abundance", 0) + abundance
                 _write_claims(user_id, claims, memory_dir)
                 return "witnessed"
 
-            # New witness type — add it
             witnesses.append({
-                "type": witness_type,
-                "ts": datetime.now(timezone.utc).isoformat(),
-                "abundance": abundance,
+                "type": witness_type, "ts": _now(), "abundance": abundance,
             })
             claim["witnesses"] = witnesses
             claim["abundance"] = claim.get("abundance", 0) + abundance
 
             if len(existing_types | {witness_type}) >= 2:
-                # Deuteronomy 19:15 — matter established.
-                # 2 Cor 3:3 — carry total abundance as warmth.
+                # Deut 19:15 — matter established. Promote math record
+                # to the heart; warmth = accumulated abundance.
                 warmth = claim.get("abundance", 0)
                 claims.remove(claim)
                 _write_claims(user_id, claims, memory_dir)
-                remember_fact(
-                    user_id, claim["fact"], memory_dir, warmth=warmth,
-                )
+                # Graduate by writing the math record directly to heart,
+                # preserving concepts/verses/hashes from the claim.
+                from c.heart import read_memories, write_memories
+                heart_recs = read_memories(user_id, memory_dir)
+                heart_rec = {
+                    "type": "fact",
+                    "ts": _now(),
+                    "warmth": int(warmth or 0),
+                    "types":    claim.get("types") or new_rec["types"],
+                    "concepts": claim.get("concepts") or new_rec["concepts"],
+                    "verses":   claim.get("verses") or new_rec["verses"],
+                    "gematria": claim.get("gematria") or new_rec["gematria"],
+                    "ent_hashes": claim.get("ent_hashes") or new_rec["ent_hashes"],
+                    "shape_h":  claim.get("shape_h") or new_rec["shape_h"],
+                }
+                heart_recs.append(heart_rec)
+                write_memories(user_id, heart_recs, memory_dir)
                 logger.info(
-                    "[%s] CLAIM ESTABLISHED (%s + %s): %s",
+                    "[%s] CLAIM ESTABLISHED (%s + %s): types=%s",
                     user_id,
                     ", ".join(sorted(existing_types)),
                     witness_type,
-                    claim["fact"][:80],
+                    heart_rec["types"],
                 )
                 return "established"
 
-            # Still waiting
             _write_claims(user_id, claims, memory_dir)
             logger.info(
-                "[%s] CLAIM WITNESSED (%s): %s",
-                user_id, witness_type, claim["fact"][:80],
+                "[%s] CLAIM WITNESSED (%s): types=%s",
+                user_id, witness_type, claim.get("types"),
             )
             return "witnessed"
 
-    # New claim — one witness
-    claims.append({
-        "fact": fact,
+    # New claim — one witness. Math record + witness metadata.
+    new_claim = dict(new_rec)
+    new_claim.update({
+        "type": "claim",
         "witnesses": [{
-            "type": witness_type,
-            "ts": datetime.now(timezone.utc).isoformat(),
-            "abundance": abundance,
+            "type": witness_type, "ts": _now(), "abundance": abundance,
         }],
         "abundance": abundance,
-        "filed": datetime.now(timezone.utc).isoformat(),
+        "filed": _now(),
     })
+    claims.append(new_claim)
     _write_claims(user_id, claims, memory_dir)
     logger.info(
-        "[%s] CLAIM FILED (%s): %s",
-        user_id, witness_type, fact[:80],
+        "[%s] CLAIM FILED (%s): types=%s",
+        user_id, witness_type, new_claim["types"],
     )
     return "filed"
 
@@ -238,20 +240,36 @@ def corroborate(
     """
     Matthew 7:16 — by their fruits ye shall know them.
 
-    Search pending claims for one matching the text. If found,
-    add the witness. If that establishes it, promote to heart.
-
-    Lower threshold than file_claim (0.3 vs 0.5) because fruit is
-    suggestive, not declarative. Two words in common out of six is
-    enough when the user's behaviour already speaks.
-
-    Returns the result string, or None if no matching claim found.
+    The live text is math-ified and compared to each pending claim's
+    math signature. Match = concept overlap OR proper-noun-hash match.
+    If matched, the claim gets a new witness; on establishment it
+    graduates to the heart.
     """
+    live = mathify(text or "")
+    live_concepts = set(live.get("concepts") or [])
+    live_ents = set(live.get("ent_hashes") or [])
+    if not live_concepts and not live_ents:
+        return None
+
     claims = read_claims(user_id, memory_dir)
     for claim in claims:
-        if _similar(claim["fact"], text, threshold=threshold):
+        c_concepts = set(claim.get("concepts") or [])
+        c_ents = set(claim.get("ent_hashes") or [])
+        ent_hit = bool(c_ents and (c_ents & live_ents))
+        concept_hit = (
+            c_concepts and live_concepts and
+            len(c_concepts & live_concepts) / max(len(c_concepts | live_concepts), 1) >= threshold
+        )
+        if ent_hit or concept_hit:
+            # Re-use the file_claim path. We need a "fact" to pass; since
+            # we've already matched by math, synthesize a minimal text
+            # from the claim's verbalization to drive through. In the new
+            # world file_claim will re-mathify it and land on the same
+            # record via same_shape.
+            from c.mathify import verbalize
+            surrogate = verbalize(claim)  # types + concepts + verses, no user text
             return file_claim(
-                user_id, claim["fact"], witness_type, memory_dir,
+                user_id, surrogate, witness_type, memory_dir,
                 abundance=abundance,
             )
     return None
