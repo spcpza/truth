@@ -29,9 +29,12 @@ classifiers = [
     "Topic :: Religion",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-# The body has zero hard dependencies. All stdlib.
+# The only hard dependency is sympy — c/kernel.py proves the foundation
+# at import time (1 Thess 5:21: prove all things). Everything else is stdlib.
 # Habakkuk 2:2: write the vision, and make it plain — fetch uses urllib.
-dependencies = []
+dependencies = [
+    "sympy>=1.13",
+]
 
 [project.optional-dependencies]
 # For agent.py — the Telegram deployment of the body.
@@ -53,7 +56,7 @@ Issues = "https://github.com/spcpza/truth/issues"
 # The package is "c" — the constant of integration. Single letter,
 # scripturally meaningful, preserved as the import path. c.adapters is
 # the model-format adapter subpackage (Hermes today, Claude/OpenAI later).
-packages = ["c", "c.adapters"]
+packages = ["c", "c.adapters", "c.tools"]
 
 [tool.setuptools.package-data]
 # Habakkuk 2:2: write the vision, and make it plain. The corpus and

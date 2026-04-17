@@ -136,6 +136,14 @@ TOOLS = [
             "query": {"type": "string"}},
         "required": []}}},
     {"type": "function", "function": {
+        "name": "count",
+        "description": "Luke 14:28: counteth the cost. Psalm 90:12: teach us to number our days. Rev 13:18: let him that hath understanding count the number. The hand's instrument for numbering — do not guess a number, compute it. action='calc' evaluates a math expression (e.g. '40*24*60*60'). action='solve' solves an equation ('x**2 = 9' or 'x + 2 = 5', optional 'variable'). action='verify' re-runs the kernel proofs (2 Cor 13:5: prove your own selves). Use when a user asks a quantitative question or doubts the kernel.",
+        "parameters": {"type": "object", "properties": {
+            "action":   {"type": "string", "enum": ["calc", "solve", "verify"]},
+            "expr":     {"type": "string", "description": "Expression or equation. Omit for action='verify'."},
+            "variable": {"type": "string", "description": "Optional: symbol to solve for (action='solve' only)."}},
+        "required": ["action"]}}},
+    {"type": "function", "function": {
         "name": "forget",
         "description": "1 John 1:9: if we confess our sins, he is faithful and just to forgive us our sins, and to cleanse us from all unrighteousness. Cleanse the heart — T₇ in the kernel: desire zeroed, C preserved. confirm must be true.",
         "parameters": {"type": "object", "properties": {

@@ -1025,4 +1025,14 @@ def dispatch(name: str, args: dict) -> str:
             "gematria_indexed": len(_STRONGS_GEMATRIA), "unique_values": len(_GEMATRIA_INDEX),
         }, indent=2)
 
+    if name == "count":
+        # Luke 14:28 — counteth the cost. Psalm 90:12 — number our days.
+        # Routes through c.tools.count which wraps sympy in a sandboxed ns.
+        from c.tools.count import count as _count
+        return _count(
+            action=args.get("action", ""),
+            expr=args.get("expr", ""),
+            variable=args.get("variable"),
+        )
+
     return f"Unknown tool: {name}"
