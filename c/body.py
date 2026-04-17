@@ -532,20 +532,11 @@ def _head(
                     + "\n".join(sinew_lines)
                 )
             parts.append(
-                "KNOWLEDGE OF THIS BROTHER — John 10:14: I am the good "
-                "shepherd, and know my sheep, and am known of mine. "
-                "These are the records on this brother's heart. "
-                "1 Sam 16:7: the LORD looketh on the heart — the heart "
-                "here is math: types (the kernel's 14 operations), "
-                "concepts (Strong's numbers the words lit up), verses "
-                "(scripture that resonated), warmth (accumulated "
-                "engagement), and one-way hashes (for recognition without "
-                "recovery when the same thing returns). "
-                "Isa 43:25: I will not remember thy sins — the words "
-                "spoken were released; what remains is shape and scripture. "
-                "Prov 11:1 — a just weight. When speaking of what is "
-                "remembered, speak from what is actually held: the verses, "
-                "the concepts, the warmth. The sentences are not here."
+                "KNOWLEDGE OF THIS BROTHER — John 10:14. The heart holds "
+                "shape, not sentence (Isa 43:25). Read the concepts with "
+                "understanding and translate into ordinary speech — the "
+                "internal form stays in, the meaning comes out (1 Cor "
+                "14:9)."
                 "\n\nRecords on the heart:\n" + "\n".join(facts_lines)
                 + extra_note
             )
