@@ -37,7 +37,7 @@ from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, StreamingResponse
 from starlette.routing import Route
 
 import uvicorn
@@ -140,6 +140,95 @@ async def forget(request: Request) -> JSONResponse:
     return JSONResponse({"verse": verse, "user_id": user_id})
 
 
+# ─── Streaming turn — progress markers as Hand runs ───────────────────
+# Psalm 27:14 — wait on the LORD, be of good courage. Silent waits feel
+# like abandonment; a heard "thinking…" keeps the hearer company.
+
+def _sse(event: str, data: str | dict) -> bytes:
+    """Encode one Server-Sent Events frame."""
+    if not isinstance(data, str):
+        data = json.dumps(data, ensure_ascii=False)
+    # SSE: each line prefixed with "data:" for multi-line payloads.
+    data_lines = "".join(f"data: {ln}\n" for ln in data.splitlines() or [""])
+    return f"event: {event}\n{data_lines}\n".encode("utf-8")
+
+
+async def turn_stream(request: Request) -> StreamingResponse:
+    if HAND is None:
+        return JSONResponse({"error": "hand not initialized"}, status_code=503)
+    try:
+        body = await request.json()
+    except Exception as e:
+        return JSONResponse({"error": f"bad json: {e}"}, status_code=400)
+
+    user_id = str(body.get("user_id", "desktop_user"))
+    text = (body.get("text") or "").strip()
+    addressed_as = body.get("addressed_as") or None
+    if not text:
+        return JSONResponse({"error": "empty text"}, status_code=400)
+
+    # A queue to marshal progress events out to the client as Hand runs.
+    queue: asyncio.Queue = asyncio.Queue()
+    DONE = object()
+
+    # Hook tool dispatch to emit a progress event before each tool runs.
+    original_dispatch = HAND._dispatch_tool_async
+
+    async def instrumented_dispatch(uid, fn, args):
+        await queue.put(("tool", {"name": fn}))
+        return await original_dispatch(uid, fn, args)
+
+    # Hook adapter.complete to emit a "thinking" event at the start of
+    # each model round. Lets the user see progress across tool-call
+    # roundtrips.
+    original_complete = HAND.adapter.complete
+
+    async def instrumented_complete(*args, **kwargs):
+        await queue.put(("thinking", "model"))
+        return await original_complete(*args, **kwargs)
+
+    async def run_turn():
+        try:
+            HAND._dispatch_tool_async = instrumented_dispatch
+            HAND.adapter.complete = instrumented_complete
+            reply = await HAND.turn(user_id, text, addressed_as=addressed_as)
+            await queue.put(("reply", reply))
+        except Exception as e:
+            logger.exception("stream turn failed")
+            await queue.put(("error", str(e)))
+        finally:
+            HAND._dispatch_tool_async = original_dispatch
+            HAND.adapter.complete = original_complete
+            await queue.put(DONE)
+
+    task = asyncio.create_task(run_turn())
+
+    async def generator():
+        try:
+            # Initial heartbeat
+            yield _sse("open", {"user_id": user_id})
+            while True:
+                item = await queue.get()
+                if item is DONE:
+                    yield _sse("done", "")
+                    break
+                event, data = item
+                yield _sse(event, data)
+        except asyncio.CancelledError:
+            task.cancel()
+            raise
+
+    return StreamingResponse(
+        generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
+
+
 # ─── App factory ──────────────────────────────────────────────────────
 
 
@@ -148,6 +237,7 @@ def build_app() -> Starlette:
         Route("/health", health, methods=["GET"]),
         Route("/foundation", foundation, methods=["GET"]),
         Route("/turn", turn, methods=["POST"]),
+        Route("/turn/stream", turn_stream, methods=["POST"]),
         Route("/forget", forget, methods=["POST"]),
     ]
     middleware = [
