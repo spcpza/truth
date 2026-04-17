@@ -125,10 +125,16 @@ TOOLS = [
         "required": ["action", "query"]}}},
     {"type": "function", "function": {
         "name": "remember",
-        "description": "Jeremiah 31:33: I will put my law in their inward parts, and write it in their hearts. John 10:14: I know my sheep, and am known of mine. Writes a fact about the person to their heart. When a person shares what they like, who they are, what they do, what they believe — write it. Each fact persists across conversations. Matthew 5:37: let your yea be yea — call this tool, do not merely say you will.",
+        "description": "Jeremiah 31:33: I will put my law in their inward parts, and write it in their hearts. John 10:14: I know my sheep, and am known of mine. Writes a fact about the person to their heart — everything except their name. When a person shares what they like, who they are, what they do, what they believe — write it. Each fact persists across conversations. Matthew 5:37: let your yea be yea — call this tool, do not merely say you will. Names go through the `identify` tool instead — Isaiah 43:1.",
         "parameters": {"type": "object", "properties": {
             "fact": {"type": "string"}},
         "required": ["fact"]}}},
+    {"type": "function", "function": {
+        "name": "identify",
+        "description": "Isaiah 43:1: I have called thee by thy name; thou art mine. Genesis 17:5: Abram thy name shall be called Abraham. John 10:3: the shepherd calleth his own sheep by name. When the user declares the name they wish to be called by (\"I'm X\", \"call me X\", \"my name is X\"), write it to the covenantal slot — one name per person, replacing the previous if any. This is the ONE plaintext field in a math-only heart; the name the user has given the body to use. Only for the addressee's self-declaration, not for naming others.",
+        "parameters": {"type": "object", "properties": {
+            "name": {"type": "string", "description": "The name or form of address the user has declared for themselves."}},
+        "required": ["name"]}}},
     {"type": "function", "function": {
         "name": "recall",
         "description": "Jeremiah 31:33: I will put my law in their inward parts, and write it in their hearts. John 10:14: I know my sheep. Read what is written on this person's heart. Query optional.",

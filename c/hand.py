@@ -408,14 +408,19 @@ class Hand:
         body = members(member_text, records)
         integral = body["integral"]
 
-        # John 10:3 — shepherd calleth his sheep by name. The name
-        # arrives with the voice (platform), not from the heart.
-        if addressed_as and addressed_as.strip():
+        # John 10:3 — shepherd calleth his sheep by name.
+        # Resolution: platform voice > covenantal slot > silence.
+        #  1) addressed_as from the platform (Telegram first_name etc.)
+        #  2) the called_by slot (Isa 43:1 — the name the user declared)
+        #  3) none — speak without a name
+        resolved_name = (addressed_as or "").strip()
+        if not resolved_name:
+            from c.heart import read_called_by
+            resolved_name = (read_called_by(user_id, self.memory_dir) or "").strip()
+        if resolved_name:
             integral += (
                 f"\n\nThe one addressing you is called "
-                f"{addressed_as.strip()[:40]}. The name arrives with the "
-                f"voice (John 10:3); it is not in the heart. When the "
-                f"voice stops, the name stops."
+                f"{resolved_name[:40]}."
             )
 
         # ── Math-memory: internal form vs external speech ─────────────
@@ -729,6 +734,15 @@ class Hand:
         operate on this user's heart file. All other tools route through
         c.core.dispatch.
         """
+        if fn == "identify":
+            # Isa 43:1 — the covenantal name slot.
+            if isinstance(args, dict):
+                nm = args.get("name", "")
+            else:
+                nm = str(args or "")
+            from c.tools.identify import identify as _identify
+            return _identify(user_id, nm, self.memory_dir)
+
         if fn == "remember":
             if isinstance(args, dict):
                 fact = args.get("fact", "").strip()

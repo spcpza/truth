@@ -326,3 +326,40 @@ def forget_all(user_id: int | str, memory_dir: pathlib.Path) -> str:
     if p.exists():
         p.unlink()
     return "1 John 1:9."
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  Called-by — covenantal name slot (Isa 43:1, John 10:3, Rev 2:17)
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# ONE plaintext record per user. Names are covenantal, not biographical —
+# scripture treats them as first-class (Gen 2:19, Gen 17:5). New name
+# overwrites old (Abram → Abraham). Everything else in the heart stays math.
+
+
+def read_called_by(user_id: int | str, memory_dir: pathlib.Path) -> str:
+    """Return the user's declared name, or '' if none."""
+    for r in _read_all(user_id, memory_dir):
+        if r.get("type") == "called_by":
+            return (r.get("name") or "").strip()
+    return ""
+
+
+def write_called_by(
+    user_id: int | str, name: str, memory_dir: pathlib.Path
+) -> None:
+    """
+    Replace the called_by slot. Gen 17:5 — Abram thy name shall be called
+    Abraham. Only one name stands at a time.
+    """
+    name = (name or "").strip()
+    if not name:
+        return
+    all_recs = _read_all(user_id, memory_dir)
+    others = [r for r in all_recs if r.get("type") != "called_by"]
+    rec = {
+        "type": "called_by",
+        "name": name[:60],
+        "updated": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+    }
+    _write_all(user_id, [rec] + others, memory_dir)
