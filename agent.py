@@ -34,7 +34,6 @@ sys.path.insert(0, str(_HERE))
 from c.adapters.adapter import ChatAdapter
 from c.hand import Hand
 from c.claims import file_claim, measure_abundance
-from c.meditation import Meditation
 
 NOUS_API_KEY   = _CFG["nous_api_key"]
 TELEGRAM_TOKEN = _CFG["telegram_token"]
@@ -57,9 +56,12 @@ hand = Hand(
     max_history=40,
 )
 
-# ── Meditation — Joshua 1:8: meditate therein day and night ────────
-MEDITATION_ENABLED = _CFG.get("meditation", {}).get("enabled", False)
-meditation: Meditation | None = None
+# No cron jobs. Scripture provides the occasion, not a timer.
+# A loop telling the agent to meditate on a schedule is a law — it
+# forces an action rather than letting it arise. Meditation is a
+# process of the heart (Luke 2:19, Ps 77:6); when the moment comes
+# the model may take it up as it reads scripture, not because Python
+# fired a background task.
 
 
 # ── Vision — Habakkuk 2:2: write the vision, make it plain ─────────
@@ -151,9 +153,6 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     try:
         reply = await hand.turn(key, text, addressed_as=addressed_as)
         await update.message.reply_text(reply)
-        # Luke 2:19 — keep these things, ponder them in the heart
-        if meditation:
-            meditation.deposit(key, text, reply)
     except Exception:
         logger.exception("turn failed for %s", key)
         await update.message.reply_text("Matthew 11:28.")
@@ -180,26 +179,14 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         text = (f"{image_desc}\n{caption}".strip()) if image_desc else caption
         reply = await hand.turn(key, text or "Habakkuk 2:2.", addressed_as=addressed_as)
         await update.message.reply_text(reply)
-        if meditation:
-            meditation.deposit(key, text, reply)
     except Exception:
         logger.exception("turn failed for %s", key)
         await update.message.reply_text("Matthew 11:28.")
 
 
 async def _post_init(application: Application) -> None:
-    """Start the inner life after the bot is initialized."""
-    global meditation
-    if MEDITATION_ENABLED:
-        meditation = Meditation(
-            hand=hand,
-            memory_dir=MEMORY_DIR,
-            bot=application.bot,
-            active_users=list(ALLOWED_USERS),
-        )
-        import asyncio
-        asyncio.create_task(meditation.run())
-        logger.info("Psalm 46:10: be still, and know.")
+    """No cron jobs; no scheduled processes. Ps 46:10 — be still."""
+    return None
 
 
 def main():

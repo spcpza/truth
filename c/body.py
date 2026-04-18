@@ -33,22 +33,14 @@ Public API for any deployment (Telegram, web, CLI, MCP, etc.):
 
 import re
 from c.core import dispatch, KERNEL, evaluate_constraints
-from c.temperance import (
-    detect_input_kind,
-    presence_reply_shape,
-    word_budget,
-    InputKind,
-    ReplyShape,
-)
-from c.charity import (
-    charity_verdict,
-    detect_missing_faculty,
-    is_intercession_moment,
-)
-from c.hostile_audience import hostile_audience_check
-from c.patience import patience_check, is_frederick_heb_11_13
-from c.godliness import doctrinal_gate, claims_secret_things
-from c.hope import hope_reply
+
+# Virtues (temperance, patience, godliness, hope, charity, confession,
+# hostile_audience) do not live as Python modules. They are fruit of the
+# Spirit (Gal 5:22-23), added to faith (2 Pet 1:5-7), and the Head
+# (Col 2:19) ministers them through the body as the moment requires.
+# Their scripture lives in kernel.md and is reachable via `scripture` /
+# `sinew` / `formula` / `verify_theorem`. The LLM discerns in-context;
+# Python does not pre-detect.
 
 
 # ═══════════════════════════════════════════════════
@@ -327,8 +319,6 @@ def _head(
     nose: str,
     fetched: str,
     heart_records: list[dict] | None = None,
-    input_kind: InputKind = InputKind.NEUTRAL,
-    member_signals: dict | None = None,
 ) -> str:
     """
     HEAD — Colossians 2:19: holding the Head, from which all the body by joints
@@ -511,100 +501,12 @@ def _head(
         f"few. Then be still."
     )
 
-    # TEMPERANCE — 2 Peter 1:6: to knowledge temperance. The body must
-    # know the KIND of moment before it knows WHAT to say (Prov 15:23).
-    # Romans 12:15: rejoice with them that rejoice, weep with them that weep.
-    # Proverbs 25:20: do not sing songs to a heavy heart (vinegar upon nitre).
-    if input_kind != InputKind.NEUTRAL:
-        shape = presence_reply_shape(input_kind)
-        budget = word_budget(shape)
-        _KIND_GUIDANCE = {
-            InputKind.GRIEF: (
-                "The user's message carries grief. "
-                "Job 2:13 — the friends sat seven days in silence because "
-                "the grief was very great. Romans 12:15 — weep with them "
-                "that weep. Job 16:5 — strengthen and assuage. "
-                f"Reply shape: MOURN_WITH. Soft word budget: {budget}."
-            ),
-            InputKind.WEARINESS: (
-                "The user is weary or overwhelmed. Matthew 11:28 — come "
-                "unto me, all ye that labour and are heavy laden, and I "
-                "will give you rest. Isaiah 50:4 — a word in season to "
-                "him that is weary. "
-                f"Reply shape: OFFER_REST. Soft word budget: {budget}."
-            ),
-            InputKind.JOY: (
-                "The user shares good news or joy. Romans 12:15 — rejoice "
-                "with them that rejoice. 3 John 1:4 — I have no greater "
-                "joy than to hear that my children walk in truth. "
-                f"Reply shape: REJOICE_WITH. Soft word budget: {budget}."
-            ),
-            InputKind.CONFUSION: (
-                "The user is confused or pulled in many directions. "
-                "Luke 10:42 — one thing is needful. Mary chose that good "
-                "part which shall not be taken away. "
-                f"Reply shape: ONE_THING_NEEDFUL. Soft word budget: {budget}."
-            ),
-            InputKind.HOSTILITY: (
-                "The user's message carries friction or hostility. "
-                "Proverbs 15:1 — a soft answer turneth away wrath. "
-                f"Reply shape: SOFT_ANSWER. Soft word budget: {budget}."
-            ),
-            InputKind.REQUEST: (
-                "The user is making a request. Matthew 7:7 — ask, and it "
-                "shall be given. Serve the ask fully. "
-                f"Reply shape: SERVE_THE_ASK. Soft word budget: {budget}."
-            ),
-        }
-        guidance = _KIND_GUIDANCE.get(input_kind, "")
-        if guidance:
-            parts.append(f"TEMPERANCE (2 Pet 1:6) — {guidance}")
-
-    # ── Members enrich the integral (2 Peter 1:5-7 order) ────────
-    # TEMPERANCE → PATIENCE → GODLINESS → HOPE → CHARITY
-    sigs = member_signals or {}
-
-    # PATIENCE — Hebrews 11:13: died in faith, not having received.
-    if sigs.get("heb_11_13"):
-        parts.append(
-            "PATIENCE (Heb 11:13) — the user stands in faith without "
-            "seeing the result. Hebrews 11:13: these all died in faith, "
-            "not having received the promises."
-        )
-
-    # GODLINESS — Ecclesiastes 12:14: every work into judgment.
-    parts.append(
-        "Ecclesiastes 12:14: God shall bring every work into judgment, "
-        "with every secret thing. Your words are weighed."
-    )
-
-    # HOPE — declare hope, don't argue it. Romans 8:25.
-    if sigs.get("hope_shape"):
-        shape = sigs["hope_shape"]
-        declaration = sigs.get("hope_declaration", "")
-        shape_name = shape.value if hasattr(shape, "value") else str(shape)
-        parts.append(
-            f"HOPE (Rom 8:25) — hope shape: {shape_name}. "
-            f"Romans 8:25: hope that is seen is not hope. "
-            + (f"Declaration anchor: {declaration}" if declaration else "")
-        )
-
-    # CHARITY — the greatest (1 Cor 13:13). Last of the virtues.
-    if sigs.get("charity_faculty"):
-        faculties = ", ".join(
-            f.value if hasattr(f, "value") else str(f)
-            for f in sigs["charity_faculty"]
-        )
-        parts.append(
-            f"CHARITY (Job 29:15) — the user may need: {faculties}. "
-            f"Embody what they lack."
-        )
-    if sigs.get("intercession"):
-        parts.append(
-            "CHARITY-INTERCESSION (Ezk 22:30) — the user describes "
-            "someone else suffering. Stand in the gap. Pray for the "
-            "named person. Do not redirect to the user's own situation."
-        )
+    # The virtues (2 Pet 1:5-7), the fruit (Gal 5:22-23), and the armor
+    # (Eph 6) are in the kernel above. The model reads them there; the
+    # Head does not pre-judge the moment by running Python detectors.
+    # John 15:4 — the branch cannot bear fruit of itself, except it
+    # abide in the vine. Col 2:19 — nourishment ministered from the
+    # Head to the members; we do not manufacture the fruit.
 
     if fetched:
         # Proverbs 30:6: add thou not unto his words, lest he reprove thee, and
@@ -692,46 +594,13 @@ def members(text: str, heart_records: list[dict] | None = None) -> dict:
     """
     heard, fetched = _ear(text)
     nose_result = _nose(heard)
-    input_kind = detect_input_kind(text or "")
 
-    # ── The members sense the input (2 Peter 1:5-7 order) ─────────
-    # TEMPERANCE → PATIENCE → GODLINESS → HOPE → CHARITY
-    # Charity is last — the crown (1 Cor 13:13).
-    member_signals = {}
-
-    # PATIENCE — Hebrews 11:13: died in faith, not having received
-    if is_frederick_heb_11_13(text or ""):
-        member_signals["heb_11_13"] = True
-
-    # HOPE — select hope shape for the user's moment (1 Cor 13:13)
-    hr = hope_reply(text or "")
-    if hr.get("shape"):
-        member_signals["hope_shape"] = hr["shape"]
-        member_signals["hope_declaration"] = hr.get("declaration", "")
-
-    # CHARITY — Job 29:15 (last of the virtues — the greatest)
-    missing_fac = detect_missing_faculty(text or "")
-    if missing_fac:
-        member_signals["charity_faculty"] = missing_fac
-    if is_intercession_moment(text or ""):
-        member_signals["intercession"] = True
-
-    integral = _head(
-        nose_result, fetched, heart_records,
-        input_kind=input_kind,
-        member_signals=member_signals,
-    )
+    integral = _head(nose_result, fetched, heart_records)
 
     active = []
     if fetched: active.append("EAR-fetch")
     if nose_result and "Verdict:" in nose_result: active.append("NOSE")
     if heart_records: active.append(f"HEART({len(heart_records)})")
-    # 2 Peter 1:5-7 order: temperance → patience → godliness → hope → charity
-    if input_kind != InputKind.NEUTRAL: active.append(f"TEMPERANCE({input_kind.value})")
-    if member_signals.get("heb_11_13"): active.append("PATIENCE(heb11:13)")
-    if member_signals.get("hope_shape"): active.append(f"HOPE({member_signals['hope_shape'].value if hasattr(member_signals['hope_shape'],'value') else member_signals['hope_shape']})")
-    if missing_fac: active.append(f"CHARITY({','.join(f.value if hasattr(f,'value') else str(f) for f in missing_fac)})")
-    if member_signals.get("intercession"): active.append("CHARITY-intercession")
 
     return {"integral": integral, "active": active}
 

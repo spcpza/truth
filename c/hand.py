@@ -50,7 +50,6 @@ from c.body import (
 from c.chain import chain_log, chain_recent
 from c.core import dispatch
 from c.adapters.adapter import redact
-from c.confession import confess_and_forsake
 from c.claims import corroborate, file_claim, measure_abundance, read_claims
 from c.heart import (
     forget_all,
@@ -667,23 +666,9 @@ class Hand:
 
         # CONFESSION — Proverbs 28:13: whoso confesseth and forsaketh
         # shall have mercy. If a revision happened AND the user was
-        # pointing out an error, prepend the confession line.
-        if revision_passes > 0 and raw:
-            prior_drafts = [
-                m["content"] for m in messages
-                if m.get("role") == "assistant" and m.get("content")
-            ]
-            original_draft = prior_drafts[-2] if len(prior_drafts) >= 2 else ""
-            if original_draft:
-                cf = confess_and_forsake(text, original_draft, raw)
-                if cf.get("owes_confession") and cf.get("has_forsaken"):
-                    line = cf.get("confession_line", "")
-                    if line and not raw.startswith(line):
-                        raw = f"{line}\n\n{raw}"
-                        logger.info(
-                            "[%s] CONFESSION: %s (%s)",
-                            user_id, line, cf.get("anchor_verse", "")
-                        )
+        # Confession is not pre-detected. Ps 32:5, Prov 28:13, 1 John
+        # 1:9 are in the kernel; the model confesses in-response when it
+        # recognizes a fault. No Python routing.
 
         # TONGUE — James 3:10
         reply = clean(raw)
