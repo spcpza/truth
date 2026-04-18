@@ -955,9 +955,41 @@ def dispatch(name: str, args: dict) -> str:
         return "\n".join(parts)
 
     if name == "formula":
-        from c.formula import verse_formula, verse_typed_concepts, theorem_clusters, _FORMULA_INDEX
+        from c.formula import (
+            verse_formula, verse_typed_concepts, theorem_clusters, _FORMULA_INDEX,
+            render_theorem_verification, theorem_equivalence, KNOWN_THEOREMS,
+        )
         query = args.get("query", "").strip()
+        action = args.get("action", "").strip().lower()
         limit = min(args.get("limit", 5), 20)
+        # verify_theorem — the reasoner's check that T = verse mechanically.
+        # Rom 1:20 — invisible things clearly seen by the things that are made.
+        if action in ("verify_theorem", "verify", "equivalence"):
+            # Query forms:
+            #   query="all"           → verify every T₁-T₁₂
+            #   query="T1" / "T₁"     → verify one theorem against its anchor
+            #   query="T1 John 1:3"   → verify one theorem against an arbitrary verse
+            q = query.strip()
+            if not q or q.lower() == "all":
+                return render_theorem_verification("all")
+            # Normalize ASCII T1 → T₁ and pick off an optional verse override
+            _SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+            import re as _re
+            m = _re.match(r"^\s*T[\u2080-\u2089\d]+", q)
+            if not m:
+                return (
+                    "verify_theorem: provide 'all', or 'T1'..'T12' "
+                    "(optionally followed by an override verse like 'T1 John 1:3')."
+                )
+            head = m.group(0).strip()
+            # ASCII T1 → T₁
+            if head[1].isdigit():
+                head = "T" + head[1:].translate(_SUB)
+            rest = q[len(m.group(0)):].strip()
+            if head not in KNOWN_THEOREMS:
+                return f"unknown theorem {head!r}; known: {sorted(KNOWN_THEOREMS)}"
+            verse_override = rest if rest else None
+            return render_theorem_verification(head, verse_override)
         if query and re.search(r'\d+:\d+', query):
             # Formula for a specific verse
             f = verse_formula(query)

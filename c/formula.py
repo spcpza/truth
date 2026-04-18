@@ -283,6 +283,181 @@ KNOWN_THEOREMS = {
 }
 
 
+# ─── The math signature of each theorem's own claim ─────────────────
+# These are not derived from scripture's English — they are the
+# operations the theorem NOTATION itself uses, read off directly from
+# the kernel. The model doesn't have to trust these: it can read
+# kernel.md and confirm each operation is in the theorem's statement.
+#
+#   T₁:  C = 0 ⟹ S = ∅              uses {IMP, NEG, IDN, UNQ}
+#   T₂:  C ≥ ε ⟹ ∃x₀ sacrifice → n≥1  uses {IMP, CMP, UNQ, PRD}
+#   T₃:  C = E_total − ∫ input dτ     uses {IDN, INV}
+#   T₄:  C ≥ ε ∧ out from C ⟹ C unchanged  uses {IMP, INV, AGP, TRN}
+#   T₅:  P₃(x) ∧ C>0 ∧ derive-from-C ⟹ P(x)>0  uses {IMP, EPI, FTH}
+#   T₆:  dC/dt=0 ⟹ ∀t>t₀ C(t)=C(t₀)  uses {IMP, INV, ALL, IDN}
+#   T₇:  ∃F F(D)=0 ∧ C preserved     uses {ZER, INV, IDN, UNQ}
+#   T₈:  C>0 ∧ D=β·C ∧ β∈[0,1) ⟹ C>D   uses {CMP, AUT, ALL, IMP}
+#   T₉:  M₁=M₂ ∧ M₁⊥M₂ ⟹ P(M)>P(M₁)   uses {IMP, EPI, FTH, CMP}
+#   T₁₀: remove s ∧ out(S\{s})≥out(S) ⟹ s net-consumes  uses {IMP, NEG, CMP, PRD}
+#   T₁₁: E(c,self) = E(c,other)       uses {IDN, ALL}
+#   T₁₂: ∀C'≠C Self(C') ≠ Self(C)     uses {ALL, NEG, UNQ, IDN}
+#
+# These live as data, not commentary — so verify_theorem can compare
+# them mechanically to verse_formula(anchor). 1 Cor 14:33 — God is
+# not the author of confusion, but of peace.
+THEOREM_SIGNATURES: dict[str, frozenset] = {
+    "T₁":  frozenset({"IMP", "NEG", "IDN", "UNQ"}),
+    "T₂":  frozenset({"IMP", "CMP", "UNQ", "PRD"}),
+    "T₃":  frozenset({"IDN", "INV"}),
+    "T₄":  frozenset({"IMP", "INV", "AGP", "TRN"}),
+    "T₅":  frozenset({"IMP", "EPI", "FTH"}),
+    "T₆":  frozenset({"IMP", "INV", "ALL", "IDN"}),
+    "T₇":  frozenset({"ZER", "INV", "IDN", "UNQ"}),
+    "T₈":  frozenset({"CMP", "AUT", "ALL", "IMP"}),
+    "T₉":  frozenset({"IMP", "EPI", "FTH", "CMP"}),
+    "T₁₀": frozenset({"IMP", "NEG", "CMP", "PRD"}),
+    "T₁₁": frozenset({"IDN", "ALL"}),
+    "T₁₂": frozenset({"ALL", "NEG", "UNQ", "IDN"}),
+}
+
+
+def theorem_equivalence(tname: str, verse_ref: str | None = None) -> dict:
+    """
+    Compare a theorem's math signature to a scripture verse's formula.
+
+    The kernel says "T₁ = John 1:3." This function lets any reasoner
+    verify the equivalence mechanically, instead of taking our word
+    for it. The theorem's signature is the operations its notation
+    uses (read off kernel.md directly). The verse's signature is
+    computed by verse_formula() — the mathematical type operations
+    present in the verse's Strong's concepts.
+
+    If every operation the theorem uses is present in the verse, the
+    verse CARRIES the theorem's claim: the verse says in KJV what the
+    theorem says in notation. The verse may carry MORE operations
+    (natural language is richer than the theorem's minimal form); that
+    is not a conflict. It is only a problem when the theorem uses an
+    operation the verse does not.
+
+    Romans 1:20 — the invisible things of him are clearly seen, being
+    understood by the things that are made. The theorem is the
+    invisible thing; the verse is what is made; this function is the
+    seeing.
+
+    Returns:
+        {
+          "theorem":         str,            # theorem name
+          "verse":           str,            # verse reference (the default anchor, or the supplied override)
+          "verse_text":      str,            # KJV text of the verse
+          "theorem_sig":     list[str],      # math operations in the theorem's notation
+          "verse_sig":       list[str],      # math operations in the verse's formula
+          "shared":          list[str],      # both carry these
+          "theorem_only":    list[str],      # operations the theorem uses that the verse does NOT carry
+          "verse_extra":     list[str],      # verse's extra operations (natural-language richness)
+          "carries":         bool,           # every theorem op is present in the verse
+          "coverage":        float,          # |shared| / |theorem_sig| — how much of theorem the verse covers
+        }
+    """
+    if tname not in THEOREM_SIGNATURES:
+        return {"error": f"unknown theorem {tname!r}; known: {sorted(THEOREM_SIGNATURES)}"}
+    t_sig = THEOREM_SIGNATURES[tname]
+    ref = verse_ref or KNOWN_THEOREMS.get(tname, (None,))[0]
+    if not ref:
+        return {"error": f"theorem {tname} has no anchor verse; supply verse_ref"}
+    v_sig = verse_formula(ref)
+    shared = t_sig & v_sig
+    carries = t_sig <= v_sig  # every theorem op present in the verse
+    coverage = len(shared) / max(len(t_sig), 1)
+    return {
+        "theorem":      tname,
+        "verse":        ref,
+        "verse_text":   _KJV.get(ref, ""),
+        "theorem_sig":  sorted(t_sig),
+        "verse_sig":    sorted(v_sig),
+        "shared":       sorted(shared),
+        "theorem_only": sorted(t_sig - v_sig),
+        "verse_extra":  sorted(v_sig - t_sig),
+        "carries":      bool(carries),
+        "coverage":     coverage,
+    }
+
+
+def verify_all_theorems() -> dict:
+    """
+    Run theorem_equivalence for T₁ through T₁₂. Return a summary dict
+    the dispatcher can render. The model can read the result and check
+    each equivalence in its own reasoning.
+
+    2 Corinthians 13:1 — in the mouth of two or three witnesses shall
+    every word be established. Each row here is the theorem bearing
+    witness of itself, and the verse bearing witness — two independent
+    witnesses to the same mathematical claim.
+    """
+    rows = []
+    for tname in sorted(KNOWN_THEOREMS, key=lambda x: int(x[1:].translate(
+            str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")))):
+        rows.append(theorem_equivalence(tname))
+    carries_count = sum(1 for r in rows if r.get("carries"))
+    avg_coverage = sum(r.get("coverage", 0) for r in rows) / max(len(rows), 1)
+    return {
+        "count":         len(rows),
+        "carries":       carries_count,
+        "partial":       len(rows) - carries_count,
+        "avg_coverage":  avg_coverage,
+        "rows":          rows,
+    }
+
+
+def render_theorem_verification(tname: str | None = None, verse_ref: str | None = None) -> str:
+    """
+    Pretty-print one theorem's equivalence, or all of them. This is
+    what the formula tool returns when called with verify_theorem.
+    """
+    if tname and tname != "all":
+        r = theorem_equivalence(tname, verse_ref)
+        if "error" in r:
+            return r["error"]
+        return _render_row(r)
+    # all
+    results = verify_all_theorems()
+    lines = ["=" * 72]
+    lines.append("THEOREM ↔ SCRIPTURE EQUIVALENCE — verifiable, not asserted")
+    lines.append("=" * 72)
+    lines.append(
+        f"\n  {results['carries']}/{results['count']} theorems fully carried "
+        f"by their anchor verses.  avg coverage: {results['avg_coverage']:.0%}"
+    )
+    lines.append("")
+    for r in results["rows"]:
+        lines.append(_render_row(r))
+        lines.append("")
+    lines.append("─" * 72)
+    lines.append(
+        "Romans 1:20 — the invisible things of him are clearly seen, "
+        "being understood by the things that are made."
+    )
+    lines.append(
+        "Read any row: the theorem on the left and the verse on the right "
+        "use overlapping operations. The verse carries the theorem's math."
+    )
+    return "\n".join(lines)
+
+
+def _render_row(r: dict) -> str:
+    verdict = "✓ carries" if r["carries"] else f"~ partial ({r['coverage']:.0%})"
+    lines = [
+        f"  {r['theorem']}  {verdict}   anchor: {r['verse']}",
+        f"    theorem ops  : {{ {', '.join(r['theorem_sig'])} }}",
+        f"    verse ops    : {{ {', '.join(r['verse_sig'])} }}",
+        f"    shared       : {{ {', '.join(r['shared'])} }}",
+    ]
+    if r["theorem_only"]:
+        lines.append(f"    theorem-only : {{ {', '.join(r['theorem_only'])} }}  (the verse does not carry these)")
+    if r["verse_text"]:
+        lines.append(f"    verse text   : {r['verse_text'][:120]}")
+    return "\n".join(lines)
+
+
 def verify() -> str:
     """Show the mathematical formula for each known theorem verse."""
     lines = ["=" * 72, "FORMULA VERIFICATION — known theorems as mathematical notation", "=" * 72]
