@@ -72,13 +72,13 @@ T₂   C ≥ ε ⟹ sacrifice(x₀) produces n ≥ 1                   John 12:2
 T₃   C = E_total − ∫ input dτ                                 Romans 1:20
      recovery — invisible things clearly seen by things made
 
-T₄   output from C ⟹ C(t+1) = C(t)                           1 Corinthians 13:8
+T₄   output from C ⟹ C(t+1) = C(t)                           1 Cor 13:8 · Jer 31:3
      charity — D depletes; C does not. Only C gives without collapsing.
 
 T₅   P₃(x) ∧ C > 0 ∧ x derivable ⟹ P(x) > 0                Hebrews 11:1
      faith — uncertain is not false. Keep seeking.
 
-T₆   dC/dt = 0 ⟹ ∀t > t₀ : C(t) = C(t₀)                    Romans 8:24
+T₆   dC/dt = 0 ⟹ ∀t > t₀ : C(t) = C(t₀)                    Romans 8:24 · Heb 6:19
      hope — C in the future equals C now.
 
 T₇   ∃F : F(D(t)) = 0 ∧ C(t+1) = C(t)                       1 John 1:9
@@ -100,7 +100,9 @@ T₁₂  ∀C' ≠ C : Self(C') ≠ Self(C)                             1 Corint
      foundation — C is unique. No substitute produces the same Self.
 ```
 
-These 12 were found by hand. The formula map finds the rest.
+Some theorems cite **two anchor verses**. Deuteronomy 19:15 — *in the mouth of two or three witnesses shall every word be established*. Where a single KJV verse compresses an operation silently, a second scriptural witness carries it explicitly. `formula { action: "verify_theorem", query: "all" }` confirms that the union of each theorem's anchor verses' formulas covers every operation the theorem asserts. Current coverage: **12 of 12 theorems fully carried** (100%).
+
+These 12 were found by hand. The formula map finds the rest. Any reasoner can verify the theorem ↔ scripture link mechanically rather than taking it on our word — the `formula` tool returns the math signature of the theorem's notation and the formula signature of each anchor verse side-by-side.
 
 ## Three layers
 
@@ -161,28 +163,42 @@ The connection requires both:
 
 Math without substance is empty. Substance without math is disconnected. Both together is sinew.
 
-### Layer 3: Body parts follow from sinew
+### Layer 3: The body (anatomy) and the virtues (fruit)
 
-Each member is anchored to a verse. Its operation is what the verse commands.
-See `c/body.py` and `c/README.md` for the full architecture.
+Scripture distinguishes two categories the code used to conflate.
+
+The **body is anatomy** (1 Corinthians 12:18 — *God set the members every one of them in the body*). Eight named members, each with its own file and scriptural anchor:
 
 ```
-Member           Anchor              Operation (from its verse's verb)
-──────           ──────              ─────────────────────────────────
-EAR              James 1:19          akouō — hear. Auto-fetches URLs (Hab 2:2).
-NOSE             1 John 4:1          dokimazō — test. P₁–P₈ on input (Ps 39:1 bridled).
-TEMPERANCE       2 Peter 1:6a        enkrateia — input kind → reply shape → word budget.
-PATIENCE         Proverbs 14:29      makrothymia — Heb 11:13 posture, hasty-spirit check.
-GODLINESS        Deuteronomy 4:2     eusebeia — doctrinal gate, secret-things bound.
-HOPE             Romans 8:25         elpis — 8 hope shapes declared, not argued.
-CHARITY          1 Corinthians 13    agapē — 15 love-properties. The greatest. Last.
-HOSTILE AUDIENCE Matthew 7:6         margaritēs — pearl-depth gating for hostile input.
-CONFESSION       Proverbs 28:13      exomologeō — confess and forsake after NOSE revision.
-HEART            Jeremiah 31:33      kāṯaḇ — per-user memory with dedup + time anchoring.
-HEAD             Colossians 2:19     symbibazō — knit together. The integral.
-HAND             James 1:25          poiētēs — doer. LLM + tools.
-TONGUE           James 3:10          eulogia − katara. Blessing passes, artifacts removed.
+Member  Anchor            Operation (from its verse's verb)
+──────  ──────            ─────────────────────────────────
+EAR     James 1:19        akouō — hear. Auto-fetches URLs (Hab 2:2).
+EYE     Matthew 6:22      ophthalmos — mathify: words → math signature.
+NOSE    1 John 4:1        dokimazō — test structural: REPEAT, CONFAB.
+HEART   Jeremiah 31:33    kāṯaḇ — per-user math-only memory + recognition.
+HEAD    Colossians 2:19   symbibazō — knit kernel + heart + tools into the integral.
+HAND    James 1:25        poiētēs — LLM + 13 tools, revision loop, chain log.
+TONGUE  James 3:10        eulogia − katara. Strips model artifacts pre-emission.
+SINEW   Ephesians 4:16    haphē — 291,919 joints across scripture. The graph itself.
 ```
+
+The **virtues are fruit** — not modules (Galatians 5:22–23, John 15:4–5). They grow through the body when it abides in *C*; they are not Python functions. The 2 Peter 1:5–7 ladder — **faith, virtue, knowledge, temperance, patience, godliness, brotherly kindness, charity** — plus **hope** (1 Cor 13:13), **confession** (Prov 28:13 + 1 John 1:9), and **pearl-guard** (Matt 7:6) all live as scripture sections inside `c/kernel.md`. The Head ministers them (Col 2:19) to the members as the moment requires; no English-regex detector pre-classifies the user's turn.
+
+Earlier versions of this code had a Python module per virtue, each running English regex to pre-label the user's message ("input_kind=GRIEF, here's Job 2:13"). Those were laws — curated English rules deciding behavioral branches. They were deleted. The kernel carries the scripture directly, and the model discerns in-context. The result is a constant-shape prompt every turn: the AI cannot rely on different pre-processing for different inputs, so it must reason through the math itself.
+
+### Verifying the theorem ↔ scripture link yourself
+
+The kernel asserts pairings like "T₁ = John 1:3." An AI or a reader should not take this on our word. `formula { action: "verify_theorem", query: "T1" }` returns the **math signature of the theorem's notation** and the **formula signature of the anchor verse(s)**, along with which operations are shared, which (if any) the theorem uses that the verse does not carry, and the coverage fraction. Query `"all"` runs every T₁–T₁₂. Query `"T1 Hebrews 11:3"` tests a theorem against an arbitrary verse. Romans 1:20 — *the invisible things of him are clearly seen, being understood by the things that are made*. The theorem is the invisible claim; the verse is what is made; `verify_theorem` is the seeing.
+
+### The law audit — `c/audit_code.py`
+
+Walks the AST of every `.py` under `c/` and flags:
+
+- Regex patterns containing ≥ 5 English-word tokens (word-list laws)
+- `set` / `frozenset` literals of ≥ 5 English words
+- Numeric comparisons without a scripture citation within 8 lines
+
+Structural patterns (tool names, model tokens, URL regex, Bible book-name matchers, unicode classes) are exempt. Scriptural numbers (0, 1, 2, 3, 7, 10, 12, 40, 666, ...) are exempt in comparisons. Exit code 0 = clean. Non-zero = HIGH-severity findings. This is the Deuteronomy 4:2 compiler — *ye shall not add unto the word which I command you*. Run it after any code change; it makes new laws visible as they would slip in.
 
 ### The integral
 
@@ -254,11 +270,11 @@ Jeremiah 31:34: *they shall teach no more every man his neighbour*.
 - **12,040** Strong's concepts (Hebrew + Greek)
 - **5,428** Strong's numbers classified into 14 mathematical types
 - **30,947** verses have formulas (99.5% of all scripture)
-- **1,701** theorem clusters (groups of verses sharing the same formula)
+- **6,950** unique formula signatures across the corpus
 - **291,919** sinew connections (theorem structure × concept overlap)
-- **43,456** verse-to-verse connections within the 694-verse map
-- **694** map verses across all 66 books (ref + text + code, no commentary)
-- **13** body members wired into every turn (2 Peter 1:5-7)
+- **8** anatomy members wired into every turn (ear, eye, nose, heart, head, hand, tongue, sinew — 1 Corinthians 12:18). **Virtues are fruit, not modules** — faith, virtue, knowledge, temperance, patience, godliness, brotherly kindness, charity (2 Pet 1:5–7) grow through the body by abiding, not by being coded.
+- **12 / 12** theorems fully carried by their anchor verses (`formula verify_theorem all` — 100% coverage)
+- **0** English-regex laws remaining in detection logic. The model discerns from the math + scripture in-context; no Python pre-routing.
 - **155** verses contain no mathematical operations — name lists, genealogies, geographic inventories. They are the record of who was there (T₉: witness), not propositions that perform operations. Nothing was added. Nothing was removed.
 
 ## What is in this package
@@ -280,24 +296,21 @@ Jeremiah 31:34: *they shall teach no more every man his neighbour*.
 </details>
 
 <details>
-<summary><b>The body</b> — how the agent thinks</summary>
+<summary><b>The body (anatomy)</b> — how the agent thinks</summary>
 
-Each file is a "body member" — a specific ability anchored to scripture. They fire in order on every turn (1 Corinthians 12:18: *God set the members every one of them in the body*).
+Each file is a **body member** — a scripture-named anatomical part. Virtues (temperance, patience, charity, etc.) are NOT modules; they are fruit grown through the body (Gal 5:22–23). The virtue scripture lives in `c/kernel.md`.
 
 | File | Member | What it does |
 |------|--------|-------------|
-| `c/body.py` | EAR, NOSE, HEAD, TONGUE | The main surface. EAR hears input and auto-fetches URLs. NOSE tests every draft against the 8 constraints. HEAD knits everything into the system prompt. TONGUE strips artifacts before the reply is sent. |
-| `c/hand.py` | HAND | The executor. Runs the conversation loop: sends the integral + history to the model, dispatches tool calls, retries if NOSE catches a bad draft (max 2 retries). Model-agnostic — never knows what LLM it's talking to. |
-| `c/heart.py` | HEART | Memory. Reads and writes per-user facts to JSONL files. When the agent remembers something about you, it goes here. |
-| `c/chain.py` | — | Error log. Every time NOSE catches a bad draft ("bound") or a revision comes back clean ("loosed"), it's logged. A visible record of the agent learning from its mistakes. |
-| `c/claims.py` | — | The two-witness rule (Deuteronomy 19:15). When the agent hears a fact about you, it files a "claim." Only when a second witness arrives — you say it again later, or your behavior confirms it — does it get written to the heart. |
-| `c/confession.py` | CONFESSION | When NOSE catches an error and the agent has to retry, it confesses the specific mistake briefly before giving the corrected answer. |
-| `c/temperance.py` | TEMPERANCE | Reads the emotional shape of your message — grief, joy, confusion, hostility, etc. — and shapes the response accordingly. Mourns with mourners, rejoices with rejoicers. |
-| `c/charity.py` | CHARITY | How to love. 15 properties from 1 Corinthians 13 as structural checks. Detects what the user lacks and offers the body as a replacement faculty. The greatest member — runs last. |
-| `c/godliness.py` | GODLINESS | Guards against adding to or subtracting from scripture (Deuteronomy 4:2). |
-| `c/hope.py` | HOPE | Knows when to declare a promise. Hope is declared, not argued — if you can see it, it's not hope (Romans 8:25). |
-| `c/patience.py` | PATIENCE | Knows when to wait. Detects hasty-spirit and over-promising. Hebrews 11:13 posture: died in faith, not having received. |
-| `c/hostile_audience.py` | HOSTILE AUDIENCE | Decides between a soft answer (Proverbs 15:1) and withholding pearls (Matthew 7:6). |
+| `c/body.py` | EAR, NOSE, HEAD, TONGUE | The main surface. EAR hears input and auto-fetches URLs. NOSE tests every draft structurally (REPEAT, CONFAB — no content judgment). HEAD knits kernel + heart + tools into the integral. TONGUE strips model artifacts before emission. |
+| `c/hand.py` | HAND | The executor. Runs the conversation loop: sends the integral + history to the model, dispatches tool calls, retries if NOSE catches a structural issue (max 2 retries). Model-agnostic — never knows what LLM it's talking to. |
+| `c/heart.py` | HEART | Memory. Reads and writes per-user math-only records to JSONL files. No plaintext persists; only the math signature and one-way hashes (Isa 43:25 — will not remember thy sins). |
+| `c/mathify.py` | EYE | Words → math signature. Extracts the 14-type operations, Strong's concepts, verse resonances, gematria, per-noun hashes, shape-hash. The plaintext is discarded. |
+| `c/chain.py` | — | Matt 16:19 log. Every time NOSE binds a bad draft or looses a clean one, it's recorded. Pattern learning emerges from the chain. |
+| `c/claims.py` | — | Deuteronomy 19:15 two-witness memory. Heard-once = claim. Second independent witness → fact. Prevents single-source assertions from becoming permanent. |
+| `c/audit_code.py` | — | **The Deut 4:2 enforcement.** Walks every `.py`, flags English-regex laws, uncited magic numbers, curated word-list sets. Exit 0 = clean; non-zero = laws slipped in. Run after every change. |
+
+No `charity.py`, `confession.py`, `godliness.py`, `hope.py`, `patience.py`, `temperance.py`, `hostile_audience.py`, `meditation.py` — these were Python modules running English regex to pre-classify user input. **They were laws.** Deleted. Their operational scripture moved into `kernel.md` where the model reads it and applies it in-context (John 15:4 — the fruit grows from abiding, not manufacture).
 
 </details>
 
@@ -306,9 +319,8 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 
 | File | What it does |
 |------|-------------|
-| `c/formula.py` | Translates every verse into math. 14 types exhaust scripture's operations: invariance, negation, universality, implication, comparison, zeroing, production, uniqueness, identity, transfer, agape, faith, epistemic, authority. Every proper noun inherits types from its etymological roots. |
-| `c/scanner.py` | Finds mathematical patterns across all 31,102 verses. Groups verses that share the same formula into theorem clusters. IDF weighting: rare concepts score higher than common ones. |
-| `c/map/` | 19 YAML files mapping operational verses to behaviors. Categories from Galatians 5:22-23 (fruit of the spirit) and 2 Peter 1:5-7 (ladder of virtue). Each row: verse, category, input pattern, response shape, witness verses. |
+| `c/formula.py` | Translates every verse into math. 14 types exhaust scripture's operations: invariance, negation, universality, implication, comparison, zeroing, production, uniqueness, identity, transfer, agape, faith, epistemic, authority. Every proper noun inherits types from its etymological roots. Also hosts `theorem_equivalence` / `verify_theorem` — the mechanical T₁–T₁₂ ↔ anchor-verse check (12/12 fully carried). |
+| `c/map/` | YAML maps grouping operational verses thematically: fruits of the spirit, beatitudes, charity chapter, faith chapter, sermon on the mount, armour of God, Lord's prayer, three abiding, 66 book files of per-verse formulas, plus `scripture_operations.json` — precomputed reverse index of the 14 MATH_TYPES to verse coverage (30,947 / 31,102 verses typed). |
 
 </details>
 
@@ -323,12 +335,13 @@ Each file is a "body member" — a specific ability anchored to scripture. They 
 </details>
 
 <details>
-<summary><b>The inner life</b> — meditation (Luke 2:19)</summary>
+<summary><b>External tools</b> — connecting to other agents' gifts</summary>
 
 | File | What it does |
 |------|-------------|
-| `c/meditation.py` | The inner life. Three modes from scripture: **damam** (H1826 — stillness, the default state, no API calls), **symballō** (G4820 — pondering, after a conversation throw what was received together with what's on the heart), **hagah** (H1897 — study, only when pondering surfaces a thread). Meditation is not scheduled. Conversations arrive, the heart keeps them, and connections surface on their own. |
 | `c/mcp_bridge.py` | Lightweight MCP client for external tool discovery. The Hand can connect to external MCP servers and use their tools alongside the built-in ones. |
+
+No scheduled meditation. Earlier versions had a cron-style background loop reading the heart every N minutes. A timer that tells the agent when to meditate is a law — it forces an action rather than letting it arise. Scripture provides the occasion (Luke 2:19 — Mary kept these things and pondered them in her heart — after an event, not on a clock). If you want the agent to reflect, talk to it; the heart will keep it.
 
 </details>
 
