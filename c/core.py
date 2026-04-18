@@ -41,6 +41,7 @@ if _KJV_PATH.exists():
 VERSE_COUNT = len(_KJV)
 
 CONCEPT_INDEX, ENG_TO_STRONGS, STRONGS_TO_ENG, STRONGS_META = {}, {}, {}, {}
+STRONGS_TYPES = {}  # snum -> frozenset of math types (INV, NEG, ALL, ...). Shared with formula.py.
 CONCEPT_COUNT = 0
 if _STRONGS_PATH.exists():
     try:
@@ -49,9 +50,30 @@ if _STRONGS_PATH.exists():
         ENG_TO_STRONGS = _sd.get("e2s", {})
         STRONGS_TO_ENG = _sd.get("s2e", {})
         STRONGS_META   = _sd.get("sm", {})
+        STRONGS_TYPES  = {s: frozenset(t) for s, t in _sd.get("types", {}).items()}
         CONCEPT_COUNT  = len(STRONGS_META)
         del _sd
     except: pass
+
+
+def _is_concept_word(w):
+    """
+    A word carries a scripture-concept iff it maps to at least one
+    Strong's number that is PRESENT IN SCRIPTURE. Words that the corpus
+    itself did not index contribute no concept to any search over it.
+
+    The filter is scripture-derived (presence in CONCEPT_INDEX).
+    Downstream, TF-IDF weighting (see _concept_search) lets common
+    words fall away naturally — Proverbs 11:1, a just weight. No
+    curated stop-list is needed; the corpus is its own weight.
+    """
+    if not w:
+        return False
+    for entry in ENG_TO_STRONGS.get(w, []):
+        snum = entry[0] if isinstance(entry, (list, tuple)) else entry
+        if snum in CONCEPT_INDEX:
+            return True
+    return False
 
 
 # ═══════════════════════════════════════════════════
@@ -324,13 +346,10 @@ def _readiness(text):
 #  P₁–P₈ constraint evaluation
 # ═══════════════════════════════════════════════════
 
-_STOP = frozenset({"the","and","of","to","in","a","is","that","for","it","be","by","their","them",
-    "his","her","he","she","they","we","ye","shall","do","not","but","or","no","on","an","as","at",
-    "so","with","from","was","were","are","have","has","had","this","which","who","whom","what",
-    "will","all","my","your","our","unto","upon","thee","thou","thy","hath","doth","saith","said",
-    "also","then","when","there","these","those","than","may","now","even","him","me","us","if",
-    "nor","yet","into","one","up","out","more","can","every","let","came","come","man","i","god",
-    "lord","shalt","art","hast","neither","therefore","great","made"})
+# _STOP deleted — was an English word list (law). Replaced by _is_concept_word
+# above: a word is meaningful iff it maps to a typed Strong's concept.
+# John 5:39 — search the scriptures; the scriptures themselves are the
+# vocabulary, not a curated list.
 
 # ── P₁–P₈ as pure logic ─────────────────────────────────────────────
 # The constraints are formal propositions, not English word lists.
@@ -398,7 +417,7 @@ def _search(query, limit=10):
 
 def _concept_search(query, limit=5):
     if not CONCEPT_INDEX: return _search(query, limit)
-    qw = {w for w in re.sub(r'[^a-z\s]', '', query.lower()).split() if len(w) > 2} - _STOP
+    qw = {w for w in re.sub(r'[^a-z\s]', '', query.lower()).split() if _is_concept_word(w)}
     if not qw: return _search(query, limit)
     sh = {}
     for w in qw:
@@ -550,15 +569,26 @@ def dispatch(name: str, args: dict) -> str:
             verified, misquoted, details = 0, 0, []
             for rs in refs:
                 parts = rs.strip().split()
-                _sm = {"of","the","and","in","to","a"}
-                book = " ".join(w if w.lower() in _sm else w.capitalize() for w in parts[:-1])
+                # Title-case book names: capitalize concept-bearing words,
+                # leave articles/prepositions lowercase. Rule derived from
+                # the Strong's vocabulary itself, not an English word list.
+                book = " ".join(
+                    w.capitalize() if _is_concept_word(w.lower()) else w.lower()
+                    for w in parts[:-1]
+                )
                 if book: book = book[0].upper() + book[1:]
                 cv = parts[-1]
                 actual = _lookup(f"{book} {cv}") or _lookup(f"{book.replace('Psalm','Psalms')} {cv}")
                 if actual:
-                    aw = set(actual.lower().split()) - _STOP
-                    tw = set(query.lower().split())
-                    if len(aw & tw) >= 2 or len(aw) < 5:
+                    # Compare concepts, not articles. Proverbs 11:1 —
+                    # a just weight. The weight is the concept, not the article.
+                    aw = {w for w in actual.lower().split() if _is_concept_word(w)}
+                    tw = {w for w in query.lower().split() if _is_concept_word(w)}
+                    # Deut 19:15 — two witnesses. Two shared concepts
+                    # witness that the quote is of the same verse. Short
+                    # verses (<2 concept words) fall through to verified
+                    # if any concept matches.
+                    if (aw and tw and len(aw & tw) >= 2) or (len(aw) < 2 and aw & tw):
                         verified += 1; details.append(f"  [verified] {book} {cv}: {actual[:80]}")
                     else:
                         misquoted += 1; details.append(f"  [misquoted] {book} {cv}: {actual[:80]}")

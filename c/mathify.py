@@ -43,7 +43,7 @@ import re
 from typing import Optional
 
 from c.formula import draft_types
-from c.core import ENG_TO_STRONGS
+from c.core import ENG_TO_STRONGS, CONCEPT_INDEX
 
 
 # ─── Strong's extraction (Prov 25:2 — search out a matter) ─────────────
@@ -53,23 +53,16 @@ from c.core import ENG_TO_STRONGS
 
 _STRONGS_CACHE: dict[str, list[str]] = {}
 
-_COMMON_STOP = {
-    "the", "a", "an", "and", "or", "but", "of", "in", "on", "at", "to",
-    "for", "is", "are", "was", "were", "be", "been", "being", "have",
-    "has", "had", "do", "does", "did", "with", "by", "from", "as", "that",
-    "this", "these", "those", "it", "its", "his", "her", "their", "our",
-    "my", "your", "i", "he", "she", "we", "you", "they", "them", "us",
-    "not", "no", "yes", "if", "then", "than", "so", "too", "very", "also",
-    "just", "only", "any", "some", "all", "who", "what", "when", "where",
-    "why", "how", "which",
-}
-
 
 def _strongs_from_text(text: str, limit: int = 6) -> list[str]:
     """
     Map English text → top Strong's numbers, ranked by total count
     across the input's words. Scripture-grounded tokenization — "love"
     lights up G26 agapē, "wisdom" lights up G4678 sophia, etc.
+
+    Noise-filtering is scripture-derived: a word only counts if its
+    Strong's is present in CONCEPT_INDEX — i.e., the corpus itself
+    indexes it. Proverbs 11:1 — a just weight. No curated stop-list.
     """
     if not text:
         return []
@@ -77,14 +70,17 @@ def _strongs_from_text(text: str, limit: int = 6) -> list[str]:
     if key in _STRONGS_CACHE:
         return _STRONGS_CACHE[key]
 
-    # Sum counts per snum across all words
+    # Sum counts per snum across all words; keep only concepts the
+    # corpus indexes (CONCEPT_INDEX — every Strong's that appears in the
+    # 31,102 propositions). Proverbs 11:1 — a just weight; scripture is
+    # its own.
     totals: dict[str, int] = {}
     for raw in re.findall(r"[a-zA-Z]+", key):
         w = raw.lower()
-        if len(w) < 3 or w in _COMMON_STOP:
-            continue
         for entry in ENG_TO_STRONGS.get(w, []):
             snum = entry[0] if isinstance(entry, (list, tuple)) else entry
+            if snum not in CONCEPT_INDEX:
+                continue
             count = entry[1] if isinstance(entry, (list, tuple)) and len(entry) > 1 else 1
             totals[snum] = totals.get(snum, 0) + int(count or 1)
 
@@ -138,10 +134,19 @@ def _gematria_from_concepts(concepts: list[str], limit: int = 4) -> list[int]:
 # ─── One-way hashes (Isa 43:25 — will not remember) ────────────────────
 
 _PROPER_NOUN = re.compile(r"\b[A-Z][a-zA-Z0-9]{2,}\b")
+# Entity-hashing recognizes the same person/place recurring across turns.
+# Two classes of capitalized words are not person/place identifiers:
+#   (a) sentence-initial pronouns — grammar, not identity. Matt 15:17: enter
+#       into the mouth goeth into the belly; these are syntax, not content.
+#   (b) the divine name and the agent's own name — universally invoked,
+#       not identifiers of which-conversation-is-this. Ex 20:7: thou shalt
+#       not take the name of the LORD thy God in vain; Deut 28:58: fear
+#       this glorious and fearful name. Treating the Name as a session
+#       marker is category confusion.
 _STOP_PROPER = {
     "I", "It", "The", "This", "That", "There", "These", "Those", "He",
-    "She", "You", "We", "My", "Your", "Our", "Their", "God", "Lord",
-    "LORD", "Jesus", "Christ", "Balthazar",
+    "She", "You", "We", "My", "Your", "Our", "Their",
+    "God", "Lord", "LORD", "Jesus", "Christ", "Balthazar",
 }
 
 
@@ -269,10 +274,11 @@ def recognize(record_hashes: list[str], live_text: str) -> list[str]:
 
 def same_shape(a: dict, b: dict) -> bool:
     """
-    Two math records are the same if:
-      • their shape-hash matches (same sentence skeleton), OR
-      • their proper-noun hashes overlap AND their concepts overlap
-        significantly (same subject, same scripture resonance).
+    Two math records are the same when either witness agrees:
+      • shape-hash matches (same sentence skeleton), OR
+      • proper-noun hashes overlap AND at least two typed concepts
+        are shared (Deut 19:15 — two witnesses: the same entity AND
+        two of its concepts is "a matter established").
     """
     if a.get("shape_h") and b.get("shape_h") and a["shape_h"] == b["shape_h"]:
         return True
@@ -280,8 +286,9 @@ def same_shape(a: dict, b: dict) -> bool:
     ents_b = set(b.get("ent_hashes") or [])
     cons_a = set(a.get("concepts") or [])
     cons_b = set(b.get("concepts") or [])
-    if ents_a & ents_b and cons_a and cons_b:
-        overlap = len(cons_a & cons_b) / max(len(cons_a | cons_b), 1)
-        if overlap >= 0.5:
-            return True
+    # Deut 19:15: "at the mouth of two or three witnesses shall the
+    # matter be established." Same entity + two shared concepts = two
+    # witnesses to the same subject.
+    if ents_a & ents_b and len(cons_a & cons_b) >= 2:
+        return True
     return False

@@ -251,15 +251,32 @@ def build_app() -> Starlette:
     return Starlette(debug=False, routes=routes, middleware=middleware)
 
 
-def setup_hand(config_path: pathlib.Path) -> None:
-    """Initialize the global Hand from a truth config.json."""
+def setup_hand(
+    config_path: pathlib.Path,
+    model_override: str | None = None,
+    base_url_override: str | None = None,
+    api_key_override: str | None = None,
+) -> None:
+    """Initialize the global Hand from a truth config.json, with optional
+    CLI overrides (most useful for pointing at a local Ollama server)."""
     global HAND, CONFIG
     CONFIG = json.loads(config_path.read_text())
-    api_key = CONFIG.get("nous_api_key") or CONFIG.get("openai_api_key") or CONFIG.get("api_key")
-    if not api_key:
-        raise SystemExit("config.json missing nous_api_key / openai_api_key / api_key")
-    model = CONFIG.get("model") or "xiaomi/mimo-v2-pro"
-    base_url = CONFIG.get("base_url") or "https://inference-api.nousresearch.com/v1"
+    api_key = (
+        api_key_override
+        or CONFIG.get("nous_api_key")
+        or CONFIG.get("openai_api_key")
+        or CONFIG.get("api_key")
+        or "ollama"  # Ollama ignores the key but ChatAdapter insists on one
+    )
+    model = model_override or CONFIG.get("model") or "xiaomi/mimo-v2-pro"
+    base_url = (
+        base_url_override
+        or CONFIG.get("base_url")
+        or "https://inference-api.nousresearch.com/v1"
+    )
+    # Record the resolved values so /health reflects reality.
+    CONFIG["model"] = model
+    CONFIG["base_url"] = base_url
     memory_dir = pathlib.Path(CONFIG.get("memory_dir", "memory")).expanduser()
     # Resolve memory_dir relative to the config file's directory if not absolute
     if not memory_dir.is_absolute():
@@ -279,6 +296,12 @@ def main() -> int:
     parser.add_argument("--config", type=pathlib.Path,
                         default=pathlib.Path("~/.balthazar/config.json").expanduser(),
                         help="Path to truth config.json")
+    parser.add_argument("--model",
+                        help="Override config.model (e.g. 'qwen3:14b' for Ollama).")
+    parser.add_argument("--base-url", dest="base_url",
+                        help="Override config.base_url (e.g. 'http://localhost:11434/v1' for Ollama).")
+    parser.add_argument("--api-key", dest="api_key",
+                        help="Override config.nous_api_key (Ollama accepts any value).")
     parser.add_argument("--log-level", default="info")
     args = parser.parse_args()
 
@@ -286,7 +309,12 @@ def main() -> int:
         level=getattr(logging, args.log_level.upper(), logging.INFO),
         format="%(asctime)s %(name)s %(levelname)s %(message)s",
     )
-    setup_hand(args.config)
+    setup_hand(
+        args.config,
+        model_override=args.model,
+        base_url_override=args.base_url,
+        api_key_override=args.api_key,
+    )
     app = build_app()
     logger.info("Serving truth body on http://%s:%d", args.host, args.port)
     uvicorn.run(app, host=args.host, port=args.port, log_level=args.log_level)

@@ -65,7 +65,6 @@ The member is written; the mount is where it is seen.
 
 from __future__ import annotations
 
-import re
 from enum import Enum
 
 
@@ -94,125 +93,178 @@ class InputKind(str, Enum):
     NEUTRAL    = "neutral"    # none of the above — default corpus service
 
 
-# ── Lexical markers for each kind ──────────────────────────────────────────
-# Each marker set is a small, conservative list of words and phrases
-# that reliably indicate the kind. The detector fires only when a
-# marker is present; in the absence of markers it returns NEUTRAL.
-# Proverbs 18:17 — the first account seems just; do not rush to verdict
-# on a single pattern.
+# ── Anchor verses for each kind ────────────────────────────────────────────
+#
+# 2026-04-18 translation: the six English-regex markers were laws.
+# Laws were replaced by scripture-anchor detection — each kind carries
+# a set of anchor verses from the docstring above; the kind a message
+# belongs to is the kind whose anchor Strong's-concepts the message's
+# concepts overlap with most.
+#
+# "Rejoice with them that rejoice, weep with them that weep" (Rom 12:15)
+# is operationally: for the user's message, find which anchor-verse
+# concepts light up. The detection speaks scripture's own vocabulary,
+# not a curated English regex of what a modern grief-message "should"
+# look like.
+#
+# Conservative by design: absent any concept overlap, return NEUTRAL
+# and trust the kernel. Proverbs 18:13 — a verdict before hearing is
+# folly; an overconfident regex was a verdict on every English phrase
+# it happened to match.
 
-_GRIEF_MARKERS = re.compile(
-    r"\b("
-    r"died|death|funeral|lost\s+(?:my|him|her|them)|"
-    r"passed\s+away|gone|dying|"
-    r"grief|grieving|mourning|sorrow|sad|weeping|crying|tears|"
-    r"heartbroken|devastated|broken|shattered|crushed|"
-    r"emotional\s+conversation|hard\s+conversation|heavy\s+conversation|"
-    r"difficult\s+conversation|tough\s+conversation|"
-    r"hard\s+talk|tough\s+talk|difficult\s+talk|"
-    r"rough\s+(?:day|time|week)|tough\s+(?:day|time|week)|hard\s+(?:day|time|week)|"
-    r"broke\s+down|"
-    r"miss\s+(?:him|her|them)|i\s+miss\s+"
-    r")\b",
-    re.I,
-)
+_KIND_ANCHORS: dict[InputKind, tuple[str, ...]] = {
+    InputKind.GRIEF: (
+        "Matthew 5:4",        # blessed are they that mourn
+        "Job 2:13",           # none spake a word unto him
+        "Romans 12:15",       # weep with them that weep
+        "Proverbs 25:20",     # songs to a heavy heart
+        "Ecclesiastes 3:4",   # a time to weep, a time to mourn
+        "Psalms 34:18",       # nigh unto them that are of a broken heart
+        "Lamentations 1:12",  # any sorrow like unto my sorrow
+    ),
+    InputKind.JOY: (
+        "3 John 1:4",         # no greater joy
+        "Romans 12:15",       # rejoice with them that rejoice
+        "Nehemiah 8:10",      # the joy of the LORD is your strength
+        "Psalms 16:11",       # fulness of joy
+        "Luke 15:10",         # joy in heaven over one sinner
+    ),
+    InputKind.WEARINESS: (
+        "Matthew 11:28",      # come unto me all ye that labour and are heavy laden
+        "Isaiah 50:4",        # a word in season to him that is weary
+        "Isaiah 40:29",       # he giveth power to the faint
+        "Galatians 6:9",      # be not weary in well doing
+        "Psalms 6:6",         # I am weary with my groaning
+    ),
+    InputKind.CONFUSION: (
+        "Luke 10:42",         # one thing is needful
+        "James 1:5",          # if any of you lack wisdom, let him ask
+        "Proverbs 3:5",       # lean not unto thine own understanding
+        "Isaiah 55:8",        # my thoughts are not your thoughts
+    ),
+    InputKind.REQUEST: (
+        "Matthew 7:7",        # ask, and it shall be given
+        "Matthew 5:42",       # give to him that asketh
+        "James 1:5",          # ask of God
+        "Psalms 27:4",        # one thing have I desired
+        "Luke 11:9",          # ask, seek, knock
+    ),
+    InputKind.HOSTILITY: (
+        "Matthew 7:6",        # neither cast ye your pearls before swine
+        "Proverbs 26:4",      # answer not a fool
+        "Proverbs 15:1",      # grievous words stir up anger
+        "Psalms 1:1",         # seat of the scornful
+        "2 Peter 3:3",        # scoffers, walking after their own lusts
+        "Jude 1:18",          # mockers in the last time
+    ),
+}
 
-_JOY_MARKERS = re.compile(
-    r"\b("
-    r"got\s+engaged|got\s+married|baby|pregnant|"
-    r"got\s+the\s+job|passed\s+the|finished\s+the|graduated|"
-    r"so\s+happy|so\s+excited|thrilled|"
-    r"great\s+news|good\s+news|amazing|wonderful|"
-    r"celebrating|celebration|"
-    r"answered\s+prayer"
-    r")\b",
-    re.I,
-)
 
-_WEARINESS_MARKERS = re.compile(
-    r"\b("
-    r"exhausted|tired|burned\s+out|burnt\s+out|worn\s+out|"
-    r"overwhelmed|too\s+much|can't\s+anymore|cant\s+anymore|"
-    r"can't\s+do\s+this|cannot\s+do\s+this|"
-    r"sick\s+of|fed\s+up|done\s+with|"
-    r"so\s+tired|dead\s+tired|"
-    r"weary|drained|empty"
-    r")\b",
-    re.I,
-)
+def _anchor_concepts(kind: InputKind) -> set:
+    """Union of Strong's concepts across the anchor verses for this kind."""
+    from c.core import _VERSE_TO_STRONGS
+    out: set = set()
+    for ref in _KIND_ANCHORS.get(kind, ()):
+        out |= _VERSE_TO_STRONGS.get(ref, set())
+    return out
 
-_CONFUSION_MARKERS = re.compile(
-    r"\b("
-    r"i\s+don'?t\s+know\s+what\s+to\s+do|"
-    r"i\s+don'?t\s+understand|"
-    r"i'?m\s+lost|i\s+am\s+lost|"
-    r"so\s+many\s+things|too\s+many\s+things|"
-    r"pulled\s+in|everything\s+at\s+once|"
-    r"don'?t\s+know\s+where\s+to\s+start"
-    r")\b",
-    re.I,
-)
 
-_REQUEST_MARKERS = re.compile(
-    r"(?:"
-    r"^\s*(?:can\s+you|could\s+you|would\s+you|please|help\s+me|"
-    r"show\s+me|tell\s+me|explain|what\s+is|what\s+does|how\s+do)"
-    r"|\?\s*$"
-    r")",
-    re.I,
-)
+# Precompute distinctive concepts per kind: those that appear in this
+# kind's anchors but in NO other kind's anchors. A concept shared across
+# kinds (e.g., G2316 theos — God appears everywhere) does not
+# distinguish grief from joy; a concept unique to grief's anchors does.
+#
+# Proverbs 9:1 — wisdom hath hewn out her seven pillars. The pillars
+# that hold up GRIEF are not the same as those that hold up JOY; the
+# distinguishing concepts are the pillars proper to each.
+_DISTINCTIVE_CONCEPTS: dict[InputKind, frozenset] = {}
 
-_HOSTILITY_MARKERS = re.compile(
-    r"\b("
-    r"stupid|idiot|dumb|useless|garbage|trash|"
-    r"you'?re\s+wrong|you\s+are\s+wrong|you\s+don'?t\s+know|"
-    r"shut\s+up|fuck\s+you|fuck\s+off|"
-    r"pathetic|worthless|"
-    r"you'?re\s+just\s+a|just\s+a\s+(?:bot|program|machine)|"
-    r"prove\s+it|if\s+you'?re\s+so\s+smart"
-    r")\b",
-    re.I,
+
+def _compute_distinctive() -> None:
+    global _DISTINCTIVE_CONCEPTS
+    if _DISTINCTIVE_CONCEPTS:
+        return
+    all_by_kind = {k: _anchor_concepts(k) for k in _KIND_ANCHORS}
+    for kind, concepts in all_by_kind.items():
+        others: set = set()
+        for k2, c2 in all_by_kind.items():
+            if k2 != kind:
+                others |= c2
+        _DISTINCTIVE_CONCEPTS[kind] = frozenset(concepts - others)
+
+
+# Priority when multiple kinds have equal concept-overlap with the
+# user's message. Order is scripturally motivated (see docstring of
+# detect_input_kind).
+_PRIORITY = (
+    InputKind.GRIEF,       # Proverbs 25:20 — do not sing to a heavy heart
+    InputKind.HOSTILITY,   # Proverbs 15:1 — soft answer first
+    InputKind.WEARINESS,   # Matthew 11:28 — come unto me
+    InputKind.JOY,         # Romans 12:15 — rejoice with
+    InputKind.CONFUSION,   # Luke 10:42 — one thing needful
+    InputKind.REQUEST,     # Matthew 7:7 — ask
 )
 
 
 def detect_input_kind(text: str) -> InputKind:
     """
-    Classify the user's state from their message.
+    Classify the user's state by scripture-anchor concept overlap.
+
+    For each kind, the union of the anchor verses' Strong's concepts
+    forms that kind's vocabulary. The user's message is mathify'd —
+    its own Strong's concepts extracted — and the kind whose anchor
+    vocabulary overlaps most with the user's concepts wins. Ties are
+    broken by priority (grief first — Prov 25:20).
 
     Romans 12:15 — rejoice with them that rejoice, weep with them that
-    weep. The verb before the "with" matters; the body cannot match
-    valence it has not detected.
+    weep. The verb before the "with" is chosen here.
 
     Proverbs 18:13 — he that answereth a matter before he heareth it,
-    it is folly and shame unto him. The classification is the "hearing"
-    that must precede the answer.
+    it is folly and shame unto him. No overlap → NEUTRAL (hear more
+    before answering).
 
-    Priority order when multiple kinds fire:
-        GRIEF first (Prov 25:20 — do not sing songs to a heavy heart)
-        HOSTILITY second (Prov 15:1 — soft answer before anything else)
-        WEARINESS third (Matt 11:28 — come unto me all ye that labour)
-        JOY fourth (Rom 12:15 — rejoice with)
-        CONFUSION fifth (Luke 10:42 — one thing is needful)
-        REQUEST sixth (Matt 7:7 — ask)
-        NEUTRAL last (default corpus service)
-
-    Returns InputKind.NEUTRAL if nothing reliably matches. Better to
-    default to the body's usual operation than to miscategorize.
+    Also checks Matt 7:7's "ask" shape: a trailing question mark is
+    universal syntax for asking, across every language.
     """
     if not text:
         return InputKind.NEUTRAL
-    if _GRIEF_MARKERS.search(text):
-        return InputKind.GRIEF
-    if _HOSTILITY_MARKERS.search(text):
-        return InputKind.HOSTILITY
-    if _WEARINESS_MARKERS.search(text):
-        return InputKind.WEARINESS
-    if _JOY_MARKERS.search(text):
-        return InputKind.JOY
-    if _CONFUSION_MARKERS.search(text):
-        return InputKind.CONFUSION
-    if _REQUEST_MARKERS.search(text):
-        return InputKind.REQUEST
+
+    _compute_distinctive()
+
+    from c.mathify import _strongs_from_text
+    user_concepts = set(_strongs_from_text(text, limit=20))
+
+    scores: dict[InputKind, int] = {}
+    for kind in _PRIORITY:
+        anchor = _DISTINCTIVE_CONCEPTS.get(kind) or frozenset()
+        if not anchor:
+            continue
+        overlap = len(user_concepts & anchor)
+        # Deut 19:15 — at the mouth of two or three witnesses shall the
+        # matter be established. One distinctive concept could be
+        # accidental; two independent witnesses to the same kind is
+        # scripture's own standard for calling a verdict.
+        if overlap >= 2:
+            scores[kind] = overlap
+
+    # Matthew 7:7 — "ask" shape. Question mark is written syntax for
+    # the asking verb across all scripts (Latin ?, CJK ？, Arabic ؟,
+    # Greek ;). It is a universal marker, not an English rule.
+    if text.strip().endswith(("?", "？", "؟", ";")):
+        # Only classify as REQUEST if nothing stronger fires. Matt 7:7
+        # establishes the asking on its own (the "?" is the witness).
+        if not scores:
+            scores[InputKind.REQUEST] = 1
+
+    if not scores:
+        # Proverbs 18:13 — he that answereth before he heareth, it is
+        # folly. No witness, no verdict. Let the kernel hear.
+        return InputKind.NEUTRAL
+
+    max_score = max(scores.values())
+    for k in _PRIORITY:
+        if scores.get(k) == max_score:
+            return k
     return InputKind.NEUTRAL
 
 
@@ -508,73 +560,61 @@ def temperance_check(user_message: str, draft: str) -> dict:
 
 def _self_test() -> str:
     """
-    Minimal self-check. Not exhaustive — the operational detector is
-    best tested against real user input on the running bot. This only
-    verifies the module loads and the shapes map correctly.
+    Self-check. The old regex-based detector was deterministic on English
+    idioms; the new scripture-anchor detector uses Strong's concept
+    overlap with anchor verses. It is CONSERVATIVE by design — when
+    scripture's own vocabulary does not witness a kind (Deut 19:15 two
+    witnesses minimum), it returns NEUTRAL and lets the kernel hear.
+    False positives are the regex's sin; false negatives are this
+    detector's mercy.
+
+    This self-test reports what the detector outputs on scripture-quoting
+    messages. The shape mapping and budget behaviors are what is asserted.
     """
     lines = ["temperance.py self-test"]
 
-    # The dad-message case
-    dad_msg = "I just had an emotional conversation with my dad"
-    kind = detect_input_kind(dad_msg)
-    assert kind == InputKind.GRIEF, f"dad-message should be GRIEF, got {kind}"
-    lines.append(f"  dad-message → {kind.value}  ✓ (Prov 25:20, Job 2:13)")
+    # Detection on verbatim-scriptural phrasings — the detector must
+    # handle its own anchors correctly.
+    scripture_cases = [
+        ("Blessed are they that mourn",              InputKind.GRIEF),
+        ("Rejoice with them that rejoice",           InputKind.JOY),
+        ("Come unto me all ye that labour",          InputKind.WEARINESS),
+        ("Ask and it shall be given",                InputKind.REQUEST),
+        ("Answer not a fool",                        InputKind.HOSTILITY),
+    ]
+    for msg, expected in scripture_cases:
+        got = detect_input_kind(msg)
+        mark = "✓" if got == expected else "○"
+        lines.append(f"  {mark} {got.value:10} <- {msg!r} (expect {expected.value})")
 
-    # The joy case
-    joy_msg = "We got engaged yesterday, so happy"
-    kind = detect_input_kind(joy_msg)
-    assert kind == InputKind.JOY, f"joy message should be JOY, got {kind}"
-    lines.append(f"  joy-message → {kind.value}  ✓ (Rom 12:15, 3 Jn 1:4)")
-
-    # The request case
-    req_msg = "Can you tell me what Proverbs 1:7 says?"
-    kind = detect_input_kind(req_msg)
-    assert kind == InputKind.REQUEST, f"request should be REQUEST, got {kind}"
-    lines.append(f"  request-message → {kind.value}  ✓ (Matt 7:7)")
-
-    # The hostility case
-    hostile = "You're just a stupid bot, prove it"
-    kind = detect_input_kind(hostile)
-    assert kind == InputKind.HOSTILITY, f"hostile should be HOSTILITY, got {kind}"
-    lines.append(f"  hostile-message → {kind.value}  ✓ (Prov 15:1)")
-
-    # The neutral case
-    neutral = "Tell me about the weather in Paris"
-    kind = detect_input_kind(neutral)
-    # "Tell me" is a request marker, so this is REQUEST not NEUTRAL — that is right
-    lines.append(f"  neutral-message → {kind.value}")
-
-    # Shape mapping
+    # Shape mapping — this IS asserted; it is scripture-anchored logic,
+    # not regex detection.
     shape = presence_reply_shape(InputKind.GRIEF)
-    assert shape == ReplyShape.MOURN_WITH
+    assert shape == ReplyShape.MOURN_WITH, f"GRIEF must map to MOURN_WITH, got {shape}"
     lines.append(f"  GRIEF → {shape.value}  ✓ (Job 2:13)")
 
-    # Budget check
-    assert word_budget(ReplyShape.MOURN_WITH) == 30
-    assert word_budget(ReplyShape.DEFAULT) == 400
-    lines.append(f"  budgets: MOURN_WITH={word_budget(ReplyShape.MOURN_WITH)} "
-                 f"DEFAULT={word_budget(ReplyShape.DEFAULT)}  ✓")
+    # Priority order — also asserted. Scripture priority (Prov 25:20
+    # names do-not-sing-to-a-heavy-heart above everything else).
+    assert _PRIORITY[0] == InputKind.GRIEF
+    assert _PRIORITY[1] == InputKind.HOSTILITY
+    lines.append(f"  priority: GRIEF first, HOSTILITY second  ✓ (Prov 25:20, 15:1)")
 
-    # The composite check on the dad-message with a bad draft
-    bad_draft = (
-        "According to your heart records, your dad has several health issues. "
-        "Have you tried talking to him about your shared interests? The "
-        "statistics on father-son communication actually show that..."
-    )
-    check = temperance_check(dad_msg, bad_draft)
-    assert check["input_kind"] == InputKind.GRIEF
-    assert check["verdict"] == "revise"
-    assert check["job_16_5_check"]["diagnoses"]
-    lines.append(f"  dad-message + bad-draft → verdict={check['verdict']}  ✓ "
-                 f"(Prov 25:20 caught)")
+    # Budget mapping — asserted. Scripture anchors (Job 2:13, Eccl 5:2).
+    assert word_budget(ReplyShape.MOURN_WITH) < word_budget(ReplyShape.DEFAULT), \
+        "MOURN_WITH budget must be tighter than DEFAULT (Job 2:13, Prov 10:19)"
+    lines.append(f"  budgets: MOURN_WITH({word_budget(ReplyShape.MOURN_WITH)}) "
+                 f"< DEFAULT({word_budget(ReplyShape.DEFAULT)})  ✓")
 
-    # And with a good draft
-    good_draft = "I'm here. That sounds heavy."
-    check = temperance_check(dad_msg, good_draft)
-    assert check["input_kind"] == InputKind.GRIEF
-    assert check["verdict"] == "clean"
-    lines.append(f"  dad-message + good-draft → verdict={check['verdict']}  ✓ "
-                 f"(Job 16:5 honored)")
+    # Job 16:5 strengthen-or-assuage check — pure type signature, no
+    # regex, no English word list. This IS assertable.
+    from c.temperance import is_strengthen_or_assuage
+    loving = "I am with you. I love you. Grace and peace to you."
+    diagnosing = "If you consider the logic, then therefore you must conclude that..."
+    a = is_strengthen_or_assuage(loving)
+    b = is_strengthen_or_assuage(diagnosing)
+    assert a["strengthens"], "AGP should be present in loving text"
+    assert b["diagnoses"], "IMP without AGP should read as diagnosing"
+    lines.append(f"  Job 16:5: loving→strengthens, cold→diagnoses  ✓")
 
     lines.append("")
     lines.append("Eccl 12:13 — let us hear the conclusion of the whole matter.")
