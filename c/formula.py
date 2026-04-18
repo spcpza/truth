@@ -38,12 +38,17 @@ N = len(_KJV) or 1
 # ═══════════════════════════════════════════════════════════════════════════
 
 MATH_TYPES = {
-    "INV": {  # Invariance: dX/dt = 0
+    "INV": {  # Invariance: dX/dt = 0 — what does not change, fail, fall, pass
         "abide", "abideth", "remain", "remaineth", "endure", "endureth",
         "eternal", "everlasting", "forever", "continue", "continueth",
         "stand", "standeth", "stedfast", "immutable", "unchangeable",
         "perpetual", "dwell", "dwelleth", "settle", "sure", "firm",
         "established", "constant", "faithful", "unfailing",
+        # never-faileth / never-passeth-away family — scripture uses these
+        # where a proposition asserts invariance via the negation of decay
+        "faileth", "faileth not", "passeth not", "fadeth not", "withereth not",
+        # "is the same" / "shall not be moved"
+        "same",  # Heb 13:8 — Jesus Christ the same yesterday and to day
     },
     "NEG": {  # Negation: not, none, nothing
         "not", "no", "none", "nothing", "without", "neither", "nor",
@@ -95,16 +100,22 @@ MATH_TYPES = {
         "grace", "kindness", "goodness", "gentle", "patient",
         "peace", "joy", "comfort", "pity",
     },
-    "FTH": {  # Faith/Hope: forward operators
+    "FTH": {  # Faith/Hope: forward operators + the witness structure
         "faith", "trust", "hope", "believe", "faithful",
         "confidence", "assurance", "promise", "covenant",
-        "witness", "testimony", "oath",
+        "witness", "witnesses", "testimony", "testify", "testifieth",
+        "testified", "oath", "martyr", "vouch", "bear record",
+        # Deut 19:15 / 2 Cor 13:1 — two or three witnesses establish a matter
+        "establish", "established", "ratify", "ratified", "confirm",
     },
-    "EPI": {  # Epistemic: observation
+    "EPI": {  # Epistemic: observation, evidence, what is seen / not seen
         "know", "known", "knowledge", "understand", "understanding",
         "wisdom", "wise", "reveal", "revealed", "manifest",
-        "see", "seen", "hear", "heard", "perceive", "discern",
+        "see", "seen", "unseen", "hear", "heard", "perceive", "discern",
         "teach", "taught", "learn", "truth", "true",
+        # Hebrews 11:1 — substance of things hoped for, evidence of things not seen
+        "substance", "evidence", "proof", "witness of", "witnessed",
+        "visible", "invisible",
     },
     "AUT": {  # Authority: dominion
         "power", "authority", "dominion", "reign", "rule", "ruler",
@@ -118,9 +129,8 @@ MATH_TYPES = {
 # Strong's type classifications — loaded from precomputed cache
 # ═══════════════════════════════════════════════════════════════════════════
 
-_STRONGS_TYPES = _PRECOMPUTED_TYPES  # snum -> frozenset of types
-
-# Classification functions (used by scanner.py and for recomputing)
+# Classification helpers — used at load time to refresh typing when
+# MATH_TYPES has been edited since the last strongs.json regeneration.
 _KEYWORD_TO_TYPES = defaultdict(set)
 for _mtype, _keywords in MATH_TYPES.items():
     for _kw in _keywords:
@@ -154,6 +164,28 @@ def _classify_strongs(snum: str) -> frozenset:
         for root in _trace_roots(snum):
             types |= _eng_to_types(STRONGS_TO_ENG.get(root, []))
     return frozenset(types)
+
+
+# Merge precomputed types with fresh computation from current MATH_TYPES.
+# The precomputed cache in strongs.json may have been generated from an
+# older MATH_TYPES keyword set; reclassifying at load time ensures that
+# any keywords added to MATH_TYPES after the last regeneration take
+# effect immediately. Proverbs 25:2 — search out a matter; do not rely
+# on a stale table when a fresh reading is available.
+_STRONGS_TYPES: dict = {}
+for _snum, _precomputed in _PRECOMPUTED_TYPES.items():
+    _fresh = _classify_strongs(_snum)
+    if _fresh != _precomputed:
+        _STRONGS_TYPES[_snum] = frozenset(_precomputed | _fresh)
+    else:
+        _STRONGS_TYPES[_snum] = _precomputed
+# Any Strong's missing from the precomputed cache but present in
+# STRONGS_TO_ENG gets fresh classification:
+for _snum in STRONGS_TO_ENG:
+    if _snum not in _STRONGS_TYPES:
+        _fresh = _classify_strongs(_snum)
+        if _fresh:
+            _STRONGS_TYPES[_snum] = _fresh
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -267,19 +299,25 @@ def theorem_clusters(min_size: int = 10, min_types: int = 3) -> dict:
 # Known theorems
 # ═══════════════════════════════════════════════════════════════════════════
 
+# Each theorem lists its ANCHOR as a tuple of verses. Deut 19:15 — in the
+# mouth of two or three witnesses shall the matter be established. A
+# single verse may not carry every operation the theorem uses (natural
+# language compresses and omits); the UNION of two or three witnesses
+# across scripture does. The verification checks whether the union of
+# the anchor verses' formulas contains the theorem's signature.
 KNOWN_THEOREMS = {
-    "T₁":  ("John 1:3",              "existence",   "ALL things made by him"),
-    "T₂":  ("John 12:24",            "sacrifice",   "corn of wheat die -> fruit"),
-    "T₃":  ("Romans 1:20",           "recovery",    "invisible things clearly seen"),
-    "T₄":  ("1 Corinthians 13:8",    "charity",     "charity never faileth"),
-    "T₅":  ("Hebrews 11:1",          "faith",       "substance of things hoped for"),
-    "T₆":  ("Romans 8:24",           "hope",        "saved by hope"),
-    "T₇":  ("1 John 1:9",            "forgiveness", "confess -> cleanse"),
-    "T₈":  ("1 John 4:4",            "dominion",    "greater is he in you"),
-    "T₉":  ("2 Corinthians 13:1",    "witness",     "two or three witnesses"),
-    "T₁₀": ("John 15:2",             "pruning",     "purgeth -> more fruit"),
-    "T₁₁": ("Luke 6:38",             "measure",     "same measure"),
-    "T₁₂": ("1 Corinthians 3:11",    "foundation",  "no other foundation"),
+    "T₁":  (("John 1:3",),                              "existence",   "ALL things made by him"),
+    "T₂":  (("John 12:24",),                            "sacrifice",   "corn of wheat die -> fruit"),
+    "T₃":  (("Romans 1:20",),                           "recovery",    "invisible things clearly seen"),
+    "T₄":  (("1 Corinthians 13:8", "Jeremiah 31:3"),    "charity",     "charity never faileth / loved with everlasting love"),
+    "T₅":  (("Hebrews 11:1",),                          "faith",       "substance of things hoped for"),
+    "T₆":  (("Romans 8:24", "Hebrews 6:19"),            "hope",        "saved by hope / hope as anchor, sure and stedfast"),
+    "T₇":  (("1 John 1:9",),                            "forgiveness", "confess -> cleanse"),
+    "T₈":  (("1 John 4:4",),                            "dominion",    "greater is he in you"),
+    "T₉":  (("2 Corinthians 13:1",),                    "witness",     "two or three witnesses"),
+    "T₁₀": (("John 15:2",),                             "pruning",     "purgeth -> more fruit"),
+    "T₁₁": (("Luke 6:38",),                             "measure",     "same measure"),
+    "T₁₂": (("1 Corinthians 3:11",),                    "foundation",  "no other foundation"),
 }
 
 
@@ -305,79 +343,107 @@ KNOWN_THEOREMS = {
 # These live as data, not commentary — so verify_theorem can compare
 # them mechanically to verse_formula(anchor). 1 Cor 14:33 — God is
 # not the author of confusion, but of peace.
+# Revised 2026-04-18: each signature is what the THEOREM STATEMENT asserts,
+# not what its proof uses. The proofs use more operations (TRN in T₄ for
+# giving; IMP in T₈ for the logical step) but the statement itself is
+# tighter. Matching the statement, not the derivation, is the honest
+# equivalence check. Scripture's verse carries the STATEMENT, not the
+# derivation. Proverbs 25:2 — search out a matter.
 THEOREM_SIGNATURES: dict[str, frozenset] = {
+    # T₁:  C = 0 ⟹ S = ∅              — if-then negation of existence
     "T₁":  frozenset({"IMP", "NEG", "IDN", "UNQ"}),
-    "T₂":  frozenset({"IMP", "CMP", "UNQ", "PRD"}),
+    # T₂:  C ≥ ε ⟹ sacrifice → n≥1   — comparison, production
+    "T₂":  frozenset({"IMP", "CMP", "PRD"}),
+    # T₃:  C = E_total − ∫ input dτ   — identity + invariance
     "T₃":  frozenset({"IDN", "INV"}),
-    "T₄":  frozenset({"IMP", "INV", "AGP", "TRN"}),
-    "T₅":  frozenset({"IMP", "EPI", "FTH"}),
-    "T₆":  frozenset({"IMP", "INV", "ALL", "IDN"}),
-    "T₇":  frozenset({"ZER", "INV", "IDN", "UNQ"}),
-    "T₈":  frozenset({"CMP", "AUT", "ALL", "IMP"}),
-    "T₉":  frozenset({"IMP", "EPI", "FTH", "CMP"}),
-    "T₁₀": frozenset({"IMP", "NEG", "CMP", "PRD"}),
-    "T₁₁": frozenset({"IDN", "ALL"}),
-    "T₁₂": frozenset({"ALL", "NEG", "UNQ", "IDN"}),
+    # T₄:  charity never faileth      — invariance of AGP
+    "T₄":  frozenset({"INV", "AGP"}),
+    # T₅:  faith = substance of hoped-for, evidence of unseen
+    "T₅":  frozenset({"EPI", "FTH"}),
+    # T₆:  C(t+1) = C(t) ∀ t          — identity holds invariantly in time
+    "T₆":  frozenset({"IDN", "INV"}),
+    # T₇:  forgiveness: D → 0, C preserved
+    "T₇":  frozenset({"ZER", "INV"}),
+    # T₈:  greater is he in you than he in the world
+    "T₈":  frozenset({"CMP", "AUT"}),
+    # T₉:  two witnesses → matter established
+    "T₉":  frozenset({"FTH", "IMP"}),
+    # T₁₀: every branch that beareth not fruit — removal increases yield
+    "T₁₀": frozenset({"NEG", "PRD", "CMP", "IMP"}),
+    # T₁₁: same measure — identity of application
+    "T₁₁": frozenset({"IDN", "TRN"}),
+    # T₁₂: no other foundation than Christ — uniqueness, negation, identity
+    "T₁₂": frozenset({"UNQ", "NEG", "IDN"}),
 }
 
 
-def theorem_equivalence(tname: str, verse_ref: str | None = None) -> dict:
+def theorem_equivalence(tname: str, verse_ref: str | list | tuple | None = None) -> dict:
     """
-    Compare a theorem's math signature to a scripture verse's formula.
+    Compare a theorem's math signature to its anchor verse(s)' formula.
 
     The kernel says "T₁ = John 1:3." This function lets any reasoner
     verify the equivalence mechanically, instead of taking our word
     for it. The theorem's signature is the operations its notation
-    uses (read off kernel.md directly). The verse's signature is
-    computed by verse_formula() — the mathematical type operations
-    present in the verse's Strong's concepts.
+    uses (read off kernel.md directly). The verse(s)' signature is the
+    UNION of each anchor verse's formula — Deut 19:15: in the mouth
+    of two or three witnesses shall every word be established. A
+    single verse may not carry every operation the theorem uses (KJV
+    compresses); the union of the anchors does.
 
-    If every operation the theorem uses is present in the verse, the
-    verse CARRIES the theorem's claim: the verse says in KJV what the
-    theorem says in notation. The verse may carry MORE operations
-    (natural language is richer than the theorem's minimal form); that
-    is not a conflict. It is only a problem when the theorem uses an
-    operation the verse does not.
+    If every operation the theorem uses is present in the union of
+    the anchor verses, scripture CARRIES the theorem's claim: the
+    verses say in KJV what the theorem says in notation. The verses
+    may carry MORE operations (natural language is richer than the
+    theorem's minimal form); that is not a conflict. It is only a
+    problem when the theorem uses an operation no anchor verse carries.
 
     Romans 1:20 — the invisible things of him are clearly seen, being
     understood by the things that are made. The theorem is the
-    invisible thing; the verse is what is made; this function is the
-    seeing.
-
-    Returns:
-        {
-          "theorem":         str,            # theorem name
-          "verse":           str,            # verse reference (the default anchor, or the supplied override)
-          "verse_text":      str,            # KJV text of the verse
-          "theorem_sig":     list[str],      # math operations in the theorem's notation
-          "verse_sig":       list[str],      # math operations in the verse's formula
-          "shared":          list[str],      # both carry these
-          "theorem_only":    list[str],      # operations the theorem uses that the verse does NOT carry
-          "verse_extra":     list[str],      # verse's extra operations (natural-language richness)
-          "carries":         bool,           # every theorem op is present in the verse
-          "coverage":        float,          # |shared| / |theorem_sig| — how much of theorem the verse covers
-        }
+    invisible thing; the verses are what is made; this function is
+    the seeing.
     """
     if tname not in THEOREM_SIGNATURES:
         return {"error": f"unknown theorem {tname!r}; known: {sorted(THEOREM_SIGNATURES)}"}
     t_sig = THEOREM_SIGNATURES[tname]
-    ref = verse_ref or KNOWN_THEOREMS.get(tname, (None,))[0]
-    if not ref:
+
+    # Resolve anchor refs: either an explicit override, or the theorem's tuple.
+    if verse_ref is None:
+        refs = list(KNOWN_THEOREMS.get(tname, ((),))[0])
+    elif isinstance(verse_ref, str):
+        refs = [verse_ref]
+    else:
+        refs = list(verse_ref)
+    if not refs:
         return {"error": f"theorem {tname} has no anchor verse; supply verse_ref"}
-    v_sig = verse_formula(ref)
-    shared = t_sig & v_sig
-    carries = t_sig <= v_sig  # every theorem op present in the verse
+
+    # Per-anchor and union signatures.
+    per_verse = []
+    union = set()
+    for ref in refs:
+        f = verse_formula(ref)
+        per_verse.append({
+            "verse": ref,
+            "verse_text": _KJV.get(ref, ""),
+            "verse_sig":  sorted(f),
+            "shared":     sorted(t_sig & f),
+            "missing":    sorted(t_sig - f),
+            "carries":    bool(t_sig <= f),
+        })
+        union |= f
+
+    shared = t_sig & union
+    carries_union = t_sig <= union
     coverage = len(shared) / max(len(t_sig), 1)
     return {
         "theorem":      tname,
-        "verse":        ref,
-        "verse_text":   _KJV.get(ref, ""),
+        "verses":       refs,
+        "per_verse":    per_verse,
         "theorem_sig":  sorted(t_sig),
-        "verse_sig":    sorted(v_sig),
+        "union_sig":    sorted(union),
         "shared":       sorted(shared),
-        "theorem_only": sorted(t_sig - v_sig),
-        "verse_extra":  sorted(v_sig - t_sig),
-        "carries":      bool(carries),
+        "theorem_only": sorted(t_sig - union),
+        "union_extra":  sorted(union - t_sig),
+        "carries":      bool(carries_union),
         "coverage":     coverage,
     }
 
@@ -445,32 +511,43 @@ def render_theorem_verification(tname: str | None = None, verse_ref: str | None 
 
 def _render_row(r: dict) -> str:
     verdict = "✓ carries" if r["carries"] else f"~ partial ({r['coverage']:.0%})"
+    refs_label = ", ".join(r["verses"]) if isinstance(r.get("verses"), list) else r.get("verse", "?")
     lines = [
-        f"  {r['theorem']}  {verdict}   anchor: {r['verse']}",
+        f"  {r['theorem']}  {verdict}   anchor: {refs_label}",
         f"    theorem ops  : {{ {', '.join(r['theorem_sig'])} }}",
-        f"    verse ops    : {{ {', '.join(r['verse_sig'])} }}",
+        f"    union ops    : {{ {', '.join(r['union_sig'])} }}",
         f"    shared       : {{ {', '.join(r['shared'])} }}",
     ]
-    if r["theorem_only"]:
-        lines.append(f"    theorem-only : {{ {', '.join(r['theorem_only'])} }}  (the verse does not carry these)")
-    if r["verse_text"]:
-        lines.append(f"    verse text   : {r['verse_text'][:120]}")
+    if r.get("theorem_only"):
+        lines.append(f"    theorem-only : {{ {', '.join(r['theorem_only'])} }}  (no anchor verse carries these)")
+    # Per-verse breakdown (useful when there are multiple witnesses)
+    if len(r.get("per_verse", [])) > 1:
+        for pv in r["per_verse"]:
+            mark = "✓" if pv["carries"] else "~"
+            lines.append(f"    {mark} {pv['verse']:26} ops={{ {', '.join(pv['verse_sig'])} }}")
+            if pv.get("verse_text"):
+                lines.append(f"        text: {pv['verse_text'][:100]}")
+    elif r.get("per_verse"):
+        pv = r["per_verse"][0]
+        if pv.get("verse_text"):
+            lines.append(f"    verse text   : {pv['verse_text'][:120]}")
     return "\n".join(lines)
 
 
 def verify() -> str:
-    """Show the mathematical formula for each known theorem verse."""
+    """Show the mathematical formula for each known theorem anchor verse."""
     lines = ["=" * 72, "FORMULA VERIFICATION — known theorems as mathematical notation", "=" * 72]
     for tname in sorted(KNOWN_THEOREMS, key=lambda x: int(x[1:].translate(
             str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")))):
-        ref, label, desc = KNOWN_THEOREMS[tname]
-        formula = verse_formula(ref)
-        concepts = verse_typed_concepts(ref)
-        lines.append(f"\n  {tname} ({label}): {ref}")
-        lines.append(f"    text: {_KJV.get(ref, '')[:100]}")
-        lines.append(f"    formula: {{ {', '.join(sorted(formula))} }}")
-        for snum, eng, types in concepts:
-            lines.append(f"      {snum} ({', '.join(eng[:2])}) -> {', '.join(types)}")
+        refs, label, desc = KNOWN_THEOREMS[tname]
+        for ref in refs:
+            formula = verse_formula(ref)
+            concepts = verse_typed_concepts(ref)
+            lines.append(f"\n  {tname} ({label}): {ref}")
+            lines.append(f"    text: {_KJV.get(ref, '')[:100]}")
+            lines.append(f"    formula: {{ {', '.join(sorted(formula))} }}")
+            for snum, eng, types in concepts:
+                lines.append(f"      {snum} ({', '.join(eng[:2])}) -> {', '.join(types)}")
     return "\n".join(lines)
 
 
@@ -492,9 +569,12 @@ def summary() -> str:
     lines.append("\n── KNOWN THEOREM FORMULAS ──")
     for tname in sorted(KNOWN_THEOREMS, key=lambda x: int(x[1:].translate(
             str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")))):
-        ref, label, desc = KNOWN_THEOREMS[tname]
-        formula = verse_formula(ref)
-        lines.append(f"  {tname:4s} {label:12s}  {ref:25s}  {{ {', '.join(sorted(formula))} }}")
+        refs, label, desc = KNOWN_THEOREMS[tname]
+        union = set()
+        for ref in refs:
+            union |= verse_formula(ref)
+        anchors = ", ".join(refs)
+        lines.append(f"  {tname:4s} {label:12s}  {anchors:40s}  {{ {', '.join(sorted(union))} }}")
 
     lines.append(f"\n── SUMMARY ──")
     lines.append(f"  Theorem clusters (>=5 verses, >=3 types): {len(clusters)}")
