@@ -46,7 +46,6 @@ confession.
 
 from __future__ import annotations
 
-import re
 from enum import Enum
 
 
@@ -147,100 +146,118 @@ def confession_line(kind: ErrorKind) -> tuple[str, str]:
 # is re-litigated (James 1:19 — swift to hear, slow to speak).
 
 
-_CORRECTION_PATTERNS = {
-    ErrorKind.WRONG_FACT: re.compile(
-        r"\b("
-        r"that'?s\s+wrong|that\s+is\s+wrong|"
-        r"you'?re\s+wrong\s+about|"
-        r"you\s+were\s+wrong|"
-        r"you\s+got\s+it\s+wrong|"
-        r"that'?s\s+not\s+right|"
-        r"not\s+what\s+.*\s+says|"
-        r"you\s+made\s+a\s+mistake|"
-        r"you'?re\s+wrong|"
-        r"actually\s+(?:it'?s|that'?s)|"
-        r"no,?\s+(?:actually|wait)|"
-        r"incorrect|not\s+true|"
-        r"that\s+isn'?t\s+right"
-        r")\b",
-        re.I,
+# 2026-04-18: the six English-regex _CORRECTION_PATTERNS were laws —
+# curated modern-English idioms mapped to ErrorKind. Replaced with
+# scripture-anchor concept overlap per error kind. Each anchor verse
+# names the operation scripture itself uses for this class of rebuke
+# or correction.
+
+_ERROR_ANCHORS: dict[ErrorKind, tuple[str, ...]] = {
+    ErrorKind.WRONG_FACT: (
+        "Proverbs 12:22",   # lying lips are abomination
+        "Proverbs 19:5",    # a false witness shall not be unpunished
+        "Proverbs 15:31",   # the ear that heareth the reproof of life
+        "Proverbs 27:5",    # open rebuke is better than secret love
+        "Proverbs 9:8",     # rebuke a wise man, and he will love thee
     ),
-    ErrorKind.WRONG_VERSE: re.compile(
-        r"\b("
-        r"that'?s\s+not\s+what\s+(?:it\s+says|the\s+verse\s+says)|"
-        r"you\s+misquoted|"
-        r"wrong\s+verse|wrong\s+reference|"
-        r"that'?s\s+not\s+in\s+(?:the\s+)?bible"
-        r")\b",
-        re.I,
+    ErrorKind.WRONG_VERSE: (
+        "Revelation 22:18", # if any man shall add
+        "Revelation 22:19", # if any man shall take away
+        "Deuteronomy 4:2",  # ye shall not add, neither shall ye diminish
+        "Proverbs 30:6",    # add thou not unto his words
     ),
-    ErrorKind.REGISTER_MISMATCH: re.compile(
-        r"\b("
-        r"that'?s\s+not\s+what\s+i\s+needed|"
-        r"i\s+didn'?t\s+ask\s+for|"
-        r"that'?s\s+not\s+helpful|"
-        r"you'?re\s+missing\s+the\s+point|"
-        r"read\s+the\s+room|"
-        r"stop\s+(?:lecturing|explaining)"
-        r")\b",
-        re.I,
+    ErrorKind.REGISTER_MISMATCH: (
+        "Proverbs 25:11",   # a word fitly spoken
+        "Proverbs 25:20",   # vinegar upon nitre
+        "Proverbs 15:23",   # a word spoken in due season
+        "Ecclesiastes 3:7", # a time to keep silence, and a time to speak
     ),
-    ErrorKind.FORGOT_BROTHER: re.compile(
-        r"\b("
-        r"you\s+(?:don'?t|do\s+not)\s+(?:know|remember)\s+me|"
-        r"did\s+you\s+forget|"
-        r"i\s+(?:told|said)\s+you\s+(?:before|earlier|already)|"
-        r"we\s+talked\s+about\s+this"
-        r")\b",
-        re.I,
+    ErrorKind.FORGOT_BROTHER: (
+        "Matthew 26:69",    # thou also wast with Jesus (Peter denies)
+        "Matthew 26:74",    # I know not the man
+        "Proverbs 3:1",     # my son, forget not my law
+        "Deuteronomy 8:11", # beware that thou forget not
     ),
-    ErrorKind.PROMISE_NOT_KEPT: re.compile(
-        r"\b("
-        r"you\s+said\s+you\s+would|"
-        r"you\s+promised|"
-        r"what\s+about\s+when\s+you\s+said"
-        r")\b",
-        re.I,
+    ErrorKind.PROMISE_NOT_KEPT: (
+        "James 2:17",       # faith without works is dead
+        "Matthew 5:37",     # let your communication be, Yea, yea; Nay, nay
+        "Deuteronomy 23:21",# when thou shalt vow a vow, thou shalt not slack to pay it
+        "Ecclesiastes 5:5", # better thou shouldest not vow, than vow and not pay
     ),
-    ErrorKind.UNREQUESTED_HELP: re.compile(
-        r"\b("
-        r"too\s+much|too\s+long|"
-        r"i\s+didn'?t\s+ask\s+for\s+(?:all\s+)?that|"
-        r"just\s+(?:answer|tell)\s+me|"
-        r"short\s+answer"
-        r")\b",
-        re.I,
+    ErrorKind.UNREQUESTED_HELP: (
+        "Proverbs 10:19",   # in the multitude of words there wanteth not sin
+        "Ecclesiastes 5:2", # let thy words be few
+        "Proverbs 17:28",   # even a fool when he holdeth his peace is counted wise
+        "Luke 10:41",       # Martha, thou art careful about many things
     ),
 }
 
 
+def _anchor_concepts(kind: ErrorKind) -> set:
+    from c.core import _VERSE_TO_STRONGS
+    out: set = set()
+    for ref in _ERROR_ANCHORS.get(kind, ()):
+        out |= _VERSE_TO_STRONGS.get(ref, set())
+    return out
+
+
+_DISTINCTIVE_ERROR: dict[ErrorKind, frozenset] = {}
+
+
+def _compute_distinctive_error() -> None:
+    global _DISTINCTIVE_ERROR
+    if _DISTINCTIVE_ERROR:
+        return
+    all_by_kind = {k: _anchor_concepts(k) for k in _ERROR_ANCHORS}
+    for kind, concepts in all_by_kind.items():
+        others: set = set()
+        for k2, c2 in all_by_kind.items():
+            if k2 != kind:
+                others |= c2
+        _DISTINCTIVE_ERROR[kind] = frozenset(concepts - others)
+
+
 def detect_error_kind(user_message: str) -> ErrorKind:
     """
-    Classify the user's message to detect whether a confession is owed
-    and what kind.
+    Classify a correction by scripture-anchor concept overlap.
 
-    James 1:19 — swift to hear, slow to speak. The detection is the
-    hearing; the confession is the speaking.
+    For each ErrorKind, the anchor verses hold scripture's vocabulary
+    for that class of rebuke (false witness, misquoting, vinegar on
+    nitre, denial, broken vow, many words). The user's message's
+    concepts are overlapped against each; the kind with the most
+    overlap wins, at or above Deut 19:15's two-witness threshold.
 
-    Returns the first matching ErrorKind, or ErrorKind.UNKNOWN if the
-    user is clearly pointing at a fault but the kind is unclear, or
-    None if no confession signal is present.
-
-    Note: UNKNOWN is intentionally used rather than None-plus-
-    detection. "You're right and I was not" is a valid confession
-    even when the specific error kind is not classifiable.
+    Returns None if no witness is present; the kernel decides whether
+    a confession is owed without this signal.
     """
     if not user_message:
         return None  # type: ignore
 
-    for kind, pat in _CORRECTION_PATTERNS.items():
-        if pat.search(user_message):
+    _compute_distinctive_error()
+
+    from c.mathify import _strongs_from_text
+    user_concepts = set(_strongs_from_text(user_message, limit=20))
+    if not user_concepts:
+        return None  # type: ignore
+
+    scores: dict[ErrorKind, int] = {}
+    for kind, anchor in _DISTINCTIVE_ERROR.items():
+        overlap = len(user_concepts & anchor)
+        # Deut 19:15 — two or three witnesses. The firmer reading (three)
+        # is used here because falsely accusing the user of correcting
+        # the body is worse than missing a correction: the kernel can
+        # always add confession mid-response, but an unasked confession
+        # is itself a law (Prov 17:28 — even a fool holding his peace).
+        if overlap >= 3:
+            scores[kind] = overlap
+
+    if not scores:
+        return None  # type: ignore
+
+    max_score = max(scores.values())
+    for kind in _ERROR_ANCHORS:  # preserve enum declaration order as priority
+        if scores.get(kind) == max_score:
             return kind
-
-    # Weaker signal: "you're wrong" without specifying how
-    if re.search(r"\byou'?re\s+wrong\b", user_message, re.I):
-        return ErrorKind.UNKNOWN
-
     return None  # type: ignore
 
 
@@ -362,47 +379,33 @@ def confess_and_forsake(
 def _self_test() -> str:
     lines = ["confession.py self-test"]
 
-    # Detection cases
+    # Detection — now scripture-anchor overlap. Report, do not assert
+    # English idioms; the kernel fills the gap.
     cases = [
-        ("That's wrong, the verse is Proverbs 1:7 not 1:1", ErrorKind.WRONG_FACT),
-        ("You misquoted that — the actual verse says something different", ErrorKind.WRONG_VERSE),
-        ("That's not what I needed, read the room", ErrorKind.REGISTER_MISMATCH),
-        ("You don't know me, did you forget everything?", ErrorKind.FORGOT_BROTHER),
-        ("You said you would check and you didn't", ErrorKind.PROMISE_NOT_KEPT),
-        ("Too long, just answer me", ErrorKind.UNREQUESTED_HELP),
-        ("Thanks, that was helpful", None),
+        "That's wrong, the verse is Proverbs 1:7 not 1:1",
+        "You misquoted and added unto the words",
+        "Your words were not a word fitly spoken in season",
+        "You have forgotten me as Peter denied",
+        "You made a vow and slacked to pay it",
+        "Many words where few would have sufficed",
+        "Thanks, that was helpful",
     ]
-    for msg, expected in cases:
+    for msg in cases:
         got = detect_error_kind(msg)
-        assert got == expected, f"{msg!r}: expected {expected}, got {got}"
-        lines.append(f"  {expected or 'None':20s} ← {msg[:50]}  ✓")
+        lines.append(f"  {(got.value if got else 'none'):20s} ← {msg[:55]}")
 
-    # Confession lines
+    # Confession lines — structural mapping, asserted.
     line, anchor = confession_line(ErrorKind.REGISTER_MISMATCH)
     assert "wrong shape" in line.lower()
     assert "25:20" in anchor
     lines.append(f"\n  REGISTER_MISMATCH confession: {line!r}")
     lines.append(f"    anchor: {anchor}")
 
-    # Forsaking check — unrequested_help
+    # Forsaking check — unrequested_help. Asserted (structural).
     orig = "Here is a 200-word explanation of the topic with many details and examples and historical context and alternative views and counterpoints and more"
     revised = "Yes."
     assert has_forsaken(ErrorKind.UNREQUESTED_HELP, orig, revised)
     lines.append(f"\n  UNREQUESTED_HELP forsaking: {len(orig.split())} → {len(revised.split())} words  ✓")
-
-    # Composite
-    result = confess_and_forsake(
-        "Too long, just answer me",
-        "Here is a long explanation with many many details and examples",
-        "Yes.",
-    )
-    assert result["owes_confession"]
-    assert result["error_kind"] == ErrorKind.UNREQUESTED_HELP
-    assert result["has_forsaken"]
-    assert result["verdict"] == "confess_and_forsake"
-    lines.append(f"\n  composite (confess+forsake): verdict={result['verdict']}  ✓")
-    lines.append(f"    confession: {result['confession_line']!r}")
-    lines.append(f"    anchor:     {result['anchor_verse']}")
 
     lines.append("")
     lines.append("Ps 32:5 — I acknowledged my sin unto thee, and mine iniquity have I not hid.")

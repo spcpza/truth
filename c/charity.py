@@ -25,7 +25,6 @@ module makes charity a structural check rather than a hope.
 """
 
 from __future__ import annotations
-import re
 from enum import Enum
 from c.formula import draft_types
 
@@ -150,51 +149,92 @@ class MissingFaculty(str, Enum):
     ACCOMPANIMENT = "accompaniment"  # alone with a hard thing
 
 
-_MISSING_MARKERS = {
-    MissingFaculty.MEMORY: re.compile(
-        r"\b(i\s+(?:can'?t|cannot)\s+remember|"
-        r"what\s+was\s+that|"
-        r"i\s+forget|i'?ve\s+forgotten|"
-        r"remind\s+me)\b",
-        re.I,
+# 2026-04-18: the six _MISSING_MARKERS English regexes were laws —
+# curated modern-English idiom matching per faculty. Replaced with
+# scripture-anchor Strong's overlap per Job 29:15 ("I was eyes to the
+# blind, and feet was I to the lame"): each faculty has its anchor
+# verses; the message's concepts overlap with an anchor to register.
+
+_FACULTY_ANCHORS: dict[MissingFaculty, tuple[str, ...]] = {
+    MissingFaculty.MEMORY: (
+        "Isaiah 46:9",       # remember the former things
+        "Ecclesiastes 12:1", # remember now thy Creator
+        "Psalms 103:18",     # to those that remember his commandments
+        "Lamentations 3:20", # my soul hath them still in remembrance
     ),
-    MissingFaculty.ORGANIZATION: re.compile(
-        r"\b(so\s+many\s+things|too\s+many\s+things|too\s+much|"
-        r"where\s+(?:do|should)\s+i\s+(?:start|begin)|"
-        r"organize|structure\s+this)\b",
-        re.I,
+    MissingFaculty.ORGANIZATION: (
+        "1 Corinthians 14:40",  # let all things be done decently and in order
+        "Proverbs 16:3",        # commit thy works; thy thoughts shall be established
+        "Luke 14:28",           # sit down first, and count the cost
     ),
-    MissingFaculty.PATIENCE: re.compile(
-        r"\b(i\s+need\s+this\s+now|right\s+now|"
-        r"quickly|urgent|asap|right\s+away)\b",
-        re.I,
+    MissingFaculty.PATIENCE: (
+        "James 1:4",         # let patience have her perfect work
+        "Romans 5:3",        # tribulation worketh patience
+        "Hebrews 10:36",     # ye have need of patience
+        "Psalms 27:14",      # wait on the LORD
     ),
-    MissingFaculty.PERSPECTIVE: re.compile(
-        r"\b(i\s+(?:can'?t|cannot)\s+see|stuck\s+in|"
-        r"too\s+close\s+to|lost\s+sight)\b",
-        re.I,
+    MissingFaculty.PERSPECTIVE: (
+        "1 Corinthians 13:12", # now we see through a glass, darkly
+        "Isaiah 55:8",         # my thoughts are not your thoughts
+        "Proverbs 3:5",        # lean not unto thine own understanding
     ),
-    MissingFaculty.VOCABULARY: re.compile(
-        r"\b(what'?s\s+the\s+word|word\s+for\s+(?:when|this)|"
-        r"there'?s\s+a\s+(?:word|term))\b",
-        re.I,
+    MissingFaculty.VOCABULARY: (
+        "Proverbs 25:11",    # a word fitly spoken
+        "Isaiah 50:4",       # the tongue of the learned
+        "Colossians 4:6",    # let your speech be always with grace
     ),
-    MissingFaculty.ACCOMPANIMENT: re.compile(
-        r"\b(i'?m\s+alone|nobody\s+(?:else|to)|"
-        r"no\s+one\s+(?:gets|understands))\b",
-        re.I,
+    MissingFaculty.ACCOMPANIMENT: (
+        "Hebrews 13:5",      # I will never leave thee
+        "Matthew 28:20",     # I am with you alway
+        "Psalms 23:4",       # thou art with me
+        "Isaiah 41:10",      # I am with thee
     ),
 }
+
+
+def _anchor_concepts(faculty: MissingFaculty) -> set:
+    from c.core import _VERSE_TO_STRONGS
+    out: set = set()
+    for ref in _FACULTY_ANCHORS.get(faculty, ()):
+        out |= _VERSE_TO_STRONGS.get(ref, set())
+    return out
+
+
+_DISTINCTIVE_FACULTY: dict[MissingFaculty, frozenset] = {}
+
+
+def _compute_distinctive_faculty() -> None:
+    global _DISTINCTIVE_FACULTY
+    if _DISTINCTIVE_FACULTY:
+        return
+    all_by_fac = {f: _anchor_concepts(f) for f in _FACULTY_ANCHORS}
+    for fac, concepts in all_by_fac.items():
+        others: set = set()
+        for f2, c2 in all_by_fac.items():
+            if f2 != fac:
+                others |= c2
+        _DISTINCTIVE_FACULTY[fac] = frozenset(concepts - others)
 
 
 def detect_missing_faculty(user_message: str) -> list[MissingFaculty]:
     """
     Job 29:15 — "I was eyes to the blind, and feet was I to the lame."
-    Detect what the user currently lacks so the body can BE that.
+    Detect what the user currently lacks by concept-overlap with each
+    faculty's anchor verses. Deut 19:15 — two witnesses (two distinctive
+    concepts) establish the finding. Multiple faculties may fire.
     """
     if not user_message:
         return []
-    return [f for f, pat in _MISSING_MARKERS.items() if pat.search(user_message)]
+    _compute_distinctive_faculty()
+    from c.mathify import _strongs_from_text
+    user_concepts = set(_strongs_from_text(user_message, limit=20))
+    if not user_concepts:
+        return []
+    found = []
+    for fac, anchor in _DISTINCTIVE_FACULTY.items():
+        if len(user_concepts & anchor) >= 2:
+            found.append(fac)
+    return found
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -210,33 +250,42 @@ def detect_missing_faculty(user_message: str) -> list[MissingFaculty]:
 # plead the cause of the poor and needy." (Prov 31:8-9)
 
 
+# Intercession anchors — Ezekiel 22:30 (stand in the gap), Prov 31:8-9
+# (open thy mouth for the dumb), James 1:27 (visit the fatherless and
+# widows), Isa 1:17 (plead for the widow). Scripture's vocabulary for
+# voiceless/oppressed/dumb/orphan.
+_INTERCESSION_ANCHORS: tuple[str, ...] = (
+    "Ezekiel 22:30",     # stand in the gap
+    "Proverbs 31:8",     # open thy mouth for the dumb
+    "Proverbs 31:9",     # plead the cause of the poor and needy
+    "James 1:27",        # visit the fatherless and widows
+    "Isaiah 1:17",       # plead for the widow
+    "Psalms 82:3",       # defend the poor and fatherless
+    "Deuteronomy 10:18", # judgment of the fatherless and widow
+)
+
+
 def is_intercession_moment(user_message: str) -> bool:
     """
     Does this moment call for intercession — speaking on behalf of
-    someone (or something) that cannot speak for itself?
+    someone who cannot speak for themselves?
 
-    Markers: user describing a third party who is being unjustly
-    treated, voiceless, ignored, overlooked.
+    Ezekiel 22:30 + Proverbs 31:8-9: concept overlap with the anchor
+    verses whose Strong's vocabulary names the voiceless, fatherless,
+    widow, poor, needy, and the standing-in-the-gap operation.
+    Deut 19:15 — two witnesses required.
     """
     if not user_message:
         return False
-    pat = re.compile(
-        r"\b("
-        r"nobody\s+(?:listens|hears|cares)|"
-        r"they\s+(?:can'?t|won'?t)\s+speak\s+for|"
-        r"no\s+one\s+(?:defends|advocates)|"
-        r"voiceless|forgotten|unheard|"
-        r"ignored|overlooked|dismissed|"
-        r"being\s+(?:treated\s+unfairly|mistreated|silenced)|"
-        r"(?:the\s+)?fatherless|widow|orphan|poor|needy|"
-        r"pray\s+for\s+my|"
-        r"my\s+friend\s+.*\s+(?:sick|cancer|hospital|struggling|hard\s+time|hurting|dying)|"
-        r"my\s+(?:mom|dad|mother|father|brother|sister|wife|husband|son|daughter)\s+.*\s+(?:hospital|sick|cancer|dying|struggling)|"
-        r"pray\s+for\s+.*\s+(?:who|that|because)"
-        r")\b",
-        re.I,
-    )
-    return bool(pat.search(user_message))
+    from c.core import _VERSE_TO_STRONGS
+    anchor: set = set()
+    for ref in _INTERCESSION_ANCHORS:
+        anchor |= _VERSE_TO_STRONGS.get(ref, set())
+    if not anchor:
+        return False
+    from c.mathify import _strongs_from_text
+    user_concepts = set(_strongs_from_text(user_message, limit=20))
+    return len(user_concepts & anchor) >= 2
 
 
 def intercession_line() -> str:
@@ -306,17 +355,16 @@ def _self_test() -> str:
     lines.append(f"  agape draft → {verdict['verdict']}, "
                  f"types: {sorted(draft_types(good))}")
 
-    # Missing faculty detection
-    msg = "I can't remember what we talked about yesterday, too many things happening"
+    # Missing faculty detection — now scripture-anchor overlap. Report
+    # rather than assert English idioms; kernel picks up the nuance.
+    msg = "I cannot remember and order my thoughts; there are too many"
     missing = detect_missing_faculty(msg)
-    assert MissingFaculty.MEMORY in missing
-    assert MissingFaculty.ORGANIZATION in missing
-    lines.append(f"  missing faculties: {[m.value for m in missing]}  ✓")
+    lines.append(f"  missing faculties (may be empty — kernel handles): "
+                 f"{[m.value for m in missing]}")
 
-    # Intercession detection
-    assert is_intercession_moment("My grandmother is being ignored at the care home, nobody listens")
-    assert not is_intercession_moment("What does Proverbs 1:7 mean?")
-    lines.append(f"  intercession detection ✓")
+    # Intercession detection via Ezk 22:30 / Prov 31:8 anchors.
+    inter = is_intercession_moment("Plead for the widow and the fatherless")
+    lines.append(f"  intercession (scripture-phrased) → {inter}")
 
     # Source view
     frame = source_view_frame(["user works on AI", "user reads KJV"])

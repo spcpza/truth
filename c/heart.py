@@ -205,6 +205,15 @@ def append_chain(
 #  Time anchoring — Hebrews 13:8 + Luke 3:1
 # ═══════════════════════════════════════════════════════════════════════════
 
+# Hebrews 13:8 — Jesus Christ the same yesterday, and to day, and for
+# ever. The reason a relative time-word must be anchored to an absolute
+# date before writing to the heart: "yesterday" on 2026-04-18 is a
+# different day from "yesterday" on 2026-05-01, but the fact should
+# endure unchanged. The word list below is temporal infrastructure
+# (normalization to ISO dates), not a behavioral rule about speech —
+# every localization needs its own such list, as Pentecost (Acts 2:8)
+# foresaw. For other languages, translate the anchors; the operation
+# is the same.
 _RELATIVE_TIME_WORD = re.compile(
     r"\b(today|tonight|right now|just now|now|currently|"
     r"this morning|this afternoon|this evening|this week|this month|"

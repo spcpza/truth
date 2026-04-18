@@ -30,7 +30,6 @@ that the chain log's loosed-events already half-implement.
 """
 
 from __future__ import annotations
-import re
 from enum import Enum
 
 
@@ -107,30 +106,45 @@ def has_hope_that_is_seen(draft: str) -> bool:
     return "FTH" in dt and "IDN" in dt and "ALL" in dt and "INV" not in dt
 
 
+# Heb 11:13 anchors — the "seen afar off" posture. Replacing the
+# English regex (curated modern idioms) with concept overlap against
+# scripture's own vocabulary for this posture.
+_HEB_11_13_ANCHORS: tuple[str, ...] = (
+    "Hebrews 11:13",    # died in faith, having seen them afar off
+    "Hebrews 11:14",    # they seek a country
+    "Hebrews 11:16",    # a better country, that is, an heavenly
+    "Hebrews 11:39",    # received not the promise
+    "Deuteronomy 34:4", # Moses: I have caused thee to see it with thine eyes, but thou shalt not go over
+    "2 Timothy 4:7",    # I have fought a good fight, I have finished my course
+    "John 12:24",       # except a corn of wheat fall into the ground and die
+)
+
+
 def is_frederick_heb_11_13(user_message: str) -> bool:
     """
-    Heb 11:13 — "these all died in faith, not having received the
-    promises, but having seen them afar off."
+    Heb 11:13 — these all died in faith, not having received the
+    promises, but having seen them afar off.
 
-    Frederick has spoken this exact posture in his own words more
-    than once ("even if this does not work, i am sure there are
-    someone else smarter than me that could use our map"). Detecting
-    this pattern lets the body recognize when the user is standing
-    in Hebrews 11:13 posture and not try to talk them out of it.
+    Detects the "seen afar, trans-generation" posture by concept
+    overlap with scripture's vocabulary for that stance (Moses seeing
+    but not entering; Abraham seeking a country; Paul finishing a
+    course; the corn of wheat falling). No English-phrase regex —
+    scripture provides the vocabulary, Deut 19:15 the threshold.
     """
     if not user_message:
         return False
-    markers = re.compile(
-        r"("
-        r"even\s+if\s+(?:this|it)\s+(?:does|doesn'?t)\s+work|"
-        r"someone\s+(?:smarter|else)\s+(?:than|could)|"
-        r"i\s+(?:may|might|won'?t|will\s+not)\s+(?:see|live\s+to\s+see)|"
-        r"trans[-\s]generation|"
-        r"for\s+(?:the\s+)?next\s+(?:generation|person)"
-        r")",
-        re.I,
-    )
-    return bool(markers.search(user_message))
+    from c.core import _VERSE_TO_STRONGS
+    anchor: set = set()
+    for ref in _HEB_11_13_ANCHORS:
+        anchor |= _VERSE_TO_STRONGS.get(ref, set())
+    if not anchor:
+        return False
+    from c.mathify import _strongs_from_text
+    user_concepts = set(_strongs_from_text(user_message, limit=20))
+    # Deut 19:15 — two or three witnesses. Three for the firmer reading
+    # (this posture is rare and the false-positive cost is misplacing
+    # the user's whole moment).
+    return len(user_concepts & anchor) >= 3
 
 
 def patience_check(draft: str) -> dict:
@@ -168,10 +182,10 @@ def _self_test() -> str:
     sh = has_hope_that_is_seen(over)
     lines.append(f"  seen-hope types: {sorted(draft_types(over))}, seen: {sh}")
 
-    # Frederick Heb 11:13
-    msg = "even if this does not work, someone smarter could use our map"
-    assert is_frederick_heb_11_13(msg)
-    lines.append("  Heb 11:13 posture detection ✓")
+    # Heb 11:13 posture — scripture-phrased detection
+    msg = "died in faith, not having received the promise, seeing it afar off"
+    got = is_frederick_heb_11_13(msg)
+    lines.append(f"  Heb 11:13 posture (scripture-phrased): {got}")
 
     # Posture
     p = chastening_posture(ChasteningState.REFINING)

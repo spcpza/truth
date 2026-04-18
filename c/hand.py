@@ -91,7 +91,10 @@ class Hand:
                                   # 2 retries: first correction names the
                                   # stumble, second gives the model the shape.
                                   # Matt 18:15-17 allows 3; we stay meek.
-        max_history: int = 40,
+        max_history: int = 40,  # Genesis 7:12 / Matt 4:2: forty is scripture's
+                                 # number for a full season of trial and formation;
+                                 # forty turns is a formative history, not a
+                                 # permanent record (recall tool serves the rest).
         mcp_bridge: Optional[object] = None,  # MCPBridge instance
     ):
         self.adapter = adapter
@@ -295,16 +298,16 @@ class Hand:
                 continue
 
             ent_hit = bool(c_ents and (c_ents & live_ents))
-            concept_overlap = 0.0
-            if c_concepts and live_concepts:
-                concept_overlap = (
-                    len(c_concepts & live_concepts) / max(len(c_concepts | live_concepts), 1)
-                )
+            shared_count = len(c_concepts & live_concepts) if (c_concepts and live_concepts) else 0
 
-            if ent_hit or concept_overlap >= 0.25:
+            # Deuteronomy 19:15 — at the mouth of two or three witnesses
+            # shall the matter be established. Two shared concepts (or a
+            # proper-noun recurrence) is the minimum witness for a claim
+            # touching the record; three is the firmer reading used for
+            # "repeated witness" strength.
+            if ent_hit or shared_count >= 2:
                 abd = measure_abundance(user_text, claim, prior_bot)
-                # repeated witness = strong concept overlap OR proper-noun match
-                w_type = "repeated" if (ent_hit or concept_overlap >= 0.4) else "fruit"
+                w_type = "repeated" if (ent_hit or shared_count >= 3) else "fruit"
                 if w_type == "fruit" and not tools_called:
                     continue  # fruit needs substance (tool usage)
                 # Drive the claim through file_claim using its own
@@ -349,13 +352,11 @@ class Hand:
                 continue
 
             ent_hit = bool(r_ents and (r_ents & live_ents))
-            concept_overlap = 0.0
-            if r_concepts and live_concepts:
-                concept_overlap = (
-                    len(r_concepts & live_concepts) / max(len(r_concepts | live_concepts), 1)
-                )
+            shared_count = len(r_concepts & live_concepts) if (r_concepts and live_concepts) else 0
 
-            if ent_hit or concept_overlap >= 0.2:
+            # Deut 19:15 — two witnesses establish the matter. A shared
+            # proper-noun or two shared concepts warms the existing record.
+            if ent_hit or shared_count >= 2:
                 abd = measure_abundance(user_text, rec, prior_bot)
                 if abd > 0:
                     rec["warmth"] = rec.get("warmth", 0) + abd
@@ -466,6 +467,9 @@ class Hand:
                 for v in rec.get("violations", []):
                     vtype = v.split(":")[0].strip() if ":" in v else v[:30]
                     violation_counts[vtype] += 1
+        # Deuteronomy 19:15 — two or three witnesses. Three occurrences
+        # of the same violation is "a matter established" — a pattern,
+        # not an accident; report it so the Hand can warn itself.
         chain_patterns = {k: v for k, v in violation_counts.items() if v >= 3}
         if chain_patterns:
             pattern_lines = [

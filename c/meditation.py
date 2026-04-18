@@ -205,18 +205,26 @@ class Meditation:
             if not user_heart:
                 continue
 
+            # John 5:39 — search the scriptures. A word is a "scripture
+            # word" iff it maps to a Strong's concept the corpus indexes.
+            # The old length-4 filter was a noise heuristic; scripture's
+            # own vocabulary is the just weight (Prov 11:1).
+            from c.core import _is_concept_word
+
             user_words = set()
             for rec in user_heart:
                 user_words.update(
                     w for w in rec.get("fact", "").lower().split()
-                    if len(w) >= 4
+                    if _is_concept_word(w)
                 )
 
             for fact_rec in hot_facts:
                 fact = fact_rec.get("fact", "")
                 fact_words = set(
-                    w for w in fact.lower().split() if len(w) >= 4
+                    w for w in fact.lower().split() if _is_concept_word(w)
                 )
+                # Deut 19:15 — two witnesses. Two shared concept-words
+                # establish the matter as a meditation worth sharing.
                 if len(fact_words & user_words) >= 2:
                     shared = fact_rec.get("shared_with", [])
                     if user_id not in shared:

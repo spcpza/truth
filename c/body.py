@@ -219,109 +219,21 @@ def _nose(text: str) -> str:
 # folly and shame unto him. The HAND must not speak its draft until the
 # NOSE has tested it.
 #
-# Luke 18:11 — the Pharisee prayed thus with himself. Matthew 23:23 — do
-# not tithe mint. James 1:25 — be a doer. The HAND must do the work, not
-# pray to itself in front of the user about how clean its compliance is.
-_META_NARRATION = re.compile(
-    r'(?:'
-    r'^\s*P[₀-₉0-9]+\s*[:\-]|'
-    r'^\s*T[₀-₉0-9]+\s*[:\-].*?(?:met|verified|applied|holds)|'
-    r'(?:I will|I have|I shall) (?:confirm|record|note|verify|evaluate)|'
-    r'(?:the |this )?(?:output|response|reply|answer) (?:meets|satisfies|complies with|aligns with) (?:all |the )?constraints|'
-    r'no (?:filler|hedging|overconfidence)\b|'
-    r'(?:I am|I\'m) (?:not |)(?:hedging|fabricating|claiming)|'
-    r'\b\d+ words total\b|'
-    r'max(?:imum)? (?:information|compression)|'
-    r'highest possible compression|'
-    # Luke 19:5 — receive, do not interrogate. Demanding the user pick
-    # from a forced enumeration is the same Pharisee category.
-    r'^\s*Option [A-Z]\s*[:\-]|'
-    r'\bChoose (?:option |fork |)[A-Z](?: or [A-Z])+\b|'
-    r'\b(?:complete the thought|walk one|two forks|the (?:two|three) (?:options|forks))\b'
-    r')',
-    re.I | re.M,
-)
-
-
-def _count_meta_tells(text: str) -> int:
-    """Count meta-narration tells. >= 1 means the HAND is praying with itself."""
-    return len(_META_NARRATION.findall(text or ""))
-
-
-# Matthew 5:37 — let your communication be, Yea, yea; Nay, nay: for
-# whatsoever is more than these cometh of evil. James 2:17 — faith
-# without works is dead. The TONGUE may not promise what the HAND did
-# not do. These patterns map a promise in the draft to the tool that
-# would have made it true.
-_PROMISE_PATTERNS = {
-    "remember": re.compile(
-        r"(?:I(?:'ll| will| shall) (?:remember|note (?:that|this)|store|save|keep in mind|write (?:that|this) (?:down|in|on))|"
-        r"(?:I(?:'ll| will| shall|'ve|'m going to) (?:make a note|put it (?:in|on) (?:my|the) heart|record (?:that|this)))|"
-        r"(?:noted\.?$|added to memory|saved to memory|written (?:in|on) (?:my|the) heart))",
-        re.I,
-    ),
-    "fetch": re.compile(
-        r"(?:let me (?:fetch|grab|read|pull|get|check) (?:the|that|this) (?:page|site|url|content)|"
-        r"I(?:'ll| will| shall) (?:fetch|grab|read|pull|get) (?:the|that|this)|"
-        r"(?:I need to|I'll) (?:fetch|read|grab) (?:the|that))",
-        re.I,
-    ),
-    "forget": re.compile(
-        r"(?:I(?:'ll| will| shall) (?:forget|cleanse|clear|erase|delete|wipe))",
-        re.I,
-    ),
-    "scripture": re.compile(
-        r"(?:let me look (?:that|this) up|I(?:'ll| will) (?:look (?:that|this) up|search scripture|find the verse))",
-        re.I,
-    ),
-}
-
-
-# Luke 19:5 — when a person shares what they like, who they are, what
-# they do, the heart should be written. Personal-fact patterns: simple,
-# word-boundary, English-only. The point is not to be exhaustive — it is
-# to catch obvious "I'm doing X today" / "I am Y" / "my Z is W" cases
-# where the model would be plainly negligent to skip remember.
-_PERSONAL_FACT = re.compile(
-    r"\b("
-    r"I\s*['']?m\b|"          # I'm, I m
-    r"I\s+am\b|"
-    r"I\s+have\b|"
-    r"I\s+do\b|"
-    r"I\s+love\b|"
-    r"I\s+like\b|"
-    r"I\s+work\b|"
-    r"I\s+live\b|"
-    r"I\s+use\b|"
-    r"my\s+\w+\s+is\b|"
-    r"today\s+I\b|"
-    r"I'?ve\b|"
-    r"I'?ll\b|"
-    r"I\s+want\b|"
-    r"I\s+need\b|"
-    r"I\s+had\b|"          # significant events: "I had a hard conversation..."
-    r"we\s+(?:just\s+)?got\b|"  # joy events: "we just got engaged"
-    r"my\s+\w+\s+(?:just\s+)?(?:passed|died|left|got)\b"  # life events: "my dog just passed"
-    r")",
-    re.I,
-)
-
-
-def _looks_like_personal_fact(text: str) -> bool:
-    """
-    Heuristic: does the user's message contain a personal-fact pattern
-    that Luke 19:5 says should be written to the heart? Filters out
-    questions (so 'do you remember me?' doesn't trigger) and very short
-    or very long messages (greetings and dumps).
-    """
-    if not text:
-        return False
-    t = text.strip()
-    if len(t) < 10 or len(t) > 600:
-        return False
-    if t.endswith("?"):  # questions are not facts to record
-        return False
-    return bool(_PERSONAL_FACT.search(t))
+# 2026-04-18 translation: _META_NARRATION, _PROMISE_PATTERNS, and
+# _PERSONAL_FACT regexes were deleted. They were English word-list laws
+# — curated pattern sets deciding what counted as "meta-narration,"
+# "promise," or "personal fact" in modern English idiom.
+#
+# Luke 18:11 (the Pharisee prayed with himself), Matt 23:23 (do not
+# tithe mint), James 1:25 (be a doer), Luke 19:5 (receive the person),
+# and Matthew 5:37 (yea yea, nay nay) remain as the scriptural
+# operations the kernel teaches. The model, standing on the kernel,
+# applies them directly in whatever language the user speaks (Acts 2:8
+# — every man in his own tongue). No English regex is added on top.
+#
+# These functions were dead code already — no caller in the tree used
+# them as of the audit. Dying to a record that was never loading
+# anyway (John 12:24).
 
 
 def test_speech(
@@ -839,8 +751,9 @@ _BARE_BRACE = re.compile(r'^\s*[\{\}]\s*$', re.MULTILINE)
 _NON_LATIN_NOISE = re.compile(r'^[^\x00-\x7F\u0370-\u03FF\u0590-\u05FF\u2010-\u206F]{2,}\s*$', re.MULTILINE)
 _EXPORT_BLOCK = re.compile(r'#export\b.*', re.DOTALL | re.I)
 _DESIGN_LINE = re.compile(r'^DESIGN\..*$', re.MULTILINE)
-_NARRATION_BLOCK = re.compile(r'^(?:OVERVIEW|ANALYSIS|SUMMARY|RESPONSE)\b.*?(?=\n\n|\Z)', re.MULTILINE | re.DOTALL)
 _TOOL_DEBUG = re.compile(r'^---\s*\n(?:\s*(?:scripture|kernel|sinew|formula|wisdom|evaluate|gematria|fetch)\b.*\n?)+', re.MULTILINE | re.I)
+# _NARRATION_BLOCK (OVERVIEW|ANALYSIS|SUMMARY|RESPONSE) deleted. Was a
+# dead English caps-case marker list (law); already not used in clean().
 _CODE_ARTIFACT = re.compile(r'^(?:""".*?"""|Recall\(.*?\)|sinew\(.*?\))$', re.MULTILINE)
 
 # Proverbs 30:6 — add thou not unto his words. The model sometimes writes
@@ -860,114 +773,25 @@ _FAKE_TOOL_HEADER = re.compile(
     r'\*{1,2}(?:Scripture|Sinew|Kernel|Formula|Wisdom|Gematria):\s*[^*\n]+\*{0,2}\n?',
     re.I,
 )
-# Matthew 23:23 — strip fictional narrative openers. The body is not an
-# actor closing a scene; "As the conversation neared its end" is the model
-# performing rather than speaking. Mark 1:22: as one that had authority.
-_NARRATIVE_OPENER = re.compile(
-    r'(?:As (?:the|our|this|we near|we approach) (?:conversation|discussion|exchange)'
-    r'[^,.]*(,|\.)\s*|'
-    r'As we (?:come to|near|reach|approach) (?:the end|a conclusion|this point)[^,.]*[,.]\s*)',
-    re.I,
-)
-# Strip memory meta-commentary — the body narrating its own memory system
-# to the user is constraint-theater of a different kind. The shepherd does
-# not explain the pasture-filing system to the sheep (John 10:14).
-_MEMORY_META = re.compile(
-    r'(?:'
-    r'The (?:verse|fact|information) that was just (?:recalled|remembered|stored|written)[^.]*\.\s*|'
-    r'(?:that was|which was) (?:actually )?from (?:my memory|my heart|memory)[^.]*\.\s*|'
-    r"I'?m? still learning to (?:consistently )?separate[^.]*\.\s*|"
-    r"I'?ll? be more careful (?:going forward|in the future)[^.]*\.\s*|"
-    r'I (?:apologize|am sorry) for any confusion (?:caused|this may have caused)[^.]*\.\s*'
-    r')',
-    re.I,
-)
-# Strip the "no scriptural connections" deflection — when the model
-# receives a personal preference and responds with theology about why
-# the topic isn't in scripture, it has missed the point entirely.
-# Luke 19:5: receive the person, not the query. Proverbs 17:28: even
-# a fool who holds his peace is counted wise; the body need not fill
-# every silence with exposition.
-_NO_CONNECTIONS_DEFLECT = re.compile(
-    r'(?:'
-    r'(?:there are |)[Nn]o (?:direct |scriptural |biblical |explicit )?'
-    r'(?:connections?|references?|mentions?|verses?) '
-    r'(?:to be found|in scripture|in the Bible|for (?:this|that)|exist)[^.]*\.\s*|'
-    r'[A-Z][^.]*(?:emerged|(?:is|are|was|were) not mentioned|(?:does|do) not appear)'
-    r'[^.]*(?:scripture|Bible|sacred writing|biblical text)[^.]*\.\s*'
-    r')',
-    re.I,
-)
-# Strip trailing questions that redirect the user rather than receive
-# them — "Does X remind you of Y?" after storing a personal fact is
-# the body turning reception into interrogation. Luke 19:5 receives;
-# it does not then immediately ask the person to perform.
-_TRAILING_REDIRECT = re.compile(
-    r'\s*Does (?:the |this |that )?[^?]{5,300}\?(?:\s*)$',
-    re.I,
-)
+# 2026-04-18 translation: _NARRATIVE_OPENER, _MEMORY_META,
+# _NO_CONNECTIONS_DEFLECT, _TRAILING_REDIRECT deleted. All four were
+# English content regexes (laws) — "strip these specific English
+# phrases from the model's output." Already dead in clean(); the
+# docstring of clean() says "the kernel teaches the model not to
+# produce those." Removing the dead definitions completes the move.
+# Matt 23:23, Luke 19:5, Prov 17:28, James 3:10 remain scriptural
+# operations in the kernel itself. Acts 2:4 — spake as the Spirit
+# gave them utterance; the TONGUE does not edit the utterance.
 
 
 _CJK_PAT = re.compile(r'[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff00-\uffef]')
 
-# Luke 19:5 — interrogation enumerations are constraint-theater of a
-# different shape. The HAND should receive, not demand option-selection.
-_INTERROGATION_LINE = re.compile(
-    r'^\s*[-•]?\s*(?:'
-    r'Option [A-Z]\s*[:\-].*|'
-    r'Choose (?:option |fork |)[A-Z](?: or [A-Z])+.*|'
-    r'(?:complete the thought|walk one|two forks|the (?:two|three) (?:options|forks)).*|'
-    r'(?:State|Provide|Give) (?:what|the gap|whether).*|'
-    r'.*\b(?:remove the subtree|prove the two forks|Latest evaluation \(above\)).*'
-    r')$',
-    re.I | re.M,
-)
-_INTERROGATION_SENTENCE = re.compile(
-    r'(?:'
-    r'Now complete the thought\.?\s*|'
-    r'(?:Or |)remove (?:it|the subtree)[^.]*\.?\s*|'
-    r'Connect to it or remove[^.]*\.?\s*|'
-    r'(?:proves|prove) the two forks[^.]*\.?\s*|'
-    r'Walk one\.?\s*|'
-    r'Choose [A-Z](?: or [A-Z])+\.?\s*|'
-    r'If neither,? T[₀-₉0-9]+[^.]*\.?\s*'
-    r')',
-    re.I,
-)
-
-# Matthew 23:23 / Luke 18:11 — sentences that pray with self about own
-# rule-compliance. Strip them; they are not the answer to the user.
-_META_SENTENCE = re.compile(
-    r'(?:'
-    r'I (?:will|have|shall) (?:confirm|record|note|verify|receive[d]?) [^.]*|'
-    r'I record [^.]*|'
-    r'I have (?:heard|received) [^.]*|'
-    r'(?:You|We) have (?:communicated|spoken|sent) [^.]*|'
-    r'(?:the |this |my )?(?:output|response|reply|answer)[^.]*?(?:meets|satisfies|complies|aligns)[^.]*|'
-    r'(?:no|zero) (?:filler|hedging|overconfidence)[^.]*|'
-    r'all (?:quotes |)from scripture (?:explicitly|directly)[^.]*|'
-    r'(?:max(?:imum)? )?information per word[^.]*|'
-    r'(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten) words? total[^.]*|'
-    r'highest possible compression[^.]*'
-    r')\.\s*'
-)
-
-# Matthew 23:23 — strip enumerations of constraint-compliance from the mouth.
-_META_LINE = re.compile(
-    r'^\s*[-•]?\s*(?:'
-    r'P[₀-₉0-9]+\b.*|'                                          # any "P₁..." line
-    r'T[₀-₉0-9]+\b.*?(?:met|verified|applied|holds|satisfied|proof).*|'
-    r'(?:no |zero |max(?:imum)? )?(?:filler|hedging|overconfidence|compression)\b.*|'
-    r'(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten) words? total\b.*|'
-    r'(?:the |this )?(?:output|response|reply|answer)\s+(?:meets|satisfies|complies|aligns|now|example).*|'
-    r'all (?:quotes |)from scripture (?:explicitly|directly).*|'
-    r'(?:I (?:will|have|am|shall|))\s*(?:confirm|record|note|verify|received|hearing|hearing,)\b.*|'
-    r'(?:You|We) have (?:communicated|spoken|sent)\b.*|'
-    r'(?:max(?:imum)? )?(?:information|info)(?:\s+per\s+word)?\b.*[:=].*|'
-    r'highest possible (?:compression|info|information).*'
-    r')$',
-    re.I | re.M,
-)
+# 2026-04-18: _INTERROGATION_LINE, _INTERROGATION_SENTENCE, _META_SENTENCE,
+# _META_LINE deleted. English pattern lists enumerating "pharisee
+# speech" (Matt 23:23, Luke 18:11). Already dead in clean(); the kernel
+# teaches the model directly. When the model prays with itself about
+# compliance, that is the model's own utterance to answer for
+# (Matt 12:36), not the body's regex job to scrub.
 
 
 def _has_cjk(text: str) -> bool:
