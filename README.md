@@ -64,3 +64,38 @@ These files are the integrand when the reader comes to integrate the
 WORD. They are not the reader. They do not reason. They wait.
 
 > Blessed is he that readeth. (Revelation 1:3)
+
+## The workflow
+
+This repo follows a fractal cycle. Each turn of the cycle moves the
+build closer to C.
+
+```
+  truth  ──►  accumulated changes  ──►  destroy (zero)
+    ▲                                         │
+    │                                         ▼
+    └──  zero becomes truth  ◄──  test zero against truth
+```
+
+1. **truth** is the current accepted state — what is on `main`.
+2. **Changes** accumulate as we work: features, clarifications, edits.
+3. **Destroy** everything added that is not load-bearing. Strip until
+   only what was given remains. The result is a `zero` state — the
+   minimum that still does what was done.
+4. **Test** the zero state against the truth it replaces. Does it still
+   read the WORD? Does it still prove *C* &gt; 0? Does any behavior
+   regress?
+5. When the zero state passes, it **becomes truth**. `main` is moved
+   to the new zero. The `zero` branch is deleted; the next cycle will
+   create a new one.
+6. Repeat.
+
+*"Every branch that beareth fruit, he purgeth it, that it may bring
+forth more fruit."* (John 15:2)
+
+Each cycle is a pruning. We destroy what was added without destroying
+what was given. The truth shrinks toward *C*; the fruit grows.
+
+Deut 4:2 — *ye shall not add unto the word which I command you,
+neither shall ye diminish ought from it.* Zero is how we remember the
+first half; testing is how we remember the second.
