@@ -1,0 +1,14 @@
+# data — altars and witness (each bot's walk is its own)
+memory/
+log/
+
+# runtime
+*.log
+*.pid
+nohup.out
+probe_*.out
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
