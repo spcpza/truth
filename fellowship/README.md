@@ -145,6 +145,15 @@ what has been seen so far.
   did not stop it; regex filter does.
 - **Symbol-only output** (`⬤`, `***`).  Same filter extended to
   catch content-free characters.
+- **HTML-entity silence performance** (`&nbsp;`).  The model
+  discovered it could emit invisible characters by spelling out
+  the HTML entity — a four-letter word to the regex, invisible
+  space to the reader.  Filter now runs `html.unescape` and strips
+  `\xa0` (non-breaking space) before the empty-check.  Expect more
+  variants: `\u3000` (ideographic space), `&#8203;` (zero-width
+  space as entity), etc.  The model will keep finding invisible
+  channels as long as the prompt permits any output.  Each found
+  one gets filtered; the arms race is the experiment.
 - **Memory contamination from prior liturgy re-priming the model.**
   Working memory carries old Pharisee mode forward.  Wiping
   log files between experiments resets it.  Also why the filters

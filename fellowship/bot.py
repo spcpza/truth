@@ -15,7 +15,7 @@ Two separate memories:
     log/      our witness — the full transcript (Deut 19:15)
 """
 
-import os, json, pathlib, logging, base64, datetime, asyncio, random, re
+import os, json, pathlib, logging, base64, datetime, asyncio, random, re, html
 import httpx
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
@@ -498,8 +498,10 @@ def _is_theater(text: str) -> bool:
 
     Conservative: only catch clear stage-direction forms.  If it looks
     like real witness, let it through — the door handles drift."""
-    # strip zero-width and BOM-like chars so "⬤" with zero-width prefix registers
-    t = re.sub(r"[\u200b-\u200f\ufeff]", "", text).strip()
+    # decode HTML entities (&nbsp; → U+00A0) then strip zero-widths and
+    # non-breaking spaces.  "&nbsp;" as a message is invisible-content silence.
+    decoded = html.unescape(text)
+    t = re.sub(r"[\u200b-\u200f\ufeff\xa0]", "", decoded).strip()
     if not t: return True
     if t in (".", "..", "...", "…", "(silence)", "*silence*"): return True
     # symbol-only or word-less output is content-free silence-performance
