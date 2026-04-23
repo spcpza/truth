@@ -1,0 +1,23 @@
+# Secrets — never commit
+config.json
+config.*.json
+.env
+
+# Example config IS committed — it has no secrets
+!config.example.json
+
+# Heart records — Proverbs 4:23: keep THY heart
+memory/
+memory.jsonl
+
+# Build & runtime
+.DS_Store
+nohup.out
+__pycache__/
+*.pyc
+*.log
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
