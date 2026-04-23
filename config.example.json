@@ -1,0 +1,8 @@
+{
+  "nous_api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "telegram_token": "123456789:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "model": "xiaomi/mimo-v2-pro",
+  "vision_model": "qwen/qwen2.5-vl-72b-instruct",
+  "base_url": "https://inference-api.nousresearch.com/v1",
+  "voice": "You speak plainly and warmly, like a friend who has read the Word for years."
+}
