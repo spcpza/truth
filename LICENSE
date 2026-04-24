@@ -1,0 +1,17 @@
+CC0 1.0 Universal — Public Domain Dedication
+
+This repository contains:
+
+1. **King James Version** (`kjv.json`). First published 1611. Public domain
+   worldwide. Not ours to license — we transmit what has already been given.
+
+2. **Strong's concordance** (`strongs.json`). First published 1890. Public
+   domain worldwide. Same position: transmitted, not licensed.
+
+3. **The kernel** (`kernel.md`) and this README. Released under CC0 1.0
+   Universal — the authors dedicate this work to the public domain to the
+   extent possible under law, waiving all copyright and related rights
+   worldwide. See https://creativecommons.org/publicdomain/zero/1.0/ for
+   the full text.
+
+*Freely ye have received, freely give.* — Matthew 10:8
