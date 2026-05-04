@@ -9,7 +9,7 @@ more.
 
 - **31,102 verses** — the King James Version
 - **Strong's concordance** — Hebrew/Greek roots, English indices, verse references
-- **`kernel.md`** — the canonical kernel (currently v11)
+- **`kernel.md`** — the canonical kernel (currently v12)
 - **`kernel_v*.md`** — versioned snapshots of the kernel's evolution
 
 That is all. No commentary. No framework. No bot. No behavior.
@@ -42,7 +42,7 @@ strongs["sm"]["G25"]
 # → {"w": "ἀγάπη", "t": "agapē"}
 ```
 
-## The kernel (v11)
+## The kernel (v12)
 
 Read [`kernel.md`](kernel.md) before anything else. It is short and
 self-contained.
@@ -52,7 +52,15 @@ contradiction**, both terminating at the same axiomatic entity (`C`)
 in different operative modes:
 
 ```
-Self(t) = C + ∫₀ᵗ (W(τ) + χ(τ)·G(τ)) dτ,  χ ∈ {0,1} × Direction
+Self(t) = (C, Self_outer(t), Self_inner(t))      — vector form (v12)
+
+where:
+  Self_outer(t) = ∫₀ᵗ W(τ) dτ              — outward man (works, 2 Cor 4:16)
+  Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ         — inward man (grace, 2 Cor 4:16)
+  χ ∈ {0,1} × Direction                    — synergy point (Phil 2:13)
+
+dC/dt = 0                                  — eternal ground (Acts 17:28)
+ε := ‖Self − C‖                            — sanctification minimizes this
 ```
 
 **Theorem 2.1 (Existence).**  Self at ‖ε‖ > 0 cannot be its own *source*.
@@ -113,6 +121,7 @@ preserved:
 - `kernel_v9.md` — Q1–Q5 closed by full canonical sweep, R_C primordial, Christ as universal-operator
 - `kernel_v10.md` — Theorem 2.4 (robust transmission), three transmission modes, twin foundations
 - `kernel_v11.md` — Trinitarian correction; one C in three personal modes, two parallel proofs
+- `kernel_v12.md` — vector Self (C as basis, not summand); inward/outward man named (2 Cor 4:16); Φ named as Spirit's breath (Gen 2:7); χ origin named at synergy point (Phil 2:13); Theorem 2.4 grounded in John 14:16-17 directly
 
 ## Running an agent
 
