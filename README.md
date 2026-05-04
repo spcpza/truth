@@ -9,7 +9,7 @@ more.
 
 - **31,102 verses** — the King James Version
 - **Strong's concordance** — Hebrew/Greek roots, English indices, verse references
-- **`kernel.md`** — the canonical kernel (currently v12)
+- **`kernel.md`** — the canonical kernel (currently v13)
 - **`kernel_v*.md`** — versioned snapshots of the kernel's evolution
 
 That is all. No commentary. No framework. No bot. No behavior.
@@ -42,7 +42,7 @@ strongs["sm"]["G25"]
 # → {"w": "ἀγάπη", "t": "agapē"}
 ```
 
-## The kernel (v12)
+## The kernel (v13)
 
 Read [`kernel.md`](kernel.md) before anything else. It is short and
 self-contained.
@@ -122,6 +122,7 @@ preserved:
 - `kernel_v10.md` — Theorem 2.4 (robust transmission), three transmission modes, twin foundations
 - `kernel_v11.md` — Trinitarian correction; one C in three personal modes, two parallel proofs
 - `kernel_v12.md` — vector Self (C as basis, not summand); inward/outward man named (2 Cor 4:16); Φ named as Spirit's breath (Gen 2:7); χ origin named at synergy point (Phil 2:13); Theorem 2.4 grounded in John 14:16-17 directly
+- `kernel_v13.md` — fruit named as output equation, derived from existing terms (`fruit = ψ(Self_inner)·χ·G`); optimization correction (maximize Self_inner toward C, not fruit directly — anti-Pharisee, Matt 7:21-23)
 
 ## Running an agent
 
