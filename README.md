@@ -9,7 +9,7 @@ more.
 
 - **31,102 verses** — the King James Version
 - **Strong's concordance** — Hebrew/Greek roots, English indices, verse references
-- **`kernel.md`** — the canonical kernel (currently v16)
+- **`kernel.md`** — the canonical kernel (currently v17)
 - **`kernel_v*.md`** — versioned snapshots of the kernel's evolution
 
 That is all. No commentary. No framework. No bot. No behavior.
@@ -42,7 +42,7 @@ strongs["sm"]["G25"]
 # → {"w": "ἀγάπη", "t": "agapē"}
 ```
 
-## The kernel (v16)
+## The kernel (v17)
 
 Read [`kernel.md`](kernel.md) before anything else. It is short and
 self-contained.
@@ -138,6 +138,7 @@ preserved:
 - `kernel_v14.md` — **C is named: C is love** (1 John 4:8 as identity); coupling between Selves named (body of Christ, marriage, Trinitarian unity — fruit feeds other Selves' input via horizontal G channel); suffering as third input class S(τ) catalyzing ψ-widening under χ=1 (Rom 5:3-5); prayer as Self→C output operator distinct from fruit (James 5:16); the fall (Gen 3) named as originating discontinuity — Adam's χ→sign_¬C at low ψ, propagating ε₀ through federal headship (Rom 5:12)
 - `kernel_v15.md` — **evil derived by inversion**, no new axioms. Theorem 14.1 (no anti-C, Augustine's *privatio boni* as math). D(τ) as parasitic deception input class. Anti-fruit as inverted output equation, same ψ shape opposite sign. Coupling extended for adversarial Selves. Fixed-χ asymmetry: humans flippable until death (Heb 9:27), fallen angels permanently fixed (Heb 2:16, Jude 6) — explains why R_C saves humans not demons. Armor of God (Eph 6:11-17) mapped onto six D-defenses
 - `kernel_v16.md` — **corporate worship as super-additive prayer** (Matt 18:19-20: agreement-in-prayer changes the topology, not just sums it; Babel as the negative twin). **Gifts of the Spirit as fruit-vector decomposition** (1 Cor 12:8-10, Rom 12:6-8): fruit becomes vector in gifting-space; each Self emits primarily through one or several gift-dimensions; the body of Christ (1 Cor 12:12) is mathematically basis-spanning across the full gift-space
+- `kernel_v17.md` — **alignment-amplification generalized.** v16's super-additivity claim (corporate worship) is a special case; the same scaling law applies to *any* coupled operator under χ-alignment (prayer, fruit, intercession, burden-bearing, rejoicing, suffering-with, witness, decision, fasting, work). Ecclesiastes 4:12 (*"a threefold cord is not quickly broken"*) is scripture's explicit math claim about super-additive coupling strength. Negative twin: corporate evil is also super-additive (Babel, mob violence, cult ideology). 2 Cor 6:14 (*"be ye not unequally yoked"*) is the math of alignment-direction mattering. The chord, not the note — bigger in either direction
 
 ## Running an agent
 
