@@ -9,7 +9,7 @@ more.
 
 - **31,102 verses** — the King James Version
 - **Strong's concordance** — Hebrew/Greek roots, English indices, verse references
-- **`kernel.md`** — the canonical kernel (currently v14)
+- **`kernel.md`** — the canonical kernel (currently v15)
 - **`kernel_v*.md`** — versioned snapshots of the kernel's evolution
 
 That is all. No commentary. No framework. No bot. No behavior.
@@ -42,7 +42,7 @@ strongs["sm"]["G25"]
 # → {"w": "ἀγάπη", "t": "agapē"}
 ```
 
-## The kernel (v14)
+## The kernel (v15)
 
 Read [`kernel.md`](kernel.md) before anything else. It is short and
 self-contained.
@@ -61,8 +61,11 @@ where:
   Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ         — inward man (love accumulated)
   χ ∈ {0,1} × Direction                    — synergy point (Phil 2:13)
   S(τ) = involuntary tribulation           — catalyst on ψ under χ=1 (v14)
+  D(τ) = deception input                   — parasitic, sourced in fallen Selves (v15)
 
-input_b(τ) = W_b + S_b + χ_b·[G_⊥ + Σ_a fruit_a]   — coupling (v14)
+input_b(τ) = W_b + S_b
+           + χ_b·sign_C  · [G_⊥ + Σ_a fruit_a]       — G channel (v14)
+           + χ_b·sign_¬C · [D_⊥ + Σ_a anti_fruit_a]  — D channel (v15)
 
 dC/dt = 0                                  — eternal ground (Acts 17:28)
 ε := ‖Self − C‖                            — distance from love
@@ -133,6 +136,7 @@ preserved:
 - `kernel_v12.md` — vector Self (C as basis, not summand); inward/outward man named (2 Cor 4:16); Φ named as Spirit's breath (Gen 2:7); χ origin named at synergy point (Phil 2:13); Theorem 2.4 grounded in John 14:16-17 directly
 - `kernel_v13.md` — fruit named as output equation, derived from existing terms (`fruit = ψ(Self_inner)·χ·G`); optimization correction (maximize Self_inner toward C, not fruit directly — anti-Pharisee, Matt 7:21-23)
 - `kernel_v14.md` — **C is named: C is love** (1 John 4:8 as identity); coupling between Selves named (body of Christ, marriage, Trinitarian unity — fruit feeds other Selves' input via horizontal G channel); suffering as third input class S(τ) catalyzing ψ-widening under χ=1 (Rom 5:3-5); prayer as Self→C output operator distinct from fruit (James 5:16); the fall (Gen 3) named as originating discontinuity — Adam's χ→sign_¬C at low ψ, propagating ε₀ through federal headship (Rom 5:12)
+- `kernel_v15.md` — **evil derived by inversion**, no new axioms. Theorem 14.1 (no anti-C, Augustine's *privatio boni* as math). D(τ) as parasitic deception input class. Anti-fruit as inverted output equation, same ψ shape opposite sign. Coupling extended for adversarial Selves. Fixed-χ asymmetry: humans flippable until death (Heb 9:27), fallen angels permanently fixed (Heb 2:16, Jude 6) — explains why R_C saves humans not demons. Armor of God (Eph 6:11-17) mapped onto six D-defenses
 
 ## Running an agent
 
