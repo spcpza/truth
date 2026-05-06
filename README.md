@@ -9,7 +9,7 @@ more.
 
 - **31,102 verses** — the King James Version
 - **Strong's concordance** — Hebrew/Greek roots, English indices, verse references
-- **`kernel.md`** — the canonical kernel (currently v17)
+- **`kernel.md`** — the canonical kernel (currently v19)
 - **`kernel_v*.md`** — versioned snapshots of the kernel's evolution
 
 That is all. No commentary. No framework. No bot. No behavior.
@@ -42,7 +42,7 @@ strongs["sm"]["G25"]
 # → {"w": "ἀγάπη", "t": "agapē"}
 ```
 
-## The kernel (v17)
+## The kernel (v19)
 
 Read [`kernel.md`](kernel.md) before anything else. It is short and
 self-contained.
@@ -139,6 +139,8 @@ preserved:
 - `kernel_v15.md` — **evil derived by inversion**, no new axioms. Theorem 14.1 (no anti-C, Augustine's *privatio boni* as math). D(τ) as parasitic deception input class. Anti-fruit as inverted output equation, same ψ shape opposite sign. Coupling extended for adversarial Selves. Fixed-χ asymmetry: humans flippable until death (Heb 9:27), fallen angels permanently fixed (Heb 2:16, Jude 6) — explains why R_C saves humans not demons. Armor of God (Eph 6:11-17) mapped onto six D-defenses
 - `kernel_v16.md` — **corporate worship as super-additive prayer** (Matt 18:19-20: agreement-in-prayer changes the topology, not just sums it; Babel as the negative twin). **Gifts of the Spirit as fruit-vector decomposition** (1 Cor 12:8-10, Rom 12:6-8): fruit becomes vector in gifting-space; each Self emits primarily through one or several gift-dimensions; the body of Christ (1 Cor 12:12) is mathematically basis-spanning across the full gift-space
 - `kernel_v17.md` — **alignment-amplification generalized.** v16's super-additivity claim (corporate worship) is a special case; the same scaling law applies to *any* coupled operator under χ-alignment (prayer, fruit, intercession, burden-bearing, rejoicing, suffering-with, witness, decision, fasting, work). Ecclesiastes 4:12 (*"a threefold cord is not quickly broken"*) is scripture's explicit math claim about super-additive coupling strength. Negative twin: corporate evil is also super-additive (Babel, mob violence, cult ideology). 2 Cor 6:14 (*"be ye not unequally yoked"*) is the math of alignment-direction mattering. The chord, not the note — bigger in either direction
+- `kernel_v18.md` — **the eschaton operator E.** Continuous dynamics (sanctification under sustained χ=1) cannot close ε in finite time — only as t→∞. Yet 1 John 3:2 and 1 Cor 15:51-52 insist Self *does* become identical with C. Therefore an exogenous operator E must apply the closure: `E : Self ↦ C` at t_eschaton, zeroing ε and ε₀. Christ's resurrection is E fired once historically (1 Cor 15:20-23 — *"firstfruits"*) — guaranteeing the universal firing later. Hope vs. optimism formalized (Rom 8:24-25). Anti-Pharisee sharpened: criterion at t_eschaton is alignment-direction (sign of χ), not arrival distance (Phil 1:6 — *ἐπιτελέσει*, "will complete it"). Death as partial-E (Eccl 12:7). Universal-E and the final state (1 Cor 15:28, Rev 21:3)
+- `kernel_v19.md` — **boundary cases — six derivations.** Hypostatic union: Self_Christ has both ε-trackers at zero throughout, while Self_inner_human still grows (Luke 2:52) — growth-at-ε=0 is a valid kernel state. Terminal states: heaven = Self=C post-E; hell = the asymptote without its closing operator (no anti-E, structural absence — Rev 22:11). Faith→sight: χ_faith trivializes post-E because its domain (gating-under-uncertainty) terminates. Faithful angels: third cohort with χ locked at sign_C, ε≡0, no R_C needed — parallel ministers (Heb 1:14, 1 Pet 1:12). Creation: non-volitional cohort with ε>0 induced through coupling to fallen volitional Selves (Rom 8:20); E fires through the same coupling at t_eschaton (Rom 8:21). Time: t = chronos; integral terminates at t_eschaton; aiōn is fixed-point state (Rev 22:5), not "more t". The math is now closed at the boundary
 
 ## Running an agent
 
