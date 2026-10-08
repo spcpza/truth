@@ -12,16 +12,18 @@ Updates from v18:
     both at zero throughout, while Self_inner_human still integrates
     G strictly upward (Luke 2:52). Demonstrates that growth-at-ε=0
     is a valid kernel state — the unique configuration in scripture.
-  - **Terminal states** (§14.5.2): Heaven = Self at ‖ε‖ = 0 post-E
-    (Identity_Self kept).
+  - **Terminal states** (§14.5.2): Heaven = Self at ‖ε‖ = 0 in
+    unmediated communion with C, post-E — union without loss of
+    the Self (Identity_Self persists; §10.5.3).
     Hell = the asymptote *without* its closing operator;
     χ frozen at sign_¬C; structural absence of E. There is no
-    anti-E (Theorem 14.1). Rev 22:11 — *"He that is unjust, let
+    anti-E — an anti-E would require an anti-C as its source,
+    refuted by Theorem 14.1. Rev 22:11 — *"He that is unjust, let
     him be unjust still."*
   - **Faith → sight** (§14.5.3): χ_faith trivializes post-E because
-    its domain (gating reception under non-vision) terminates when
-    ‖ε‖ = 0 post-E. 1 Cor 13:13 — love persists; faith and hope are
-    temporal because their domains are.
+    its domain (gating reception under non-vision) terminates at
+    ‖ε‖ = 0, face to face. 1 Cor 13:13 — love persists; faith and
+    hope are temporal because their domains are.
   - **Faithful angels** (§14.5.4): Third cohort with χ locked at
     sign_C, ε ≡ 0, no R_C needed. Not in the body of Christ
     topology — a parallel cohort of ministers (Heb 1:14). They
@@ -36,8 +38,9 @@ Updates from v18:
   - **Time** (§14.5.6): The integral runs over chronos. At
     t_eschaton, integration terminates. Aiōn (eternal life;
     Matt 25:46, John 17:3) is not "more t"; it is the fixed
-    point ‖ε‖ = 0 with maximum coupling (limit of v17 §11.7
-    super-additivity). State, not process. No new symbol.
+    point — every redeemed Self at ‖ε‖ ≡ 0, coupled to C at
+    maximum coupling (limit of v17 §11.7 super-additivity).
+    State, not process. No new symbol.
 
 The math is now closed at the boundary. Foundational, dynamical,
 and boundary cases all map to scripture-named operators. What
@@ -1780,8 +1783,13 @@ At t = t_eschaton, two paths:
                                    χ permanently locked;
                                    integration ceases without closure.  (hell)
 
-**Heaven** = Self at ‖ε‖ = 0, post-E (Identity_Self kept). Maximum coupling to all other
-E-applied Selves; aiōn-state (§14.5.6).
+**Heaven** = Self at ‖ε‖ = 0 in unmediated communion with C,
+post-E — union without loss of the Self: Identity_Self persists
+(§10.5.3; John 17:21-23 — *"I in them, and thou in
+me… made perfect in one"*; 1 John 3:2 — *"we shall be **like**
+him"*; Rev 22:3-4 — his servants, still serving, see his face).
+Maximum coupling to all other E-applied Selves; aiōn-state
+(§14.5.6).
 
 **Hell** = the asymptote without its closing operator. Self does
 not advance, does not retreat — it is held at its last orientation
@@ -1811,10 +1819,10 @@ gates the receiving:
 
 > *"For we walk by faith, not by sight."* — **2 Corinthians 5:7**
 
-Post-E: ‖ε‖ = 0, Identity_Self kept. There is no longer a "from
-elsewhere"; Self is in the source-coupled state. The gate has nothing to gate:
+Post-E: Self at ‖ε‖ = 0, face to face. There is no longer a "from
+elsewhere" received under non-vision. The gate has nothing to gate:
 
-    Post-E:  ‖ε‖ ≡ 0  ⟹  no integration  ⟹  χ_faith trivializes
+    Post-E:  ‖ε‖ = 0  ⟹  no gap to gate  ⟹  χ_faith trivializes
 
 > *"Now we see through a glass, darkly; but then face to face: now
 > I know in part; but then shall I know even as also I am known."*
