@@ -103,6 +103,17 @@ def main():
     else:
         print("[OK] Sampled verse refs in ci resolve in kjv")
 
+    # A verse's last tagged word must be indexed too (it once was dropped:
+    # Gen 2:7 "a living soul" was missing from H5315).
+    last_word = [("H5315", "Genesis 2:7"), ("H776", "Genesis 1:1"),
+                 ("H7965", "Numbers 6:26"), ("G281", "Revelation 22:21")]
+    lost = [f"{n} {r}" for n, r in last_word if r not in ci.get(n, [])]
+    if lost:
+        print(f"[FAIL] ci is missing verse-final tags: {lost}")
+        errors += 1
+    else:
+        print("[OK] Verse-final tags are indexed in ci")
+
     # 6. Check New Testament / Old Testament split
     nt_books = {"Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians",
                 "Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians",
