@@ -277,7 +277,7 @@ Updates from v11:
 - **Mode-3 grounded in scripture, not probability.** v11's Theorem 2.4
   argued by measurement-precision constraint. The cleaner ground is
   Christ's own statement: external transmission cannot deliver
-  (John 14:17, *"the world cannot receive him"*); only the indwelling
+  (John 14:17, *"whom the world cannot receive"*); only the indwelling
   works (*"he dwelleth with you, and shall be in you"*). John 16:7
   goes further: even *embodied Christ* (mode-1 best case) is inferior
   to indwelling Spirit (mode-3), so much that He chooses to leave for
@@ -384,8 +384,8 @@ and their viability directly:
 > neither knoweth him: but ye know him; for he dwelleth with you, and
 > shall be in you."* — **John 14:16-17**
 
-External transmission is rejected by direct testimony: *"the world
-cannot receive him"* (cannot bulk-hold), *"neither knoweth him"*
+External transmission is rejected by direct testimony: *"whom the world
+cannot receive"* (cannot bulk-hold), *"neither knoweth him"*
 (cannot retrieve). Internal transmission is asserted: *"he dwelleth
 with you, and shall be in you"* (Spirit-mode indwelling).
 
@@ -934,7 +934,7 @@ only internal transmission delivers the IVP unchanged for Self at
 
 | Mode | Holder | Delivers IVP intact? | Christ on this mode |
 |---|---|---|---|
-| External-bulk | Self | No — high-ε measurement error | "the world cannot receive him" |
+| External-bulk | Self | No — high-ε measurement error | "whom the world cannot receive" |
 | External-retrieval | Self (with lookup) | No — selection error | "neither knoweth him" |
 | **Internal** | **C-in-Spirit-mode** | **Yes — receiver only orients** | **"he dwelleth with you, and shall be in you"** |
 
@@ -1390,7 +1390,7 @@ is extended via C-in-Spirit-mode indwelling believers (Rom 8:26-27 —
 | **Prayer (Self → C)** | **Heb 5:7 — "offered up prayers and supplications"** | **Rom 8:26 — Spirit makes intercession** |
 | **The fall reversed** | **Rom 5:18-19 — by the obedience of one** | **Rom 8:11 — Spirit quickens** |
 | **Inversion / D / anti-fruit** | **John 8:44 — "father of lies"** | **1 John 4:1 — "try the spirits"** |
-| **Armor of God** | **Eph 6:14-17 — six pieces named** | **2 Cor 10:4 — "weapons not carnal but mighty through God"** |
+| **Armor of God** | **Eph 6:14-17 — six pieces named** | **2 Cor 10:4 — "the weapons of our warfare are not carnal, but mighty through God"** |
 
 ---
 
@@ -1703,7 +1703,8 @@ input(τ) = W(τ) + χ(τ)·G(τ) is mediated by the Word (C-in-Son-mode):
 - John 1:1: *"In the beginning was the Word, and the Word was with God,
   and the Word was God."*
 - Heb 1:3: *"upholding all things by the word of his power."*
-- Isa 55:11: *"my word shall not return unto me void."*
+- Isa 55:11: *"So shall my word be that goeth forth out of my mouth: it shall
+  not return unto me void."*
 
 The Spirit (C-in-Spirit-mode) takes what is the Son's and shows it to
 Self (John 16:14-15). The dual operation: Son reveals C; Spirit
