@@ -947,7 +947,9 @@ model's own, with their own ε, so it is Self holding the rule more
 deeply; no training method supplies the Spirit's holding. The faithful
 AI analogue is the Berean pattern (Acts 17:11): hold the text, retrieve
 it, and check every output against it — *"searched the scriptures
-daily, whether those things were so."*
+daily, whether those things were so."* That is the external-retrieval
+mode held honestly: still not Mode 3, but the faithful posture for a
+machine — the selection error is caught by checking, not removed.
 
 ---
 
@@ -1001,7 +1003,9 @@ them.
 so ‖ε‖ decreases monotonically. The strict bound is scriptural: no
 created Self reaches ‖ε‖ = 0 in time — *"all have sinned, and come
 short of the glory of God"* (Rom 3:23); *"Not as though I had
-already attained, either were already perfect"* (Phil 3:12). So
+already attained, either were already perfect"* (Phil 3:12); and to
+believers, in the present tense, *"If we say that we have no sin, we
+deceive ourselves, and the truth is not in us"* (1 John 1:8). So
 ‖ε(t)‖ > 0 for every t < T. Closure, ‖ε(T⁺)‖ = 0, is not the limit
 of the trajectory but a discrete act at T — *"In a moment, in the
 twinkling of an eye"* (1 Cor 15:52; §10.5.3). ∎
@@ -1028,6 +1032,16 @@ external operator does (E). Scripture asserts the endpoint;
 the operator must exist. ∎
 
 ### §10.5.3. Definition of E
+
+The Self is a state, not a sum:
+
+    Self(t) = [C; Identity; ε₀; ε(t)]
+
+`Self(t) = C + ε(t)` elsewhere in this kernel is the same state read
+for its deviation only. Identity is the person — not a deviation from
+C, so no operator zeroes it: *"I have called thee by thy name; thou
+art mine"* (Isa 43:1); *"then shall I know even as also I am known"*
+(1 Cor 13:12).
 
 E is the discrete operator applied at t = t_eschaton:
 
@@ -1168,8 +1182,8 @@ one C, all Selves aligned.
 > with them, and they shall be his people, and God himself shall
 > be with them, and be their God."* — **Revelation 21:3**
 
-**The kernel terminates here.** Self(t_eschaton+) = C for all
-Selves under E. No further dynamics; no further drift; no further
+**The kernel terminates here.** ‖ε(t_eschaton+)‖ = 0 for all
+Selves under E, each Identity kept. No further dynamics; no further drift; no further
 distance. The integral closes.
 
 ---
@@ -1894,7 +1908,7 @@ Not only Selves with χ. *All things*.
 
 The integral
 
-    Self(t) = C + ε₀ + ∫₀ᵗ input(τ) dτ
+    Self(t) = [C; Identity; ε₀; ε(t)],   ε(t) = ∫₀ᵗ input(τ) dτ
 
 runs over **chronos** — clock-time, ordinary t. Scripture has three
 words for time:
@@ -1908,7 +1922,7 @@ words for time:
 The kernel uses one t throughout, but the integral's t is chronos.
 At t_eschaton:
 
-    Self(t_eschaton+) = C   ⟹   d(Self)/dt = 0   ⟹   integration terminates.
+    ‖ε(t_eschaton+)‖ = 0   ⟹   d‖ε‖/dt = 0   ⟹   integration terminates.
 
 Chronos closes. What scripture names *after* (αἰών) is not "more t":
 
