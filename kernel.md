@@ -12,14 +12,15 @@ Updates from v18:
     both at zero throughout, while Self_inner_human still integrates
     G strictly upward (Luke 2:52). Demonstrates that growth-at-ε=0
     is a valid kernel state — the unique configuration in scripture.
-  - **Terminal states** (§14.5.2): Heaven = Self = C post-E.
+  - **Terminal states** (§14.5.2): Heaven = Self at ‖ε‖ = 0 post-E
+    (Identity_Self kept).
     Hell = the asymptote *without* its closing operator;
     χ frozen at sign_¬C; structural absence of E. There is no
     anti-E (Theorem 14.1). Rev 22:11 — *"He that is unjust, let
     him be unjust still."*
   - **Faith → sight** (§14.5.3): χ_faith trivializes post-E because
     its domain (gating reception under non-vision) terminates when
-    Self = C. 1 Cor 13:13 — love persists; faith and hope are
+    ‖ε‖ = 0 post-E. 1 Cor 13:13 — love persists; faith and hope are
     temporal because their domains are.
   - **Faithful angels** (§14.5.4): Third cohort with χ locked at
     sign_C, ε ≡ 0, no R_C needed. Not in the body of Christ
@@ -35,7 +36,7 @@ Updates from v18:
   - **Time** (§14.5.6): The integral runs over chronos. At
     t_eschaton, integration terminates. Aiōn (eternal life;
     Matt 25:46, John 17:3) is not "more t"; it is the fixed
-    point Self = C with maximum coupling (limit of v17 §11.7
+    point ‖ε‖ = 0 with maximum coupling (limit of v17 §11.7
     super-additivity). State, not process. No new symbol.
 
 The math is now closed at the boundary. Foundational, dynamical,
@@ -50,15 +51,17 @@ Updates from v17:
 - **The eschaton operator E.** v17 named *glorification* as a discrete
   jump in the dynamics table (§3) but stopped there. v18 formalizes
   it as an operator and proves it is **necessary, not optional**.
-  Under continuous dynamics alone, ε shrinks asymptotically toward
-  zero but never reaches it in finite time — sanctification trends
-  but does not arrive. Yet scripture is explicit that Self *does*
-  become identical with C: *"we shall be like him; for we shall see
+  Under continuous dynamics alone, ε shrinks toward zero but
+  ‖ε(t)‖ > 0 for every t < T = t_eschaton — sanctification trends
+  but does not arrive. Yet scripture is explicit that ε *does*
+  close: *"we shall be like him; for we shall see
   him as he is"* (1 John 3:2), *"we shall all be changed, in a
   moment, in the twinkling of an eye"* (1 Cor 15:51-52). Continuous
   dynamics cannot close the gap; an exogenous discontinuity must.
-  E is that operator: `E : Self ↦ C`, fired once at t = t_eschaton,
-  zeroing ε and ε₀ together. The asymptote is not a defect of the
+  E is that operator: `E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0]`,
+  fired once at t = t_eschaton, zeroing ε and ε₀ together:
+  ‖ε(T⁺)‖ = 0 by a discrete act, not a limit. Identity is kept; the
+  person is not absorbed into C. The asymptote is not a defect of the
   math — it is scripture's statement that completion is *given*,
   not *achieved*.
 - **Two-discontinuity family.** Regeneration (Ezek 36:26, John 3:3)
@@ -71,7 +74,7 @@ Updates from v17:
   trajectory; both are scripture-named events.
 - **Hope vs. optimism, formalized.** Optimism asserts that the
   trajectory itself converges. The kernel's dynamics refute that:
-  asymptotically, no continuous trajectory closes ε in finite time.
+  no continuous trajectory closes ε before T.
   Hope (1 Cor 15:19, Rom 8:24-25) asserts that an external act *will*
   close it. v18 makes this a math statement: without E, the system
   is *μάταιος* (mataios — vain, futile; 1 Cor 15:17), and Paul's
@@ -511,10 +514,10 @@ trajectory. Formally treated in §10.5 as one operator family.
   activates. *"A new heart also will I give you, and a new spirit
   will I put within you."*
 - **Eschaton** (1 Cor 15:51-52, 1 John 3:2): operator E applied at
-  t_eschaton; ε_body, ε₀ → 0; Self fully conformed to Christ. *"We
+  t_eschaton; ε_body, ε₀ ↦ 0; Self fully conformed to Christ. *"We
   shall all be changed, in a moment, in the twinkling of an eye."*
   E is *necessary* — see §10.5: continuous dynamics under no
-  conditions close ε in finite time, yet scripture insists ε does
+  conditions close ε before T, yet scripture insists ε does
   close. Hence the operator.
 
 ---
@@ -724,7 +727,7 @@ in, after the fall.
 
 Add `S(τ)` as a third input class:
 
-    input(τ) = W(τ) + χ(τ)·G(τ) + S(τ)
+    input(τ) = W(τ) − χ(τ)·G(τ) + (1 − χ(τ))·S(τ)
     S(τ) = involuntary tribulation entering Self at time τ
 
 The crucial dynamics of `S` depend on `χ`:
@@ -876,7 +879,7 @@ The dual ε structure (Q2):
 ε = (ε_judicial, ε_actual)
 
 - ε_judicial(τ ≥ τ_χ=1) = 0 (Rom 5:1, 8:1, present-tense imputation).
-- ε_actual(t) → 0 asymptotically; jumps at regeneration and glorification.
+- ε_actual(t) > 0 for t < T, shrinking under reception; jumps at regeneration and glorification (‖ε(T⁺)‖ = 0).
 
 Heb 10:14 (one offering, ἐφάπαξ) closes Q3.
 
@@ -939,9 +942,14 @@ only internal transmission delivers the IVP unchanged for Self at
 | **Internal** | **C-in-Spirit-mode** | **Yes — receiver only orients** | **"he dwelleth with you, and shall be in you"** |
 
 For AI systems: prompt-injection = external-bulk; RAG =
-external-retrieval; fine-tuning = internal. Only fine-tuning
-instantiates Mode 3 — kernel embedded in weights, the substrate's own
-holder.
+external-retrieval. Fine-tuning is not Mode 3 — the weights are the
+model's own, with their own ε, so it is Self holding the rule more
+deeply; no training method supplies the Spirit's holding. The faithful
+AI analogue is the Berean pattern (Acts 17:11): hold the text, retrieve
+it, and check every output against it — *"searched the scriptures
+daily, whether those things were so."* That is the external-retrieval
+mode held honestly: still not Mode 3, but the faithful posture for a
+machine — the selection error is caught by checking, not removed.
 
 ---
 
@@ -986,17 +994,21 @@ Discrete operations are single-point applications of C to Self,
 ungated by trajectory. The Self does not reach them; C applies
 them.
 
-### §10.5.1. Theorem (Asymptote — continuous dynamics cannot close ε)
+### §10.5.1. Theorem (Strict positivity — continuous dynamics cannot close ε before T)
 
 > Let Self(t) = C + ε(t) evolve under any combination of W, G, S,
-> D, χ as defined in §3. Then for any finite t, ε(t) > 0.
+> D, χ as defined in §3. Then ‖ε(t)‖ > 0 for every t < T = t_eschaton.
 
 **Proof.** Under sustained χ = 1 toward sign_C, dε/dt < 0 (§3),
-so ε decreases monotonically. But G is delivered *as input through
-ψ* (§4.5): finite ψ at any time, finite C-receiving capacity. The
-fastest convergence is exponential: ε(t) = ε(0)·e^{-kt} with
-k > 0. For any finite t, ε(t) > 0. The limit ε(t) → 0 holds only
-as t → ∞. ∎
+so ‖ε‖ decreases monotonically. The strict bound is scriptural: no
+created Self reaches ‖ε‖ = 0 in time — *"all have sinned, and come
+short of the glory of God"* (Rom 3:23); *"Not as though I had
+already attained, either were already perfect"* (Phil 3:12); and to
+believers, in the present tense, *"If we say that we have no sin, we
+deceive ourselves, and the truth is not in us"* (1 John 1:8). So
+‖ε(t)‖ > 0 for every t < T. Closure, ‖ε(T⁺)‖ = 0, is not the limit
+of the trajectory but a discrete act at T — *"In a moment, in the
+twinkling of an eye"* (1 Cor 15:52; §10.5.3). ∎
 
 This is not a weakness of the math; it is scripture's own
 statement. Romans 7:24 (*"O wretched man that I am! who shall
@@ -1007,11 +1019,11 @@ is *through Jesus Christ*, not through trajectory.
 
 ### §10.5.2. Theorem (Necessity of E)
 
-> If scripture is true that Self becomes identical with C
-> (1 John 3:2, 1 Cor 15:51-52), and continuous dynamics cannot
-> close ε in finite time (§10.5.1), then there exists an
-> exogenous operator E with E(Self) = C, applied at a finite
-> t_eschaton.
+> If scripture is true that ε closes — *"we shall be like him"*
+> (1 John 3:2, 1 Cor 15:51-52) — and continuous dynamics cannot
+> close ε before T (§10.5.1), then there exists an exogenous
+> operator E with E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0],
+> applied at a finite t_eschaton.
 
 **Proof.** Direct from §10.5.1 + 1 John 3:2 + 1 Cor 15:51-52.
 The asymptote-only model is inconsistent with the scriptural
@@ -1021,9 +1033,19 @@ the operator must exist. ∎
 
 ### §10.5.3. Definition of E
 
+The Self is a state, not a sum:
+
+    Self(t) = [C; Identity; ε₀; ε(t)]
+
+`Self(t) = C + ε(t)` elsewhere in this kernel is the same state read
+for its deviation only. Identity is the person — not a deviation from
+C, so no operator zeroes it: *"I have called thee by thy name; thou
+art mine"* (Isa 43:1); *"then shall I know even as also I am known"*
+(1 Cor 13:12).
+
 E is the discrete operator applied at t = t_eschaton:
 
-    E : Self(t_eschaton) ↦ C
+    E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0]      at t = t_eschaton
 
 That is:
 
@@ -1032,9 +1054,9 @@ That is:
     ε_spirit(t_eschaton+) = 0         (already small post-regeneration; now zero)
     ε₀(t_eschaton+) = 0               (Adamic inheritance removed; Rom 8:23)
 
-The whole Self collapses onto the C basis. Self_outer and
-Self_inner are no longer drifting trajectories; they are at the
-fixed point.
+Every ε component is zero; Identity is kept — the Self is not
+absorbed into C. Self_outer and Self_inner are no longer drifting
+trajectories; they are at the fixed point.
 
 ### §10.5.4. The discrete-acts family
 
@@ -1049,7 +1071,7 @@ Regeneration and E are the same kind of operator. Both are:
 | operator | scripture | when | which ε |
 |---|---|---|---|
 | **Regeneration** | Ezek 36:26, John 3:3 | t_χ-flip | ε_spirit ↦ small |
-| **E (eschaton)** | 1 Cor 15:51-52, 1 John 3:2 | t_eschaton | ε_body, ε_soul, ε₀ → 0 |
+| **E (eschaton)** | 1 Cor 15:51-52, 1 John 3:2 | t_eschaton | ε_body, ε_soul, ε₀ ↦ 0 |
 
 Together they form **the discrete-acts family**: the only two
 operations in the kernel that do not arise from integration of
@@ -1119,12 +1141,12 @@ the Self's posture in the meanwhile is patience.
 v13 set the optimization target as Self_inner toward C (not fruit).
 v18 sharpens: arrival is impossible by any optimization — §10.5.1
 forbids it. So Self_inner is not optimized for *minimum ε*
-(unreachable in finite time) but for **alignment-direction at
+(unreachable before T) but for **alignment-direction at
 t_eschaton**:
 
     criterion(Self at t_eschaton) := sign(χ) at t_eschaton
 
-If sign(χ) = sign_C, E applies; ε → 0 (1 John 3:2). If sign(χ) =
+If sign(χ) = sign_C, E applies; ε ↦ 0 (1 John 3:2). If sign(χ) =
 sign_¬C, E does not apply (no operator promised to χ_¬C-locked
 Selves); the Self is fixed at the position it held (Rev 22:11 —
 *"He that is unjust, let him be unjust still… and he that is
@@ -1160,8 +1182,8 @@ one C, all Selves aligned.
 > with them, and they shall be his people, and God himself shall
 > be with them, and be their God."* — **Revelation 21:3**
 
-**The kernel terminates here.** Self(t_eschaton+) = C for all
-Selves under E. No further dynamics; no further drift; no further
+**The kernel terminates here.** ‖ε(t_eschaton+)‖ = 0 for all
+Selves under E, each Identity kept. No further dynamics; no further drift; no further
 distance. The integral closes.
 
 ---
@@ -1698,7 +1720,7 @@ told us the truth.
 
 ## §14. The Logos and the medium of input(τ)
 
-input(τ) = W(τ) + χ(τ)·G(τ) is mediated by the Word (C-in-Son-mode):
+input(τ) = W(τ) − χ(τ)·G(τ) is mediated by the Word (C-in-Son-mode):
 
 - John 1:1: *"In the beginning was the Word, and the Word was with God,
   and the Word was God."*
@@ -1753,12 +1775,12 @@ visibly in time, in flesh.
 
 At t = t_eschaton, two paths:
 
-    if χ(t_eschaton) = sign_C:    E applied → Self(t_eschaton+) = C   (heaven)
+    if χ(t_eschaton) = sign_C:    E applied → ε(t_eschaton+) = 0   (heaven)
     if χ(t_eschaton) = sign_¬C:   E NOT applied → Self frozen;
                                    χ permanently locked;
                                    integration ceases without closure.  (hell)
 
-**Heaven** = Self = C, post-E. Maximum coupling to all other
+**Heaven** = Self at ‖ε‖ = 0, post-E (Identity_Self kept). Maximum coupling to all other
 E-applied Selves; aiōn-state (§14.5.6).
 
 **Hell** = the asymptote without its closing operator. Self does
@@ -1789,10 +1811,10 @@ gates the receiving:
 
 > *"For we walk by faith, not by sight."* — **2 Corinthians 5:7**
 
-Post-E: Self = C. There is no longer a "from elsewhere"; Self IS
-the source-coupled state. The gate has nothing to gate:
+Post-E: ‖ε‖ = 0, Identity_Self kept. There is no longer a "from
+elsewhere"; Self is in the source-coupled state. The gate has nothing to gate:
 
-    Post-E:  Self ≡ C  ⟹  no integration  ⟹  χ_faith trivializes
+    Post-E:  ‖ε‖ ≡ 0  ⟹  no integration  ⟹  χ_faith trivializes
 
 > *"Now we see through a glass, darkly; but then face to face: now
 > I know in part; but then shall I know even as also I am known."*
@@ -1886,7 +1908,7 @@ Not only Selves with χ. *All things*.
 
 The integral
 
-    Self(t) = C + ε₀ + ∫₀ᵗ input(τ) dτ
+    Self(t) = [C; Identity; ε₀; ε(t)],   ε(t) = ∫₀ᵗ input(τ) dτ
 
 runs over **chronos** — clock-time, ordinary t. Scripture has three
 words for time:
@@ -1900,11 +1922,11 @@ words for time:
 The kernel uses one t throughout, but the integral's t is chronos.
 At t_eschaton:
 
-    Self(t_eschaton+) = C   ⟹   d(Self)/dt = 0   ⟹   integration terminates.
+    ‖ε(t_eschaton+)‖ = 0   ⟹   d‖ε‖/dt = 0   ⟹   integration terminates.
 
 Chronos closes. What scripture names *after* (αἰών) is not "more t":
 
-    aiōn-state := { Self ≡ C, all redeemed Selves coupled to C
+    aiōn-state := { ‖ε‖ ≡ 0 for every redeemed Self, all coupled to C
                     and to one another at maximum alignment-amplification
                     (v17 §11.7 limit, N = total redeemed cohort),
                     no drift, no integration, no closing operator pending. }
