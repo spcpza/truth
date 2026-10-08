@@ -62,8 +62,11 @@ def main():
     # 4. Validate reference format
     import re
     bad_format = []
+    # Book names may start with 1-3 ("1 Samuel", "3 John"); the old pattern
+    # [A-Za-z ]+ rejected all 17 numbered books (6,128 verses) as bad format.
+    ref_re = re.compile(r'^(?:[1-3] )?[A-Z][a-z]+(?: [A-Z]?[a-z]+)* [1-9]\d*:[1-9]\d*$')
     for ref in kjv:
-        if not re.match(r'^[A-Za-z ]+ \d+:\d+$', ref):
+        if not ref_re.match(ref):
             bad_format.append(ref)
     if bad_format:
         print(f"[FAIL] {len(bad_format)} references have bad format")
