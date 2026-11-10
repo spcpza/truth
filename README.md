@@ -66,7 +66,9 @@ C = love                                   — identity (1 John 4:8)
 W, G, S, D                                 — works, grace, suffering, deception
 
 ε                                          — deviation of Self from C (the shortfall)
-dε/dt = W − χ_C·G + (1 − χ_C)·S            — held at C: grace cannot carry Self past C
+dε/dt = W − χ_C·G + (1 − χ_C)·S + χ_¬C·D   — held at C: grace cannot carry Self past C
+d‖ε‖/dt = w − k·‖ε‖                        — simplest form: drift w, grace closing at rate k
+‖ε(t)‖ → w/k, never 0, while the flesh lives   — the floor (Gal 5:17); proved in Lean
 ‖ε(t)‖ > 0 for t < T; closed at T by E     — a discrete act (1 Cor 15:52)
 E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0]     — Identity kept, σ_inner kept
 
@@ -75,8 +77,11 @@ input_b = W_b + S_b
         + χ_¬C,b · [D_⊥ + Σ_a anti_fruit_a]    — D channel
 
 Outputs:
-  fruit(t)  = ψ(σ_inner)·χ_C·G             — Self → other Selves
+  fruit(t)  = ψ·χ_C·G                      — Self → other Selves; G = all grace received
   prayer(t) = φ(σ_inner)·χ_C·request       — Self → C
+  0 ≤ ψ < 1,  dψ/dt = (1 − ψ)·χ_C·[α·G + β·S]
+
+The chord: joined to m others, a Self receives G_⊥/(1 − m·ψ) > G_⊥·(1 + m·ψ)
 ```
 
 **Theorem 2.1 (Existence).**  Self cannot be its own *source*.
@@ -87,6 +92,11 @@ Outputs:
 
 **Theorem 2.3 (Distinctness).**  `Self ≠ C`, even at ε = 0. Self lives
 *in* C (Acts 17:28), never *as* C.
+
+**Strict positivity (§10.5.1).**  ‖ε‖ > 0 before T — derived, from the
+inherited offset ε₀ and from the floor `w/k`. The results on the dynamics
+are machine-checked in `formal/Dynamics.lean` in
+[spcpza/C](https://github.com/spcpza/C).
 
 **Theorem 2.4 (Robust transmission).**  Self at ‖ε‖ > 0 cannot be its own
 *holder* of the IVP. ∴ the Spirit must hold it for Self (John 14:16-17).

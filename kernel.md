@@ -9,6 +9,25 @@ Self, ε and the two accumulators are defined once (§1, §4); statements
 taken from scripture are labelled as taken from scripture, not as
 derivations; and every quotation is the King James text exactly.
 
+Second revision (November 2026) — the dynamics were solved and tested,
+and the results proved in Lean (`formal/Dynamics.lean` in spcpza/C):
+
+- **Strict positivity is now derived, not only taken.** It follows from
+  two things the kernel already holds: ε₀ is removed only by E, and the
+  flesh keeps a drift going (Gal 5:17). Under the simplest law the
+  shortfall settles at a floor, not at zero (§1, §10.5.1).
+- **E is one act.** The floor is zero only when the drift is zero, and
+  the drift lives in the mortal body. So closing ε and changing the
+  body are the same act (§10.5.3; Rom 7:24, Rom 8:23).
+- **Adam, Christ, the believer and the glorified are one equation**
+  with different drift. Christ's ε ≡ 0 follows from *"The Son can do
+  nothing of himself"* (John 5:19) (§14.5.1).
+- **The chord is derived.** Fruit passes on all grace a Self receives,
+  so grace circulates through the joints of the body and the total is
+  more than the sum (§11.1, §11.7).
+- **Two gaps closed.** Deception now appears in the ε-law. ψ is one
+  thing, a state with one law, bounded below 1 (§4.5, §4.6).
+
 Updates from v18:
 
 - **Boundary cases — six derivations.** v1–v18 mapped the load-bearing
@@ -330,13 +349,14 @@ Each symbol has one meaning throughout.
 | `t_fall`, `t_conversion`, `t_death`, `t_eschaton` | named moments. `T := t_eschaton`. `t_fix := min(t_death, t_eschaton)` | Heb 9:27 |
 | `W`, `G`, `S`, `D` | input rates: works (self-sourced), grace (from C), suffering (involuntary), deception (from fallen Selves). `G_⊥`, `D_⊥` arrive directly, not through another Self | Rom 11:6; Rom 5:3; John 8:44 |
 | `χ` | the volitional gate: (open or shut) × (toward `sign_C` or `sign_¬C`). `χ_C = 1` when open toward C, else 0; `χ_¬C = 1` when open away from C, else 0. A bare `χ` in an equation is `χ_C`. "χ = 1 toward sign_C" and "χ → sign_C" both say `χ_C = 1`. `χ_faith` is `χ_C` before sight | Phil 2:13; 2 Cor 5:7 |
-| `ε` | the deviation of Self from C — a vector `(ε_body, ε_soul, ε_spirit)`. Law: `dε/dt = W − χ_C·G + (1 − χ_C)·S`, held at C | Rom 3:23 |
+| `ε` | the deviation of Self from C — a vector `(ε_body, ε_soul, ε_spirit)`. Law: `dε/dt = W − χ_C·G + (1 − χ_C)·S + χ_¬C·D`, held at C | Rom 3:23 |
+| `w`, `k` | in the simplest form of that law: `w ≥ 0` is the self-sourced drift, `k > 0` the rate at which received grace closes distance. `w/k` is the floor | Gal 5:17 |
 | `‖ε‖` | its size. "ε = 0", "ε > 0", "ε ≡ 0" abbreviate statements about ‖ε‖ | — |
 | `ε₀` | the inherited offset. The shortfall is ‖ε + ε₀‖ | Rom 5:12 |
 | `σ_outer` | `∫₀ᵗ W dτ` — the outward man: what Self has laid down of itself | 2 Cor 4:16 |
 | `σ_inner` | `∫₀ᵗ χ_C·G dτ` — the inward man: what Self has received. Not a deviation; E keeps it | 2 Cor 4:16; Eph 3:16 |
 | `σ_dark` | the accumulated depth of a Self turned away (§13.6.4) | — |
-| `ψ`, `φ` | channel widths, both growing with `σ_inner`: `ψ` for fruit (Self → Selves), `φ` for prayer (Self → C). Lower-case `φ` is not `Φ` | John 15:5; James 5:16 |
+| `ψ`, `φ` | channel widths, both growing with `σ_inner`: `ψ` for fruit (Self → Selves), `φ` for prayer (Self → C). `ψ` is the share of grace received that is passed on, `0 ≤ ψ < 1`. Lower-case `φ` is not `Φ` | John 15:5; John 3:27; James 5:16 |
 | `Φ` | the Spirit's breath: `ε_soul = Φ(ε_body, ε_spirit)` | Gen 2:7 |
 | `g_a` | the gift-projection of Self *a* | 1 Cor 12:11 |
 | `R_C` | the rectification operator | Rev 13:8 |
@@ -379,9 +399,40 @@ the metric C induces. ‖ε(t) + ε₀‖ is its size, the shortfall. Where
 only the deviation matters the kernel writes `[C; Identity; ε₀; ε(t)]`
 or, shorter, "Self − C"; these are the same state read for its
 deviation. W moves ε away from C; received G moves it toward C and
-stops there — reception cannot carry Self past C:
+stops there — reception cannot carry Self past C. Suffering not
+received under the gate (§4.6) and deception taken in (§13.6.3) also
+move it away:
 
-    dε/dt = W(t) − χ_C(t)·G(t)      held at C by projection
+    dε/dt = W − χ_C·G + (1 − χ_C)·S + χ_¬C·D      held at C by projection
+
+**The size of ε, in its simplest form.** "Held at C" means the pull of
+grace vanishes at C. The simplest law that does so pulls in proportion
+to the distance left. Write `w ≥ 0` for the self-sourced drift (the
+size of W along ε) and `k > 0` for the rate at which received grace
+closes distance. Under χ_C = 1:
+
+    d‖ε‖/dt = w − k·‖ε‖
+    ‖ε(t)‖  = w/k + (‖ε(0)‖ − w/k)·e^(−kt)
+
+This is a model — the simplest one that fits. The kernel does not
+claim the proportional law is the only one. Three things follow from
+it, each proved in Lean (`formal/Dynamics.lean` in spcpza/C):
+
+1. **No arrival in time.** From any shortfall, ‖ε(t)‖ > 0 at every t
+   (`eps_pos`). Grace closes distance; the trajectory does not arrive.
+2. **A floor, not zero.** While `w > 0` the shortfall settles at
+   `w/k` (`eps_floor`). And the flesh keeps `w > 0`: *"the flesh
+   lusteth against the Spirit, and the Spirit against the flesh…
+   so that ye cannot do the things that ye would"* (Gal 5:17);
+   *"with the mind I myself serve the law of God; but with the flesh
+   the law of sin"* (Rom 7:25).
+3. **Zero drift, zero deviation.** With `w = 0` and a sinless start,
+   ε stays at zero for ever (`eps_zero`). This is Adam before the
+   fall (§13.5), Christ always (§14.5.1), and the glorified (§10.5.3).
+
+The floor itself comes down as the drift is put to death — *"if ye
+through the Spirit do mortify the deeds of the body, ye shall live"*
+(Rom 8:13) — but not to zero before T (1 John 1:8).
 
 ε and σ_inner are two state variables under two laws, not one
 integral split in two. ε is position; σ_inner counts what has been
@@ -389,7 +440,8 @@ received, whether or not there was distance left to close. That is
 why σ_inner can be renewed without bound while ‖ε‖ shrinks (§4),
 and why Christ receives at ε = 0 (§14.5.1).
 
-Sanctification: `d‖ε‖/dt < 0` under `χ = 1 toward sign_C`.
+Sanctification: under `χ = 1 toward sign_C`, ‖ε‖ falls toward its
+floor, and the floor falls with the drift.
 
 C is three Persons — Father (source), Son (direction), Spirit
 (metric/holder) — the basis of the Self-space, not summands (§2.2). Self ≠ C in either direction (Acts 17:28; Gen 3 ↔
@@ -603,7 +655,7 @@ commandments. Everything else in the math is implementation detail.
 | Condition | d‖ε‖/dt |
 |---|---|
 | Under W alone (χ=0, all dust, no breath) | > 0 (drift up; Rom 11:6) |
-| Under sustained χ=1 toward sign_C | < 0 (sanctification; Eph 2:8) |
+| Under sustained χ=1 toward sign_C | < 0 while above the floor `w/k`; settles there (sanctification; Eph 2:8; §1) |
 | Under sustained χ=1 toward sign_¬C | drift up vs C (Judg 2:11) |
 
 The table reads the size ‖ε‖ = ‖Self − C‖, computed in the metric
@@ -700,9 +752,16 @@ Define:
 
     fruit(t) := ψ(σ_inner(t)) · χ_C(t) · G(t)
 
-where ψ is the **channel function**: efficiency with which received
-grace flows through Self to others. ψ is monotone-increasing in
-σ_inner (depth of abiding widens the channel).
+where ψ is the **channel width**: the share of grace received that
+flows on through Self to others. `G(t)` here is all the grace Self is
+receiving at t — directly from C and through other Selves (§11.1).
+
+ψ is a state of the Self with one law (§4.6). It grows whenever grace
+is received, so it grows with σ_inner: depth of abiding widens the
+channel. And `0 ≤ ψ < 1`: a channel passes on no more than it
+receives. *"A man can receive nothing, except it be given him from
+heaven"* (John 3:27); *"what hast thou that thou didst not
+receive?"* (1 Cor 4:7).
 
 This is not a new axiom. It is a derived equation built from kernel
 terms already present (`σ_inner`, `χ`, `G`).
@@ -847,8 +906,9 @@ in, after the fall.
 Add `S` as a third input class. In the ε-law of §1 (the sign is
 the effect on ε: plus moves away from C, minus toward):
 
-    dε/dt = input(t) = W(t) − χ_C(t)·G(t) + (1 − χ_C(t))·S(t)
+    dε/dt = input(t) = W(t) − χ_C(t)·G(t) + (1 − χ_C(t))·S(t) + χ_¬C(t)·D(t)
     S(t) = involuntary tribulation entering Self at time t
+    D(t) = deception taken in (§13.6.3)
 
 The crucial dynamics of `S` depend on `χ`:
 
@@ -861,11 +921,13 @@ So the same suffering, at the same magnitude, has *opposite* effects
 depending on whether Self receives it under the gate. The v14
 dynamics:
 
-    dψ/dt = α(σ_inner)  +  β · S(t) · χ_C(t)
-                           └─ suffering catalyst, only when oriented ─┘
+    dψ/dt = (1 − ψ) · χ_C(t) · [ α·G(t)  +  β·S(t) ]
+                                 └ abiding ┘  └ suffering, only when oriented ┘
 
-Where `α` is ordinary channel growth from sustained abiding and `β`
-is the suffering-coefficient (positive scalar).
+`α` is ordinary channel growth from grace received and `β` is the
+suffering-coefficient (both positive). The factor `(1 − ψ)` keeps ψ
+below 1 (§4.5). This is the one law of ψ; "ψ grows with σ_inner" is
+its first term, read over time.
 
 **Scripture is dense on this dynamic:**
 
@@ -1138,22 +1200,38 @@ Discrete operations are single-point applications of C to Self,
 ungated by trajectory. The Self does not reach them; C applies
 them.
 
-### §10.5.1. Strict positivity — ε does not close before T (taken from scripture)
+### §10.5.1. Theorem (Strict positivity — ε does not close before T)
 
-> Let Self(t) = C + ε(t) evolve under any combination of W, G, S,
-> D, χ as defined in §3. Then ‖ε(t)‖ > 0 for every t < T = t_eschaton.
+> For every created Self descended from Adam, under any combination
+> of W, G, S, D, χ: ‖ε(t) + ε₀‖ > 0 for every t < T = t_eschaton.
 
-**Ground.** Under sustained χ = 1 toward sign_C, d‖ε‖/dt < 0 (§3),
-so ‖ε‖ decreases monotonically. That alone would not forbid arrival;
-the dynamics do not prove the bound. The strict bound is taken from
-scripture and adopted: no created Self reaches ‖ε‖ = 0 in time — *"all have sinned, and come
-short of the glory of God"* (Rom 3:23); *"Not as though I had
-already attained, either were already perfect"* (Phil 3:12); and to
-believers, in the present tense, *"If we say that we have no sin, we
-deceive ourselves, and the truth is not in us"* (1 John 1:8). So
-‖ε(t)‖ > 0 for every t < T. Closure, ‖ε(T⁺)‖ = 0, is not the limit
-of the trajectory but a discrete act at T — *"In a moment, in the
-twinkling of an eye"* (1 Cor 15:52; §10.5.3). ∎
+**Proof.** Two grounds, each enough alone.
+
+*(i) The inherited offset.* ε₀ ≠ 0 for every Self in Adam (§13.5;
+Rom 5:12), and no continuous operation removes it — only E does
+(§10.5.3; Rom 8:23). Continuous reception acts on what Self has
+integrated, not on what Self inherited. So the shortfall cannot be
+zero while ε₀ stands.
+
+*(ii) The floor.* Set ε₀ aside. Under the simplest law of §1,
+`d‖ε‖/dt = w − k·‖ε‖`, the shortfall from any positive start is
+positive at every time, and while `w > 0` it settles at `w/k > 0`
+(Lean: `eps_pos`, `eps_floor`). The flesh keeps `w > 0` as long as
+the mortal body lives (Gal 5:17; Rom 7:23 — *"another law in my
+members"*). A law with a constant pull would reach zero in finite
+time; that law is not "held at C", and scripture excludes it. ∎
+
+Scripture states the conclusion directly, of all — *"all have sinned,
+and come short of the glory of God"* (Rom 3:23) — and of believers,
+in the present tense: *"Not as though I had already attained, either
+were already perfect"* (Phil 3:12); *"If we say that we have no sin,
+we deceive ourselves, and the truth is not in us"* (1 John 1:8). The
+math and the text agree. Closure, ‖ε(T⁺)‖ = 0, is not the limit of
+the trajectory but a discrete act at T — *"In a moment, in the
+twinkling of an eye"* (1 Cor 15:52; §10.5.3).
+
+What premise (ii) rests on is the proportional law, a model. Ground
+(i) rests on nothing but the kernel's own ε₀.
 
 This is not a weakness of the math; it is scripture's own
 statement. Romans 7:24 (*"O wretched man that I am! who shall
@@ -1205,7 +1283,17 @@ put on incorruption, and this mortal must put on immortality"*
 (1 Cor 15:53); *"Who shall change our vile body, that it may be
 fashioned like unto his glorious body"* (Phil 3:21). So E does two
 things — it zeroes the deviation, and it raises the body in glory.
-There is no more drift; Self is at the fixed point.
+
+**The two are one act.** By §1 the floor `w/k` is zero only when the
+drift `w` is zero, and the drift lives in the mortal body: *"who
+shall deliver me from the body of this death?"* (Rom 7:24); *"waiting
+for the adoption, to wit, the redemption of our body"* (Rom 8:23);
+*"flesh and blood cannot inherit the kingdom of God"* (1 Cor 15:50).
+The shortfall cannot close while its source remains. So the same act
+that closes ε changes the body. The body is not thrown away as evil:
+it is changed and raised (1 Cor 15:53), and the drift ends with the
+corruption. After E, `w = 0`: there is no more drift, and Self is at
+the fixed point (§1, result 3).
 
 ### §10.5.4. The discrete-acts family
 
@@ -1374,10 +1462,38 @@ This lists what reaches Self *b*, by channel. Its effect on ε carries
 the signs of §4.6: W and ungated S move ε away from C; received G
 moves it toward C.
 
-Here `fruit_a(t) = ψ(σ_inner,a)·χ_C,a(t)·G_⊥(t)` (§4.5). Both
-channels deliver **the same G** ultimately sourced in C — vertical
+Here fruit is the share of **all** the grace a Self receives that it
+passes on (§4.5):
+
+    fruit_a(t) = ψ_a · χ_C,a(t) · [ G_⊥(t) + Σ_{c∈cohort(a)} fruit_c(t) ]
+
+Both channels deliver **the same G** ultimately sourced in C — vertical
 directly, horizontal mediated by another Self abiding in C. There is
 no second G; there is one C, and many channels.
+
+**Solved.** Because what a Self passes on includes what it was passed,
+grace circulates. Take a cohort where each Self is joined to *m*
+others, all with the same ψ, all with χ_C = 1. Then
+
+    fruit       = ψ·G_⊥ / (1 − m·ψ)
+    received_b  = G_⊥ / (1 − m·ψ)            for  m·ψ < 1
+
+A Self alone receives G_⊥. Joined to *m* others it receives
+G_⊥/(1 − mψ), which is more than G_⊥·(1 + mψ) — more than the sum of
+what each would give alone (Lean: `chord_gt_sum`). Nothing is created
+by the Selves: every part of it is the same G from C, passing through
+more than one hand. *"That the abundant grace might through the
+thanksgiving of many redound to the glory of God"* (2 Cor 4:15).
+
+The condition `m·ψ < 1` is the regime where the linear law holds;
+beyond it, what is received is still held at C — no Self receives
+more than C gives. The *m* is the number of joints, not the size of
+the whole body: the body is nourished *"by joints and bands"* (Col
+2:19), *"by that which every joint supplieth"* (Eph 4:16).
+
+This depends on love not being used up in the giving (T₄). If fruit
+were divided among the receivers instead, the factor would be
+1/(1 − ψ), the same for every size of cohort — no chord.
 
 ### §11.2. The body of Christ — high-coupling topology
 
@@ -1503,13 +1619,16 @@ operator, not just prayer. When *n* aligned Selves do the same
 thing toward sign_C, Christ's special presence enters the
 operation, and the operator scales accordingly.
 
-**Why it scales.** The single Self channel has width ψ
-(σ_inner). The aligned cohort effectively widens ψ via shared
-indwelling: same Spirit holding, many channels resolving the same
-content. The chord is a single resonance with multiple voicings,
-not a sum of independent oscillations.
+**Why it scales.** This is now derived, not asserted (§11.1). Each
+Self passes on a share ψ of all it receives, including what it was
+passed, so grace circulates through the joints. A Self joined to *m*
+others receives G_⊥/(1 − mψ): strictly more than the sum
+G_⊥·(1 + mψ), and growing faster than *m*. The chord is one grace
+passing through many hands, not many graces added.
 
-**The negative twin.** Alignment amplification works in either χ
+**The negative twin.** The same algebra holds for D with ψ(σ_dark):
+deception passed on among Selves joined at sign_¬C circulates and
+compounds in the same way. Alignment amplification works in either χ
 direction. When *n* Selves align toward sign_¬C on the same
 operator, the inverted operator also scales super-linearly:
 
@@ -1597,7 +1716,8 @@ v13 had `ε₀` as inherited offset for every human after Adam, but
 left the originating event unmodelled. v14 names it.
 
 **Pre-fall state (Gen 1-2).** Adam at *t* = 0 of human history:
-ε(0) = 0, ε₀ = 0, σ_inner = 0 (just-created), χ = 1 toward
+ε(0) = 0, ε₀ = 0, σ_inner = 0 (just-created), no self-sourced
+drift (`w = 0`; §1, result 3), χ = 1 toward
 sign_C by default — perfect alignment, in walking fellowship with God
 (implied by Gen 3:8: the LORD's walking in the garden in the cool of
 the day is presented as familiar; the verse itself records the first
@@ -1733,6 +1853,12 @@ D has no ground. D exists only because:
 
 If either condition fails, D fails. Evil is *contingent* on
 sustained misalignment, not foundational.
+
+In the ε-law (§1) D enters as `+ χ_¬C·D`: taken in, it moves Self
+away from C. A Self turned toward C does not drink from D
+(χ_¬C = 0) — but where its discernment fails, some D is taken for G
+and enters anyway (§13.6.8). That leak grows with ‖ε‖ (Constraint
+9.2), which is what the armor is for.
 
 > *"Ye are of your father the devil… When he speaketh a lie, he
 > speaketh of his own: for he is a liar, and the father of it."*
@@ -1944,6 +2070,14 @@ The unique configuration: ε = 0 on every dimension, every time. Yet:
 
 > *"And Jesus increased in wisdom and stature, and in favour with God
 > and man."* — **Luke 2:52**
+
+**ε ≡ 0, derived.** By §1 (result 3), a sinless start with no
+self-sourced drift stays at zero for ever. Christ's start is sinless
+(ε₀ = 0, below), and his drift is zero by his own word: *"The Son
+can do nothing of himself, but what he seeth the Father do"* (John
+5:19); *"I can of mine own self do nothing"* (John 5:30); *"I do
+nothing of myself"* (John 8:28). `W = 0` throughout. So ε ≡ 0 is not
+a separate rule for him; it is the same equation with `w = 0`.
 
 **Math claim.** σ_inner can integrate G even at ε = 0. Most Selves
 never witness this configuration because ε > 0 dominates their
