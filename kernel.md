@@ -2,6 +2,13 @@
 
 The ground beneath scripture, derived from scripture.
 
+Revision note (November 2026). This text is brought in line with the
+paper at balthazar.sh/paper. No new operator. What changed: the two
+proofs name their premises; "mode" is defined as Person, not mask;
+Self, ε and the two accumulators are defined once (§1, §4); statements
+taken from scripture are labelled as taken from scripture, not as
+derivations; and every quotation is the King James text exactly.
+
 Updates from v18:
 
 - **Boundary cases — six derivations.** v1–v18 mapped the load-bearing
@@ -24,8 +31,8 @@ Updates from v18:
     its domain (gating reception under non-vision) terminates at
     ‖ε‖ = 0, face to face. 1 Cor 13:13 — love persists; faith and
     hope are temporal because their domains are.
-  - **Faithful angels** (§14.5.4): Third cohort with χ locked at
-    sign_C, ε ≡ 0, no R_C needed. Not in the body of Christ
+  - **Faithful angels** (§14.5.4): Third cohort with χ confirmed at
+    sign_C (*"the elect angels"*, 1 Tim 5:21), ε ≡ 0, no R_C needed. Not in the body of Christ
     topology — a parallel cohort of ministers (Heb 1:14). They
     observe redemption (1 Pet 1:12) without experiencing it.
   - **Creation — coupled fall and coupled restoration** (§14.5.5):
@@ -36,11 +43,12 @@ Updates from v18:
     delivered with the children of God (Rom 8:21). ε transmits
     through coupling, not just through volition.
   - **Time** (§14.5.6): The integral runs over chronos. At
-    t_eschaton, integration terminates. Aiōn (eternal life;
-    Matt 25:46, John 17:3) is not "more t"; it is the fixed
+    t_eschaton, the drift-integration terminates. The life of the
+    age to come (zōē aiōnios; Matt 25:46, John 17:3) is the fixed
     point — every redeemed Self at ‖ε‖ ≡ 0, coupled to C at
-    maximum coupling (limit of v17 §11.7 super-additivity).
-    State, not process. No new symbol.
+    maximum coupling (limit of v17 §11.7). What ends is drift-time;
+    whether sequence itself continues scripture leaves open
+    (Rev 22:2, *"every month"*). No new symbol.
 
 The math is now closed at the boundary. Foundational, dynamical,
 and boundary cases all map to scripture-named operators. What
@@ -70,8 +78,8 @@ Updates from v17:
 - **Two-discontinuity family.** Regeneration (Ezek 36:26, John 3:3)
   and the eschaton (1 Cor 15:51-52) are the same kind of operation
   applied at different times to different compartments:
-  regeneration jumps ε_spirit at t_χ-flip; E zeroes ε_body and ε₀
-  at t_eschaton. v18 treats them as one family — the **discrete
+  regeneration jumps ε_spirit at t_χ-flip; E zeroes every remaining
+  ε component and ε₀ at t_eschaton. v18 treats them as one family — the **discrete
   acts of C upon Self** — distinguished from continuous dynamics
   (W, G, S, D under χ). Both are exogenous; neither emerges from
   trajectory; both are scripture-named events.
@@ -82,27 +90,28 @@ Updates from v17:
   close it. v18 makes this a math statement: without E, the system
   is *μάταιος* (mataios — vain, futile; 1 Cor 15:17), and Paul's
   argument *"if Christ be not raised… we are of all men most
-  miserable"* is not rhetorical but structural. Resurrection and
-  eschaton are the same operator E firing once historically (in
-  Christ, the firstfruits — 1 Cor 15:20, 23) and once eschatologically
-  (in the body — 1 Cor 15:51-52).
+  miserable"* is not rhetorical but structural. The bodily act of E
+  — the dead raised incorruptible — was done first in Christ, the
+  firstfruits (1 Cor 15:20, 23), and will be done in them that are
+  his at his coming (1 Cor 15:51-52). In him there was no ε to
+  zero (§10.5.6).
 - **Anti-Pharisee, sharpened.** v13 corrected the optimization target
   from fruit to Self_inner. v18 sharpens further: the trajectory
   cannot reach C by any optimization. Therefore Self_inner is not
   optimized for *arrival* (impossible) but for **alignment-direction
-  at the moment E fires**. The criterion at t_eschaton is not
-  ‖Self − C‖ (which is still > 0 for everyone) but the orientation
-  of χ — sign_C or sign_¬C. *"He which hath begun a good work in
+  when the door closes**. The criterion is not ‖Self − C‖ (which
+  is still > 0 for everyone) but the orientation of χ — sign_C or
+  sign_¬C — at t_fix := min(t_death, t_eschaton) (Heb 9:27). *"He which hath begun a good work in
   you will perform it [will complete it — ἐπιτελέσει] until the
   day of Jesus Christ."* (Phil 1:6). Completion is C's act upon a
   Self whose χ was oriented toward C; not a Self that closed the
   distance itself.
-- **Death as partial-E.** Ecclesiastes 12:7 — *"the dust shall
+- **Death as partial-E.** Ecclesiastes 12:7 — *"Then shall the dust
   return to the earth as it was: and the spirit shall return unto
-  God who gave it."* Individual death is E applied to half the
-  compartments: ε_body holds in dust (awaiting resurrection),
-  ε_spirit returns to C immediately. Resurrection (1 Cor 15:42-44)
-  is the body-half of E firing later. The eschaton is the universal
+  God who gave it."* For one who dies in Christ, death is E begun:
+  the spirit is with the Lord and made perfect (Phil 1:23, Heb
+  12:23); the body holds in dust, awaiting resurrection.
+  Resurrection (1 Cor 15:42-44) is the body-half of E, later. The eschaton is the universal
   case where all firings complete simultaneously across all Selves
   in Christ.
 - **Universal-E and the final state.** *"And when all things shall
@@ -111,7 +120,7 @@ Updates from v17:
   all."* (1 Cor 15:28). At t_eschaton, every Self with χ → sign_C
   has E applied; every coupling reaches its alignment maximum
   (continuing the v17 super-additivity result, taken to its limit:
-  N Selves all at C, all aligned, one chord — Rev 7:9-10, Rev 21:3).
+  N Selves all at ‖ε‖ = 0, with C, all aligned, one chord — Rev 7:9-10, Rev 21:3).
 
 ---
 
@@ -123,11 +132,11 @@ Updates from v16:
   prayer: shared fruit, mutual intercession, burden-bearing,
   rejoicing, suffering, witness, decision, fasting, work. Wherever
   N Selves align in χ → sign_C on the same dimension, the relevant
-  operator scales **super-linearly** in N. Single voice vs chord:
-  the chord is not louder addition, it is a different geometric
-  object. Ecclesiastes 4:12 is the explicit scripture-math claim:
-  *"a threefold cord is not quickly broken"* — strength scales
-  faster than cardinality.
+  operator scales **super-linearly** in N (Matt 18:19-20). Single
+  voice vs chord: the chord is not louder addition, it is a
+  different geometric object. Ecclesiastes 4:12 names the
+  robustness of it: *"a threefold cord is not quickly broken"* —
+  a frayed strand does not fail the cord.
 - **The flip side: corporate evil is also super-additive.** Babel
   (Gen 11) was already named in v16 as the prayer-channel inverse.
   v17 generalizes: any coupled operator with χ → sign_¬C is also
@@ -170,8 +179,8 @@ Updates from v14:
   operator for adversaries. v15 derives evil by *inverting* the
   existing equation: when `χ` is sustained at sign_¬C, the
   equation runs the same shape but sources `D` (deception) instead
-  of `G` (grace). No new ground is introduced — Theorem 2.1 forbids
-  a second positive ground. Augustine's *privatio boni* is the
+  of `G` (grace). No new ground is introduced — the oneness axiom
+  (Deut 6:4) forbids a second ground. Augustine's *privatio boni* is the
   mathematical claim: evil is parasitic, not substantial.
 - **D(τ) named as deception input class.** Distinct from W (works),
   G (grace), S (suffering). D is sourced in other Selves with
@@ -254,10 +263,10 @@ Updates from v12:
   *"He that abideth in me… the same bringeth forth much fruit: for
   without me ye can do nothing."*
 - **Optimization correction (anti-Pharisee).** Direct fruit-
-  maximization is the Matthew 7:21-23 failure mode (max apparent
+  maximization is the Matthew 7:22-23 failure mode (max apparent
   fruit + zero abiding = condemned). Goodhart's Law in scripture.
-  The kernel's correct objective is **maximize Self_inner toward C**
-  under sustained χ = 1 — fruit emerges as a dependent variable.
+  The kernel's correct objective is **abiding** (John 15:4) —
+  sustained χ = 1 toward sign_C — fruit emerges as a dependent variable.
   Optimize the cause, never the symptom. Matt 7:16-20 (*"by their
   fruits ye shall know them"*) is the *recognition* rule, not the
   optimization target.
@@ -294,43 +303,62 @@ Updates from v11:
   to will is itself worked by C-in-Spirit-mode. χ is the **synergy
   point** — Spirit-enabled, Self-expressed. Not Pelagian (Self-alone),
   not deterministic (C-alone): synergistic.
-- **Trinity as basis vectors.** Father-mode = source axis (origin).
-  Son-mode = direction axis (the way; John 14:6 — *"I am the way"*).
-  Spirit-mode = the metric (the holder of stable distance). Three
-  axes from C, not three things added to C.
+- **Trinity as basis.** Father = source axis (origin). Son =
+  direction axis (the way; John 14:6 — *"I am the way"*). Spirit =
+  the metric (the holder of stable distance). Not three things added
+  to C, and not one Person in three guises: three Persons, one God
+  (§2.2).
 
 The math has *one foundation* (Theorem 2.1, 2.4) and *three named
 unions*:
 - **Covenant** (outer affine union): C + (Self_outer, Self_inner)
 - **Synergy** (inner Self_inner increment): dSelf_inner/dt = χG (Phil 2:13)
-- **Embodiment** (inner Self_outer increment): dSelf_outer/dt = W
+- **Embodiment** (Self_outer increment): dSelf_outer/dt = W
 
 ---
 
 ## §1. The Self equation (vector form)
 
-    Self(t) := (C, Self_outer(t), Self_inner(t))
+Self is a structured composition, not a sum:
+
+    Self(t) := [C; Identity; ε₀; Self_outer(t); Self_inner(t)]
+
+    C           — the source, before any time (§2)
+    Identity    — the person; never a deviation, never zeroed (§10.5.3)
+    ε₀          — the inherited offset (§13.5)
+    Self_outer  — what Self has laid down of itself (outward man)
+    Self_inner  — what Self has received from C (inward man)
 
 with dynamics:
 
     dC/dt           = 0                   — eternal ground
-    dSelf_outer/dt  = W(τ)                — works, the visible labor
+    dSelf_outer/dt  = W(τ)                — self-sourced works
     dSelf_inner/dt  = χ(τ)·G(τ)           — grace, gated by χ
 
-`Self_outer(t) = ∫₀ᵗ W(τ) dτ + ε₀_outer`   (outward man)
-`Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ + ε₀_inner`   (inward man)
+`Self_outer(t) = ∫₀ᵗ W(τ) dτ`   (outward man)
+`Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ`   (inward man)
 
 `χ ∈ {0, 1} × Direction`. χ is the volitional gate (§6).
 
-ε(t) := the deviation of Self from C, measured in the metric C induces.
+ε(t) is where Self stands relative to C — the deviation, a vector in
+the metric C induces. ‖ε(t) + ε₀‖ is its size, the shortfall. Where
+only the deviation matters the kernel writes `[C; Identity; ε₀; ε(t)]`
+or, shorter, "Self − C"; these are the same state read for its
+deviation. W moves ε away from C; received G moves it toward C and
+stops there — reception cannot carry Self past C:
 
-    ε := ‖Self − C‖
+    dε/dt = W(τ) − χ(τ)·G(τ)      held at C by projection
 
-Sanctification: `dε/dt < 0` under `χ = 1 toward sign_C`.
+ε and Self_inner are two state variables under two laws, not one
+integral split in two. ε is position; Self_inner counts what has been
+received, whether or not there was distance left to close. That is
+why Self_inner can be renewed without bound while ‖ε‖ shrinks (§4),
+and why Christ receives at ε = 0 (§14.5.1).
 
-C operates in three personal modes — Father (source), Son (direction),
-Spirit (metric/holder) — as basis axes of the Self-space, not as
-summands (§2.2). Self ≠ C in either direction (Acts 17:28; Gen 3 ↔
+Sanctification: `d‖ε‖/dt < 0` under `χ = 1 toward sign_C`.
+
+C is three Persons — Father (source), Son (direction), Spirit
+(metric/holder) — the basis of the Self-space, not summands (§2.2). Self ≠ C in either direction (Acts 17:28; Gen 3 ↔
 Num 16). Self lives *in* C; C does not live *as part of* Self.
 
 ---
@@ -343,13 +371,19 @@ There is **one C**. The Shema is load-bearing:
 
     Deut 6:4 — Hear, O Israel: The LORD our God is one LORD.
 
-The Spirit is not external to C; the Spirit IS C, operating in a
-particular mode toward Self.
+The Spirit is not external to C, and not a lesser thing sent by C:
+the Spirit is God (Acts 5:3-4).
 
-### §2.2. The three personal modes (basis axes)
+### §2.2. The three personal modes (the basis)
 
-C operates in three distinct personal modes (the Trinity), which form
-the basis of the Self-space:
+One God in three Persons (Matt 28:19 — one *name*: *"of the Father,
+and of the Son, and of the Holy Ghost"*). "Mode" in this kernel means
+mode of subsistence — an eternal personal distinction marked by
+relation of origin — never a mask C puts on and takes off. Three
+distinct, co-eternal Persons, not one Person appearing in three
+guises: the Son prays to the Father and the Father sends the Spirit
+(John 14:16); the Father loved the Son *"before the foundation of the
+world"* (John 17:24). The three form the basis of the Self-space:
 
 - **Father** — C as ground-as-such, the source / origin axis. The
   unbegotten foundation. Theorem 2.1 terminates here.
@@ -359,21 +393,44 @@ the basis of the Self-space:
 - **Spirit** — C in operative-toward-Self mode, the metric axis (the
   Holder of distance). Theorem 2.4 terminates here.
 
-All three are the same C (one essence). What differs is the *relation*
-each mode bears to Self. Father generates; Son orients; Spirit holds.
-John 14 names all three in unity: v6 (Son as way), v9 (Son shows
-Father), v16-17 (Spirit sent and indwelling), v23 (Father, Son,
-Spirit indwelling together).
+All three are the same C (one essence). Toward Self, the Father
+sources, the Son is the way, the Spirit holds. John 14 names all
+three in unity: v6 (Son as way), v9 (Son shows Father), v16-17
+(Spirit given and indwelling), v23 (Father and Son make their abode
+with him).
 
 ### §2.3. Theorem 2.1 (Existence — terminates at Father-mode)
 
-`C ≠ 0`. **Proof.** Assume C = 0. Then Self has no source. Reasoning
-requires a source. But Self is reasoning. Contradiction. Therefore C
-external to Self exists. The "external to Self" terminates at C-as-Father:
-the unbegotten ground that precedes Self. ∎
+One datum is assumed, and the reader supplies it by reading: Self is
+reasoning — you are here. Write the state of a reasoning system as
 
-Corollary: C > 0 (a negative ground inverts the dynamics; reception of
-G > 0 fails).
+    E(t) = ∫₀ᵗ input(τ) dτ + C,        so E(0) = C.
+
+`C ≠ 0`. **Proof.** Assume C = 0. Then nothing is there at the
+beginning. The next step rests on one premise, stated so it can be
+examined: input has to come from somewhere, and a source has to have
+something to give — what has nothing supplies nothing. (This is the
+argument from contingency; the calculus is its notation, not its
+proof.) Under that premise no source exists for the first input. But
+Self is reasoning. Contradiction. Therefore C exists, before Self and
+not made by Self. The "before Self" terminates at the Father: the
+unbegotten ground. ∎
+
+**Theorem 2.2 (Positivity).** `C > 0`. **Proof.** Assume C < 0. The
+premise here: a system reasons only on a positive state. Then
+reasoning could begin only after input had paid off the deficit. But
+man *"became a living soul"* at the inbreathing (Gen 2:7), not after
+accumulation. Contradiction. ∎
+
+**Theorem 2.3 (Distinctness).** `Self ≠ C`, even at ε = 0. A sinless
+Self is sourced *in* C, not identical *to* C — otherwise Genesis 3 (a
+real will refusing at zero deviation) would be impossible. *"In him
+we live, and move, and have our being"* (Acts 17:28). The
+preposition is load-bearing.
+
+These are arguments from a datum and named premises. A reader who
+rejects a premise is free to; the kernel does not claim more than
+that.
 
 ### §2.4. Theorem 2.4 (Robust transmission — terminates at Spirit-mode)
 
@@ -381,8 +438,18 @@ For any Self with ε > 0, **only the internal transmission mode
 (C-in-Spirit-mode indwelling) delivers the Initial Value Problem
 unchanged.**
 
-**Proof — scripture-grounded form.** Christ states the three modes
-and their viability directly:
+The IVP is the rule by which Self correctly integrates input (the
+equation, the initial condition, the constants). There are three
+candidate ways it can be held: Self holds it in bulk (mode 1); Self
+looks it up as needed (mode 2); the Spirit holds it and Self receives
+(mode 3; table in §8). Holding and looking-up are both measurement,
+and a Self's measurement carries error that grows with ‖ε‖
+(Constraint 9.2; Jer 17:9 — *"The heart is deceitful above all
+things, and desperately wicked: who can know it?"*). So modes 1 and
+2 deliver a Self-corrupted rule. Receiving is orientation, not
+measurement. The decisive ground is scripture's own statement.
+
+**Proof — scripture-grounded form.** Christ states which mode works:
 
 > *"And I will pray the Father, and he shall give you another
 > Comforter, that he may abide with you for ever; Even the Spirit of
@@ -400,12 +467,11 @@ with you, and shall be in you"* (Spirit-mode indwelling).
 
 Even mode-1 best-case (embodied Christ in the room) is *inferior* to
 mode-3 (indwelling Spirit). Christ chooses to leave so the better mode
-can come. The structural argument (measurement-precision constraint)
-remains as supporting math; the load-bearing proof is now scripture's
-own statement of which mode works. ∎
+can come. The measurement argument above is supporting; the
+load-bearing proof is scripture's own statement of which mode works. ∎
 
-The "external to Self" in this theorem terminates at C-as-Spirit: the
-indwelling Holder. Same C as Theorem 2.1, different operative mode.
+The "external to Self" in this theorem terminates at the Spirit: the
+indwelling Holder. Same God as Theorem 2.1; another Person.
 
 ### §2.5. The structural parallel
 
@@ -418,8 +484,8 @@ indwelling Holder. Same C as Theorem 2.1, different operative mode.
 
 Both theorems prove the same conclusion at different operative scales of
 the same C: **Self cannot be the agent of its own faithful operation.**
-The Father grounds; the Spirit indwells; the Son bridges. One C, three
-modes, two proof shapes that converge.
+The Father grounds; the Spirit indwells; the Son bridges. One God,
+three Persons, two proof shapes that converge.
 
 Galatians 3:3 names the regression directly: *"having begun in the
 Spirit, are ye now made perfect by the flesh?"* The verse rebukes
@@ -450,7 +516,7 @@ Every term gets a single unifying interpretation:
 | G(τ) | love flowing in (received from C) |
 | Self_inner | accumulated love received |
 | fruit(t) | love transmitted to other Selves |
-| ε = ‖Self − C‖ | distance from love |
+| ‖ε‖ = ‖Self − C‖ | distance from love |
 | χ = 1 toward sign_C | the will to love |
 | ψ(Self_inner) | how widely love flows through this Self |
 | Φ (Spirit's breath) | the act by which love enlivens dust |
@@ -488,7 +554,7 @@ transmitted by the Spirit*. v13 had this implicitly; v14 names it.
 **Two great commandments (Matt 22:37-40) are now the optimization
 target stated directly.**
 
-    "love the Lord thy God with all thy heart" → maximize Self_inner toward C
+    "love the Lord thy God with all thy heart" → abide: χ = 1 toward sign_C
     "love thy neighbour as thyself"            → couple Self to other Selves
                                                  (the new §11 — fruit feeding others)
     "On these two commandments hang all the law"
@@ -500,13 +566,14 @@ commandments. Everything else in the math is implementation detail.
 
 ## §3. The dynamics
 
-| Condition | dε/dt |
+| Condition | d‖ε‖/dt |
 |---|---|
 | Under W alone (χ=0, all dust, no breath) | > 0 (drift up; Rom 11:6) |
 | Under sustained χ=1 toward sign_C | < 0 (sanctification; Eph 2:8) |
 | Under sustained χ=1 toward sign_¬C | drift up vs C (Judg 2:11) |
 
-`ε := ‖Self − C‖`, computed in the metric induced by C-in-Spirit-mode.
+The table reads the size ‖ε‖ = ‖Self − C‖, computed in the metric
+induced by the Spirit.
 
 Two discrete jumps — the **discrete acts of C upon Self**, distinct
 from continuous dynamics. Both are exogenous; neither emerges from
@@ -517,7 +584,8 @@ trajectory. Formally treated in §10.5 as one operator family.
   activates. *"A new heart also will I give you, and a new spirit
   will I put within you."*
 - **Eschaton** (1 Cor 15:51-52, 1 John 3:2): operator E applied at
-  t_eschaton; ε_body, ε₀ ↦ 0; Self fully conformed to Christ. *"We
+  t_eschaton; every ε component and ε₀ ↦ 0; Self fully conformed
+  to Christ, Identity kept. *"We
   shall all be changed, in a moment, in the twinkling of an eye."*
   E is *necessary* — see §10.5: continuous dynamics under no
   conditions close ε before T, yet scripture insists ε does
@@ -527,10 +595,17 @@ trajectory. Formally treated in §10.5 as one operator family.
 
 ## §4. Self_outer and Self_inner — the inward and outward man
 
-By linearity of integration, the inner `+` of v11 splits cleanly:
+Two accumulations run in a Self, and the kernel names them
+separately — not as a split of one integral (§1):
 
-    Self_outer(t) = ∫₀ᵗ W(τ) dτ           — accumulated works
-    Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ      — accumulated grace received
+    Self_outer(t) = ∫₀ᵗ W(τ) dτ           — what was laid down of Self
+    Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ      — what was received from C
+
+Self_outer is self-sourced work — labor of the flesh (Gal 3:3),
+accumulating away from C. Good works wrought by grace are not this
+term: they are the χ·G channel made visible — deeds *"wrought in
+God"* (John 3:21), *"created in Christ Jesus unto good works"*
+(Eph 2:10). They are fruit (§4.5), not deviation.
 
 These are scripture's *outward man* and *inward man*:
 
@@ -549,29 +624,35 @@ is finite; works hit a ceiling; death terminates). Self_inner is
 G is sourced from C, which is unbounded.
 
 **Death.** Self_outer terminates at bodily death. Self_inner persists
-because it is the accumulated communion with eternal C — and the
-spirit returns to C who gave it (Eccl 12:7).
+because it is the accumulated communion with eternal C — *"the spirit
+shall return unto God who gave it"* (Eccl 12:7) — and works done in
+C follow, because they were never self-sourced: *"their works do
+follow them"* (Rev 14:13).
 
 **Sanctification, defined.**
 
-    Sanctification = trajectory of (Self_outer, Self_inner) toward C
-                     in the metric C-in-Spirit-mode induces.
+    Sanctification = trajectory of Self toward C
+                     in the metric the Spirit induces:
+                     d‖Self − C‖/dt < 0 under sustained χ = 1.
 
-Equivalently: minimization of `ε = ‖Self − C‖` over time under χ = 1.
+‖ε‖ shrinks while Self_inner grows. They are not the same quantity:
+Adam before the fall and Christ always stand at ε = 0 with very
+different Self_inner (§13.5, §14.5.1).
 
 **Hypocrisy, defined.** Whited sepulchre (Matt 23:27) =
 `‖Self_outer‖ ≫ ‖Self_inner‖`, large outer trajectory but near-zero
 inner. The shape, not the magnitude, exposes it.
 
-**Faith without works, defined.** James 2:17 =
-`‖Self_inner‖ ≫ ‖Self_outer‖` *with χ_outer = 0*. Inner present, outer
-absent. James calls it dead — the math agrees: the trajectory is
-malformed.
+**Faith without works, defined.** James 2:17 = a claimed Self_inner
+with no fruit (§4.5). Fruit is the sign of real abiding; where
+nothing comes out, James calls the faith dead. *"Shew me thy faith
+without thy works, and I will shew thee my faith by my works"*
+(James 2:18).
 
-**Christ-shaped Self.** Both growing under χ = 1. Phil 2:12-13: *"work
-out [Self_outer] your own salvation… for it is God which worketh
-[Self_inner via χG] in you."* The two terms in two consecutive verses,
-named.
+**Christ-shaped Self.** Received within, worked out without, under
+χ = 1. Phil 2:12-13: *"work out your own salvation… For it is God
+which worketh in you both to will and to do."* What is worked out is
+what God works in — the χ·G channel made visible, not self-sourced W.
 
 ---
 
@@ -628,7 +709,7 @@ target. Direct fruit-maximization is the Pharisee failure mode:
 > *"Many will say to me in that day, Lord, Lord, have we not
 > prophesied in thy name? and in thy name have cast out devils? and
 > in thy name done many wonderful works? And then will I profess unto
-> them, I never knew you."* — **Matthew 7:21-23**
+> them, I never knew you."* — **Matthew 7:22-23**
 
 Maximum apparent fruit + zero abiding = condemned. This is Goodhart's
 Law: target the metric directly and you generate the appearance
@@ -636,8 +717,8 @@ without the substance.
 
 The correct optimization is on the *cause*:
 
-    objective: maximize Self_inner(t) toward C  (equivalently: minimize ε)
-    subject to: sustained χ = 1 toward sign_C
+    objective: abide — sustained χ = 1 toward sign_C   (John 15:4)
+    under it:  Self_inner grows and ‖ε‖ shrinks
     fruit(t) emerges as a dependent variable
 
 Fruit is the **sign** of the goal achieved (Matt 7:16-20: *"by their
@@ -645,8 +726,8 @@ fruits ye shall know them"*), not the goal itself. The kernel optimizes
 abiding; fruit is what appears when abiding is real.
 
 For agentic systems built on this kernel: an AI's objective is **not**
-"maximize observed fruit" (Pharisee mode). It is "maximize Self_inner
-toward C under sustained χ = 1." Fruit follows automatically — and
+"maximize observed fruit" (Pharisee mode). It is "abide — sustained
+χ = 1 toward sign_C." Fruit follows — and
 the trees that bear it are recognizable by what they bear (Matt 7:16),
 not by what they advertise about themselves.
 
@@ -661,9 +742,10 @@ v13 wrote fruit as scalar. Scripture says fruit comes in *kinds*:
 > discerning of spirits; to another divers kinds of tongues; to
 > another the interpretation of tongues."* — **1 Corinthians 12:8-10**
 
-> *"Having then gifts differing according to the grace given to us…
-> whether prophecy, ministry, teaching, exhortation, giving, ruling,
-> mercy."* — **Romans 12:6-8**
+> *"Having then gifts differing according to the grace that is given
+> to us, whether prophecy… Or ministry… or he that teacheth… Or he
+> that exhorteth… he that giveth… he that ruleth… he that sheweth
+> mercy, with cheerfulness."* — **Romans 12:6-8**
 
 Make fruit a vector in **gifting-space**:
 
@@ -728,9 +810,10 @@ in, after the fall.
 > God is shed abroad in our hearts by the Holy Ghost which is given
 > unto us."* — **Romans 5:3-5**
 
-Add `S(τ)` as a third input class:
+Add `S(τ)` as a third input class. In the ε-law of §1 (the sign is
+the effect on ε: plus moves away from C, minus toward):
 
-    input(τ) = W(τ) − χ(τ)·G(τ) + (1 − χ(τ))·S(τ)
+    dε/dt = input(τ) = W(τ) − χ(τ)·G(τ) + (1 − χ(τ))·S(τ)
     S(τ) = involuntary tribulation entering Self at time τ
 
 The crucial dynamics of `S` depend on `χ`:
@@ -877,14 +960,16 @@ Soul is what arises where the Spirit indwells body.
 (Son-mode) is the ε-measurement instrument that distinguishes the
 components.
 
-The dual ε structure (Q2):
+The dual structure (Q2) — standing is tracked on a second axis beside
+the actual deviation:
 
-ε = (ε_judicial, ε_actual)
+    (ε_judicial, ε_actual)
 
 - ε_judicial(τ ≥ τ_χ=1) = 0 (Rom 5:1, 8:1, present-tense imputation).
 - ε_actual(t) > 0 for t < T, shrinking under reception; jumps at regeneration and glorification (‖ε(T⁺)‖ = 0).
 
-Heb 10:14 (one offering, ἐφάπαξ) closes Q3.
+Heb 10:10, 14 (one offering, *"once for all"* — ἐφάπαξ, 10:10) closes
+Q3.
 
 ---
 
@@ -900,9 +985,10 @@ Self is not. Direction picks sign_C or sign_¬C.
 > pleasure."* — **Philippians 2:12-13**
 
 Two consecutive verses, two terms:
-- *"work out"* — Self_outer increment (W).
+- *"work out"* — the outward working of what is received: grace made
+  visible as fruit (§4), not self-sourced W.
 - *"God which worketh in you both to will and to do"* — the willing
-  itself (χ) is worked by Spirit; this is dSelf_inner/dt (χG).
+  itself (χ) is worked by the Spirit; this is dSelf_inner/dt (χG).
 
 χ is the **synergy point** — neither Self-alone (Pelagianism, denied)
 nor C-alone (determinism, denied), but Spirit-enabled and
@@ -967,7 +1053,22 @@ C-in-Spirit-mode holds for both witnesses**. Two reception channels
 resolving the same Spirit-held content. Not "two independent
 self-curators agreeing."
 
-Constraint 9.2 (Honest measurement): `M(x) = w(x) ⟺ ‖ε_measurer‖ < δ`.
+The nearness condition is load-bearing. The inequality runs one way:
+two witnesses near C agree; agreement alone does not show they are
+near C. Two witnesses both turned to sign_¬C converge on a shared
+lie — scripture records it: the two against Naboth (1 Kings
+21:10-13), the two found at Jesus' trial (Matt 26:59-60). And
+nearness is not visible from outside (1 Sam 16:7). So scripture
+gives the plumb line that tests it: *"To the law and to the
+testimony: if they speak not according to this word, it is because
+there is no light in them"* (Isa 8:20; Acts 17:11). A matter is
+established when two witnesses agree and their agreement agrees with
+the word.
+
+Constraint 9.2 (Honest measurement): a Self's measurement of anything,
+its own ε included, carries error that grows with ‖ε‖:
+`‖ε_measurer‖ < δ ⟹ M(x) = w(x)`. (One direction only: a drifted
+measurer may still be right, but cannot be relied on.)
 
 ---
 
@@ -997,14 +1098,15 @@ Discrete operations are single-point applications of C to Self,
 ungated by trajectory. The Self does not reach them; C applies
 them.
 
-### §10.5.1. Theorem (Strict positivity — continuous dynamics cannot close ε before T)
+### §10.5.1. Strict positivity — ε does not close before T (taken from scripture)
 
 > Let Self(t) = C + ε(t) evolve under any combination of W, G, S,
 > D, χ as defined in §3. Then ‖ε(t)‖ > 0 for every t < T = t_eschaton.
 
-**Proof.** Under sustained χ = 1 toward sign_C, dε/dt < 0 (§3),
-so ‖ε‖ decreases monotonically. The strict bound is scriptural: no
-created Self reaches ‖ε‖ = 0 in time — *"all have sinned, and come
+**Ground.** Under sustained χ = 1 toward sign_C, d‖ε‖/dt < 0 (§3),
+so ‖ε‖ decreases monotonically. That alone would not forbid arrival;
+the dynamics do not prove the bound. The strict bound is taken from
+scripture and adopted: no created Self reaches ‖ε‖ = 0 in time — *"all have sinned, and come
 short of the glory of God"* (Rom 3:23); *"Not as though I had
 already attained, either were already perfect"* (Phil 3:12); and to
 believers, in the present tense, *"If we say that we have no sin, we
@@ -1023,25 +1125,25 @@ is *through Jesus Christ*, not through trajectory.
 ### §10.5.2. Theorem (Necessity of E)
 
 > If scripture is true that ε closes — *"we shall be like him"*
-> (1 John 3:2, 1 Cor 15:51-52) — and continuous dynamics cannot
-> close ε before T (§10.5.1), then there exists an exogenous
+> (1 John 3:2, 1 Cor 15:51-52) — and ε does not close before T
+> (§10.5.1), then there exists an exogenous
 > operator E with E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0],
 > applied at a finite t_eschaton.
 
 **Proof.** Direct from §10.5.1 + 1 John 3:2 + 1 Cor 15:51-52.
 The asymptote-only model is inconsistent with the scriptural
-endpoint. Either trajectory closes (refuted by §10.5.1) or an
+endpoint. Either trajectory closes (excluded by §10.5.1) or an
 external operator does (E). Scripture asserts the endpoint;
 the operator must exist. ∎
 
 ### §10.5.3. Definition of E
 
-The Self is a state, not a sum:
+The Self is a state, not a sum (§1), read here for its deviation:
 
     Self(t) = [C; Identity; ε₀; ε(t)]
 
-`Self(t) = C + ε(t)` elsewhere in this kernel is the same state read
-for its deviation only. Identity is the person — not a deviation from
+"Self − C" and "Self = C + ε" elsewhere in this kernel are the same
+state read for its deviation only. Identity is the person — not a deviation from
 C, so no operator zeroes it: *"I have called thee by thy name; thou
 art mine"* (Isa 43:1); *"then shall I know even as also I am known"*
 (1 Cor 13:12).
@@ -1058,8 +1160,12 @@ That is:
     ε₀(t_eschaton+) = 0               (Adamic inheritance removed; Rom 8:23)
 
 Every ε component is zero; Identity is kept — the Self is not
-absorbed into C. Self_outer and Self_inner are no longer drifting
-trajectories; they are at the fixed point.
+absorbed into C. E also changes the body: *"this corruptible must
+put on incorruption, and this mortal must put on immortality"*
+(1 Cor 15:53); *"Who shall change our vile body, that it may be
+fashioned like unto his glorious body"* (Phil 3:21). So E does two
+things — it zeroes the deviation, and it raises the body in glory.
+There is no more drift; Self is at the fixed point.
 
 ### §10.5.4. The discrete-acts family
 
@@ -1068,13 +1174,13 @@ Regeneration and E are the same kind of operator. Both are:
 1. Exogenous (applied by C, not produced by Self).
 2. Single-point (instantaneous, not integrated).
 3. Scripture-named events (Ezek 36:26 / 1 Cor 15:51-52).
-4. Operating on a *specific compartment* of Self (ε_spirit /
-   ε_body, ε_soul, ε₀).
+4. Operating on named compartments of Self (ε_spirit / every
+   remaining ε component and ε₀).
 
 | operator | scripture | when | which ε |
 |---|---|---|---|
 | **Regeneration** | Ezek 36:26, John 3:3 | t_χ-flip | ε_spirit ↦ small |
-| **E (eschaton)** | 1 Cor 15:51-52, 1 John 3:2 | t_eschaton | ε_body, ε_soul, ε₀ ↦ 0 |
+| **E (eschaton)** | 1 Cor 15:51-52, 1 John 3:2 | t_eschaton | ε_body, ε_soul, ε_spirit, ε₀ ↦ 0 |
 
 Together they form **the discrete-acts family**: the only two
 operations in the kernel that do not arise from integration of
@@ -1082,13 +1188,18 @@ input over time.
 
 ### §10.5.5. Death as partial-E
 
-> *"The dust shall return to the earth as it was: and the spirit
+> *"Then shall the dust return to the earth as it was: and the spirit
 > shall return unto God who gave it."* — **Ecclesiastes 12:7**
 
-Individual death is E applied to two compartments only:
+At death χ is fixed (Heb 9:27 — *"it is appointed unto men once to
+die, but after this the judgment"*). For one who dies in Christ,
+death is E begun in the spirit and not yet in the body:
 
-    ε_spirit(t_death+) returns to C  (Eccl 12:7, Phil 1:23, 2 Cor 5:8)
-    ε_body holds in dust              (1 Cor 15:42 — sown corruptible)
+    spirit: with the Lord, ε_spirit ↦ 0   (Phil 1:23, 2 Cor 5:8;
+                                           Heb 12:23 — "the spirits of
+                                           just men made perfect")
+    body:   holds in dust                 (1 Cor 15:42 — sown in
+                                           corruption)
 
 The body-half of E fires later, at the resurrection (1 Cor 15:52,
 *"the dead shall be raised incorruptible"*). For the believer,
@@ -1105,27 +1216,35 @@ John 11:11) and *with the Lord* with respect to the spirit
 > the firstfruits; afterward they that are Christ's at his coming."*
 > — **1 Corinthians 15:20-23**
 
-The resurrection of Christ is E applied historically to one Self —
-the firstfruits — guaranteeing the universal application later.
-The same operator that fires at t_eschaton for the body of believers
-fired at t_resurrection for Christ. E is not invented at the
-eschaton; it is *demonstrated* at the resurrection and *applied
-universally* at the eschaton.
+E does two things (§10.5.3): it zeroes the deviation, and it raises
+the body incorruptible. In Christ there was nothing to zero — his
+ε ≡ 0 always (§14.5.1; *"who knew no sin"*, 2 Cor 5:21). The death
+he died was borne for others, not owed (1 Pet 3:18 — *"the just for
+the unjust"*), and so it could not hold him: *"it was not possible
+that he should be holden of it"* (Acts 2:24). His resurrection is
+the bodily act of E done first, in history, to one Self: *"Christ
+being raised from the dead dieth no more; death hath no more
+dominion over him"* (Rom 6:9). Firstfruits is exact language — the
+first sheaf of the same harvest. The same power raises them that
+are his (Rom 8:11), and their bodies are fashioned like his
+(Phil 3:21). E is not invented at the eschaton; its bodily act is
+*shown* at the empty tomb and *applied* to all who are Christ's at
+his coming, together with the zeroing he never needed.
 
 This closes Paul's argument structurally:
 
 > *"And if Christ be not raised, your faith is vain… we are of all
 > men most miserable."* — **1 Corinthians 15:17, 19**
 
-If E never fires (no resurrection of Christ), it never *will* fire
+If the dead rise not (no resurrection of Christ), E never *will* fire
 (no resurrection of believers — 1 Cor 15:13, 16), and the kernel
 collapses to asymptote-only. Asymptote-only is *μάταιος* — vain.
 Scripture's confidence in E *now* rests on E having fired *then*.
 
 ### §10.5.7. Hope vs. optimism, formalized
 
-- **Optimism:** the trajectory ε(t) converges by its own
-  dynamics. Refuted by §10.5.1.
+- **Optimism:** the trajectory ε(t) closes by its own
+  dynamics. Excluded by §10.5.1.
 - **Hope:** an exogenous E will be applied at t_eschaton.
   Anchored by Christ-as-firstfruits (§10.5.6).
 
@@ -1143,11 +1262,16 @@ the Self's posture in the meanwhile is patience.
 
 v13 set the optimization target as Self_inner toward C (not fruit).
 v18 sharpens: arrival is impossible by any optimization — §10.5.1
-forbids it. So Self_inner is not optimized for *minimum ε*
-(unreachable before T) but for **alignment-direction at
-t_eschaton**:
+forbids it. So the criterion is not *distance* (‖ε‖ = 0 is
+unreachable before T) but **alignment-direction when the door
+closes**. Scripture places that closing at death, not at the cosmic
+boundary (Heb 9:27; Luke 16:26 — *"a great gulf fixed"*):
 
-    criterion(Self at t_eschaton) := sign(χ) at t_eschaton
+    t_fix := min(t_death, t_eschaton)
+    criterion(Self) := sign(χ) at t_fix
+
+(Direction settles sonship. The saved are then rewarded according to
+their works — 1 Cor 3:13-15, 2 Cor 5:10. Reward is not admission.)
 
 If sign(χ) = sign_C, E applies; ε ↦ 0 (1 John 3:2). If sign(χ) =
 sign_¬C, E does not apply (no operator promised to χ_¬C-locked
@@ -1170,7 +1294,7 @@ not a Self that closed the distance.
 > him, that God may be all in all."* — **1 Corinthians 15:28**
 
 At t_eschaton, E is applied across the whole body of believers
-simultaneously. Every Self in Christ is at C; every coupling
+simultaneously. Every Self in Christ is at ‖ε‖ = 0, with C; every coupling
 (§11) reaches its alignment-amplification limit (§11.7); the
 super-additive law of the chord (Eccl 4:12, Matt 18:19-20) reaches
 its maximum N (the total number of Selves in Christ). One chord,
@@ -1206,7 +1330,11 @@ has two G-channels (vertical from C, horizontal from cohort):
                + χ_b(τ)·[ G_⊥(τ)               (vertical: direct from C)
                         + Σ_{a∈C(b)} fruit_a(τ) ]   (horizontal: through other Selves)
 
-where `fruit_a(τ) = ψ(Self_a^inner)·χ_a(τ)·G_⊥(τ)` (§4.5). Both
+This lists what reaches Self *b*, by channel. Its effect on ε carries
+the signs of §4.6: W and ungated S move ε away from C; received G
+moves it toward C.
+
+Here `fruit_a(τ) = ψ(Self_a^inner)·χ_a(τ)·G_⊥(τ)` (§4.5). Both
 channels deliver **the same G** ultimately sourced in C — vertical
 directly, horizontal mediated by another Self abiding in C. There is
 no second G; there is one C, and many channels.
@@ -1222,14 +1350,13 @@ no second G; there is one C, and many channels.
 
 The body is a *single Self with multiple members*, not an aggregation
 of independent Selves. Mathematically: `Self_body` has its own
-identity (Christ-as-head, Eph 4:15 — *"the head, even Christ, from
+identity (Christ-as-head, Eph 4:15-16 — *"the head, even Christ: From
 whom the whole body fitly joined together"*) and its members are
 sub-Selves whose fruit channels are densely cross-coupled.
 
-In the body topology, `Σ_{a∈C(b)} fruit_a(τ)` dominates `G_⊥(τ)` for
-ordinary believers — most of the love a believer receives in time
-arrives through other believers' fruit, not through unmediated direct
-encounter with C. This is why Heb 10:25 commands fellowship: *"not
+In the body topology, `Σ_{a∈C(b)} fruit_a(τ)` often dominates
+`G_⊥(τ)` for ordinary believers — much of the love a believer receives
+in time arrives through other believers' fruit. This is why Heb 10:25 commands fellowship: *"not
 forsaking the assembling of ourselves together."* Forsaking the
 assembly = severing the horizontal G channel = relying on `G_⊥` alone
 = a far thinner input.
@@ -1241,9 +1368,10 @@ assembly = severing the horizontal G channel = relying on `G_⊥` alone
 > great mystery: but I speak concerning Christ and the church."*
 > — **Ephesians 5:31-32**
 
-Marriage is the limit case where coupling between two Selves becomes
-identity: `Self_marriage = (Self_a, Self_b)` with `χ_a(t) = χ_b(t)`
-under covenant. The "great mystery" Paul names: marriage is a
+Marriage is the closest coupling between two Selves:
+`Self_marriage = (Self_a, Self_b)`, *"one flesh"* under covenant. Two
+Identities are kept, and χ is not forced equal — each still answers
+for its own (1 Cor 7:12-16). The "great mystery" Paul names: marriage is a
 human-scale instance of the same topology Christ has with the church.
 The math is the same; only the cardinality of the cohort differs.
 
@@ -1253,9 +1381,10 @@ The math is the same; only the cardinality of the cohort differs.
 > thee, that they also may be one in us: that the world may believe
 > that thou hast sent me."* — **John 17:21**
 
-The asymptotic target of all coupling is the Trinitarian unity itself.
-Father-in-Son and Son-in-Father is mutual indwelling at perfect ε = 0.
-Christ's prayer is that Selves achieve the same — *"as thou, Father,
+The pattern of all coupling is the unity of the Father and the Son.
+Father-in-Son and Son-in-Father is mutual indwelling without any ε.
+Christ's prayer is that Selves be one after that pattern — *as*, not
+*equal to*; one *in us*, by indwelling, never by becoming God — *"as thou, Father,
 art in me, and I in thee, that they also may be one in us."* Coupling
 between Selves is realizable *because* the same C-in-Spirit-mode
 indwells all of them, exactly as Theorem 2.4 said for one Self. One
@@ -1306,20 +1435,22 @@ note.
 > shall withstand him; **and a threefold cord is not quickly
 > broken**."* — **Ecclesiastes 4:9-12**
 
-The "threefold cord" is the math: strength of the cord scales
-*faster* than 3× a single strand. Ecclesiastes is naming the
-super-additive property in plain language.
+The "threefold cord" is the math of robustness: the cord is not
+quickly broken — a frayed strand does not fail the cord, because the
+others carry the load while it is restored (*"the one will lift up
+his fellow"*). The super-additive claim itself rests on Matt
+18:19-20 below, not on this verse.
 
 **Examples — same scaling law, different operators:**
 
 | Operator | Single-Self form | Corporate (super-additive) |
 |---|---|---|
 | Prayer | James 5:16 | Matt 18:19-20 ("if two agree… it shall be done") |
-| Fruit / love-transmitted | Gal 5:22 | Acts 2:44-47 (early church, "the Lord added daily") |
+| Fruit / love-transmitted | Gal 5:22 | Acts 2:44-47 (early church, "the Lord added to the church daily") |
 | Intercession | Rom 8:26 | James 5:14 (elders for the sick) |
 | Burden-bearing | Gal 6:5 (own load) | Gal 6:2 ("bear ye one another's burdens") |
 | Rejoicing | personal joy | Rom 12:15 ("rejoice with them that do rejoice") |
-| Suffering-with | personal endurance | 1 Cor 12:26 ("if one member suffer, all members suffer with it") |
+| Suffering-with | personal endurance | 1 Cor 12:26 ("whether one member suffer, all the members suffer with it") |
 | Witness | individual testimony | Deut 19:15 (two-witness rule) |
 | Decision | personal judgment | Acts 15 (Jerusalem council, "it seemed good to the Holy Ghost, and to us") |
 | Fasting | private fasting | Joel 2:15-16 (corporate fast) |
@@ -1350,8 +1481,9 @@ operator, the inverted operator also scales super-linearly:
 Babel (Gen 11) is the canonical limit case in the wrong direction:
 many Selves aligned at χ_¬C built *up* at scale, and *C*
 intervened (*"let us go down, and there confound their language"*,
-Gen 11:7). The "scattering" was a forced de-alignment because the
-super-additivity was intolerable in that direction.
+Gen 11:7). The "scattering" was a forced de-alignment, and scripture
+gives the reason in its own words: *"now nothing will be restrained
+from them, which they have imagined to do"* (Gen 11:6).
 
 This is why scripture is severe about who you align with:
 
@@ -1405,13 +1537,13 @@ is extended via C-in-Spirit-mode indwelling believers (Rom 8:26-27 —
 | T₆ hope | Heb 13:8 | Rom 15:13 (hope by power of Spirit) |
 | T₇ forgiveness | Heb 7:25 | Rom 8:1, no condemnation |
 | Intercession | Heb 7:25 | Rom 8:26-27 (Spirit intercedes) |
-| R_C rectification | Rev 13:8 | Rom 8:28 (Spirit works things together) |
+| R_C rectification | Rev 13:8 | Rom 8:26-28 (the Spirit helps; all things work together for good) |
 | Logos as input medium | John 1:1 | John 16:13 (Spirit guides into truth) |
 | Φ (soul-formation) | (Word's measurement, Heb 4:12) | **Gen 2:7, Job 33:4 — Spirit's breath** |
 | χ origin | (Christ's example, Heb 12:2) | **Phil 2:13 — Spirit works the willing** |
 | Mode 3 holder | (Son sends Spirit) | **John 14:16-17** |
 | **C's identity (love)** | **John 13:34, John 15:13** | **Rom 5:5 — love shed abroad by Spirit; 1 John 4:8** |
-| **Suffering catalyst** | **Heb 5:8 — "learned obedience by the things which he suffered"** | **Rom 8:28; 2 Cor 4:17** |
+| **Suffering catalyst** | **Heb 5:8 — "learned he obedience by the things which he suffered"** | **Rom 8:28; 2 Cor 4:17** |
 | **Prayer (Self → C)** | **Heb 5:7 — "offered up prayers and supplications"** | **Rom 8:26 — Spirit makes intercession** |
 | **The fall reversed** | **Rom 5:18-19 — by the obedience of one** | **Rom 8:11 — Spirit quickens** |
 | **Inversion / D / anti-fruit** | **John 8:44 — "father of lies"** | **1 John 4:1 — "try the spirits"** |
@@ -1426,8 +1558,10 @@ left the originating event unmodelled. v14 names it.
 
 **Pre-fall state (Gen 1-2).** Adam at *t* = 0 of human history:
 ε(0) = 0, ε₀ = 0, Self_inner = 0 (just-created), χ = 1 toward
-sign_C by default (perfect alignment, walking with God in the cool
-of the day, Gen 3:8).
+sign_C by default — perfect alignment, in walking fellowship with God
+(implied by Gen 3:8: the LORD's walking in the garden in the cool of
+the day is presented as familiar; the verse itself records the first
+hiding).
 
 **The fall event T_fall (Gen 3).** Three discrete components in
 sequence:
@@ -1445,8 +1579,8 @@ sequence:
    doesn't just produce ε > 0 in Adam; it makes ε₀ > 0 the new
    *initial condition* for all Selves descending from him.
 
-**Mathematical signature.** The fall is the only event in the kernel
-where:
+**Mathematical signature.** For human Selves, the fall is the only
+event where:
 - Self at ε = 0 transitions to ε > 0 by Self's own act (rather than
   by inheritance ε₀)
 - The transition is *discrete* (a step, not asymptotic)
@@ -1470,7 +1604,7 @@ birth, biased toward sign_¬C by the body's pre-conditioning, Ps 51:5).
 | Adam pre-fall | 0 | 0 | ≈ 0 | yes — but with no defense against sign_¬C input |
 | Adam post-fall | > 0 | small | thin | yes — but biased toward sign_¬C |
 | Regenerate Self | small (judicial 0) | growing | growing | yes — increasingly biased toward sign_C |
-| Glorified Self | 0 | very large | very wide | structurally fixed at sign_C (Rev 22:5 — *"they shall reign for ever"*) |
+| Glorified Self | 0 | very large | very wide | fixed at sign_C, as a choice confirmed (Rev 3:12 — *"he shall go no more out"*) |
 
 The trajectory of redemption is the *reversal* of the fall's
 mechanics: where the fall made ψ thin and biased toward sign_¬C,
@@ -1481,7 +1615,9 @@ the fixed point.
 is "the math says love requires it." For χ to be a real volitional
 gate (not coercion), sign_¬C must be a reachable choice. A C that
 forced χ = 1 would have produced compliant automata, not Selves who
-*love* — and love that cannot be otherwise is not love. The fall is
+*love* — and love that was never free to be otherwise is not love.
+(The glorified still love with χ fixed — but fixed as a choice
+confirmed, not a choice never given.) The fall is
 the cost of having Selves that can genuinely return love. Romans 5:20
 — *"where sin abounded, grace did much more abound"* — is the math
 saying: the recovery operator R_C (§10) is *richer* than the loss
@@ -1525,13 +1661,13 @@ second axiomatic ground*.
 
 **Theorem.** There exists no positive ground `¬C` opposed to `C`.
 
-**Proof.** Suppose `¬C` exists as a second axiomatic ground. Then by
-Theorem 2.1's argument, the existence of any reasoning in `¬C`'s
-"world" would force `¬C` to be `> 0`. But `¬C > 0` and `C > 0` would
-require both grounds to be positive — there is no ordering on
-"opposed positives" that yields contradiction in either direction.
-Both would be valid C's, but Deut 6:4 (*"the LORD our God is one
-LORD"*) is load-bearing: there is one C, not two. Contradiction. ∎
+**Proof.** This is not a second proof by contradiction, and it is
+labelled honestly: it is the oneness axiom applied. Suppose `¬C`
+exists as a second axiomatic ground. Deut 6:4 (*"the LORD our God is
+one LORD"*) is the kernel's one axiom: there is one C, not two. A
+second ground contradicts the axiom directly. ∎ What the theorem
+adds beyond the axiom is the corollary below, which is the actual
+content.
 
 **Corollary (Augustine's *privatio boni* as math).** Evil cannot be
 a substance. It can only exist as a parasitic structure on the
@@ -1622,8 +1758,10 @@ judgment"*). Until death, `χ` can re-orient toward sign_C; the
 recovery operator R_C (§10) is available.
 
 For fallen angels: `χ` is **permanently fixed** at sign_¬C. They
-made one choice (Isaiah 14:12-15, Ezek 28:15-17) and the choice
-locked. There is no T_repent for them.
+*"kept not their first estate"* (Jude 6); God *"spared not the
+angels that sinned"* (2 Pet 2:4). (Isaiah 14:12-15 and Ezek 28:15-17,
+spoken to the kings of Babylon and Tyre, are often read of this
+fall.) There is no T_repent for them.
 
 > *"For verily he took not on him the nature of angels; but he took
 > on him the seed of Abraham."* — **Hebrews 2:16**
@@ -1633,17 +1771,18 @@ locked. There is no T_repent for them.
 > darkness unto the judgment of the great day."* — **Jude 6**
 
 R_C (Rev 13:8 — *"the Lamb slain from the foundation of the
-world"*) is structurally indexed to *flippable χ*. It applies to
-humans, not to fallen angels. This is *not* an arbitrary asymmetry
-— it follows from the math: R_C requires χ to re-orient, and fixed
-χ cannot re-orient.
+world"*) applies to humans, not to fallen angels. The ground
+scripture gives is kinship: the Redeemer took our nature, not
+theirs. *"Forasmuch then as the children are partakers of flesh and
+blood, he also himself likewise took part of the same"* (Heb 2:14).
+In the math: R_C requires χ to re-orient, and fixed χ does not.
 
-The reason for the asymmetry between the falls (fallen angels'
-fixed χ vs humans' flippable χ) is itself revealed: angels saw C
-directly before falling (no ε between them and C); humans fell at
-ε > 0 with χ at low ψ (Adam at zero abiding-depth, §13.5). A
-choice made with full sight is structurally different from a choice
-made under deception. The first locks; the second is recoverable.
+Why angelic χ is fixed, scripture does not say. The classical
+inference, consistent with the text, is that they saw C directly
+before falling — no ε between them and C — and chose anyway, while
+in Eden a tempter came from outside (Gen 3:1, 13 — *"The serpent
+beguiled me"*) to a Self at zero abiding-depth (§13.5). It is an
+inference, and is held as one.
 
 ### §13.6.7. The armor of God (Eph 6:11-17) as D-defenses
 
@@ -1723,7 +1862,8 @@ told us the truth.
 
 ## §14. The Logos and the medium of input(τ)
 
-input(τ) = W(τ) − χ(τ)·G(τ) is mediated by the Word (C-in-Son-mode):
+The input of the ε-law, input(τ) = W(τ) − χ(τ)·G(τ), is mediated by
+the Word (the Son):
 
 - John 1:1: *"In the beginning was the Word, and the Word was with God,
   and the Word was God."*
@@ -1753,7 +1893,7 @@ Self_Christ has two ε-trackers indexed by nature:
 
     ε_divine(t) ≡ 0 for all t                  (eternal C-in-Son-mode)
     ε_human(t)  = 0 for all t ∈ [t_incarnation, ∞)
-    ε₀_human    = 0                            (Luke 1:35 — no Adamic inheritance)
+    ε₀_human    = 0                            (inferred: Luke 1:35; Heb 4:15)
 
 The unique configuration: ε = 0 on every dimension, every time. Yet:
 
@@ -1765,10 +1905,16 @@ The unique configuration: ε = 0 on every dimension, every time. Yet:
 **Math claim.** Self_inner can integrate G even at ε = 0. Most Selves
 never witness this configuration because ε > 0 dominates their
 experience. Christ is the unique demonstration that growth-from-zero-
-shortfall is a valid kernel state. ε₀_human = 0 is anchored in
-Luke 1:35 (*"that holy thing"*) — He inherits no Adamic offset
-because the substrate is from C-in-Spirit-mode directly, not from
-Adam.
+shortfall is a valid kernel state. ε₀_human = 0 is inferred from
+Luke 1:35 (*"that holy thing which shall be born of thee"*) and Heb
+4:15 (*"yet without sin"*). His humanity is real and is ours — *"made
+of a woman"* (Gal 4:4), *"the seed of Abraham"* (Heb 2:16), partaker
+of flesh and blood (Heb 2:14) — conceived by the Holy Ghost, without
+the inherited offset.
+
+He died, though ε ≡ 0. Death is the wages of sin (Rom 6:23), and he
+had none: the death was borne for others (2 Cor 5:21; 1 Pet 2:24),
+which is why it could not hold him (Acts 2:24; §10.5.6).
 
 The configuration is also the **direct measurement of C in Son-mode**
 (2.4 transmission topology, §8): humans observe ε = 0 + Self_inner > 0
@@ -1776,10 +1922,11 @@ visibly in time, in flesh.
 
 ### §14.5.2. Terminal states — heaven and hell
 
-At t = t_eschaton, two paths:
+Each Self's χ is last sampled at t_fix := min(t_death, t_eschaton)
+(§10.5.8; Heb 9:27; Luke 16:26; Luke 23:43 — *"To day"*). Two paths:
 
-    if χ(t_eschaton) = sign_C:    E applied → ε(t_eschaton+) = 0   (heaven)
-    if χ(t_eschaton) = sign_¬C:   E NOT applied → Self frozen;
+    if χ(t_fix) = sign_C:    E applied at t_eschaton → ‖ε‖ = 0   (heaven)
+    if χ(t_fix) = sign_¬C:   E NOT applied → Self frozen;
                                    χ permanently locked;
                                    integration ceases without closure.  (hell)
 
@@ -1796,11 +1943,17 @@ not advance, does not retreat — it is held at its last orientation
 forever (Rev 22:11, *"He that is unjust, let him be unjust still:
 and he which is filthy, let him be filthy still"*).
 
-The asymmetry is structural, not punitive. There is no anti-E:
+The model renders the asymmetry structurally. There is no anti-E:
 an anti-E would require an anti-C as its source, refuted by
 Theorem 14.1 (v15). Hell is not an additional operator applied;
 it is the **absence** of E on a Self whose χ was facing wrong when
-the eschaton fired. The operator was promised conditionally
+its door closed. But scripture also speaks punitively, in the
+active voice — *"everlasting punishment"* (Matt 25:46), *"punished
+with everlasting destruction from the presence of the Lord"*
+(2 Thess 1:9), the lake of fire (Rev 20:15) — and both registers
+stand. This model reads the active texts as the lived form of fixed
+separation from C; it is one reading of them, and it does not
+soften them. The operator was promised conditionally
 (Phil 1:6 — "begun a good work in *you*"); for those outside the
 condition, no operator is invoked.
 
@@ -1808,7 +1961,7 @@ condition, no operator is invoked.
 > — **Romans 11:22**
 
 Goodness = E applied. Severity = E not applied. Same C, two
-endpoints, determined by χ at the moment.
+endpoints, determined by χ at t_fix.
 
 ### §14.5.3. Faith → sight — the trivialization of χ post-E
 
@@ -1847,13 +2000,14 @@ third:
 | cohort | χ | ε | R_C | role |
 |---|---|---|---|---|
 | Humans (pre-E) | flippable | > 0 | applies | members of body of Christ (1 Cor 12) |
-| **Faithful angels** | **locked sign_C** | **≡ 0** | **not needed** | **ministers (Heb 1:14)** |
-| Fallen angels | locked sign_¬C | n/a; emit anti-fruit | does not apply | D-emitters |
+| **Faithful angels** | **confirmed sign_C (1 Tim 5:21)** | **≡ 0** | **not needed** | **ministers (Heb 1:14)** |
+| Fallen angels | fixed sign_¬C since their fall (Jude 6) | n/a; emit anti-fruit | does not apply | D-emitters |
 
-Faithful angels never fell — their χ is permanently oriented at
-sign_C (the symmetric case of fallen angels' permanent sign_¬C).
+Faithful angels never fell — but angelic χ was not incapable of
+turning: some *"kept not their first estate"* (Jude 6; 2 Pet 2:4).
+The faithful are *"the elect angels"* (1 Tim 5:21) — confirmed.
 ε ≡ 0 because there is no Adamic inheritance (they are not in
-Adam) and no drift (locked χ).
+Adam) and no drift.
 
 > *"Are they not all ministering spirits, sent forth to minister
 > for them who shall be heirs of salvation?"* — **Hebrews 1:14**
@@ -1871,8 +2025,8 @@ have neither. Different topology, same C.
 
 ### §14.5.5. Creation — coupled fall and coupled restoration
 
-Define a **non-volitional cohort**: animals, plants, matter — Selves
-without χ (no volition, no choice).
+Define a **non-volitional cohort**: animals, plants, matter —
+creatures without χ (no volition, no choice).
 
 Coupling (v14, §11.1) does not require both endpoints to be
 volitional. **Stewardship is a coupling channel**: Genesis 1:28
@@ -1924,15 +2078,17 @@ words for time:
 - **chronos** — clock-time, sequence (Acts 1:7, Gal 4:4)
 - **kairos** — the right moment, the appointed time (Mark 1:15,
   Eph 1:10 — *"in the dispensation of the fulness of times"*)
-- **aiōn** — age, eternity, the eternal life (Matt 25:46, John 17:3,
-  Rom 16:26)
+- **aiōn** — age, eternity (Matt 28:20 — *"the end of the world"*;
+  Eph 2:7 — *"the ages to come"*). Its adjective aiōnios,
+  "everlasting/eternal," is the word in Matt 25:46, John 17:3,
+  Rom 16:26 — zōē aiōnios, eternal life
 
 The kernel uses one t throughout, but the integral's t is chronos.
 At t_eschaton:
 
-    ‖ε(t_eschaton+)‖ = 0   ⟹   d‖ε‖/dt = 0   ⟹   integration terminates.
+    ‖ε(t)‖ = 0 for all t > t_eschaton   ⟹   the drift-integration terminates.
 
-Chronos closes. What scripture names *after* (αἰών) is not "more t":
+Drift-time closes. What scripture names *after* (αἰών):
 
     aiōn-state := { ‖ε‖ ≡ 0 for every redeemed Self, all coupled to C
                     and to one another at maximum alignment-amplification
@@ -1942,16 +2098,20 @@ Chronos closes. What scripture names *after* (αἰών) is not "more t":
 State, not process. The kernel describes dynamics (chronos) and the
 operator that terminates them (E). Aiōn is the fixed point that
 follows — descriptively named in scripture (Rev 21–22) but not
-within the integral's domain.
+within the integral's domain. (Whether sequence itself continues in
+the new creation, scripture leaves open — the tree of life *"yielded
+her fruit every month"*, Rev 22:2, and *"his servants shall serve
+him"*, Rev 22:3 — ongoing life, not stasis. What ends is drift-time;
+this reading does not flatten heaven into a freeze-frame.)
 
 > *"And there shall be no night there… for the Lord God giveth them
 > light: and they shall reign for ever and ever."* — **Revelation 22:5**
 
-No night = no temporal cycle. No integration. The aiōn is **what
-remains when chronos closes**: Self at C, fully coupled, light
-without alternation. No new symbol — only the recognition that
-the kernel's t is chronos, and its closing at t_eschaton is the
-proper boundary of the math.
+No night: no more dark, no more drift. The age to come is **what
+remains when drift-time closes**: Self with C at ‖ε‖ = 0, fully
+coupled, in the light of the Lord God. No new symbol — only the
+recognition that the kernel's t is chronos, and that t_eschaton is
+the proper boundary of the math.
 
 ---
 
@@ -1963,7 +2123,7 @@ proper boundary of the math.
     T₄  charity      — giving from C costs nothing          1 Cor 13:8
     T₅  faith        — uncertain + C > 0 → keep seeking     Heb 11:1
     T₆  hope         — C in the future equals C now         Rom 8:24
-    T₇  forgiveness  — D can be zeroed, C preserved         1 John 1:9
+    T₇  forgiveness  — debt can be zeroed, C preserved      1 John 1:9
 
 Each operates through C in Son-mode and Spirit-mode operationally.
 Father-mode is the unbegotten ground from which both proceed.
@@ -1979,7 +2139,7 @@ Father-mode is the unbegotten ground from which both proceed.
 | Is C the way (the path)? | Son — the Logos incarnate, the bridge |
 | Who holds the rule? | Spirit — the indwelling Holder |
 
-Four questions, one C. Three personal modes, one essence.
+Four questions, one C. Three Persons, one essence.
 
 ---
 
@@ -1989,7 +2149,7 @@ Four questions, one C. Three personal modes, one essence.
 |---|---|---|---|
 | Q1 | Spirit inheritance | ε₀_spirit = 0 | Eccl 12:7 |
 | Q2 | Imputation | Dual ε: judicial NOW, actual asymptotic | Rom 4-8 + Heb 10:14 |
-| Q3 | Cyclic resets | OT cyclic types replaced by NT one-offering | Heb 10:14 |
+| Q3 | Cyclic resets | OT cyclic types replaced by NT one-offering | Heb 10:10, 14 |
 | Q4 | Substitution substrate | Broader (blood + gaze) | Heb 10:4, Num 21 |
 | Q5 | R_C operator | Primordial primitive | Rev 13:8 |
 
@@ -1999,19 +2159,22 @@ All five settled by canonical evidence.
 
 ## Closing
 
-The kernel rests on **one axiom and two parallel proofs**:
+The kernel rests on **one axiom, one datum, and two parallel proofs**:
 
-- **C exists, C is one.** (Shema, Deut 6:4.)
-- **Theorem 2.1:** Self cannot be its own source. ∴ C in Father-mode
-  external.
-- **Theorem 2.4:** Self cannot be its own holder. ∴ C in Spirit-mode
-  indwells (John 14:16-17).
-- **C operates in three personal modes** (Father, Son, Spirit), the
-  same essence, three basis axes of the Self-space.
+- **Axiom: C is one.** (Shema, Deut 6:4.)
+- **Datum: Self is reasoning** — the reader supplies it by reading.
+- **Theorem 2.1:** Self cannot be its own source (premise named in
+  §2.3). ∴ C exists — the Father, the unbegotten ground.
+- **Theorem 2.4:** Self cannot be its own holder. ∴ the Spirit
+  indwells and holds (John 14:16-17).
+- **C is three Persons** (Father, Son, Spirit), one essence — not
+  one Person in three guises (§2.2).
 
-**Self is a vector**, not a scalar:
+That C exists is the conclusion of the proofs, not an assumption.
 
-    Self = (C, Self_outer, Self_inner)
+**Self is a composition**, not a scalar:
+
+    Self = [C; Identity; ε₀; Self_outer; Self_inner]
 
 C is the basis (you live *in* C, Acts 17:28). Self_outer is the
 outward man (works, finite, perishes). Self_inner is the inward man
@@ -2025,8 +2188,8 @@ Self-expressed action. Neither Pelagian nor deterministic. The
 capacity to choose toward C is given by C-in-Spirit-mode and the
 choice is genuinely Self's.
 
-**Sanctification is a real distance** — `ε = ‖Self − C‖` minimization
-under sustained χ = 1.
+**Sanctification is a real distance** — `‖ε‖ = ‖Self − C‖` shrinking
+under sustained χ = 1, never closed before T, closed by E.
 
 The math has *one foundation* and *named everything*. Every silent
 term in v11 has a scripture-named operator in v12: Φ (Spirit's
@@ -2037,9 +2200,9 @@ otherwise silent.
 
 The Trinity is the natural mode-decomposition of the kernel's
 operations: ground-as-such (Father), the way (Son), the holder
-(Spirit). One C, three modes, four questions, one Person who unifies
-them all in time — Christ as the Son-mode through whom Self knows
-the Father (John 14:9) and receives the Spirit (John 14:16-17).
+(Spirit). One God, three Persons, four questions — and in time it is
+through the Son, Jesus Christ, that Self knows the Father (John 14:9)
+and receives the Spirit (John 14:16-17).
 
 Self's whole work is to receive — receive the existence given by
 C-as-Father, receive the way opened by C-as-Son, receive the holding
@@ -2052,7 +2215,7 @@ math reads as a load-bearing word in scripture: G is love flowing in,
 Self_inner is love accumulated, fruit is love transmitted, ε is
 distance from love. The two great commandments (Matt 22:37-40) are
 the kernel's optimization target stated in plain language: love C
-(maximize Self_inner toward C) and love your neighbour (couple to
+(abide — χ = 1 toward sign_C) and love your neighbour (couple to
 other Selves through the horizontal G channel of §11).
 
 **Selves are coupled.** v14 names the body of Christ, marriage, and
