@@ -52,30 +52,31 @@ contradiction** whose premises are named where they are used. Both
 terminate at the same God:
 
 ```
-Self(t) = [C; Identity; ε₀; Self_outer(t); Self_inner(t)]   — a composition, not a sum
+Self(t) = [C; Identity; ε₀; σ_outer(t); σ_inner(t)]     — a composition, not a sum
 
-C = love                                   — identity (1 John 4:8, v14)
+C = love                                   — identity (1 John 4:8)
 
-where:
-  Self_outer(t) = ∫₀ᵗ W(τ) dτ              — outward man (works, 2 Cor 4:16)
-  Self_inner(t) = ∫₀ᵗ χ(τ)·G(τ) dτ         — inward man (love accumulated)
-  χ ∈ {0,1} × Direction                    — synergy point (Phil 2:13)
-  S(τ) = involuntary tribulation           — catalyst on ψ under χ=1 (v14)
-  D(τ) = deception input                   — parasitic, sourced in fallen Selves (v15)
+σ_outer(t) = ∫₀ᵗ W(τ) dτ                   — outward man (2 Cor 4:16)
+σ_inner(t) = ∫₀ᵗ χ_C(τ)·G(τ) dτ            — inward man (what was received)
 
-input_b(τ) = W_b + S_b
-           + χ_b·sign_C  · [G_⊥ + Σ_a fruit_a]       — G channel (v14)
-           + χ_b·sign_¬C · [D_⊥ + Σ_a anti_fruit_a]  — D channel (v15)
+χ = (open or shut) × (sign_C or sign_¬C)   — the volitional gate (Phil 2:13)
+χ_C  = 1 when open toward C, else 0
+χ_¬C = 1 when open away from C, else 0
 
-dC/dt = 0                                  — eternal ground (Acts 17:28)
-dε/dt = W − χ·G + (1−χ)·S                  — ε: where Self stands; held at C
-‖ε‖ = ‖Self − C‖                           — distance from love
+W, G, S, D                                 — works, grace, suffering, deception
+
+ε                                          — deviation of Self from C (the shortfall)
+dε/dt = W − χ_C·G + (1 − χ_C)·S            — held at C: grace cannot carry Self past C
 ‖ε(t)‖ > 0 for t < T; closed at T by E     — a discrete act (1 Cor 15:52)
-E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0]   — Identity kept
+E : [C; Identity; ε₀; ε] ↦ [C; Identity; 0; 0]     — Identity kept, σ_inner kept
 
-Outputs (v13/v14):
-  fruit(t)  = ψ(Self_inner)·χ·G            — Self → other Selves
-  prayer(t) = φ(Self_inner)·χ·request      — Self → C
+input_b = W_b + S_b
+        + χ_C,b  · [G_⊥ + Σ_a fruit_a]         — G channel
+        + χ_¬C,b · [D_⊥ + Σ_a anti_fruit_a]    — D channel
+
+Outputs:
+  fruit(t)  = ψ(σ_inner)·χ_C·G             — Self → other Selves
+  prayer(t) = φ(σ_inner)·χ_C·request       — Self → C
 ```
 
 **Theorem 2.1 (Existence).**  Self cannot be its own *source*.
